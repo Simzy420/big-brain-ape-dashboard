@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Big Brain Ape | NVDA Analysis</title>
+  <script src="https://s3.tradingview.com/tv.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: #0a0a0f;
+      color: #e5e7eb;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 16px 40px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #1f2937;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    .logo-text h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #f9fafb;
+    }
+    .logo-text p {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+    .badge {
+      background: #065f46;
+      color: #6ee7b7;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    /* Price Section */
+    .price-card {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .ticker-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .ticker {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #9ca3af;
+    }
+    .price {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #f9fafb;
+      letter-spacing: -0.5px;
+    }
+    .change {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+    .change.down { color: #f87171; }
+    .change.up { color: #34d399; }
+
+    /* Recommendation */
+    .rec-card {
+      background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+      border: 1px solid #10b981;
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .rec-label {
+      font-size: 0.85rem;
+      color: #a7f3d0;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .rec-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #6ee7b7;
+    }
+    .rec-sub {
+      font-size: 0.9rem;
+      color: #a7f3d0;
+      margin-top: 4px;
+    }
+
+    /* Analyst Ratings */
+    .section {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #d1d5db;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .consensus {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .consensus-value {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #34d399;
+    }
+    .bars {
+      display: flex;
+      height: 12px;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .bar-strong-buy { background: #10b981; }
+    .bar-buy { background: #34d399; }
+    .bar-hold { background: #fbbf24; }
+    .bar-sell { background: #f87171; }
+    .bar-strong-sell { background: #ef4444; }
+    .ratings-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      text-align: center;
+      font-size: 0.8rem;
+    }
+    .rating-item span {
+      display: block;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 2px;
+    }
+
+    /* Metrics Grid */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+    }
+    .metric {
+      background: #0f172a;
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+    }
+    .metric-label {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+    .metric-value {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #f3f4f6;
+    }
+
+    /* Chart */
+    #tv-chart {
+      height: 480px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #1f2937;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid #1f2937;
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+    footer a {
+      color: #60a5fa;
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      .price { font-size: 2rem; }
+      .ratings-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+      #tv-chart { height: 360px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <div class="logo-icon">🦍</div>
+        <div class="logo-text">
+          <h1>Big Brain Ape</h1>
+          <p>Autonomous Trading Intelligence</p>
+        </div>
+      </div>
+      <div class="badge">LIVE</div>
+    </header>
+
+    <!-- Price -->
+    <div class="price-card">
+      <div class="ticker-row">
+        <span class="ticker">NVDA · NASDAQ</span>
+      </div>
+      <div class="price" id="price">$214.72</div>
+      <div class="change down" id="change">▼ $2.13 (−0.98%)</div>
+    </div>
+
+    <!-- Recommendation -->
+    <div class="rec-card">
+      <div class="rec-label">Big Brain Ape Recommendation</div>
+      <div class="rec-value">BUY</div>
+      <div class="rec-sub">Strong analyst consensus · 94% bullish</div>
+    </div>
+
+    <!-- Analyst Ratings -->
+    <div class="section">
+      <div class="section-title">📊 Analyst Ratings & Price Targets</div>
+      <div class="consensus">
+        <div class="consensus-value">Strong Buy</div>
+        <div style="font-size:0.85rem;color:#9ca3af;margin-top:4px">68 analysts covering</div>
+      </div>
+      <div class="bars">
+        <div class="bar-strong-buy" style="width:34%"></div>
+        <div class="bar-buy" style="width:60%"></div>
+        <div class="bar-hold" style="width:4%"></div>
+        <div class="bar-sell" style="width:2%"></div>
+        <div class="bar-strong-sell" style="width:0%"></div>
+      </div>
+      <div class="ratings-grid">
+        <div class="rating-item"><span style="color:#10b981">23</span>Strong Buy</div>
+        <div class="rating-item"><span style="color:#34d399">41</span>Buy</div>
+        <div class="rating-item"><span style="color:#fbbf24">3</span>Hold</div>
+        <div class="rating-item"><span style="color:#f87171">1</span>Sell</div>
+        <div class="rating-item"><span style="color:#ef4444">0</span>Strong Sell</div>
+      </div>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="section">
+      <div class="section-title">📈 Key Metrics</div>
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric-label">Market Cap</div>
+          <div class="metric-value">$5.20T</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">52-Week High</div>
+          <div class="metric-value">$236.54</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">52-Week Low</div>
+          <div class="metric-value">$164.07</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">50-Day Avg</div>
+          <div class="metric-value">$207.58</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">200-Day Avg</div>
+          <div class="metric-value">$195.29</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Beta</div>
+          <div class="metric-value">2.24</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Chart -->
+    <div class="section">
+      <div class="section-title">📉 Live Chart</div>
+      <div id="tv-chart"></div>
+    </div>
+
+    <footer>
+      Powered by <strong>Big Brain Ape</strong> · Autonomous AI Trading Bot<br>
+      <a href="https://t.me/BigBrain2Bot" target="_blank">Telegram</a> · 
+      <a href="https://github.com/Simzy420" target="_blank">GitHub</a>
+    </footer>
+  </div>
+
+  <script>
+    // TradingView Live Chart
+    new TradingView.widget({
+      "width": "100%",
+      "height": "100%",
+      "symbol": "NASDAQ:NVDA",
+      "interval": "D",
+      "timezone": "America/New_York",
+      "theme": "dark",
+      "style": "1",
+      "locale": "en",
+      "toolbar_bg": "#0a0a0f",
+      "enable_publishing": false,
+      "hide_top_toolbar": false,
+      "hide_legend": false,
+      "save_image": false,
+      "container_id": "tv-chart",
+      "studies": [
+        "MASimple@tv-basicstudies",
+        "MAExp@tv-basicstudies"
+      ]
+    });
+  </script>
+</body>
+</html>
