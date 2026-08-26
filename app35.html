@@ -175,9 +175,13 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .sq6:active{border-color:var(--blue)}
 .sq6-name{font-size: 16px;color:var(--text2);font-weight:600;margin-bottom:3px}
 .sq6-price{font-size: 20px;font-weight:700;margin-bottom:4px}
-.sq6-sr{display:flex;justify-content:center;gap:8px;font-size: 16px}
-.sq6-sr .sup{color:var(--green)}
-.sq6-sr .res{color:var(--red)}
+.sq6-sr{display:flex;justify-content:space-around;gap:4px;font-size: 11px;margin-top:4px}
+.sq6-sr .sup{color:var(--green);text-align:center;flex:1}
+.sq6-sr .res{color:var(--red);text-align:center;flex:1}
+.sq6-sr .sup-label{font-size:11px;font-weight:600;display:block}
+.sq6-sr .res-label{font-size:11px;font-weight:600;display:block}
+.sq6-sr .sup-val{font-size:13px;font-weight:700;display:block;margin-top:1px}
+.sq6-sr .res-val{font-size:13px;font-weight:700;display:block;margin-top:1px}
 
 /* FOUR GRID - 4 equal squares */
 .four-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
@@ -277,32 +281,32 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <div class="sq6" onclick="confirmTickerAnalysis('SPY')">
 <div class="sq6-name">SPY</div>
 <div class="sq6-price" id="sq6-SP500">—</div>
-<div class="sq6-sr"><span class="sup">S: —</span><span class="res">R: —</span></div>
+<div class="sq6-sr"><span class="sup"><span class="sup-label">Support</span><span class="sup-val" id="sq6-SP500-sup">—</span></span><span class="res"><span class="res-label">Resistance</span><span class="res-val" id="sq6-SP500-res">—</span></span></div>
 </div>
 <div class="sq6" onclick="confirmTickerAnalysis('QQQ')">
 <div class="sq6-name">QQQ</div>
 <div class="sq6-price" id="sq6-NASDAQ">—</div>
-<div class="sq6-sr"><span class="sup">S: —</span><span class="res">R: —</span></div>
+<div class="sq6-sr"><span class="sup"><span class="sup-label">Support</span><span class="sup-val" id="sq6-NASDAQ-sup">—</span></span><span class="res"><span class="res-label">Resistance</span><span class="res-val" id="sq6-NASDAQ-res">—</span></span></div>
 </div>
 <div class="sq6" onclick="confirmTickerAnalysis('DIA')">
 <div class="sq6-name">DIA</div>
 <div class="sq6-price" id="sq6-DOW">—</div>
-<div class="sq6-sr"><span class="sup">S: —</span><span class="res">R: —</span></div>
+<div class="sq6-sr"><span class="sup"><span class="sup-label">Support</span><span class="sup-val" id="sq6-DOW-sup">—</span></span><span class="res"><span class="res-label">Resistance</span><span class="res-val" id="sq6-DOW-res">—</span></span></div>
 </div>
 <div class="sq6" onclick="quickSearch('BTC')">
 <div class="sq6-name">BTC</div>
 <div class="sq6-price" id="sq6-BTC">—</div>
-<div class="sq6-sr"><span class="sup">S: —</span><span class="res">R: —</span></div>
+<div class="sq6-sr"><span class="sup"><span class="sup-label">Support</span><span class="sup-val" id="sq6-BTC-sup">—</span></span><span class="res"><span class="res-label">Resistance</span><span class="res-val" id="sq6-BTC-res">—</span></span></div>
 </div>
 <div class="sq6" onclick="quickSearch('ETH')">
 <div class="sq6-name">ETH</div>
 <div class="sq6-price" id="sq6-ETH">—</div>
-<div class="sq6-sr"><span class="sup">S: —</span><span class="res">R: —</span></div>
+<div class="sq6-sr"><span class="sup"><span class="sup-label">Support</span><span class="sup-val" id="sq6-ETH-sup">—</span></span><span class="res"><span class="res-label">Resistance</span><span class="res-val" id="sq6-ETH-res">—</span></span></div>
 </div>
 <div class="sq6" onclick="quickSearch('SOL')">
 <div class="sq6-name">SOL</div>
 <div class="sq6-price" id="sq6-SOL">—</div>
-<div class="sq6-sr"><span class="sup">S: —</span><span class="res">R: —</span></div>
+<div class="sq6-sr"><span class="sup"><span class="sup-label">Support</span><span class="sup-val" id="sq6-SOL-sup">—</span></span><span class="res"><span class="res-label">Resistance</span><span class="res-val" id="sq6-SOL-res">—</span></span></div>
 </div>
 </div>
 
@@ -2250,7 +2254,10 @@ else pEl.textContent='$'+fmtCrypto(price);
 }
 var srEl=pEl?pEl.parentElement.querySelector('.sq6-sr'):null;
 if(srEl&&sr){
-srEl.innerHTML='<span class="sup">S: $'+fmtShort(sr.support)+'</span><span class="res">R: $'+fmtShort(sr.resistance)+'</span>';
+var supEl=srEl.querySelector('.sup-val');
+var resEl=srEl.querySelector('.res-val');
+if(supEl)supEl.textContent='$'+fmtShort(sr.support);
+if(resEl)resEl.textContent='$'+fmtShort(sr.resistance);
 }
 }
 
