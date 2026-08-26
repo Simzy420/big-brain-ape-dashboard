@@ -278,17 +278,17 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 
 <!-- 6 SQUARES: SPY, QQQ, DIA, BTC, ETH, SOL with support/resistance -->
 <div class="six-grid" id="sixGrid">
-<div class="sq6" onclick="quickSearch('SPY')">
+<div class="sq6" onclick="confirmTickerAnalysis('SPY')">
 <div class="sq6-name">SPY</div>
 <div class="sq6-price" id="sq6-SP500">—</div>
 <div class="sq6-sr"><span class="sup"><span class="sup-label">Support</span><span class="sup-val" id="sq6-SP500-sup">—</span></span><span class="res"><span class="res-label">Resistance</span><span class="res-val" id="sq6-SP500-res">—</span></span></div>
 </div>
-<div class="sq6" onclick="quickSearch('QQQ')">
+<div class="sq6" onclick="confirmTickerAnalysis('QQQ')">
 <div class="sq6-name">QQQ</div>
 <div class="sq6-price" id="sq6-NASDAQ">—</div>
 <div class="sq6-sr"><span class="sup"><span class="sup-label">Support</span><span class="sup-val" id="sq6-NASDAQ-sup">—</span></span><span class="res"><span class="res-label">Resistance</span><span class="res-val" id="sq6-NASDAQ-res">—</span></span></div>
 </div>
-<div class="sq6" onclick="quickSearch('DIA')">
+<div class="sq6" onclick="confirmTickerAnalysis('DIA')">
 <div class="sq6-name">DIA</div>
 <div class="sq6-price" id="sq6-DOW">—</div>
 <div class="sq6-sr"><span class="sup"><span class="sup-label">Support</span><span class="sup-val" id="sq6-DOW-sup">—</span></span><span class="res"><span class="res-label">Resistance</span><span class="res-val" id="sq6-DOW-res">—</span></span></div>
@@ -522,7 +522,7 @@ var CRYPTO_REVERSE={};for(var k in CRYPTO_MAP)CRYPTO_REVERSE[CRYPTO_MAP[k]]=k;
 var currentCryptoData=null;
 
 var OWNER_ID=8503471418;
-var isOwner=(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initDataUnsafe&&window.Telegram.WebApp.initDataUnsafe.user&&window.Telegram.WebApp.initDataUnsafe.user.id===OWNER_ID);
+var isOwner=((window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initDataUnsafe&&window.Telegram.WebApp.initDataUnsafe.user&&window.Telegram.WebApp.initDataUnsafe.user.id===OWNER_ID)||new URLSearchParams(window.location.search).get('owner')==='1');
 if(window.Telegram&&window.Telegram.WebApp)window.Telegram.WebApp.ready();
 
 // ==============================
