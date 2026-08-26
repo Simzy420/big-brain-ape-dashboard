@@ -773,21 +773,21 @@ html+='</div></div>';
 // === BIG BRAIN APE RATING (score circle + badge) ===
 html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px">';
 html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:var(--blue)"></div><span style="font-size: 24px;font-weight:650">Big Brain Ape Rating</span></div>';
-html+='<div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap">';
+html+='<div style="display:flex;align-items:center;gap:16px;flex-wrap:nowrap">';
 // Score circle
-html+='<div style="width:110px;height:110px;border-radius:50%;background:conic-gradient('+scoreColor+' calc('+scorePct+'% * 3.6), var(--border) 0);display:flex;align-items:center;justify-content:center;position:relative">';
-html+='<div style="position:absolute;inset:10px;border-radius:50%;background:var(--card)"></div>';
-html+='<div style="position:relative;text-align:center;z-index:1"><div style="font-size: 36px;font-weight:800">'+apeScore.toFixed(1)+'</div><div style="font-size: 17px;color:var(--text2)">/ 10</div></div>';
+html+='<div style="min-width:90px;width:90px;height:90px;border-radius:50%;background:conic-gradient('+scoreColor+' calc('+scorePct+'% * 3.6), var(--border) 0);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0">';
+html+='<div style="position:absolute;inset:8px;border-radius:50%;background:var(--card)"></div>';
+html+='<div style="position:relative;text-align:center;z-index:1"><div style="font-size: 28px;font-weight:800">'+apeScore.toFixed(1)+'</div><div style="font-size: 14px;color:var(--text2)">/ 10</div></div>';
 html+='</div>';
-// Badge + reasons
-html+='<div>';
+// Badge (recommendation) to the right of score
+html+='<div style="flex:1;min-width:0">';
 var badgeBg=apeRating.label.indexOf('Buy')>=0?'rgba(63,185,80,0.15)':apeRating.label.indexOf('Sell')>=0?'rgba(248,81,73,0.15)':'rgba(210,153,34,0.15)';
 var badgeBorder=apeRating.label.indexOf('Buy')>=0?'rgba(63,185,80,0.4)':apeRating.label.indexOf('Sell')>=0?'rgba(248,81,73,0.4)':'rgba(210,153,34,0.4)';
-html+='<span style="display:inline-block;padding:8px 18px;border-radius:999px;font-weight:700;font-size: 24px;background:'+badgeBg+';color:'+apeRating.color+';border:1px solid '+badgeBorder+'">'+apeRating.label+'</span>';
+html+='<span style="display:inline-block;padding:6px 14px;border-radius:999px;font-weight:700;font-size: 20px;background:'+badgeBg+';color:'+apeRating.color+';border:1px solid '+badgeBorder+'">'+apeRating.label+'</span>';
 if(apeRating.reasons.length>0){
-html+='<div style="margin-top:10px;max-width:320px;color:var(--text2);font-size: 19px">';
+html+='<div style="margin-top:8px;color:var(--text2);font-size: 15px;line-height:1.4">';
 for(var ri=0;ri<apeRating.reasons.length;ri++){
-html+='<div style="padding:2px 0">• '+apeRating.reasons[ri]+'</div>';
+html+='<div style="padding:1px 0">• '+apeRating.reasons[ri]+'</div>';
 }
 html+='</div>';
 }
@@ -1263,16 +1263,16 @@ html+='</div></div>';
 // === BIG BRAIN APE RATING ===
 html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px">';
 html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:var(--blue)"></div><span style="font-size: 24px;font-weight:650">Big Brain Ape Rating</span></div>';
-html+='<div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap">';
-html+='<div style="width:110px;height:110px;border-radius:50%;background:conic-gradient('+scoreColor+' calc('+scorePct+'% * 3.6), var(--border) 0);display:flex;align-items:center;justify-content:center;position:relative">';
-html+='<div style="position:absolute;inset:10px;border-radius:50%;background:var(--card)"></div>';
-html+='<div style="position:relative;text-align:center;z-index:1"><div style="font-size: 36px;font-weight:800">'+cryptoScore.toFixed(1)+'</div><div style="font-size: 17px;color:var(--text2)">/ 10</div></div>';
+html+='<div style="display:flex;align-items:center;gap:16px;flex-wrap:nowrap">';
+html+='<div style="min-width:90px;width:90px;height:90px;border-radius:50%;background:conic-gradient('+scoreColor+' calc('+scorePct+'% * 3.6), var(--border) 0);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0">';
+html+='<div style="position:absolute;inset:8px;border-radius:50%;background:var(--card)"></div>';
+html+='<div style="position:relative;text-align:center;z-index:1"><div style="font-size: 28px;font-weight:800">'+cryptoScore.toFixed(1)+'</div><div style="font-size: 14px;color:var(--text2)">/ 10</div></div>';
 html+='</div>';
-html+='<div>';
+html+='<div style="flex:1;min-width:0">';
 var badgeBg=rating.label.indexOf('Buy')>=0?'rgba(63,185,80,0.15)':rating.label.indexOf('Sell')>=0?'rgba(248,81,73,0.15)':'rgba(210,153,34,0.15)';
 var badgeBorder=rating.label.indexOf('Buy')>=0?'rgba(63,185,80,0.4)':rating.label.indexOf('Sell')>=0?'rgba(248,81,73,0.4)':'rgba(210,153,34,0.4)';
-html+='<span style="display:inline-block;padding:8px 18px;border-radius:999px;font-weight:700;font-size: 24px;background:'+badgeBg+';color:'+rating.color+';border:1px solid '+badgeBorder+'">'+rating.label+'</span>';
-html+='<div style="margin-top:10px;color:var(--text2);font-size: 19px">'+rating.reason+'</div>';
+html+='<span style="display:inline-block;padding:6px 14px;border-radius:999px;font-weight:700;font-size: 20px;background:'+badgeBg+';color:'+rating.color+';border:1px solid '+badgeBorder+'">'+rating.label+'</span>';
+html+='<div style="margin-top:8px;color:var(--text2);font-size: 15px;line-height:1.4">'+rating.reason+'</div>';
 html+='</div></div></div>';
 
 // === ANALYST CONSENSUS RATING (clickable, green border) ===
@@ -3335,4 +3335,4 @@ loadTickerTapes();
 loadHomeData();
 </script>
 </body>
-</html><!-- bust Wed Aug 26 15:22:15 UTC 2026 -->
+</html>
