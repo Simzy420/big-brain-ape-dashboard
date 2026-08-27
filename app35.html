@@ -793,16 +793,54 @@ html+='</div>';
 }
 html+='</div></div></div>';
 
-// === ANALYST RATINGS BREAKDOWN (bar chart) ===
+// === ANALYST RATINGS BREAKDOWN (clickable bars + avg price target) ===
 var sb=d.strongBuy||0,b=d.buy||0,h=d.hold||0,s=d.sell||0,ss=d.strongSell||0;
 var total=sb+b+h+s+ss;
 html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px">';
 html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:var(--blue)"></div><span style="font-size: 24px;font-weight:650">Analyst Ratings Breakdown</span></div>';
-html+='<div style="height:300px;position:relative"><canvas id="ratingsChart"></canvas></div>';
-if(total>0){
-var consensusLabel=rating.label;
-html+='<div style="text-align:center;margin-top:8px;font-size: 19px;color:var(--text2)">'+total+' analysts · Consensus leans <strong style="color:'+rating.color+'">'+consensusLabel+'</strong></div>';
+// Clickable bars + avg price target side by side
+html+='<div style="display:flex;gap:16px;flex-wrap:nowrap;align-items:flex-start">';
+// Left: bars
+html+='<div style="flex:1;min-width:0">';
+var ratingCats=[
+{key:'strongBuy',label:'Strong Buy',count:sb,color:'#3fb950',bg:'rgba(63,185,80,0.15)'},
+{key:'buy',label:'Buy',count:b,color:'#5cb85c',bg:'rgba(92,184,92,0.15)'},
+{key:'hold',label:'Hold',count:h,color:'#d29922',bg:'rgba(210,153,34,0.15)'},
+{key:'sell',label:'Sell',count:s,color:'#f0883e',bg:'rgba(240,136,62,0.15)'},
+{key:'strongSell',label:'Strong Sell',count:ss,color:'#f85149',bg:'rgba(248,81,73,0.15)'}
+];
+for(var ri=0;ri<ratingCats.length;ri++){
+var rc=ratingCats[ri];
+var pct=total>0?(rc.count/total*100):0;
+html+='<div onclick="showAnalystsByRating(\''+sym+'\',\''+rc.label+'\')" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;padding:4px 0">';
+html+='<div style="min-width:80px;font-size:15px;font-weight:600;color:'+rc.color+';white-space:nowrap">'+rc.label+'</div>';
+html+='<div style="flex:1;height:22px;background:var(--bg);border-radius:4px;overflow:hidden;position:relative">';
+html+='<div style="height:100%;width:'+pct+'%;background:'+rc.color+';border-radius:4px;opacity:0.85"></div>';
+html+='</div>';
+html+='<div style="min-width:30px;text-align:right;font-size:15px;font-weight:700;color:'+rc.color+'">'+rc.count+'</div>';
+html+='</div>';
 }
+html+='<div style="text-align:center;margin-top:6px;font-size:15px;color:var(--text2)">'+total+' analysts · Consensus: <strong style="color:'+rating.color+'">'+rating.label+'</strong></div>';
+html+='</div>';
+// Right: avg price target in blue
+if(d.targetAvg){
+var upside=d.targetAvg>0?((d.targetAvg-d.price)/d.price*100):0;
+html+='<div style="min-width:100px;text-align:center;padding:8px 4px">';
+html+='<div style="font-size:14px;color:var(--blue);font-weight:600">Avg Price Target</div>';
+html+='<div style="font-size:24px;color:var(--blue);font-weight:800;margin:4px 0">$'+fmtNum(d.targetAvg)+'</div>';
+html+='<div style="font-size:14px;color:'+(upside>=0?'var(--green)':'var(--red))')+';font-weight:600">'+(upside>=0?'+':'')+fmtNum(upside)+'%</div>';
+if(d.targetHigh){
+html+='<div style="margin-top:8px;font-size:13px;color:var(--text2)">High: <span style="color:var(--red);font-weight:600">$'+fmtNum(d.targetHigh)+'</span></div>';
+}
+if(d.targetLow){
+html+='<div style="font-size:13px;color:var(--text2)">Low: <span style="color:var(--green);font-weight:600">$'+fmtNum(d.targetLow)+'</span></div>';
+}
+html+='<div style="margin-top:8px;font-size:13px;color:var(--text2)">Current: <span style="font-weight:600">$'+fmtNum(d.price)+'</span></div>';
+html+='</div>';
+}
+html+='</div>';
+// Hidden container for analyst list when bar is clicked
+html+='<div id="analystsByRating" style="display:none;margin-top:14px;border-top:1px solid var(--border);padding-top:14px"></div>';
 html+='</div>';
 
 // === PRICE TARGET + EARNINGS (side by side) ===
@@ -957,18 +995,7 @@ nc.innerHTML=nh;
 
 // === DRAW CHARTS (Chart.js) ===
 setTimeout(function(){
-// Ratings bar chart
-var rc=document.getElementById('ratingsChart');
-if(rc&&typeof Chart!=='undefined'){
-new Chart(rc,{
-type:'bar',
-data:{labels:['Strong Buy','Buy','Hold','Sell','Strong Sell'],
-datasets:[{data:[sb,b,h,s,ss],backgroundColor:['#3fb950','#5cb85c','#d29922','#f0883e','#f85149'],borderRadius:8}]},
-options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-scales:{y:{beginAtZero:true,grid:{color:'rgba(48,54,61,0.6)'},ticks:{color:'#8b949e'}},
-x:{grid:{display:false},ticks:{color:'#e6edf3'}}}}
-});
-}
+// Ratings bar chart — now HTML bars, no canvas needed
 
 // Price target chart
 var tc=document.getElementById('targetChart');
@@ -1544,6 +1571,62 @@ drawApeBarChart(barCanvas,null,isBullish);
 // ==============================
 // ANALYST CONSENSUS DETAIL OVERLAY (fetches individual firm ratings)
 // ==============================
+function showAnalystsByRating(sym,ratingFilter){
+var container=document.getElementById('analystsByRating');
+if(!container)return;
+if(container.style.display!=='none'&&container.getAttribute('data-filter')===ratingFilter){
+container.style.display='none';
+return;
+}
+container.setAttribute('data-filter',ratingFilter);
+container.innerHTML='<div style="text-align:center;padding:20px;color:var(--text2)"><div class="spinner" style="width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 8px"></div>Loading '+ratingFilter+' analysts...</div>';
+container.style.display='block';
+sameDomainGet(ANALYST_RATINGS_URL).then(function(allData){
+var d=allData[sym];
+if(!d||!d.analysts||d.analysts.length===0){
+container.innerHTML='<div style="text-align:center;padding:20px;color:var(--text2);font-size:15px">No individual analyst data available. The count comes from aggregated Wall Street data — individual firm ratings are available for major stocks.</div>';
+return;
+}
+var filtered=d.analysts.filter(function(a){return a.rating===ratingFilter;});
+if(filtered.length===0){
+container.innerHTML='<div style="text-align:center;padding:20px;color:var(--text2);font-size:15px">No individual '+ratingFilter+' ratings found in our database. The bar count comes from aggregated data.</div>';
+return;
+}
+var ratingColors={'Strong Buy':'#3fb950','Buy':'#5cb85c','Hold':'#d29922','Sell':'#f0883e','Strong Sell':'#f85149'};
+var rc=ratingColors[ratingFilter]||'#8b949e';
+var html='<div style="font-size:17px;font-weight:700;color:'+rc+';margin-bottom:10px">'+ratingFilter+' — '+filtered.length+' Analyst'+(filtered.length>1?'s':'')+'</div>';
+html+='<div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:8px 14px">';
+for(var i=0;i<filtered.length;i++){
+var a=filtered[i];
+html+='<div style="padding:10px 0;border-bottom:'+(i<filtered.length-1?'1px solid var(--border)':'none')+';cursor:pointer" onclick="window.open(\'https://www.google.com/search?q='+encodeURIComponent(a.firm+' '+sym+' analyst rating '+a.date)+'\', \'_blank\')">';
+html+='<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">';
+html+='<div style="flex:1;min-width:0">';
+html+='<div style="font-size:15px;font-weight:600;color:var(--text)">'+a.firm+'</div>';
+if(a.analystName&&a.analystName!==a.firm){
+html+='<div style="font-size:13px;color:var(--text2);margin-top:1px">'+a.analystName+'</div>';
+}
+html+='<div style="font-size:13px;color:var(--text2);margin-top:2px">'+(a.action||'')+' · '+a.date+'</div>';
+html+='</div>';
+html+='<div style="text-align:right;flex-shrink:0">';
+if(a.priceTarget&&a.priceTarget!=='n/a'){
+html+='<div style="font-size:16px;font-weight:700;color:var(--blue)">PT: '+a.priceTarget+'</div>';
+}
+if(a.upside&&a.upside!=='n/a'){
+var upColor=a.upside.indexOf('-')>=0?'var(--red)':'var(--green)';
+html+='<div style="font-size:14px;font-weight:600;color:'+upColor+';margin-top:1px">'+a.upside+'</div>';
+}
+html+='</div>';
+html+='</div>';
+html+='<div style="font-size:12px;color:var(--blue);margin-top:4px">Tap to view article →</div>';
+html+='</div>';
+}
+html+='</div>';
+container.innerHTML=html;
+}).catch(function(err){
+container.innerHTML='<div style="text-align:center;padding:20px;color:var(--text2);font-size:15px">Could not load analyst data: '+err.message+'</div>';
+});
+}
+
 function showAnalystConsensus(sym){
 var overlay=document.createElement('div');
 overlay.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.95);z-index:9999;overflow-y:auto;display:flex;flex-direction:column';
