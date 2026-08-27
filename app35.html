@@ -843,31 +843,93 @@ html+='</div>';
 html+='<div id="analystsByRating" style="display:none;margin-top:14px;border-top:1px solid var(--border);padding-top:14px"></div>';
 html+='</div>';
 
-// === PRICE TARGET + EARNINGS (side by side) ===
-html+='<div class="grid-2">';
-// Price target
-html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px">';
-html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:var(--blue)"></div><span style="font-size: 22px;font-weight:650">Price Target</span></div>';
-html+='<div style="height:260px;position:relative"><canvas id="targetChart"></canvas></div>';
-if(d.targetAvg){
-var upside=d.targetAvg>0?((d.targetAvg-d.price)/d.price*100):0;
-html+='<div style="text-align:center;margin-top:6px;font-size: 19px"><strong>Avg: $'+fmtNum(d.targetAvg)+'</strong> · <span style="color:'+(upside>=0?'var(--green)':'var(--red)')+'">'+(upside>=0?'+':'')+fmtNum(upside)+'% upside</span></div>';
+// === INTERESTED IN BUYING? SECTION (chart + 3 boxes) ===
+var hist=d.history||[];
+var closes=hist.map(function(h){return h.c});
+var highs=hist.map(function(h){return h.h});
+var lows=hist.map(function(h){return h.l});
+
+// Compute RSI(14)
+function calcRSI(vals,period){
+if(vals.length<period+1)return 50;
+var gains=0,losses=0;
+for(var i=1;i<=period;i++){var ch=vals[i]-vals[i-1];if(ch>0)gains+=ch;else losses-=ch;}
+var ag=gains/period,al=losses/period;
+if(al===0)return 100;
+return 100-(100/(1+ag/al));
 }
-html+='</div>';
-// Earnings
+// Compute EMA
+function calcEMA(vals,period){
+if(vals.length<period)return vals[vals.length-1]||0;
+var m=2/(period+1);
+var ema=vals.slice(0,period).reduce(function(a,b){return a+b},0)/period;
+for(var i=period;i<vals.length;i++)ema=(vals[i]-ema)*m+ema;
+return ema;
+}
+
+var rsiVal=calcRSI(closes,14);
+var ema20=closes.length>=20?calcEMA(closes,20):d.price;
+var swingHigh=highs.length?Math.max.apply(null,highs):d.yearHigh||d.price;
+var swingLow=lows.length?Math.min.apply(null,lows):d.yearLow||d.price;
+var yearHigh=d.yearHigh||swingHigh;
+var yearLow=d.yearLow||swingLow;
+
+// Buy levels (per Grok's formula)
+var support=Math.min(swingLow,yearLow*1.02);
+var resistance=Math.min(swingHigh,yearHigh*0.98);
+var bestBuy=Math.round(support*1.02);
+var buyZoneLow=Math.round(bestBuy*0.99);
+var buyZoneHigh=Math.round(bestBuy*1.02);
+var washZoneLow=Math.round(yearLow);
+var washZoneHigh=Math.round(yearLow*1.05);
+var invalidation=Math.round(yearLow*0.98);
+var extendedAbove=(d.price>ema20*1.05);
+
+// Trend text
+var trendVs50=d.price>ema20?'in a short-term uptrend':'range-bound below its short-term average';
+var aboveYearLow=d.price>yearLow*1.1?'well above':'near';
+var cleanTrend=d.price>ema20&&rsiVal>50?'Clean daily uptrend — momentum supportive.':'Not a clean daily uptrend — wait for confirmation.';
+
+html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px">';
+html+='<div style="font-size:26px;font-weight:800;color:var(--blue);margin-bottom:14px">Interested In Buying '+sym+'?</div>';
+// TradingView chart with EMA studies
+html+='<div class="tv-chart-container" id="buyChartContainer" style="height:380px;border-radius:12px;overflow:hidden;background:#131722;margin-bottom:16px"></div>';
+// 3 boxes
+html+='<div style="display:grid;grid-template-columns:1fr;gap:12px">';
+// Box 1: Analysis
+html+='<div style="background:#1a2236;border:1px solid rgba(88,166,255,0.3);border-radius:12px;padding:14px">';
+html+='<div style="font-size:18px;font-weight:700;color:var(--blue);margin-bottom:8px">📊 Analysis</div>';
+html+='<div style="font-size:15px;color:var(--text);line-height:1.5">';
+html+='Price $'+fmtNum(d.price)+' is '+aboveYearLow+' its 6-month low of $'+fmtNum(yearLow)+'. ';
+html+='Daily is '+trendVs50+' (EMA20 ~$'+fmtNum(ema20)+'). ';
+html+='RSI '+rsiVal.toFixed(0)+'. '+cleanTrend;
+html+='</div></div>';
+// Box 2: Buy Setup
+html+='<div style="background:#1a2236;border:1px solid rgba(63,185,80,0.3);border-radius:12px;padding:14px">';
+html+='<div style="font-size:18px;font-weight:700;color:var(--green);margin-bottom:8px">🎯 Buy Setup</div>';
+html+='<div style="font-size:15px;color:var(--text);line-height:1.5">';
+html+='Scale in only if $'+buyZoneLow+'–$'+buyZoneHigh+' holds. ';
+html+='Invalidation under $'+invalidation+'. ';
+html+='First resistance $'+fmtNum(resistance)+' then $'+fmtNum(yearHigh)+'.';
+if(extendedAbove)html+='<br><span style="color:var(--red)">⚠️ Do not chase — price is extended above the 50-day.</span>';
+html+='</div></div>';
+// Box 3: Best Buy Price
+html+='<div style="background:#1a2236;border:1px solid rgba(210,153,34,0.3);border-radius:12px;padding:14px">';
+html+='<div style="font-size:18px;font-weight:700;color:var(--yellow);margin-bottom:8px">💰 Best Buy Price</div>';
+html+='<div style="font-size:15px;color:var(--text);line-height:1.5">';
+html+='<span style="font-size:22px;font-weight:800;color:var(--green)">$'+bestBuy+'</span> first buy. ';
+html+='Wash zone $'+washZoneLow+'–$'+washZoneHigh+' if it washes out. ';
+html+='Do not chase above $'+fmtNum(ema20)+' while under the 50-day.';
+html+='</div></div>';
+html+='</div></div>';
+
+// === EARNINGS (standalone card, moved from the old grid) ===
 if(d.earnings&&d.earnings.length>0){
-html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px">';
+html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px">';
 html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:var(--blue)"></div><span style="font-size: 22px;font-weight:650">Earnings (Actual vs Estimate)</span></div>';
 html+='<div style="height:260px;position:relative"><canvas id="earningsChart"></canvas></div>';
 html+='</div>';
-}else{
-// Fill with key stats if no earnings
-html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px">';
-html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:var(--blue)"></div><span style="font-size: 22px;font-weight:650">Day Range</span></div>';
-html+='<div style="height:260px;position:relative"><canvas id="dayRangeChart"></canvas></div>';
-html+='</div>';
 }
-html+='</div>';
 
 // === KEY METRICS CARDS ===
 html+='<div class="grid-4">';
@@ -942,12 +1004,6 @@ html+=srCard('Support 3 · 52W Low','$'+fmtNum(d.yearLow),'#4ade80','rgba(63,185
 html+='</div></div>';
 }
 
-// === LIVE INTERACTIVE TRADINGVIEW CHART ===
-html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px">';
-html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:var(--blue)"></div><span style="font-size: 24px;font-weight:650">Live Interactive Chart</span></div>';
-html+='<div class="tv-chart-container" id="tvChartContainer" style="height:400px;border-radius:12px;overflow:hidden;background:#131722"></div>';
-html+='</div>';
-
 // === RECENT NEWS ===
 html+='<div id="newsContainer" style="margin-bottom:18px"></div>';
 
@@ -1016,21 +1072,7 @@ nc.innerHTML=nh;
 
 // === DRAW CHARTS (Chart.js) ===
 setTimeout(function(){
-// Ratings bar chart — now HTML bars, no canvas needed
-
-// Price target chart
-var tc=document.getElementById('targetChart');
-if(tc&&typeof Chart!=='undefined'){
-var tl=d.targetLow||0,ta=d.targetAvg||0,th=d.targetHigh||0;
-new Chart(tc,{
-type:'bar',
-data:{labels:['Low','Avg','High'],datasets:[{data:[tl,ta,th],backgroundColor:['#64748b','#58a6ff','#3fb950'],borderRadius:8}]},
-options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-scales:{x:{grid:{color:'rgba(48,54,61,0.6)'},ticks:{color:'#8b949e'}},
-y:{grid:{display:false},ticks:{color:'#e6edf3'}}}}
-});
-}
-
+// Price target chart — REMOVED, replaced by Interested In Buying section
 // Earnings chart
 var ec=document.getElementById('earningsChart');
 if(ec&&d.earnings&&d.earnings.length>0&&typeof Chart!=='undefined'){
@@ -1052,21 +1094,9 @@ x:{grid:{display:false},ticks:{color:'#e6edf3'}}}}
 });
 }
 
-// Day range chart (fallback if no earnings)
-var drc=document.getElementById('dayRangeChart');
-if(drc&&typeof Chart!=='undefined'){
-new Chart(drc,{
-type:'bar',
-data:{labels:['Low','Open','High'],datasets:[{data:[d.low||0,d.open||0,d.high||0],backgroundColor:['#f85149','#58a6ff','#3fb950'],borderRadius:8}]},
-options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-scales:{y:{beginAtZero:false,grid:{color:'rgba(48,54,61,0.6)'},ticks:{color:'#8b949e'}},
-x:{grid:{display:false},ticks:{color:'#e6edf3'}}}}
-});
-}
-
-// TradingView chart
-var tvContainer=document.getElementById('tvChartContainer');
-if(tvContainer)loadTradingViewChart(tvContainer,getTVSymbol(sym));
+// Buy chart (TradingView with EMA studies)
+var buyChart=document.getElementById('buyChartContainer');
+if(buyChart)loadTradingViewChart(buyChart,getTVSymbol(sym));
 },100);
 }
 
