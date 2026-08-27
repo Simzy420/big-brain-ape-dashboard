@@ -879,6 +879,16 @@ if(sub)s+='<div style="font-size: 17px;color:var(--text2);margin-top:2px">'+sub+
 s+='</div>';
 return s;
 }
+function metricCardDouble(label,val1,sub1,val2,sub2){
+var s='<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px">';
+s+='<div style="font-size: 17px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px">'+label+'</div>';
+s+='<div style="font-size: 22px;font-weight:700">'+val1+'</div>';
+if(sub1)s+='<div style="font-size: 14px;color:var(--text2);margin-top:1px">'+sub1+'</div>';
+s+='<div style="font-size: 22px;font-weight:700;margin-top:6px">'+val2+'</div>';
+if(sub2)s+='<div style="font-size: 14px;color:var(--text2);margin-top:1px">'+sub2+'</div>';
+s+='</div>';
+return s;
+}
 html+=metricCard("Market Cap",d.marketCap?'$'+fmtCap(d.marketCap/1e6):'—');
 html+=metricCard("P/E Ratio",d.pe?fmtNum(d.pe):'—',"Trailing");
 html+=metricCard("EPS (TTM)",d.eps?fmtNum(d.eps):'—');
@@ -886,7 +896,18 @@ html+=metricCard("Dividend",d.dividendYield?fmtNum(d.dividendYield)+'%':'—',"Y
 html+=metricCard("52-Week Range",d.yearLow?'$'+fmtNum(d.yearLow)+' – $'+fmtNum(d.yearHigh):'—',"",true);
 html+=metricCard("Beta",d.beta?fmtNum(d.beta):'—');
 html+=metricCard("Avg Price Target",d.targetAvg?'$'+fmtNum(d.targetAvg):'—',d.targetAvg?'<span style="color:'+(d.targetAvg>d.price?'var(--green)':'var(--red)')+'">'+(d.targetAvg>d.price?'↑':'↓')+' '+fmtNum(Math.abs((d.targetAvg-d.price)/d.price*100))+'%</span>':'');
-if(d.upcomingEarnings&&d.upcomingEarnings.length>0){
+// Replace "50-Day Avg" with "Rev & YOY Growth"
+if(d.revenuePerShare&&d.marketCap&&d.price&&d.earnings&&d.earnings.length>=2){
+var shares=d.marketCap/d.price;
+var annRev=d.revenuePerShare*shares;
+var revStr=annRev>=1e9?'$'+(annRev/1e9).toFixed(1)+'B':'$'+(annRev/1e6).toFixed(0)+'M';
+var latestEPS=d.earnings[0].actual;
+var prevEPS=d.earnings[1].actual;
+var yoyGrowth=prevEPS>0?((latestEPS-prevEPS)/prevEPS*100):0;
+var growthStr=(yoyGrowth>=0?'+':'')+yoyGrowth.toFixed(0)+'%';
+var growthColor=yoyGrowth>=0?'var(--green)':'var(--red)';
+html+=metricCardDouble("Rev & YOY Growth",revStr,"Annual Rev",'<span style="color:'+growthColor+'">'+growthStr+'</span>','YoY EPS');
+}else if(d.upcomingEarnings&&d.upcomingEarnings.length>0){
 html+=metricCard("Next Earnings",d.upcomingEarnings[0].date,'Q'+d.upcomingEarnings[0].quarter);
 }else{
 html+=metricCard("50-Day Avg",d.priceAvg50?'$'+fmtNum(d.priceAvg50):'—');
