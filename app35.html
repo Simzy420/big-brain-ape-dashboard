@@ -192,8 +192,8 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 
 /* FIVE RECT - 5 smaller rectangles */
 .five-rect{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:10px}
-.rect5{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 2px;text-align:center}
-.rect5-label{font-size: 16px;color:var(--text2);font-weight:600;margin-bottom:2px}
+.rect5{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 2px;text-align:center;display:flex;flex-direction:column;justify-content:center;min-height:62px}
+.rect5-label{font-size: 16px;color:var(--text2);font-weight:600;margin-bottom:4px;line-height:1.1;white-space:nowrap}
 .rect5-val{font-size: 18px;font-weight:600}
 .rect5-val.green{color:var(--green)}
 .rect5-val.red{color:var(--red)}
@@ -356,7 +356,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <div class="rect5-val" id="rect5-vix-val">—</div>
 </div>
 <div class="rect5" id="rect5-10y" onclick="showDetail('yield')">
-<div class="rect5-label">10Y Yield</div>
+<div class="rect5-label">10Y</div>
 <div class="rect5-val" id="rect5-10y-val">—</div>
 </div>
 <div class="rect5" id="rect5-oil" onclick="showDetail('oil')">
