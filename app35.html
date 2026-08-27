@@ -343,7 +343,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <div class="sq4-sub" id="sq4-tech-sub"></div>
 </div>
 <div class="sq4" id="sq4-4" onclick="showDetail('options')">
-<div class="sq4-label">Options Flow</div>
+<div class="sq4-label">P/C Ratio</div>
 <div class="sq4-val" id="sq4-opt">—</div>
 <div class="sq4-sub" id="sq4-opt-sub"></div>
 </div>
@@ -2314,14 +2314,19 @@ var techEmoji=(techVal.toUpperCase().indexOf('HOT')>=0)?'🔥':(techVal.toUpperC
 var tEl=document.getElementById('sq4-tech');
 if(tEl){tEl.textContent=techVal+' '+techEmoji;tEl.style.color=techColor}
 
-// Options Flow
+// Options Flow / P/C Ratio
 var optVal=snap.options_bias||'—';
 var optPc=snap.put_call||0;
 var optColor=optVal.indexOf('BULL')>=0?'var(--green)':optVal.indexOf('BEAR')>=0?'var(--red)':'var(--yellow)';
+// P/C < 1.0 = calls > puts = bullish (green up arrow)
+// P/C > 1.0 = puts > calls = bearish (red down arrow)
+// P/C ~ 1.0 = neutral (yellow)
+var pcEmoji=optPc>0&&optPc<0.9?'📈':optPc>1.1?'📉':'⚖️';
+var pcColor=optPc>0&&optPc<0.9?'var(--green)':optPc>1.1?'var(--red)':'var(--yellow)';
 var oEl=document.getElementById('sq4-opt');
-if(oEl){oEl.textContent=optVal;oEl.style.color=optColor}
+if(oEl){oEl.textContent=pcEmoji+' '+optPc;oEl.style.color=pcColor}
 var oSub=document.getElementById('sq4-opt-sub');
-if(oSub)oSub.textContent='P/C: '+optPc;
+if(oSub){oSub.textContent=optPc<0.9?'Calls > Puts':optPc>1.1?'Puts > Calls':'Balanced';oSub.style.color=pcColor}
 
 // 5 RECTANGLES: VIX, 10Y, WTI Oil, Silver, Gold
 var metrics=snap.metrics||{};
