@@ -2321,7 +2321,7 @@ var optColor=optVal.indexOf('BULL')>=0?'var(--green)':optVal.indexOf('BEAR')>=0?
 // P/C < 1.0 = calls > puts = bullish (green up arrow)
 // P/C > 1.0 = puts > calls = bearish (red down arrow)
 // P/C ~ 1.0 = neutral (yellow)
-var pcEmoji=optPc>0&&optPc<0.9?'📈':optPc>1.1?'📉':'⚖️';
+var pcEmoji=optPc>0&&optPc<0.9?'📈':optPc>1.1?'📉':'😐';
 var pcColor=optPc>0&&optPc<0.9?'var(--green)':optPc>1.1?'var(--red)':'var(--yellow)';
 var oEl=document.getElementById('sq4-opt');
 if(oEl){oEl.textContent=pcEmoji+' '+optPc;oEl.style.color=pcColor}
