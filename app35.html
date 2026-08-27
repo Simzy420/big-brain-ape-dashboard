@@ -2310,8 +2310,9 @@ if(fgL){fgL.textContent=fgLabel||fgClass;fgL.style.color=fgColor}
 // Tech Sector
 var techVal=snap.sector_tech||'—';
 var techColor=snap.sector_color==='green'?'var(--green)':snap.sector_color==='red'?'var(--red)':'var(--yellow)';
+var techEmoji=snap.sector_color==='green'?'🔥':snap.sector_color==='red'?'❄️':'☀️';
 var tEl=document.getElementById('sq4-tech');
-if(tEl){tEl.textContent=techVal;tEl.style.color=techColor}
+if(tEl){tEl.textContent=techEmoji+' '+techVal;tEl.style.color=techColor}
 
 // Options Flow
 var optVal=snap.options_bias||'—';
@@ -2330,9 +2331,9 @@ if(el){el.textContent=val;el.className='rect5-val '+(color||'')}
 }
 if(metrics.vix){var v=metrics.vix;setRect5('rect5-vix-val',v.value,v.color)}
 if(metrics.yield_10y){var v=metrics.yield_10y;setRect5('rect5-10y-val',v.value,v.color)}
-if(metrics.oil){var v=metrics.oil;setRect5('rect5-oil-val',v.value,v.color)}
-if(metrics.silver){var v=metrics.silver;setRect5('rect5-silver-val',v.value,v.color)}
-if(metrics.gold){var v=metrics.gold;setRect5('rect5-gold-val',v.value,v.color)}
+if(metrics.oil){var v=metrics.oil;setRect5('rect5-oil-val',v.value,'blue')}
+if(metrics.silver){var v=metrics.silver;setRect5('rect5-silver-val',v.value,'blue')}
+if(metrics.gold){var v=metrics.gold;setRect5('rect5-gold-val',v.value,'blue')}
 
 // 2 big squares - update with live data
 var posEl=document.getElementById('big-sq-1');
