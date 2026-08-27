@@ -2435,6 +2435,15 @@ btn.textContent='⛶ Tap for Full Screen Chart';
 container.appendChild(btn);
 
 // Create TradingView widget inline (non-interactive preview)
+// Use innerHTML approach for more reliable embed loading
+var embedHtml='<div class="tradingview-widget-container" style="height:100%;width:100%">';
+embedHtml+='<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>';
+embedHtml+='</div>';
+var widgetDiv=document.createElement('div');
+widgetDiv.style.cssText='height:100%;width:100%';
+widgetDiv.innerHTML=embedHtml;
+container.appendChild(widgetDiv);
+
 var script=document.createElement('script');
 script.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
 script.type='text/javascript';
@@ -2453,15 +2462,56 @@ script.innerHTML=JSON.stringify({
 "studies":["STD;SMA","STD;EMA","STD;Volume"],
 "show_popup_button":false,
 "range":"1Y",
-"support_host":"www.tradingview.com",
-"container_id":container.id
+"support_host":"www.tradingview.com"
 });
-container.appendChild(script);
+widgetDiv.querySelector('.tradingview-widget-container').appendChild(script);
+
+// Auto-reload if chart doesn't render within 5 seconds
+var reloadCount=0;
+var maxReloads=3;
+var checkInterval=setInterval(function(){
+var widgetContainer=container.querySelector('.tradingview-widget-container__widget');
+if(widgetContainer){
+// Check if the widget has rendered any content (iframe or canvas)
+var hasContent=widgetContainer.children.length>0||widgetContainer.innerHTML.length>100;
+if(!hasContent&&reloadCount<maxReloads){
+reloadCount++;
+// Reload the script
+var oldScript=container.querySelector('script[src*="tradingview"]');
+if(oldScript)oldScript.remove();
+widgetDiv.innerHTML=embedHtml;
+var newScript=document.createElement('script');
+newScript.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+newScript.type='text/javascript';
+newScript.async=true;
+newScript.innerHTML=JSON.stringify({
+"autosize":true,
+"symbol":tvSymbol,
+"interval":"D",
+"timezone":"Etc/UTC",
+"theme":"dark",
+"style":"1",
+"locale":"en",
+"enable_publishing":false,
+"hide_side_toolbar":true,
+"allow_symbol_change":false,
+"studies":["STD;SMA","STD;EMA","STD;Volume"],
+"show_popup_button":false,
+"range":"1Y",
+"support_host":"www.tradingview.com"
+});
+widgetDiv.querySelector('.tradingview-widget-container').appendChild(newScript);
+}else if(hasContent){
+clearInterval(checkInterval);
+}
+}
+},5000);
 
 // Click opens full-screen overlay (not new tab)
 container.onclick=function(e){
 e.preventDefault();
 e.stopPropagation();
+clearInterval(checkInterval);
 openTVFullScreen(tvSymbol);
 };
 }
