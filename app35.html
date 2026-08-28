@@ -2323,7 +2323,7 @@ var riskColor=riskBias.indexOf('ON')>=0?'var(--green)':riskBias.indexOf('OFF')>=
 var rEl=document.getElementById('sq4-risk');
 if(rEl){rEl.textContent=riskBias.replace('RISK-','');rEl.style.color=riskColor}
 var rSub=document.getElementById('sq4-risk-sub');
-if(rSub)rSub.textContent='Score: '+riskScore;
+if(rSub){rSub.textContent='Score: '+riskScore;rSub.style.color=riskColor;rSub.style.fontSize='22px';rSub.style.fontWeight='700'}
 
 // Market Sentiment (Fear & Greed)
 var fgVal=snap.fear_greed?(snap.fear_greed.value||snap.fear_greed):0;
@@ -2342,16 +2342,14 @@ var techVal=snap.sector_tech||'—';
 var techColor=snap.sector_color==='green'?'var(--green)':snap.sector_color==='red'?'var(--red)':'var(--yellow)';
 var techEmoji=(techVal.toUpperCase().indexOf('HOT')>=0)?'🔥':(techVal.toUpperCase().indexOf('COOL')>=0||techVal.toUpperCase().indexOf('COLD')>=0)?'❄️':'☀️';
 var tEl=document.getElementById('sq4-tech');
-if(tEl){tEl.textContent=techVal+' '+techEmoji;tEl.style.color=techColor}
+if(tEl){tEl.textContent=techVal;tEl.style.color=techColor}
+var tSub=document.getElementById('sq4-tech-sub');
+if(tSub){tSub.textContent=techEmoji;tSub.style.fontSize='28px'}
 
-// Options Flow / P/C Ratio
+// Options Flow / P/C Ratio — always use ⚖️ emoji
 var optVal=snap.options_bias||'—';
 var optPc=snap.put_call||0;
-var optColor=optVal.indexOf('BULL')>=0?'var(--green)':optVal.indexOf('BEAR')>=0?'var(--red)':'var(--yellow)';
-// P/C < 1.0 = calls > puts = bullish (green up arrow)
-// P/C > 1.0 = puts > calls = bearish (red down arrow)
-// P/C ~ 1.0 = neutral (yellow)
-var pcEmoji=optPc>0&&optPc<0.9?'📈':optPc>1.1?'📉':'😐';
+var pcEmoji='⚖️';
 var pcColor=optPc>0&&optPc<0.9?'var(--green)':optPc>1.1?'var(--red)':'var(--yellow)';
 var oEl=document.getElementById('sq4-opt');
 if(oEl){oEl.textContent=pcEmoji+' '+optPc;oEl.style.color=pcColor}
