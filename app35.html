@@ -843,6 +843,45 @@ html+='</div>';
 html+='<div id="analystsByRating" style="display:none;margin-top:14px;border-top:1px solid var(--border);padding-top:14px"></div>';
 html+='</div>';
 
+// === QUARTERLY EARNINGS HISTORY (table + chart) ===
+if(d.earningsHistory&&d.earningsHistory.length>0){
+var eh=d.earningsHistory;
+html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px">';
+html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:var(--blue)"></div><span style="font-size: 22px;font-weight:650">Quarterly Earnings History</span></div>';
+// Table
+html+='<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:18px">';
+html+='<table style="width:100%;border-collapse:collapse;font-size:14px;min-width:600px">';
+html+='<thead><tr style="border-bottom:2px solid var(--border)">';
+html+='<th style="text-align:left;padding:8px 6px;color:var(--text2)">Quarter</th>';
+html+='<th style="text-align:left;padding:8px 6px;color:var(--text2)">Report Date</th>';
+html+='<th style="text-align:right;padding:8px 6px;color:var(--text2)">EPS Est</th>';
+html+='<th style="text-align:right;padding:8px 6px;color:var(--text2)">EPS Act</th>';
+html+='<th style="text-align:right;padding:8px 6px;color:var(--text2)">EPS Surp</th>';
+html+='<th style="text-align:right;padding:8px 6px;color:var(--text2)">EPS Surp %</th>';
+html+='<th style="text-align:right;padding:8px 6px;color:var(--text2)">Revenue</th>';
+html+='</tr></thead><tbody>';
+var fmtRevEH=function(v){if(v>=1e9)return '$'+(v/1e9).toFixed(1)+'B';if(v>=1e6)return '$'+(v/1e6).toFixed(0)+'M';return '$'+fmtNum(v)};
+var fmtEpsEH=function(v){return '$'+fmtNum(v)};
+var fmtPctEH=function(v){return (v>=0?'+':'')+v.toFixed(1)+'%'};
+for(var i=0;i<eh.length;i++){
+var q=eh[i];
+var epsSColor=q.epsSurprise>0?'var(--green)':q.epsSurprise<0?'var(--red)':'var(--text2)';
+html+='<tr style="border-bottom:1px solid var(--border)">';
+html+='<td style="padding:8px 6px">Q'+q.quarter+' '+q.year+'</td>';
+html+='<td style="padding:8px 6px;color:var(--text2)">'+q.reportDate.split(' ')[0]+'</td>';
+html+='<td style="text-align:right;padding:8px 6px">'+fmtEpsEH(q.epsEstimate)+'</td>';
+html+='<td style="text-align:right;padding:8px 6px;font-weight:600">'+fmtEpsEH(q.epsActual)+'</td>';
+html+='<td style="text-align:right;padding:8px 6px;color:'+epsSColor+'">'+fmtEpsEH(q.epsSurprise)+'</td>';
+html+='<td style="text-align:right;padding:8px 6px;color:'+epsSColor+'">'+fmtPctEH(q.epsSurprisePct)+'</td>';
+html+='<td style="text-align:right;padding:8px 6px;font-weight:600">'+fmtRevEH(q.revenueActual)+'</td>';
+html+='</tr>';
+}
+html+='</tbody></table></div>';
+// Chart
+html+='<div style="height:300px;position:relative"><canvas id="earningsHistoryChart"></canvas></div>';
+html+='</div>';
+}
+
 // === YEAR AHEAD OUTLOOK SECTION (chart + 3 boxes: Analysis, Setup, The Year Ahead) ===
 var hist2=d.history||[];
 var closes2=hist2.map(function(h){return h.c});
@@ -1175,6 +1214,28 @@ data:{labels:labels,datasets:[
 {label:'Actual',data:actuals,backgroundColor:'#3fb950',borderRadius:6}]},
 options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#e6edf3'}}},
 scales:{y:{beginAtZero:true,grid:{color:'rgba(48,54,61,0.6)'},ticks:{color:'#8b949e'}},
+x:{grid:{display:false},ticks:{color:'#e6edf3'}}}}
+});
+}
+
+// Earnings History chart (EPS Estimate vs Actual)
+var ehc=document.getElementById('earningsHistoryChart');
+if(ehc&&d.earningsHistory&&d.earningsHistory.length>0&&typeof Chart!=='undefined'){
+var ehShow=d.earningsHistory.slice().reverse();
+var ehLabels=[],ehEst=[],ehAct=[],ehColors=[];
+for(var i=0;i<ehShow.length;i++){
+ehLabels.push('Q'+ehShow[i].quarter+' '+ehShow[i].year);
+ehEst.push(ehShow[i].epsEstimate);
+ehAct.push(ehShow[i].epsActual);
+ehColors.push(ehShow[i].epsSurprise>0?'#3fb950':ehShow[i].epsSurprise<0?'#f85149':'#8b949e');
+}
+new Chart(ehc,{
+type:'bar',
+data:{labels:ehLabels,datasets:[
+{label:'EPS Estimate',data:ehEst,backgroundColor:'rgba(139,148,158,0.5)',borderRadius:6},
+{label:'EPS Actual',data:ehAct,backgroundColor:ehColors,borderRadius:6}]},
+options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#e6edf3'}}},
+scales:{y:{beginAtZero:true,grid:{color:'rgba(48,54,61,0.6)'},ticks:{color:'#8b949e',callback:function(v){return '$'+v}}},
 x:{grid:{display:false},ticks:{color:'#e6edf3'}}}}
 });
 }
