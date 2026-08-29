@@ -904,23 +904,28 @@ html+='Price $'+fmtNum(d.price)+' is '+aboveYearLow+' its 6-month low of $'+fmtN
 html+='Daily is '+trendVs50+' (EMA20 ~$'+fmtNum(ema20)+'). ';
 html+='RSI '+rsiVal.toFixed(0)+'. '+cleanTrend;
 html+='</div></div>';
-// Box 2: Buy Setup
+// Box 2: Setup
 html+='<div style="background:#1a2236;border:1px solid rgba(63,185,80,0.3);border-radius:12px;padding:14px">';
-html+='<div style="font-size:18px;font-weight:700;color:var(--green);margin-bottom:8px">🎯 Buy Setup</div>';
+html+='<div style="font-size:18px;font-weight:700;color:var(--green);margin-bottom:8px">🎯 Setup</div>';
 html+='<div style="font-size:15px;color:var(--text);line-height:1.5">';
 html+='Scale in only if $'+buyZoneLow+'–$'+buyZoneHigh+' holds. ';
 html+='Invalidation under $'+invalidation+'. ';
 html+='First resistance $'+fmtNum(resistance)+' then $'+fmtNum(yearHigh)+'.';
 if(extendedAbove)html+='<br><span style="color:var(--red)">⚠️ Do not chase — price is extended above the 50-day.</span>';
 html+='</div></div>';
-// Box 3: Best Buy Price
+// Box 3: The Year Ahead
+var yearAheadPrice=d.targetAvg?fmtNum(d.targetAvg):fmtNum(yearHigh);
+var yearAheadUpside=d.targetAvg?((d.targetAvg-d.price)/d.price*100).toFixed(0):((yearHigh-d.price)/d.price*100).toFixed(0);
+var yearAheadColor=d.targetAvg&&d.targetAvg>d.price?'var(--green)':'var(--yellow)';
 html+='<div style="background:#1a2236;border:1px solid rgba(210,153,34,0.3);border-radius:12px;padding:14px">';
-html+='<div style="font-size:18px;font-weight:700;color:var(--yellow);margin-bottom:8px">💰 Best Buy Price</div>';
+html+='<div style="font-size:18px;font-weight:700;color:var(--yellow);margin-bottom:8px">📅 The Year Ahead</div>';
 html+='<div style="font-size:15px;color:var(--text);line-height:1.5">';
-html+='<span style="font-size:22px;font-weight:800;color:var(--green)">$'+bestBuy+'</span> first buy. ';
-html+='Wash zone $'+washZoneLow+'–$'+washZoneHigh+' if it washes out. ';
-html+='Do not chase above $'+fmtNum(ema20)+' while under the 50-day.';
-html+='</div></div>';
+html+='Analyst 12-month target: <span style="font-size:22px;font-weight:800;color:'+yearAheadColor+'">$'+yearAheadPrice+'</span> ';
+html+='(<span style="color:'+yearAheadColor+'">'+(yearAheadUpside>=0?'+':'')+yearAheadUpside+'%</span> upside from current). ';
+if(d.consensus)html+='Consensus: '+d.consensus+'. ';
+if(d.upcomingEarnings&&d.upcomingEarnings.length>0)html+='Next earnings: '+d.upcomingEarnings[0].date+' (Q'+d.upcomingEarnings[0].quarter+'). ';
+html+='Long-term trend '+(d.price>ema20?'positive':'neutral')+' — '+(d.price>yearLow*1.2?'well off lows, momentum building':'near lows, watch for reversal');
+html+='.</div></div>';
 html+='</div></div>';
 
 // === EARNINGS (standalone card, moved from the old grid) ===
