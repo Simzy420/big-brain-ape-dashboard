@@ -2451,7 +2451,7 @@ return sym;
 }
 
 function loadTradingViewChart(container,tvSymbol){
-// Show a preview chart inline + click to open full screen overlay
+// Use TradingView widget constructor (tv.js) — more reliable than embed script
 container.innerHTML='';
 container.style.cursor='pointer';
 container.style.position='relative';
@@ -2462,21 +2462,17 @@ btn.className='tv-click-overlay';
 btn.textContent='⛶ Tap for Full Screen Chart';
 container.appendChild(btn);
 
-// Create TradingView widget inline (non-interactive preview)
-// Use innerHTML approach for more reliable embed loading
-var embedHtml='<div class="tradingview-widget-container" style="height:100%;width:100%">';
-embedHtml+='<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>';
-embedHtml+='</div>';
+// Create widget container div
+var widgetId='tvw_'+Math.random().toString(36).substr(2,9);
 var widgetDiv=document.createElement('div');
+widgetDiv.id=widgetId;
 widgetDiv.style.cssText='height:100%;width:100%';
-widgetDiv.innerHTML=embedHtml;
 container.appendChild(widgetDiv);
 
-var script=document.createElement('script');
-script.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
-script.type='text/javascript';
-script.async=true;
-script.innerHTML=JSON.stringify({
+function createWidget(){
+if(typeof TradingView!=='undefined'){
+new TradingView.widget({
+"container_id":widgetId,
 "autosize":true,
 "symbol":tvSymbol,
 "interval":"D",
@@ -2492,48 +2488,25 @@ script.innerHTML=JSON.stringify({
 "range":"1Y",
 "support_host":"www.tradingview.com"
 });
-widgetDiv.querySelector('.tradingview-widget-container').appendChild(script);
+}else{
+// tv.js not loaded yet — load it then create widget
+var s=document.createElement('script');
+s.src='https://s3.tradingview.com/tv.js';
+s.onload=function(){createWidget()};
+s.onerror=function(){
+// If tv.js fails, retry after 2 seconds
+setTimeout(function(){
+var s2=document.createElement('script');
+s2.src='https://s3.tradingview.com/tv.js';
+s2.onload=function(){createWidget()};
+document.head.appendChild(s2);
+},2000);
+};
+document.head.appendChild(s);
+}
+}
 
-// Auto-reload if chart doesn't render within 5 seconds
-var reloadCount=0;
-var maxReloads=3;
-var checkInterval=setInterval(function(){
-var widgetContainer=container.querySelector('.tradingview-widget-container__widget');
-if(widgetContainer){
-// Check if the widget has rendered any content (iframe or canvas)
-var hasContent=widgetContainer.children.length>0||widgetContainer.innerHTML.length>100;
-if(!hasContent&&reloadCount<maxReloads){
-reloadCount++;
-// Reload the script
-var oldScript=container.querySelector('script[src*="tradingview"]');
-if(oldScript)oldScript.remove();
-widgetDiv.innerHTML=embedHtml;
-var newScript=document.createElement('script');
-newScript.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
-newScript.type='text/javascript';
-newScript.async=true;
-newScript.innerHTML=JSON.stringify({
-"autosize":true,
-"symbol":tvSymbol,
-"interval":"D",
-"timezone":"Etc/UTC",
-"theme":"dark",
-"style":"1",
-"locale":"en",
-"enable_publishing":false,
-"hide_side_toolbar":true,
-"allow_symbol_change":false,
-"studies":["STD;SMA","STD;EMA","STD;Volume"],
-"show_popup_button":false,
-"range":"1Y",
-"support_host":"www.tradingview.com"
-});
-widgetDiv.querySelector('.tradingview-widget-container').appendChild(newScript);
-}else if(hasContent){
-clearInterval(checkInterval);
-}
-}
-},5000);
+createWidget();
 
 // Click opens full-screen overlay (not new tab)
 container.onclick=function(e){
@@ -2575,12 +2548,14 @@ var chartDiv=document.createElement('div');
 chartDiv.style.cssText='flex:1;overflow:hidden;position:relative';
 overlay.appendChild(chartDiv);
 
-// Add TradingView advanced chart with FULL features
-var script=document.createElement('script');
-script.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
-script.type='text/javascript';
-script.async=true;
-script.innerHTML=JSON.stringify({
+// Add TradingView advanced chart with FULL features using tv.js
+var modalWidgetId='tvm_'+Math.random().toString(36).substr(2,9);
+chartDiv.id=modalWidgetId;
+
+function createModalWidget(){
+if(typeof TradingView!=='undefined'){
+new TradingView.widget({
+"container_id":modalWidgetId,
 "autosize":true,
 "symbol":tvSymbol,
 "interval":"D",
@@ -2596,11 +2571,17 @@ script.innerHTML=JSON.stringify({
 "popup_width":"1000",
 "popup_height":"650",
 "range":"1Y",
-"support_host":"www.tradingview.com",
-"container_id":"tvFullScreenChart"
+"support_host":"www.tradingview.com"
 });
-chartDiv.id='tvFullScreenChart';
-chartDiv.appendChild(script);
+}else{
+var s=document.createElement('script');
+s.src='https://s3.tradingview.com/tv.js';
+s.onload=function(){createModalWidget()};
+document.head.appendChild(s);
+}
+}
+
+createModalWidget();
 
 // Add to body and lock scrolling
 document.body.appendChild(overlay);
