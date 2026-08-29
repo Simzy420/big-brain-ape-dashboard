@@ -1,6 +1,6 @@
 {
-  "timestamp": 1788002933,
-  "generatedAt": "2026-08-29 11:28 UTC",
+  "timestamp": 1788003713,
+  "generatedAt": "2026-08-29 11:41 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -9374,7 +9374,63 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/INTC.png",
       "ipo": "1971-10-13",
-      "upcomingEarnings": [],
+      "earnings": [
+        {
+          "period": "2026-06-30",
+          "quarter": 2,
+          "estimate": 0.2177,
+          "actual": 0.42,
+          "surprise": 0.2023,
+          "surprisePct": 92.926
+        },
+        {
+          "period": "2026-03-31",
+          "quarter": 1,
+          "estimate": 0.014,
+          "actual": 0.29,
+          "surprise": 0.276,
+          "surprisePct": 1971.4286
+        },
+        {
+          "period": "2025-12-31",
+          "quarter": 4,
+          "estimate": 0.0829,
+          "actual": 0.15,
+          "surprise": 0.0671,
+          "surprisePct": 80.9409
+        },
+        {
+          "period": "2025-09-30",
+          "quarter": 3,
+          "estimate": 0.01,
+          "actual": 0.23,
+          "surprise": 0.22,
+          "surprisePct": 2200
+        }
+      ],
+      "upcomingEarnings": [
+        {
+          "date": "2027-04-21",
+          "quarter": 1,
+          "epsEstimate": 0.3984,
+          "revenueEstimate": 16847352597,
+          "hour": ""
+        },
+        {
+          "date": "2027-01-20",
+          "quarter": 4,
+          "epsEstimate": 0.4275,
+          "revenueEstimate": 17257709052,
+          "hour": "amc"
+        },
+        {
+          "date": "2026-10-21",
+          "quarter": 3,
+          "epsEstimate": 0.3918,
+          "revenueEstimate": 16720929186,
+          "hour": "amc"
+        }
+      ],
       "pe": 0,
       "eps": -0.0589,
       "revenuePerShare": 11.174,
@@ -16757,63 +16813,7 @@
           "ss": 0
         }
       ],
-      "earnings": [
-        {
-          "period": "2026-06-30",
-          "quarter": 2,
-          "estimate": 0.6089,
-          "actual": 1.2,
-          "surprise": 0.5911,
-          "surprisePct": 97.0767
-        },
-        {
-          "period": "2026-03-31",
-          "quarter": 1,
-          "estimate": 0.3328,
-          "actual": 0.57,
-          "surprise": 0.2372,
-          "surprisePct": 71.274
-        },
-        {
-          "period": "2025-12-31",
-          "quarter": 4,
-          "estimate": 0.2827,
-          "actual": 0.53,
-          "surprise": 0.2473,
-          "surprisePct": 87.4779
-        },
-        {
-          "period": "2025-09-30",
-          "quarter": 3,
-          "estimate": 0.0874,
-          "actual": 0.16,
-          "surprise": 0.0726,
-          "surprisePct": 83.0664
-        }
-      ],
-      "upcomingEarnings": [
-        {
-          "date": "2027-04-28",
-          "quarter": 1,
-          "epsEstimate": 0.8374,
-          "revenueEstimate": 1467439595,
-          "hour": ""
-        },
-        {
-          "date": "2027-02-11",
-          "quarter": 4,
-          "epsEstimate": 0.8233,
-          "revenueEstimate": 1651400910,
-          "hour": "amc"
-        },
-        {
-          "date": "2026-10-28",
-          "quarter": 3,
-          "epsEstimate": 0.5311,
-          "revenueEstimate": 1435553181,
-          "hour": "amc"
-        }
-      ],
+      "upcomingEarnings": [],
       "pe": 0,
       "eps": 0.5855,
       "revenuePerShare": 34.2942,
@@ -19306,6 +19306,46 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/FCEL.png",
       "ipo": "1992-06-25",
+      "strongBuy": 3,
+      "buy": 6,
+      "hold": 3,
+      "sell": 2,
+      "strongSell": 0,
+      "consensus": "Buy",
+      "recTrend": [
+        {
+          "period": "2026-08-01",
+          "sb": 3,
+          "b": 6,
+          "h": 3,
+          "s": 2,
+          "ss": 0
+        },
+        {
+          "period": "2026-07-01",
+          "sb": 3,
+          "b": 5,
+          "h": 4,
+          "s": 2,
+          "ss": 0
+        },
+        {
+          "period": "2026-06-01",
+          "sb": 0,
+          "b": 0,
+          "h": 8,
+          "s": 3,
+          "ss": 2
+        },
+        {
+          "period": "2026-05-01",
+          "sb": 0,
+          "b": 0,
+          "h": 8,
+          "s": 3,
+          "ss": 2
+        }
+      ],
       "earnings": [
         {
           "period": "2026-06-30",
