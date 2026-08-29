@@ -952,28 +952,36 @@ s+='</div>';
 return s;
 }
 html+=metricCard("Market Cap",d.marketCap?'$'+fmtCap(d.marketCap/1e6):'—');
-html+=metricCard("P/E Ratio",d.pe?fmtNum(d.pe):'—',"Trailing");
-html+=metricCard("EPS (TTM)",d.eps?fmtNum(d.eps):'—');
-html+=metricCard("Dividend",d.dividendYield?fmtNum(d.dividendYield)+'%':'—',"Yield");
-html+=metricCard("52-Week Range",d.yearLow?'$'+fmtNum(d.yearLow)+' – $'+fmtNum(d.yearHigh):'—',"",true);
-html+=metricCard("Beta",d.beta?fmtNum(d.beta):'—');
-html+=metricCard("Avg Price Target",d.targetAvg?'$'+fmtNum(d.targetAvg):'—',d.targetAvg?'<span style="color:'+(d.targetAvg>d.price?'var(--green)':'var(--red)')+'">'+(d.targetAvg>d.price?'↑':'↓')+' '+fmtNum(Math.abs((d.targetAvg-d.price)/d.price*100))+'%</span>':'');
-// Replace "50-Day Avg" with "Rev & YOY Growth"
-if(d.revenuePerShare&&d.marketCap&&d.price&&d.earnings&&d.earnings.length>=2){
+// Rev (Annual Revenue)
+if(d.revenuePerShare&&d.marketCap&&d.price){
 var shares=d.marketCap/d.price;
 var annRev=d.revenuePerShare*shares;
 var revStr=annRev>=1e9?'$'+(annRev/1e9).toFixed(1)+'B':'$'+(annRev/1e6).toFixed(0)+'M';
-var latestEPS=d.earnings[0].actual;
-var prevEPS=d.earnings[1].actual;
-var yoyGrowth=prevEPS>0?((latestEPS-prevEPS)/prevEPS*100):0;
-var growthStr=(yoyGrowth>=0?'+':'')+yoyGrowth.toFixed(0)+'%';
-var growthColor=yoyGrowth>=0?'var(--green)':'var(--red)';
-html+=metricCardDouble("Rev & YOY Growth",revStr,"Annual Rev",'<span style="color:'+growthColor+'">'+growthStr+'</span>','YoY EPS');
-}else if(d.upcomingEarnings&&d.upcomingEarnings.length>0){
-html+=metricCard("Next Earnings",d.upcomingEarnings[0].date,'Q'+d.upcomingEarnings[0].quarter);
+html+=metricCard("Rev",revStr,"Annual");
 }else{
-html+=metricCard("50-Day Avg",d.priceAvg50?'$'+fmtNum(d.priceAvg50):'—');
+html+=metricCard("Rev",'—',"Annual");
 }
+html+=metricCard("EPS (TTM)",d.eps?fmtNum(d.eps):'—');
+// Rev YoY (Revenue Year-over-Year Growth)
+if(d.revenueGrowthYoY){
+var rgyStr=(d.revenueGrowthYoY>=0?'+':'')+d.revenueGrowthYoY.toFixed(1)+'%';
+var rgyColor=d.revenueGrowthYoY>=0?'var(--green)':'var(--red)';
+html+=metricCard("Rev Yoy",rgyStr?('<span style="color:'+rgyColor+'">'+rgyStr+'</span>'):'—',"YoY Growth");
+}else{
+html+=metricCard("Rev Yoy",'—',"YoY Growth");
+}
+html+=metricCard("52-Week Range",d.yearLow?'$'+fmtNum(d.yearLow)+' – $'+fmtNum(d.yearHigh):'—',"",true);
+// Non-GAAP EPS
+if(d.earningsNonGaap){
+html+=metricCard("Non Gaap EPS",'$'+fmtNum(d.earningsNonGaap),"TTM");
+}else if(d.eps){
+html+=metricCard("Non Gaap EPS",'$'+fmtNum(d.eps),"TTM");
+}else{
+html+=metricCard("Non Gaap EPS",'—',"TTM");
+}
+html+=metricCard("Avg Price Target",d.targetAvg?'$'+fmtNum(d.targetAvg):'—',d.targetAvg?'<span style="color:'+(d.targetAvg>d.price?'var(--green)':'var(--red)')+'">'+(d.targetAvg>d.price?'↑':'↓')+' '+fmtNum(Math.abs((d.targetAvg-d.price)/d.price*100))+'%</span>':'');
+// Beta moved to bottom
+html+=metricCard("Beta",d.beta?fmtNum(d.beta):'—');
 html+='</div>';
 
 // === SUPPORT & RESISTANCE ===
