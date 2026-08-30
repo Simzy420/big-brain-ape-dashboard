@@ -992,20 +992,21 @@ if(v>=1e12)return '$'+(v/1e12).toFixed(2)+'T';
 if(v>=1e9)return '$'+(v/1e9).toFixed(2)+'B';
 if(v>=1e6)return '$'+(v/1e6).toFixed(0)+'M';
 return '$'+fmtNum(v);
-}
-html+=metricCard("Market Cap",d.marketCap?fmtCapShort(d.marketCap):'—','',"var(--text)");
-// Rev (Annual Revenue) — green if positive
-if(d.revenuePerShare&&d.marketCap&&d.price){
-var shares=d.marketCap/d.price;
+// Market Cap — blue (user circled in blue)
+html+=metricCard("Market Cap",d.marketCap?fmtCapShort(d.marketCap):'—','',"var(--blue)");
+// Rev (Annual Revenue) — green if positive, fallback to stock-data.json price
+var sdPrice=d.price||0;
+if(d.revenuePerShare&&d.marketCap&&sdPrice>0){
+var shares=d.marketCap/sdPrice;
 var annRev=d.revenuePerShare*shares;
 var revStr=annRev>=1e9?'$'+(annRev/1e9).toFixed(1)+'B':'$'+(annRev/1e6).toFixed(0)+'M';
 html+=metricCard("Rev",revStr,"Trailing 12 Mo","var(--green)");
 }else{
 html+=metricCard("Rev",'—',"Trailing 12 Mo","var(--text2)");
 }
-// EPS (TTM) — white (neutral metric)
-html+=metricCard("EPS (TTM)",d.eps?fmtNum(d.eps):'—',"Trailing 12 Mo","var(--text)");
-// Rev YoY — green if positive, red if negative
+// EPS (TTM) — blue (user circled in blue)
+html+=metricCard("EPS (TTM)",d.eps?fmtNum(d.eps):'—',"Trailing 12 Mo","var(--blue)");
+// Rev Growth — green if positive, red if negative
 if(d.revenueGrowthYoY){
 var rgyStr=(d.revenueGrowthYoY>=0?'+':'')+d.revenueGrowthYoY.toFixed(1)+'%';
 var rgyColor=d.revenueGrowthYoY>=0?'var(--green)':'var(--red)';
@@ -1013,24 +1014,24 @@ html+=metricCard("Rev Growth",rgyStr,"YoY Growth",rgyColor);
 }else{
 html+=metricCard("Rev Growth",'—',"YoY Growth","var(--text2)");
 }
-// 52-Week Range — white (neutral)
-html+=metricCard("52-Week Range",d.yearLow?'$'+fmtNum(d.yearLow)+' – $'+fmtNum(d.yearHigh):'—','',"var(--text)");
+// 52-Week Range — blue (user circled in blue)
+html+=metricCard("52-Week Range",d.yearLow?'$'+fmtNum(d.yearLow)+' – $'+fmtNum(d.yearHigh):'—','',"var(--blue)");
 // Non Gaap EPS — green if positive, red if negative
 var ngEps=d.earningsNonGaap||d.eps||0;
 var ngColor=ngEps>0?'var(--green)':'var(--red)';
 html+=metricCard("Non Gaap EPS",'$'+fmtNum(ngEps||0),"Trailing 12 Mo",ngEps?ngColor:'var(--text2)');
-// Avg Price Target — green if upside, red if downside
+// Avg Price Target — green if upside, red if downside, subtitle same size as value
 if(d.targetAvg){
-var ptUpside=(d.targetAvg-d.price)/d.price*100;
+var ptUpside=(d.targetAvg-sdPrice)/sdPrice*100;
 var ptColor=ptUpside>=0?'var(--green)':'var(--red)';
 var ptStr='$'+fmtNum(d.targetAvg);
-var ptSub='<span style="color:'+ptColor+'">'+(ptUpside>=0?'+':'')+ptUpside.toFixed(0)+'%</span>';
+var ptSub='<span style="color:'+ptColor+';font-size:26px;font-weight:700">'+(ptUpside>=0?'+':'')+ptUpside.toFixed(0)+'%</span>';
 html+=metricCard("Avg Price Target",ptStr,ptSub,ptColor);
 }else{
 html+=metricCard("Avg Price Target",'—',"","var(--text2)");
 }
-// Beta — white (neutral)
-html+=metricCard("Beta",d.beta?fmtNum(d.beta):'—',"5 Yr Expected","var(--text)");
+// Beta — blue (user circled in blue)
+html+=metricCard("Beta",d.beta?fmtNum(d.beta):'—',"5 Yr Expected","var(--blue)");
 html+='</div>';
 
 // === SUPPORT & RESISTANCE ===
