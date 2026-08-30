@@ -969,15 +969,21 @@ html+='</div>';
 html+='<div class="grid-4">';
 function metricCard(label,val,sub,valColor){
 var vc=valColor||'var(--text)';
-var s='<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px">';
+var s='<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center">';
 s+='<div style="font-size: 17px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px">'+label+'</div>';
 s+='<div style="font-size: 26px;font-weight:700;color:'+vc+'">'+val+'</div>';
-if(sub)s+='<div style="font-size: 17px;color:var(--blue);margin-top:2px;font-weight:600">'+sub+'</div>';
+if(sub)s+='<div style="font-size: 17px;color:#f0883e;margin-top:2px;font-weight:600">'+sub+'</div>';
 s+='</div>';
 return s;
 }
-// Market Cap — green (big number, user wants top right green)
-html+=metricCard("Market Cap",d.marketCap?'$'+fmtCap(d.marketCap/1e6):'—','',"var(--green)");
+// Market Cap — white, shortened format (5.23T not 5,235,483,901,884)
+function fmtCapShort(v){
+if(v>=1e12)return '$'+(v/1e12).toFixed(2)+'T';
+if(v>=1e9)return '$'+(v/1e9).toFixed(2)+'B';
+if(v>=1e6)return '$'+(v/1e6).toFixed(0)+'M';
+return '$'+fmtNum(v);
+}
+html+=metricCard("Market Cap",d.marketCap?fmtCapShort(d.marketCap):'—','',"var(--text)");
 // Rev (Annual Revenue) — green if positive
 if(d.revenuePerShare&&d.marketCap&&d.price){
 var shares=d.marketCap/d.price;
@@ -987,19 +993,18 @@ html+=metricCard("Rev",revStr,"Trailing 12 Mo","var(--green)");
 }else{
 html+=metricCard("Rev",'—',"Trailing 12 Mo","var(--text2)");
 }
-// EPS (TTM) — green if positive, red if negative
-var epsColor=d.eps>0?'var(--green)':'var(--red)';
-html+=metricCard("EPS (TTM)",d.eps?fmtNum(d.eps):'—',"Trailing 12 Mo",d.eps?epsColor:'var(--text2)');
+// EPS (TTM) — white (neutral metric)
+html+=metricCard("EPS (TTM)",d.eps?fmtNum(d.eps):'—',"Trailing 12 Mo","var(--text)");
 // Rev YoY — green if positive, red if negative
 if(d.revenueGrowthYoY){
 var rgyStr=(d.revenueGrowthYoY>=0?'+':'')+d.revenueGrowthYoY.toFixed(1)+'%';
 var rgyColor=d.revenueGrowthYoY>=0?'var(--green)':'var(--red)';
-html+=metricCard("Rev Yoy",rgyStr,"YoY Growth",rgyColor);
+html+=metricCard("Rev Growth",rgyStr,"YoY Growth",rgyColor);
 }else{
-html+=metricCard("Rev Yoy",'—',"YoY Growth","var(--text2)");
+html+=metricCard("Rev Growth",'—',"YoY Growth","var(--text2)");
 }
-// 52-Week Range — neutral/yellow
-html+=metricCard("52-Week Range",d.yearLow?'$'+fmtNum(d.yearLow)+' – $'+fmtNum(d.yearHigh):'—','',"var(--yellow)");
+// 52-Week Range — white (neutral)
+html+=metricCard("52-Week Range",d.yearLow?'$'+fmtNum(d.yearLow)+' – $'+fmtNum(d.yearHigh):'—','',"var(--text)");
 // Non Gaap EPS — green if positive, red if negative
 var ngEps=d.earningsNonGaap||d.eps||0;
 var ngColor=ngEps>0?'var(--green)':'var(--red)';
@@ -1014,9 +1019,8 @@ html+=metricCard("Avg Price Target",ptStr,ptSub,ptColor);
 }else{
 html+=metricCard("Avg Price Target",'—',"","var(--text2)");
 }
-// Beta — yellow if neutral (1-2), green if <1, red if >2
-var betaColor=d.beta<1?'var(--green)':d.beta>2?'var(--red)':'var(--yellow)';
-html+=metricCard("Beta",d.beta?fmtNum(d.beta):'—',"5 Yr Expected",d.beta?betaColor:'var(--text2)');
+// Beta — white (neutral)
+html+=metricCard("Beta",d.beta?fmtNum(d.beta):'—',"5 Yr Expected","var(--text)");
 html+='</div>';
 
 // === SUPPORT & RESISTANCE ===
@@ -1026,7 +1030,7 @@ var pos=range>0?((d.price-d.yearLow)/range*100):50;
 pos=Math.max(0,Math.min(100,pos));
 html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px">';
 html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:var(--blue)"></div><span style="font-size: 24px;font-weight:650">Support & Resistance Levels</span></div>';
-// Two-column layout: Support (green) on LEFT, Resistance (red) on RIGHT
+// Two-column layout: Support (green) on LEFT, Resistance (red) on RIGHT — equal width
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">';
 // LEFT column: Support levels (green)
 html+='<div style="display:flex;flex-direction:column;gap:8px">';
