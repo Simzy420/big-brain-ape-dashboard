@@ -931,40 +931,103 @@ html+='<div style="background:var(--card);border:1px solid var(--border);border-
 html+='<div style="font-size:26px;font-weight:800;color:var(--blue);margin-bottom:14px">Interested in '+sym+'?</div>';
 // 3 boxes
 html+='<div style="display:grid;grid-template-columns:1fr;gap:12px">';
-// Box 1: Analysis
-html+='<div style="background:#1a2236;border:1px solid rgba(88,166,255,0.3);border-radius:12px;padding:14px">';
-html+='<div style="font-size:18px;font-weight:700;color:var(--blue);margin-bottom:8px">📊 Analysis</div>';
+// Box 1: Analysis (green title as circled)
+html+='<div style="background:#1a2236;border:1px solid rgba(63,185,80,0.3);border-radius:12px;padding:14px">';
+html+='<div style="font-size:18px;font-weight:700;color:var(--green);margin-bottom:8px">📊 Analysis</div>';
 html+='<div style="font-size:15px;color:var(--text);line-height:1.5">';
-html+='Price $'+fmtNum(d.price)+' is '+aboveYearLow2+' its 6-month low of $'+fmtNum(yearLow2)+'. ';
-html+='Daily is '+trendVs50_2+' (EMA20 ~$'+fmtNum(ema20_2)+'). ';
-html+='RSI '+rsiVal2.toFixed(0)+'. '+cleanTrend2;
+// Build analysis text with real data, no $0.00
+var analysisParts=[];
+if(d.price&&d.price>0){
+analysisParts.push(sym+' is trading at $'+fmtNum(d.price));
+if(d.changePercentage){
+var chgColor=d.changePercentage>=0?'var(--green)':'var(--red)';
+analysisParts.push('(<span style="color:'+chgColor+'">'+(d.changePercentage>=0?'+':'')+d.changePercentage.toFixed(1)+'%</span> today)');
+}
+}
+if(d.yearLow&&d.yearHigh&&d.yearLow>0){
+var rangePos=((d.price-d.yearLow)/(d.yearHigh-d.yearLow)*100).toFixed(0);
+analysisParts.push('in the '+rangePos+'% zone of its 52-week range ($'+fmtNum(d.yearLow)+'–$'+fmtNum(d.yearHigh)+')');
+}
+if(d.eps&&d.eps>0){
+analysisParts.push('EPS of $'+fmtNum(d.eps)+' (TTM)');
+}
+if(d.revenueGrowthYoY&&d.revenueGrowthYoY!==0){
+var rgColor=d.revenueGrowthYoY>0?'var(--green)':'var(--red)';
+analysisParts.push('revenue growing <span style="color:'+rgColor+'">'+(d.revenueGrowthYoY>0?'+':'')+d.revenueGrowthYoY.toFixed(1)+'% YoY</span>');
+}
+if(d.marketCap&&d.marketCap>0){
+analysisParts.push('market cap '+fmtCapShort(d.marketCap));
+}
+if(analysisParts.length>0){
+html+=analysisParts.join(', ')+'.';
+}else{
+html+='Data loading for '+sym+'.';
+}
 html+='</div></div>';
-// Box 2: Setup
+// Box 2: Buy Setup (green title)
 var buyZoneLow2=fmtNum(ema50_2*0.98);
 var buyZoneHigh2=fmtNum(ema50_2*1.02);
 var invalidation2=fmtNum(yearLow2*0.97);
 var resistance2=fmtNum(ema50_2*1.05);
 html+='<div style="background:#1a2236;border:1px solid rgba(63,185,80,0.3);border-radius:12px;padding:14px">';
-html+='<div style="font-size:18px;font-weight:700;color:var(--green);margin-bottom:8px">🎯 Setup</div>';
+html+='<div style="font-size:18px;font-weight:700;color:var(--green);margin-bottom:8px">🎯 Buy Setup</div>';
 html+='<div style="font-size:15px;color:var(--text);line-height:1.5">';
-html+='Scale in only if $'+buyZoneLow2+'–$'+buyZoneHigh2+' holds. ';
-html+='Invalidation under $'+invalidation2+'. ';
-html+='First resistance $'+resistance2+' then $'+fmtNum(yearHigh2)+'.';
-if(d.price>ema50_2*1.05)html+='<br><span style="color:var(--red)">⚠️ Do not chase — price is extended above the 50-day.</span>';
+// Build buy setup with real levels
+var setupParts=[];
+if(d.price&&d.price>0&&ema50_2>0){
+setupParts.push('Current price $'+fmtNum(d.price));
+var distFrom50=((d.price-ema50_2)/ema50_2*100).toFixed(1);
+var distColor=d.price>ema50_2?'var(--green)':'var(--red)';
+setupParts.push('<span style="color:'+distColor+'">'+(d.price>ema50_2?'+':'')+distFrom50+'%</span> from 50-day EMA ($'+fmtNum(ema50_2)+')');
+}
+setupParts.push('Ideal buy zone $'+buyZoneLow2+'–$'+buyZoneHigh2);
+setupParts.push('Stop loss below $'+invalidation2);
+if(d.targetAvg&&d.targetAvg>0){
+setupParts.push('Target $'+fmtNum(d.targetAvg)+' (analyst consensus)');
+}else if(yearHigh2>0){
+setupParts.push('Target $'+fmtNum(yearHigh2)+' (52-week high)');
+}
+if(d.price&&ema50_2>0&&d.price>ema50_2*1.08){
+setupParts.push('<span style="color:var(--red)">⚠️ Extended — wait for pullback to buy zone</span>');
+}else if(d.price&&ema50_2>0&&d.price<ema50_2*0.98){
+setupParts.push('<span style="color:var(--green)">✅ Near buy zone — good entry level</span>');
+}
+html+=setupParts.join('. ')+'.';
 html+='</div></div>';
-// Box 3: The Year Ahead
-var yaPrice=d.targetAvg?fmtNum(d.targetAvg):fmtNum(yearHigh2);
-var yaUpside=d.targetAvg?((d.targetAvg-d.price)/d.price*100).toFixed(0):((yearHigh2-d.price)/d.price*100).toFixed(0);
-var yaColor=d.targetAvg&&d.targetAvg>d.price?'var(--green)':'var(--yellow)';
-html+='<div style="background:#1a2236;border:1px solid rgba(210,153,34,0.3);border-radius:12px;padding:14px">';
-html+='<div style="font-size:18px;font-weight:700;color:var(--yellow);margin-bottom:8px">📅 The Year Ahead</div>';
+// Box 3: The Year Ahead (green title as circled)
+html+='<div style="background:#1a2236;border:1px solid rgba(63,185,80,0.3);border-radius:12px;padding:14px">';
+html+='<div style="font-size:18px;font-weight:700;color:var(--green);margin-bottom:8px">📅 The Year Ahead</div>';
 html+='<div style="font-size:15px;color:var(--text);line-height:1.5">';
-html+='Analyst 12-month target: <span style="font-size:22px;font-weight:800;color:'+yaColor+'">$'+yaPrice+'</span> ';
-html+='(<span style="color:'+yaColor+'">'+(yaUpside>=0?'+':'')+yaUpside+'%</span> upside from current). ';
-if(d.consensus)html+='Consensus: '+d.consensus+'. ';
-if(d.upcomingEarnings&&d.upcomingEarnings.length>0)html+='Next earnings: '+d.upcomingEarnings[0].date+' (Q'+d.upcomingEarnings[0].quarter+'). ';
-html+='Long-term trend '+(d.price>ema20_2?'positive':'neutral')+' — '+(d.price>yearLow2*1.2?'well off lows, momentum building':'near lows, watch for reversal');
-html+='.</div></div>';
+var yaParts=[];
+if(d.targetAvg&&d.targetAvg>0&&d.price&&d.price>0){
+var yaUpside=((d.targetAvg-d.price)/d.price*100).toFixed(0);
+var yaColor=yaUpside>=0?'var(--green)':'var(--red)';
+yaParts.push('Analyst 12-month target <span style="font-size:22px;font-weight:800;color:'+yaColor+'">$'+fmtNum(d.targetAvg)+'</span> ('+(yaUpside>=0?'+':'')+yaUpside+'% upside)');
+}
+if(d.consensus){
+yaParts.push('Consensus rating: <span style="color:var(--green);font-weight:700">'+d.consensus+'</span>');
+}
+if(d.earningsHistory&&d.earningsHistory.length>0){
+var lastQ=d.earningsHistory[0];
+if(lastQ.epsActual&&lastQ.epsEstimate){
+var beat=lastQ.epsActual>lastQ.epsEstimate;
+yaParts.push('Last earnings '+(beat?'beat':'missed')+' by $'+Math.abs(lastQ.epsActual-lastQ.epsEstimate).toFixed(2)+' ('+(beat?'▲':'▼')+')');
+}
+}
+if(d.beta&&d.beta>0){
+var betaDesc=d.beta<1?'lower volatility than market':d.beta>2?'high volatility — '+d.beta.toFixed(1)+'x market':'moderate volatility ('+d.beta.toFixed(1)+'x market)';
+yaParts.push(betaDesc);
+}
+if(d.price&&yearLow2>0){
+var fromLow=((d.price-yearLow2)/yearLow2*100).toFixed(0);
+yaParts.push('up '+fromLow+'% from 52-week low');
+}
+if(yaParts.length>0){
+html+=yaParts.join('. ')+'.';
+}else{
+html+='Analyst data loading for '+sym+'.';
+}
+html+='</div></div>';
 html+='</div></div>';
 
 // === EARNINGS (standalone card, moved from the old grid) ===
