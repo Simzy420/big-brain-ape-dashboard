@@ -967,55 +967,56 @@ html+='</div>';
 
 // === KEY METRICS CARDS ===
 html+='<div class="grid-4">';
-function metricCard(label,val,sub){
+function metricCard(label,val,sub,valColor){
+var vc=valColor||'var(--text)';
 var s='<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px">';
 s+='<div style="font-size: 17px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px">'+label+'</div>';
-s+='<div style="font-size: 26px;font-weight:700">'+val+'</div>';
-if(sub)s+='<div style="font-size: 17px;color:var(--text2);margin-top:2px">'+sub+'</div>';
+s+='<div style="font-size: 26px;font-weight:700;color:'+vc+'">'+val+'</div>';
+if(sub)s+='<div style="font-size: 17px;color:var(--blue);margin-top:2px;font-weight:600">'+sub+'</div>';
 s+='</div>';
 return s;
 }
-function metricCardDouble(label,val1,sub1,val2,sub2){
-var s='<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px">';
-s+='<div style="font-size: 17px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px">'+label+'</div>';
-s+='<div style="font-size: 22px;font-weight:700">'+val1+'</div>';
-if(sub1)s+='<div style="font-size: 14px;color:var(--text2);margin-top:1px">'+sub1+'</div>';
-s+='<div style="font-size: 22px;font-weight:700;margin-top:6px">'+val2+'</div>';
-if(sub2)s+='<div style="font-size: 14px;color:var(--text2);margin-top:1px">'+sub2+'</div>';
-s+='</div>';
-return s;
-}
-html+=metricCard("Market Cap",d.marketCap?'$'+fmtCap(d.marketCap/1e6):'—');
-// Rev (Annual Revenue)
+// Market Cap — green (big number, user wants top right green)
+html+=metricCard("Market Cap",d.marketCap?'$'+fmtCap(d.marketCap/1e6):'—','',"var(--green)");
+// Rev (Annual Revenue) — green if positive
 if(d.revenuePerShare&&d.marketCap&&d.price){
 var shares=d.marketCap/d.price;
 var annRev=d.revenuePerShare*shares;
 var revStr=annRev>=1e9?'$'+(annRev/1e9).toFixed(1)+'B':'$'+(annRev/1e6).toFixed(0)+'M';
-html+=metricCard("Rev",revStr,"Annual");
+html+=metricCard("Rev",revStr,"Trailing 12 Mo","var(--green)");
 }else{
-html+=metricCard("Rev",'—',"Annual");
+html+=metricCard("Rev",'—',"Trailing 12 Mo","var(--text2)");
 }
-html+=metricCard("EPS (TTM)",d.eps?fmtNum(d.eps):'—');
-// Rev YoY (Revenue Year-over-Year Growth)
+// EPS (TTM) — green if positive, red if negative
+var epsColor=d.eps>0?'var(--green)':'var(--red)';
+html+=metricCard("EPS (TTM)",d.eps?fmtNum(d.eps):'—',"Trailing 12 Mo",d.eps?epsColor:'var(--text2)');
+// Rev YoY — green if positive, red if negative
 if(d.revenueGrowthYoY){
 var rgyStr=(d.revenueGrowthYoY>=0?'+':'')+d.revenueGrowthYoY.toFixed(1)+'%';
 var rgyColor=d.revenueGrowthYoY>=0?'var(--green)':'var(--red)';
-html+=metricCard("Rev Yoy",rgyStr?('<span style="color:'+rgyColor+'">'+rgyStr+'</span>'):'—',"YoY Growth");
+html+=metricCard("Rev Yoy",rgyStr,"YoY Growth",rgyColor);
 }else{
-html+=metricCard("Rev Yoy",'—',"YoY Growth");
+html+=metricCard("Rev Yoy",'—',"YoY Growth","var(--text2)");
 }
-html+=metricCard("52-Week Range",d.yearLow?'$'+fmtNum(d.yearLow)+' – $'+fmtNum(d.yearHigh):'—',"",true);
-// Non-GAAP EPS
-if(d.earningsNonGaap){
-html+=metricCard("Non Gaap EPS",'$'+fmtNum(d.earningsNonGaap),"TTM");
-}else if(d.eps){
-html+=metricCard("Non Gaap EPS",'$'+fmtNum(d.eps),"TTM");
+// 52-Week Range — neutral/yellow
+html+=metricCard("52-Week Range",d.yearLow?'$'+fmtNum(d.yearLow)+' – $'+fmtNum(d.yearHigh):'—','',"var(--yellow)");
+// Non Gaap EPS — green if positive, red if negative
+var ngEps=d.earningsNonGaap||d.eps||0;
+var ngColor=ngEps>0?'var(--green)':'var(--red)';
+html+=metricCard("Non Gaap EPS",'$'+fmtNum(ngEps||0),"Trailing 12 Mo",ngEps?ngColor:'var(--text2)');
+// Avg Price Target — green if upside, red if downside
+if(d.targetAvg){
+var ptUpside=(d.targetAvg-d.price)/d.price*100;
+var ptColor=ptUpside>=0?'var(--green)':'var(--red)';
+var ptStr='$'+fmtNum(d.targetAvg);
+var ptSub='<span style="color:'+ptColor+'">'+(ptUpside>=0?'+':'')+ptUpside.toFixed(0)+'%</span>';
+html+=metricCard("Avg Price Target",ptStr,ptSub,ptColor);
 }else{
-html+=metricCard("Non Gaap EPS",'—',"TTM");
+html+=metricCard("Avg Price Target",'—',"","var(--text2)");
 }
-html+=metricCard("Avg Price Target",d.targetAvg?'$'+fmtNum(d.targetAvg):'—',d.targetAvg?'<span style="color:'+(d.targetAvg>d.price?'var(--green)':'var(--red)')+'">'+(d.targetAvg>d.price?'↑':'↓')+' '+fmtNum(Math.abs((d.targetAvg-d.price)/d.price*100))+'%</span>':'');
-// Beta moved to bottom
-html+=metricCard("Beta",d.beta?fmtNum(d.beta):'—');
+// Beta — yellow if neutral (1-2), green if <1, red if >2
+var betaColor=d.beta<1?'var(--green)':d.beta>2?'var(--red)':'var(--yellow)';
+html+=metricCard("Beta",d.beta?fmtNum(d.beta):'—',"5 Yr Expected",d.beta?betaColor:'var(--text2)');
 html+='</div>';
 
 // === SUPPORT & RESISTANCE ===
