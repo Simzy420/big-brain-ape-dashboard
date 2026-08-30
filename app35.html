@@ -3657,6 +3657,7 @@ document.getElementById('briefingDate').textContent=formatDate(new Date());
 
 loadTickerTapes();
 loadHomeData();
+} // close _renderStockAnalysisInner
 
 // ==============================
 // CRYPTO HUB
@@ -3865,7 +3866,7 @@ h+='</div>';
 }
 el.innerHTML=h;
 }).catch(function(){var el=document.getElementById('whaleData');if(el)el.innerHTML='<div style="color:var(--text2);text-align:center">Whale data temporarily unavailable</div>'});
-}
+} // end loadCrypto
 </script>
 </body>
 </html>
