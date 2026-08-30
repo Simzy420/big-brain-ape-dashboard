@@ -1026,24 +1026,38 @@ var pos=range>0?((d.price-d.yearLow)/range*100):50;
 pos=Math.max(0,Math.min(100,pos));
 html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px">';
 html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:var(--blue)"></div><span style="font-size: 24px;font-weight:650">Support & Resistance Levels</span></div>';
-// 6 square cards — 3 resistance (red), 3 support (green)
-html+='<div class="sr-cards" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px">';
-function srCard(label,val,color,bg,border){
-var s='<div style="background:'+bg+';border:1px solid '+border+';border-radius:10px;padding:8px 6px;text-align:center">';
+// Two-column layout: Support (green) on LEFT, Resistance (red) on RIGHT
+html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">';
+// LEFT column: Support levels (green)
+html+='<div style="display:flex;flex-direction:column;gap:8px">';
+html+='<div style="text-align:center;font-size:16px;font-weight:700;color:#4ade80;margin-bottom:4px">SUPPORT</div>';
+function srSupport(label,val){
+var s='<div style="background:rgba(63,185,80,0.08);border:1px solid rgba(63,185,80,0.25);border-radius:10px;padding:10px 8px;text-align:center">';
 s+='<div style="font-size:11px;color:var(--text2);font-weight:600;margin-bottom:4px;line-height:1.15">'+label+'</div>';
-s+='<div style="font-size:16px;font-weight:700;color:'+color+';line-height:1.2">'+val+'</div>';
+s+='<div style="font-size:18px;font-weight:700;color:#4ade80;line-height:1.2">$'+val+'</div>';
 s+='</div>';
 return s;
 }
-html+=srCard('Resistance 3 · 52W High','$'+fmtNum(d.yearHigh),'#f87171','rgba(248,81,73,0.08)','rgba(248,81,73,0.25)');
-if(d.targetHigh)html+=srCard('Resistance 2 · Analyst High','$'+fmtNum(d.targetHigh),'#f87171','rgba(248,81,73,0.08)','rgba(248,81,73,0.25)');
-else html+=srCard('Resistance 2 · Near-term','$'+fmtNum(d.price*1.05),'#f87171','rgba(248,81,73,0.08)','rgba(248,81,73,0.25)');
-if(d.targetAvg)html+=srCard('Resistance 1 · Analyst Avg','$'+fmtNum(d.targetAvg),'#f87171','rgba(248,81,73,0.08)','rgba(248,81,73,0.25)');
-else html+=srCard('Resistance 1 · Analyst Avg','—','#f87171','rgba(248,81,73,0.08)','rgba(248,81,73,0.25)');
-html+=srCard('Support 1 · Near-term','$'+fmtNum(d.priceAvg50||d.price*0.95),'#4ade80','rgba(63,185,80,0.08)','rgba(63,185,80,0.25)');
-if(d.targetLow)html+=srCard('Support 2 · Analyst Low','$'+fmtNum(d.targetLow),'#4ade80','rgba(63,185,80,0.08)','rgba(63,185,80,0.25)');
-else html+=srCard('Support 2 · Mid Support','$'+fmtNum(d.price*0.90),'#4ade80','rgba(63,185,80,0.08)','rgba(63,185,80,0.25)');
-html+=srCard('Support 3 · 52W Low','$'+fmtNum(d.yearLow),'#4ade80','rgba(63,185,80,0.08)','rgba(63,185,80,0.25)');
+html+=srSupport('Support 1 · Near-term',fmtNum(d.priceAvg50||d.price*0.95));
+if(d.targetLow)html+=srSupport('Support 2 · Analyst Low',fmtNum(d.targetLow));
+else html+=srSupport('Support 2 · Mid Support',fmtNum(d.price*0.90));
+html+=srSupport('Support 3 · 52W Low',fmtNum(d.yearLow));
+html+='</div>';
+// RIGHT column: Resistance levels (red)
+html+='<div style="display:flex;flex-direction:column;gap:8px">';
+html+='<div style="text-align:center;font-size:16px;font-weight:700;color:#f87171;margin-bottom:4px">RESISTANCE</div>';
+function srResistance(label,val){
+var s='<div style="background:rgba(248,81,73,0.08);border:1px solid rgba(248,81,73,0.25);border-radius:10px;padding:10px 8px;text-align:center">';
+s+='<div style="font-size:11px;color:var(--text2);font-weight:600;margin-bottom:4px;line-height:1.15">'+label+'</div>';
+s+='<div style="font-size:18px;font-weight:700;color:#f87171;line-height:1.2">$'+val+'</div>';
+s+='</div>';
+return s;
+}
+html+=srResistance('Resistance 1 · Analyst Avg',d.targetAvg?fmtNum(d.targetAvg):'—');
+if(d.targetHigh)html+=srResistance('Resistance 2 · Analyst High',fmtNum(d.targetHigh));
+else html+=srResistance('Resistance 2 · Near-term',fmtNum(d.price*1.05));
+html+=srResistance('Resistance 3 · 52W High',fmtNum(d.yearHigh));
+html+='</div>';
 html+='</div></div>';
 }
 
