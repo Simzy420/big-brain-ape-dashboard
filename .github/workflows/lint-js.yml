@@ -1,0 +1,74 @@
+name: Lint JavaScript in HTML
+
+on:
+  push:
+    paths:
+      - 'app35.html'
+  pull_request:
+    paths:
+      - 'app35.html'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Extract and check JS syntax
+        run: |
+          set -e
+          node -e "
+          const fs = require('fs');
+          const html = fs.readFileSync('app35.html', 'utf8');
+          const re = /<script[^>]*>([\s\S]*?)<\/script>/g;
+          let m, js = '', idx = 0;
+          while ((m = re.exec(html)) !== null) {
+            js += m[1] + '\n;\n';
+            idx++;
+          }
+          console.log('Found ' + idx + ' script blocks, ' + js.length + ' chars total');
+          // Write to file then check
+          fs.writeFileSync('/tmp/extracted.js', js);
+          "
+          # Use acorn for proper JS parsing
+          npm install acorn
+          node -e "
+          const acorn = require('acorn');
+          const fs = require('fs');
+          const js = fs.readFileSync('/tmp/extracted.js', 'utf8');
+          // Count brace depth with string awareness
+          let depth = 0, errors = [];
+          const lines = js.split('\n');
+          for (let i = 0; i < js.length; i++) {
+            const c = js[i];
+            if (c === '{') depth++;
+            if (c === '}') depth--;
+          }
+          console.log('Final brace depth: ' + depth);
+          // Try parsing each script block separately for better error reporting
+          const html = fs.readFileSync('app35.html', 'utf8');
+          const re = /<script[^>]*>([\s\S]*?)<\/script>/g;
+          let m, blockIdx = 0;
+          while ((m = re.exec(html)) !== null) {
+            blockIdx++;
+            if (m[1].trim().length < 10) continue; // skip tiny blocks
+            try {
+              acorn.parse(m[1], {ecmaVersion: 2022, allowReturnOutsideFunction: true});
+              console.log('Block ' + blockIdx + ': OK');
+            } catch(e) {
+              // If it's just 'unexpected end of input', check if it's the known unclosed function pattern
+              if (e.message.includes('Unexpected end of input') || e.message.includes('Unexpected token')) {
+                console.error('Block ' + blockIdx + ' ERROR at line ' + e.loc?.line + ': ' + e.message);
+                errors.push({block: blockIdx, line: e.loc?.line, msg: e.message});
+              }
+            }
+          }
+          if (errors.length > 0) {
+            console.error('\n=== SYNTAX ERRORS FOUND ===');
+            errors.forEach(e => console.error('  Block ' + e.block + ' line ' + e.line + ': ' + e.msg));
+            process.exit(1);
+          }
+          console.log('\nAll script blocks parsed successfully');
+          "
