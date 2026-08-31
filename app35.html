@@ -3769,7 +3769,7 @@ var h='<div onclick="window.open(\'https://alternative.me/crypto/fear-and-greed-
 h+='<div style="font-size:56px;font-weight:800;color:'+color+'">'+val+' '+emoji+'</div>';
 h+='<div style="font-size:18px;font-weight:600;color:'+color+';margin-top:4px">'+today.value_classification+'</div>';
 h+='</div>';
-h+='<canvas id="fngChart" style="margin-top:12px;max-height:80px"></canvas>';
+h+='<div style="height:80px;position:relative;margin-top:12px"><canvas id="fngChart"></canvas></div>';
 el.innerHTML=h;
 var ctx=document.getElementById('fngChart');
 if(ctx){cryptoCharts.fng=new Chart(ctx,{type:'bar',data:{labels:labels,datasets:[{data:values,backgroundColor:colors,borderRadius:6,barPercentage:0.6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.raw+' — '+d.data[6-c.dataIndex].value_classification}}}},scales:{y:{display:false,max:100},x:{grid:{display:false},ticks:{color:'var(--text2)',font:{size:11}}}}}})}
@@ -3783,7 +3783,7 @@ var topMovers=sorted.slice(0,8);
 var labels=topMovers.map(function(c){return c.symbol.toUpperCase()});
 var pcts=topMovers.map(function(c){return c.price_change_percentage_24h||0});
 var colors=pcts.map(function(p){return p>=0?'#3fb950':'#f85149'});
-var h='<canvas id="moversChart" style="max-height:200px"></canvas>';
+var h='<div style="height:200px;position:relative"><canvas id="moversChart"></canvas></div>';
 el.innerHTML=h;
 var ctx=document.getElementById('moversChart');
 if(ctx){cryptoCharts.movers=new Chart(ctx,{type:'bar',data:{labels:labels,datasets:[{data:pcts,backgroundColor:colors,borderRadius:6,barPercentage:0.7}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,onClick:function(e,items){if(items.length>0){var coin=topMovers[items[0].index];window.open('https://www.coingecko.com/en/coins/'+coin.id,'_blank')}},plugins:{legend:{display:false},tooltip:{callbacks:{afterLabel:function(c){var coin=topMovers[c.dataIndex];return '$'+(coin.current_price>=1?coin.current_price.toLocaleString():coin.current_price.toPrecision(4))+' · '+coin.name}}}},scales:{x:{grid:{color:'var(--border)'},ticks:{color:'var(--text2)',font:{size:12},callback:function(v){return v+'%'}}},y:{grid:{display:false},ticks:{color:'var(--text)',font:{size:14,weight:'bold'}}}}}})}
@@ -3803,7 +3803,7 @@ var top10=combined.slice(0,10);
 var labels=top10.map(function(c){return c.name});
 var rates=top10.map(function(c){return c.funding*100});
 var colors=rates.map(function(r){return r>0.002?'#f85149':r<0?'#3fb950':'#8b949e'});
-var h='<canvas id="fundingChart" style="max-height:240px"></canvas>';
+var h='<div style="height:240px;position:relative"><canvas id="fundingChart"></canvas></div>';
 el.innerHTML=h;
 var ctx=document.getElementById('fundingChart');
 if(ctx){cryptoCharts.funding=new Chart(ctx,{type:'bar',data:{labels:labels,datasets:[{data:rates,backgroundColor:colors,borderRadius:4,barPercentage:0.7}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,onClick:function(e,items){if(items.length>0){window.open('https://app.hyperliquid.xyz','_blank')}},plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){var fr=c.raw;return (fr>=0?'+':'')+fr.toFixed(4)+'% (8h)'}}}},scales:{x:{grid:{color:'var(--border)'},ticks:{color:'var(--text2)',font:{size:11},callback:function(v){return v+'%'}}},y:{grid:{display:false},ticks:{color:'var(--text)',font:{size:13,weight:'bold'}}}}}})}
@@ -3825,7 +3825,7 @@ h+='<div style="font-size:24px;font-weight:700;color:var(--blue)">$'+(vol24h/1e9
 h+='<div style="font-size:14px;color:var(--text2);font-weight:600">Global</div>';
 h+='</div>';
 h+='</div>';
-h+='<canvas id="domChart" style="max-height:160px"></canvas>';
+h+='<div style="height:160px;position:relative"><canvas id="domChart"></canvas></div>';
 el.innerHTML=h;
 var ctx=document.getElementById('domChart');
 if(ctx){cryptoCharts.dom=new Chart(ctx,{type:'doughnut',data:{labels:['BTC '+btcDom.toFixed(1)+'%','ETH '+ethDom.toFixed(1)+'%','Others '+otherDom.toFixed(1)+'%'],datasets:[{data:[btcDom,ethDom,otherDom],backgroundColor:['#f97316','#3b82f6','#8b949e'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{color:'var(--text2)',font:{size:13},padding:12,boxWidth:12}},tooltip:{callbacks:{label:function(c){return c.label}}}}}})}
@@ -3864,7 +3864,7 @@ el.innerHTML='<div style="text-align:center;color:var(--text2);padding:20px;font
 return;
 }
 var topWhales=whales.slice(0,6);
-var h='<canvas id="whaleChart" style="max-height:120px;margin-bottom:12px"></canvas>';
+var h='<div style="height:120px;position:relative;margin-bottom:12px"><canvas id="whaleChart"></canvas></div>';
 h+='<div style="display:flex;flex-direction:column;gap:6px">';
 for(var i=0;i<topWhales.length;i++){
 var w=topWhales[i];var usdVal=w.btc*78000;
