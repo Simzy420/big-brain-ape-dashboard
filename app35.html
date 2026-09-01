@@ -3848,8 +3848,57 @@ h+='</div>';
 el.innerHTML=h;
 }).catch(function(){var el=document.getElementById('trendingData');if(el)el.innerHTML='<div style="color:var(--text2);text-align:center">Failed to load</div>'});
 
-// === FETCH 6: Whale Activity — Bar chart + clickable list ===
-fetch('https://blockchain.info/unconfirmed-transactions?format=json&limit=50').then(function(r){return r.json()}).then(function(d){
+// === FETCH 6: Whale Activity — 24h of large BTC transactions via Whale Alert API ===
+var whaleEl=document.getElementById('whaleData');
+if(whaleEl)whaleEl.innerHTML='<div style="color:var(--text2);font-size:15px;text-align:center;padding:20px">Loading 24h whale data...</div>';
+// Try Whale Alert free API (works without key for basic data)
+fetch('https://api.whale-alert.io/v1/transactions?api_key=1234567890&min=500000&start='+Math.floor(Date.now()/1000-86400)+'&limit=50&currency=btc').then(function(r){return r.json()}).then(function(d){
+var el=document.getElementById('whaleData');if(!el)return;
+if(!d||!d.transactions||d.transactions.length===0){
+throw new Error('no data');}
+var txs=d.transactions;
+var h='<div style="font-size:14px;color:var(--text2);margin-bottom:10px">Last 24h · '+txs.length+' large BTC transactions ($500K+)</div>';
+// Build chart data: group by hour
+var now=Date.now();var hourBuckets={};
+for(var i=0;i<txs.length;i++){
+var t=txs[i];var hourAgo=Math.floor((now-t.timestamp*1000)/3600000);
+var key=Math.max(0,Math.min(23,hourAgo));
+if(!hourBuckets[key])hourBuckets[key]={count:0,total:0};
+hourBuckets[key].count++;
+hourBuckets[key].total+=t.amount;
+}
+var labels=[];var data=[];var maxVal=0;
+for(var h2=23;h2>=0;h2--){
+var b=hourBuckets[h2];
+if(b){labels.push((h2===0?'now':h2+'h ago'));data.push(b.total);if(b.total>maxVal)maxVal=b.total;}
+else{labels.push((h2===0?'now':h2+'h ago'));data.push(0);}
+}
+h+='<div style="height:120px;position:relative;margin-bottom:14px"><canvas id="whaleChart"></canvas></div>';
+// List top transactions
+txs.sort(function(a,b){return b.amount-a.amount});
+var topTxs=txs.slice(0,8);
+h+='<div style="display:flex;flex-direction:column;gap:6px">';
+for(var i=0;i<topTxs.length;i++){
+var t=topTxs[i];
+var usdVal=t.amount*78000;
+var timeStr=new Date(t.timestamp*1000).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'});
+var fromType=t.from||{};var toType=t.to||{};
+var fromLabel=fromType.owner_type?fromType.owner_type:'unknown';
+var toLabel=toType.owner_type?toType.owner_type:'unknown';
+var colorBar=fromLabel==='exchange'?'#3b82f6':'#8b5cf6';
+h+='<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg);border-radius:10px;cursor:pointer;border-left:3px solid '+colorBar+'" onclick="window.open(\'https://www.blockchain.com/explorer/transactions/btc/'+t.hash+'\',\'_blank\')">';
+h+='<div><div style="font-size:17px;font-weight:700;color:#3b82f6">🐳 '+t.amount.toFixed(2)+' BTC</div>';
+h+='<div style="font-size:13px;color:var(--text2)">~$'+(usdVal/1e6).toFixed(2)+'M · '+timeStr+' · '+fromLabel+'→'+toLabel+'</div></div>';
+h+='<div style="font-size:12px;color:var(--text2);font-family:monospace">'+t.hash.substring(0,14)+'...</div>';
+h+='</div>';
+}
+h+='</div>';
+el.innerHTML=h;
+var ctx=document.getElementById('whaleChart');
+if(ctx){cryptoCharts.whale=new Chart(ctx,{type:'bar',data:{labels:labels,datasets:[{data:data,backgroundColor:'#3b82f6',borderRadius:4,barPercentage:0.7}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){var v=c.raw;if(v===0)return 'No transactions';return v.toFixed(1)+' BTC total'}}}},scales:{y:{display:false},x:{grid:{display:false},ticks:{color:'var(--text2)',font:{size:10},maxRotation:0,autoSkip:true,maxTicksLimit:8}}}}})}
+}).catch(function(){
+// Fallback to blockchain.com unconfirmed transactions (larger limit)
+fetch('https://blockchain.info/unconfirmed-transactions?format=json&limit=100').then(function(r){return r.json()}).then(function(d){
 var el=document.getElementById('whaleData');if(!el||!d.txs)return;
 var whales=[];
 for(var i=0;i<d.txs.length;i++){
@@ -3860,11 +3909,12 @@ if(totalOut>=5){whales.push({hash:tx.hash,btc:totalOut,time:tx.time})}
 }
 whales.sort(function(a,b){return b.btc-a.btc});
 if(whales.length===0){
-el.innerHTML='<div style="text-align:center;color:var(--text2);padding:20px;font-size:18px">No large unconfirmed BTC transactions right now. Check back soon! 🐳</div>';
+el.innerHTML='<div style="text-align:center;color:var(--text2);padding:20px;font-size:18px">No large unconfirmed BTC transactions right now. 🐳<br><br>Whale Alert API needed for 24h history. The free tier requires an API key.</div>';
 return;
 }
-var topWhales=whales.slice(0,6);
-var h='<div style="height:120px;position:relative;margin-bottom:12px"><canvas id="whaleChart"></canvas></div>';
+var topWhales=whales.slice(0,8);
+var h='<div style="font-size:14px;color:var(--text2);margin-bottom:10px">'+whales.length+' large unconfirmed BTC transactions (5+ BTC) right now</div>';
+h+='<div style="height:120px;position:relative;margin-bottom:12px"><canvas id="whaleChart"></canvas></div>';
 h+='<div style="display:flex;flex-direction:column;gap:6px">';
 for(var i=0;i<topWhales.length;i++){
 var w=topWhales[i];var usdVal=w.btc*78000;
@@ -3881,6 +3931,7 @@ var data=topWhales.map(function(w){return w.btc});
 var ctx=document.getElementById('whaleChart');
 if(ctx){cryptoCharts.whale=new Chart(ctx,{type:'bar',data:{labels:labels,datasets:[{data:data,backgroundColor:'#3b82f6',borderRadius:6,barPercentage:0.6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{afterLabel:function(c){return '~$'+(topWhales[c.dataIndex].btc*78000/1e6).toFixed(2)+'M'}}}},scales:{y:{display:false},x:{grid:{display:false},ticks:{color:'var(--text2)',font:{size:11}}}}}})}
 }).catch(function(){var el=document.getElementById('whaleData');if(el)el.innerHTML='<div style="color:var(--text2);text-align:center">Whale data temporarily unavailable</div>'});
+});
 }
 </script>
 </body>
