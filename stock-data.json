@@ -1,6 +1,6 @@
 {
-  "timestamp": 1788306949,
-  "generatedAt": "2026-09-01 23:55 UTC",
+  "timestamp": 1788307850,
+  "generatedAt": "2026-09-02 00:10 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -16,17 +16,25 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Semiconductors",
       "industry": "Semiconductors",
-      "marketCap": 5203189971231.262,
+      "marketCap": 5240303971026.056,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/942959144056.png",
       "ipo": "1999-01-22",
-      "strongBuy": 23,
+      "strongBuy": 24,
       "buy": 41,
       "hold": 3,
       "sell": 1,
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 24,
+          "b": 41,
+          "h": 3,
+          "s": 1,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 23,
@@ -47,14 +55,6 @@
           "period": "2026-06-01",
           "sb": 24,
           "b": 39,
-          "h": 4,
-          "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 24,
-          "b": 42,
           "h": 4,
           "s": 1,
           "ss": 0
@@ -457,17 +457,25 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Technology",
       "industry": "Technology",
-      "marketCap": 4658168902968.907,
+      "marketCap": 4745005733200.245,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/AAPL.png",
       "ipo": "1980-12-12",
-      "strongBuy": 13,
-      "buy": 24,
-      "hold": 14,
+      "strongBuy": 12,
+      "buy": 22,
+      "hold": 15,
       "sell": 3,
-      "strongSell": 0,
+      "strongSell": 1,
       "consensus": "Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 12,
+          "b": 22,
+          "h": 15,
+          "s": 3,
+          "ss": 1
+        },
         {
           "period": "2026-08-01",
           "sb": 13,
@@ -489,14 +497,6 @@
           "sb": 14,
           "b": 24,
           "h": 15,
-          "s": 2,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 15,
-          "b": 24,
-          "h": 13,
           "s": 2,
           "ss": 0
         }
@@ -898,17 +898,25 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Automobiles",
       "industry": "Automobiles",
-      "marketCap": 1399308965542.192,
+      "marketCap": 1406394454184.9727,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/TSLA.png",
       "ipo": "2010-06-29",
       "strongBuy": 10,
       "buy": 20,
-      "hold": 24,
-      "sell": 6,
+      "hold": 25,
+      "sell": 5,
       "strongSell": 1,
       "consensus": "Hold",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 10,
+          "b": 20,
+          "h": 25,
+          "s": 5,
+          "ss": 1
+        },
         {
           "period": "2026-08-01",
           "sb": 10,
@@ -930,14 +938,6 @@
           "sb": 9,
           "b": 20,
           "h": 23,
-          "s": 7,
-          "ss": 1
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 9,
-          "b": 20,
-          "h": 24,
           "s": 7,
           "ss": 1
         }
@@ -1329,7 +1329,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Technology",
       "industry": "Technology",
-      "marketCap": 3743940009892.1807,
+      "marketCap": 3720346824063.0806,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/MSFT.png",
       "ipo": "1986-03-13",
@@ -1340,6 +1340,14 @@
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 23,
+          "b": 41,
+          "h": 5,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 23,
@@ -1361,14 +1369,6 @@
           "sb": 23,
           "b": 38,
           "h": 5,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 24,
-          "b": 36,
-          "h": 6,
           "s": 0,
           "ss": 0
         }
@@ -1770,17 +1770,25 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Media",
       "industry": "Media",
-      "marketCap": 4107934699999.9995,
+      "marketCap": 4097294599999.9995,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/GOOG.png",
       "ipo": "2004-08-19",
       "strongBuy": 20,
-      "buy": 42,
-      "hold": 8,
+      "buy": 43,
+      "hold": 7,
       "sell": 0,
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 20,
+          "b": 43,
+          "h": 7,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 20,
@@ -1802,14 +1810,6 @@
           "sb": 19,
           "b": 42,
           "h": 9,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 21,
-          "b": 41,
-          "h": 8,
           "s": 0,
           "ss": 0
         }
@@ -2201,17 +2201,25 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Media",
       "industry": "Media",
-      "marketCap": 1440780374262.516,
+      "marketCap": 1473834267901.7195,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/FB.png",
       "ipo": "2012-05-18",
-      "strongBuy": 21,
-      "buy": 41,
+      "strongBuy": 20,
+      "buy": 42,
       "hold": 9,
       "sell": 0,
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 20,
+          "b": 42,
+          "h": 9,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 21,
@@ -2232,14 +2240,6 @@
           "period": "2026-06-01",
           "sb": 22,
           "b": 41,
-          "h": 9,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 24,
-          "b": 40,
           "h": 9,
           "s": 0,
           "ss": 0
@@ -2632,17 +2632,25 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Retail",
       "industry": "Retail",
-      "marketCap": 2754177415979.541,
+      "marketCap": 2749647164100.824,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/AMZN.png",
       "ipo": "1997-05-15",
-      "strongBuy": 21,
+      "strongBuy": 20,
       "buy": 49,
       "hold": 5,
       "sell": 0,
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 20,
+          "b": 49,
+          "h": 5,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 21,
@@ -2664,14 +2672,6 @@
           "sb": 22,
           "b": 49,
           "h": 5,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 22,
-          "b": 50,
-          "h": 6,
           "s": 0,
           "ss": 0
         }
@@ -3073,17 +3073,25 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Semiconductors",
       "industry": "Semiconductors",
-      "marketCap": 741682357581.7456,
+      "marketCap": 750301825475.1967,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/AMD.png",
       "ipo": "1979-10-15",
-      "strongBuy": 16,
+      "strongBuy": 17,
       "buy": 32,
       "hold": 10,
       "sell": 0,
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 17,
+          "b": 32,
+          "h": 10,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 16,
@@ -3107,14 +3115,6 @@
           "h": 11,
           "s": 0,
           "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 15,
-          "b": 30,
-          "h": 13,
-          "s": 0,
-          "ss": 1
         }
       ],
       "earnings": [
@@ -3519,12 +3519,20 @@
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/NFLX.png",
       "ipo": "2002-05-23",
       "strongBuy": 14,
-      "buy": 30,
-      "hold": 14,
+      "buy": 29,
+      "hold": 15,
       "sell": 0,
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 14,
+          "b": 29,
+          "h": 15,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 14,
@@ -3544,14 +3552,6 @@
         {
           "period": "2026-06-01",
           "sb": 16,
-          "b": 29,
-          "h": 13,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 17,
           "b": 29,
           "h": 13,
           "s": 0,
@@ -3955,17 +3955,25 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Technology",
       "industry": "Technology",
-      "marketCap": 441472251353.0884,
+      "marketCap": 432364528133.7306,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/PLTR.png",
       "ipo": "2020-09-30",
       "strongBuy": 12,
-      "buy": 15,
-      "hold": 10,
+      "buy": 16,
+      "hold": 9,
       "sell": 1,
       "strongSell": 1,
-      "consensus": "Buy",
+      "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 12,
+          "b": 16,
+          "h": 9,
+          "s": 1,
+          "ss": 1
+        },
         {
           "period": "2026-08-01",
           "sb": 12,
@@ -3986,14 +3994,6 @@
           "period": "2026-06-01",
           "sb": 12,
           "b": 14,
-          "h": 10,
-          "s": 1,
-          "ss": 1
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 11,
-          "b": 15,
           "h": 10,
           "s": 1,
           "ss": 1
@@ -4396,17 +4396,25 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Financial Services",
       "industry": "Financial Services",
-      "marketCap": 47420743195.0,
+      "marketCap": 46651658340.0,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/COIN.png",
       "ipo": "2021-04-15",
       "strongBuy": 11,
-      "buy": 20,
+      "buy": 21,
       "hold": 10,
       "sell": 1,
       "strongSell": 2,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 11,
+          "b": 21,
+          "h": 10,
+          "s": 1,
+          "ss": 2
+        },
         {
           "period": "2026-08-01",
           "sb": 11,
@@ -4428,14 +4436,6 @@
           "sb": 11,
           "b": 19,
           "h": 11,
-          "s": 1,
-          "ss": 2
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 11,
-          "b": 17,
-          "h": 12,
           "s": 1,
           "ss": 2
         }
@@ -4820,17 +4820,25 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Financial Services",
       "industry": "Financial Services",
-      "marketCap": 95401619360.20828,
+      "marketCap": 93064005465.79172,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/HOOD.png",
       "ipo": "2021-07-29",
       "strongBuy": 9,
-      "buy": 19,
-      "hold": 5,
+      "buy": 18,
+      "hold": 6,
       "sell": 1,
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 9,
+          "b": 18,
+          "h": 6,
+          "s": 1,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 9,
@@ -4851,14 +4859,6 @@
           "period": "2026-06-01",
           "sb": 8,
           "b": 18,
-          "h": 5,
-          "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 9,
-          "b": 19,
           "h": 5,
           "s": 1,
           "ss": 0
@@ -5251,7 +5251,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Technology",
       "industry": "Technology",
-      "marketCap": 48685983749.202286,
+      "marketCap": 47982082601.493004,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/MSTR.png",
       "ipo": "1986-09-16",
@@ -5262,6 +5262,14 @@
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 6,
+          "b": 17,
+          "h": 3,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 6,
@@ -5280,14 +5288,6 @@
         },
         {
           "period": "2026-06-01",
-          "sb": 6,
-          "b": 16,
-          "h": 3,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
           "sb": 6,
           "b": 16,
           "h": 3,
@@ -6504,7 +6504,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Banking",
       "industry": "Banking",
-      "marketCap": 950620547867.6317,
+      "marketCap": 943523190720.9213,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/JPM.png",
       "ipo": "1969-03-05",
@@ -6515,6 +6515,14 @@
       "strongSell": 0,
       "consensus": "Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 3,
+          "b": 15,
+          "h": 12,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 3,
@@ -6535,14 +6543,6 @@
           "period": "2026-06-01",
           "sb": 3,
           "b": 14,
-          "h": 13,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 3,
-          "b": 15,
           "h": 13,
           "s": 0,
           "ss": 0
@@ -6935,7 +6935,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Banking",
       "industry": "Banking",
-      "marketCap": 436067788983.6461,
+      "marketCap": 433480472083.00555,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/BAC.png",
       "ipo": "1979-06-05",
@@ -6946,6 +6946,14 @@
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 6,
+          "b": 17,
+          "h": 6,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 6,
@@ -6966,14 +6974,6 @@
           "period": "2026-06-01",
           "sb": 7,
           "b": 17,
-          "h": 5,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 7,
-          "b": 18,
           "h": 5,
           "s": 0,
           "ss": 0
@@ -7381,12 +7381,20 @@
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/V.png",
       "ipo": "2008-03-25",
       "strongBuy": 12,
-      "buy": 35,
-      "hold": 4,
+      "buy": 33,
+      "hold": 6,
       "sell": 0,
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 12,
+          "b": 33,
+          "h": 6,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 12,
@@ -7405,14 +7413,6 @@
         },
         {
           "period": "2026-06-01",
-          "sb": 11,
-          "b": 33,
-          "h": 4,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
           "sb": 11,
           "b": 33,
           "h": 4,
@@ -7807,17 +7807,25 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Financial Services",
       "industry": "Financial Services",
-      "marketCap": 515295322711.6849,
+      "marketCap": 509049371891.5392,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/MA.png",
       "ipo": "2006-05-25",
       "strongBuy": 13,
-      "buy": 37,
-      "hold": 4,
+      "buy": 36,
+      "hold": 5,
       "sell": 0,
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 13,
+          "b": 36,
+          "h": 5,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 13,
@@ -7838,14 +7846,6 @@
           "period": "2026-06-01",
           "sb": 13,
           "b": 33,
-          "h": 5,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 13,
-          "b": 32,
           "h": 5,
           "s": 0,
           "ss": 0
@@ -8238,17 +8238,25 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Media",
       "industry": "Media",
-      "marketCap": 186387221591.7638,
+      "marketCap": 183408686622.6055,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/DIS.png",
       "ipo": "1957-11-12",
       "strongBuy": 11,
-      "buy": 22,
+      "buy": 23,
       "hold": 3,
       "sell": 1,
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 11,
+          "b": 23,
+          "h": 3,
+          "s": 1,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 11,
@@ -8270,14 +8278,6 @@
           "sb": 11,
           "b": 21,
           "h": 3,
-          "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 11,
-          "b": 20,
-          "h": 5,
           "s": 1,
           "ss": 0
         }
@@ -8679,7 +8679,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Beverages",
       "industry": "Beverages",
-      "marketCap": 383141965232.9266,
+      "marketCap": 378624289056.6821,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/KO.png",
       "ipo": "1950-01-26",
@@ -8690,6 +8690,14 @@
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 8,
+          "b": 19,
+          "h": 8,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 8,
@@ -8709,14 +8717,6 @@
         {
           "period": "2026-06-01",
           "sb": 8,
-          "b": 20,
-          "h": 6,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 9,
           "b": 20,
           "h": 6,
           "s": 0,
@@ -9110,7 +9110,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Beverages",
       "industry": "Beverages",
-      "marketCap": 192320028899.79172,
+      "marketCap": 190798174939.86646,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/PEP.png",
       "ipo": "1919-12-18",
@@ -9121,6 +9121,14 @@
       "strongSell": 0,
       "consensus": "Sell",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 2,
+          "b": 10,
+          "h": 17,
+          "s": 1,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 2,
@@ -9139,14 +9147,6 @@
         },
         {
           "period": "2026-06-01",
-          "sb": 3,
-          "b": 10,
-          "h": 15,
-          "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
           "sb": 3,
           "b": 10,
           "h": 15,
@@ -9541,7 +9541,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Retail",
       "industry": "Retail",
-      "marketCap": 8280596708.489119,
+      "marketCap": 8439882096.2709465,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/GME.png",
       "ipo": "2002-02-12",
@@ -9965,7 +9965,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Retail",
       "industry": "Retail",
-      "marketCap": 419965535891.6587,
+      "marketCap": 416852358869.2046,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/COST.png",
       "ipo": "1985-12-05",
@@ -9976,6 +9976,14 @@
       "strongSell": 0,
       "consensus": "Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 13,
+          "b": 17,
+          "h": 15,
+          "s": 1,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 13,
@@ -9994,14 +10002,6 @@
         },
         {
           "period": "2026-06-01",
-          "sb": 13,
-          "b": 17,
-          "h": 13,
-          "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
           "sb": 13,
           "b": 17,
           "h": 13,
@@ -10396,7 +10396,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Pharmaceuticals",
       "industry": "Pharmaceuticals",
-      "marketCap": 1106367515270.1125,
+      "marketCap": 1091974166132.0448,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/LLY.png",
       "ipo": "1970-07-09",
@@ -10407,6 +10407,14 @@
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 11,
+          "b": 19,
+          "h": 7,
+          "s": 1,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 11,
@@ -10428,14 +10436,6 @@
           "sb": 11,
           "b": 20,
           "h": 7,
-          "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 11,
-          "b": 19,
-          "h": 8,
           "s": 1,
           "ss": 0
         }
@@ -10827,7 +10827,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Health Care",
       "industry": "Health Care",
-      "marketCap": 6894434697.938705,
+      "marketCap": 6635433477.699798,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/HIMS.png",
       "ipo": "2019-09-09",
@@ -10838,6 +10838,14 @@
       "strongSell": 0,
       "consensus": "Sell",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 2,
+          "b": 7,
+          "h": 13,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 2,
@@ -10856,14 +10864,6 @@
         },
         {
           "period": "2026-06-01",
-          "sb": 2,
-          "b": 8,
-          "h": 13,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
           "sb": 2,
           "b": 8,
           "h": 13,
@@ -11268,7 +11268,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Hotels, Restaurants & Leisure",
       "industry": "Hotels, Restaurants & Leisure",
-      "marketCap": 11708869706.727047,
+      "marketCap": 11636883863.713463,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/950813883726.png",
       "ipo": "2019-07-03",
@@ -11279,6 +11279,14 @@
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 10,
+          "b": 25,
+          "h": 9,
+          "s": 1,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 10,
@@ -11301,14 +11309,6 @@
           "b": 25,
           "h": 9,
           "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 10,
-          "b": 24,
-          "h": 10,
-          "s": 0,
           "ss": 0
         }
       ],
@@ -11699,17 +11699,25 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Semiconductors",
       "industry": "Semiconductors",
-      "marketCap": 452651184704.4245,
+      "marketCap": 467495222045.99976,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/INTC.png",
       "ipo": "1971-10-13",
       "strongBuy": 4,
       "buy": 15,
-      "hold": 33,
-      "sell": 3,
+      "hold": 34,
+      "sell": 2,
       "strongSell": 0,
       "consensus": "Sell",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 4,
+          "b": 15,
+          "h": 34,
+          "s": 2,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 4,
@@ -11732,14 +11740,6 @@
           "b": 13,
           "h": 32,
           "s": 4,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 4,
-          "b": 14,
-          "h": 33,
-          "s": 3,
           "ss": 0
         }
       ],
@@ -12130,17 +12130,25 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Technology",
       "industry": "Technology",
-      "marketCap": 415579932308.48663,
+      "marketCap": 407068140938.0373,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/ORCL.png",
       "ipo": "1986-03-12",
       "strongBuy": 15,
-      "buy": 25,
-      "hold": 8,
+      "buy": 24,
+      "hold": 9,
       "sell": 1,
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 15,
+          "b": 24,
+          "h": 9,
+          "s": 1,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 15,
@@ -12162,14 +12170,6 @@
           "sb": 17,
           "b": 23,
           "h": 8,
-          "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 17,
-          "b": 24,
-          "h": 10,
           "s": 1,
           "ss": 0
         }
@@ -12565,13 +12565,21 @@
       "country": "TW",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/2330.TW.png",
       "ipo": "1994-09-05",
-      "strongBuy": 13,
-      "buy": 28,
+      "strongBuy": 12,
+      "buy": 29,
       "hold": 2,
       "sell": 0,
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 12,
+          "b": 29,
+          "h": 2,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 13,
@@ -12591,14 +12599,6 @@
         {
           "period": "2026-06-01",
           "sb": 11,
-          "b": 29,
-          "h": 2,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 12,
           "b": 29,
           "h": 2,
           "s": 0,
@@ -12992,7 +12992,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Automobiles",
       "industry": "Automobiles",
-      "marketCap": 22449078168.551064,
+      "marketCap": 22492513985.710464,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/950373444066.png",
       "ipo": "2021-11-10",
@@ -13003,6 +13003,14 @@
       "strongSell": 1,
       "consensus": "Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 5,
+          "b": 15,
+          "h": 9,
+          "s": 4,
+          "ss": 1
+        },
         {
           "period": "2026-08-01",
           "sb": 5,
@@ -13022,14 +13030,6 @@
         {
           "period": "2026-06-01",
           "sb": 5,
-          "b": 14,
-          "h": 10,
-          "s": 4,
-          "ss": 1
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 6,
           "b": 14,
           "h": 10,
           "s": 4,
@@ -13435,6 +13435,14 @@
       "consensus": "Strong Buy",
       "recTrend": [
         {
+          "period": "2026-09-01",
+          "sb": 13,
+          "b": 30,
+          "h": 3,
+          "s": 1,
+          "ss": 0
+        },
+        {
           "period": "2026-08-01",
           "sb": 13,
           "b": 30,
@@ -13454,14 +13462,6 @@
           "period": "2026-06-01",
           "sb": 13,
           "b": 30,
-          "h": 4,
-          "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 13,
-          "b": 29,
           "h": 4,
           "s": 1,
           "ss": 0
@@ -13864,17 +13864,25 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Semiconductors",
       "industry": "Semiconductors",
-      "marketCap": 1057281297577.0721,
+      "marketCap": 1054220642429.4636,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/MU.png",
       "ipo": "1984-06-01",
       "strongBuy": 18,
-      "buy": 33,
+      "buy": 35,
       "hold": 4,
       "sell": 1,
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 18,
+          "b": 35,
+          "h": 4,
+          "s": 1,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 18,
@@ -13895,14 +13903,6 @@
           "period": "2026-06-01",
           "sb": 18,
           "b": 33,
-          "h": 3,
-          "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 17,
-          "b": 32,
           "h": 3,
           "s": 1,
           "ss": 0
@@ -14305,17 +14305,25 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Technology",
       "industry": "Technology",
-      "marketCap": 225182175414.65582,
+      "marketCap": 225026971272.76407,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/950906460416.png",
       "ipo": "2025-02-13",
-      "strongBuy": 9,
+      "strongBuy": 11,
       "buy": 17,
       "hold": 5,
       "sell": 0,
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 11,
+          "b": 17,
+          "h": 5,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 9,
@@ -14337,14 +14345,6 @@
           "sb": 9,
           "b": 16,
           "h": 4,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 8,
-          "b": 14,
-          "h": 5,
           "s": 0,
           "ss": 0
         }
@@ -14736,17 +14736,25 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Technology",
       "industry": "Technology",
-      "marketCap": 22886910561.243332,
+      "marketCap": 22716813721.797596,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/950922886856.png",
       "ipo": "2025-06-05",
       "strongBuy": 7,
-      "buy": 12,
-      "hold": 16,
-      "sell": 0,
+      "buy": 13,
+      "hold": 14,
+      "sell": 2,
       "strongSell": 1,
       "consensus": "Hold",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 7,
+          "b": 13,
+          "h": 14,
+          "s": 2,
+          "ss": 1
+        },
         {
           "period": "2026-08-01",
           "sb": 7,
@@ -14768,14 +14776,6 @@
           "sb": 7,
           "b": 11,
           "h": 14,
-          "s": 0,
-          "ss": 2
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 8,
-          "b": 10,
-          "h": 13,
           "s": 0,
           "ss": 2
         }
@@ -15167,17 +15167,25 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Technology",
       "industry": "Technology",
-      "marketCap": 44812347256.89127,
+      "marketCap": 45143269205.865234,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/950683281286.png",
       "ipo": "2025-03-28",
       "strongBuy": 10,
-      "buy": 21,
+      "buy": 22,
       "hold": 12,
       "sell": 1,
       "strongSell": 1,
       "consensus": "Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 10,
+          "b": 22,
+          "h": 12,
+          "s": 1,
+          "ss": 1
+        },
         {
           "period": "2026-08-01",
           "sb": 10,
@@ -15199,14 +15207,6 @@
           "sb": 10,
           "b": 17,
           "h": 13,
-          "s": 1,
-          "ss": 1
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 10,
-          "b": 18,
-          "h": 12,
           "s": 1,
           "ss": 1
         }
@@ -15598,7 +15598,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Machinery",
       "industry": "Machinery",
-      "marketCap": 358583156079.74725,
+      "marketCap": 358160255218.8184,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/CAT.png",
       "ipo": "1929-12-02",
@@ -15609,6 +15609,14 @@
       "strongSell": 0,
       "consensus": "Hold",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 7,
+          "b": 11,
+          "h": 15,
+          "s": 1,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 7,
@@ -15631,14 +15639,6 @@
           "b": 11,
           "h": 14,
           "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 8,
-          "b": 10,
-          "h": 13,
-          "s": 3,
           "ss": 0
         }
       ],
@@ -16033,13 +16033,21 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/960001797516.png",
       "ipo": "2026-07-02",
-      "strongBuy": 6,
+      "strongBuy": 5,
       "buy": 9,
-      "hold": 14,
-      "sell": 1,
+      "hold": 16,
+      "sell": 0,
       "strongSell": 0,
       "consensus": "Hold",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 5,
+          "b": 9,
+          "h": 16,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 6,
@@ -16061,14 +16069,6 @@
           "sb": 7,
           "b": 9,
           "h": 13,
-          "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-06-01",
-          "sb": 6,
-          "b": 10,
-          "h": 14,
           "s": 1,
           "ss": 0
         }
@@ -16453,17 +16453,25 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Energy",
       "industry": "Energy",
-      "marketCap": 412274304622.8206,
+      "marketCap": 416986519016.82745,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/CVX.png",
       "ipo": "1921-06-24",
-      "strongBuy": 8,
+      "strongBuy": 7,
       "buy": 18,
       "hold": 4,
       "sell": 1,
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 7,
+          "b": 18,
+          "h": 4,
+          "s": 1,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 8,
@@ -16482,14 +16490,6 @@
         },
         {
           "period": "2026-06-01",
-          "sb": 7,
-          "b": 16,
-          "h": 7,
-          "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
           "sb": 7,
           "b": 16,
           "h": 7,
@@ -16894,17 +16894,25 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Aerospace & Defense",
       "industry": "Aerospace & Defense",
-      "marketCap": 163535454729.2863,
+      "marketCap": 162547492241.19193,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/BA.png",
       "ipo": "1934-09-05",
-      "strongBuy": 13,
+      "strongBuy": 14,
       "buy": 18,
-      "hold": 6,
+      "hold": 5,
       "sell": 0,
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 14,
+          "b": 18,
+          "h": 5,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 13,
@@ -16923,14 +16931,6 @@
         },
         {
           "period": "2026-06-01",
-          "sb": 13,
-          "b": 18,
-          "h": 6,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
           "sb": 13,
           "b": 18,
           "h": 6,
@@ -17339,13 +17339,21 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/WMT.png",
       "ipo": "1972-08-25",
-      "strongBuy": 14,
-      "buy": 29,
-      "hold": 5,
+      "strongBuy": 12,
+      "buy": 30,
+      "hold": 6,
       "sell": 0,
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 12,
+          "b": 30,
+          "h": 6,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 14,
@@ -17367,14 +17375,6 @@
           "sb": 14,
           "b": 29,
           "h": 5,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 14,
-          "b": 30,
-          "h": 4,
           "s": 0,
           "ss": 0
         }
@@ -17766,7 +17766,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Retail",
       "industry": "Retail",
-      "marketCap": 322213831719.5651,
+      "marketCap": 319031201910.346,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/HD.png",
       "ipo": "1984-04-19",
@@ -17777,6 +17777,14 @@
       "strongSell": 1,
       "consensus": "Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 9,
+          "b": 19,
+          "h": 17,
+          "s": 0,
+          "ss": 1
+        },
         {
           "period": "2026-08-01",
           "sb": 9,
@@ -17795,14 +17803,6 @@
         },
         {
           "period": "2026-06-01",
-          "sb": 10,
-          "b": 19,
-          "h": 16,
-          "s": 0,
-          "ss": 1
-        },
-        {
-          "period": "2026-05-01",
           "sb": 10,
           "b": 19,
           "h": 16,
@@ -18193,7 +18193,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Health Care",
       "industry": "Health Care",
-      "marketCap": 354958374204.0094,
+      "marketCap": 355716841858.2366,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/UNH.png",
       "ipo": "1984-10-17",
@@ -18204,6 +18204,14 @@
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 8,
+          "b": 19,
+          "h": 7,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 8,
@@ -18222,14 +18230,6 @@
         },
         {
           "period": "2026-06-01",
-          "sb": 7,
-          "b": 19,
-          "h": 7,
-          "s": 0,
-          "ss": 1
-        },
-        {
-          "period": "2026-05-01",
           "sb": 7,
           "b": 19,
           "h": 7,
@@ -18634,7 +18634,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Pharmaceuticals",
       "industry": "Pharmaceuticals",
-      "marketCap": 651877542309.6443,
+      "marketCap": 653540372269.6948,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/JNJ.png",
       "ipo": "1944-09-25",
@@ -18645,6 +18645,14 @@
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 7,
+          "b": 15,
+          "h": 9,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 7,
@@ -18666,14 +18674,6 @@
           "sb": 7,
           "b": 14,
           "h": 10,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 6,
-          "b": 14,
-          "h": 12,
           "s": 0,
           "ss": 0
         }
@@ -19065,17 +19065,25 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Hotels, Restaurants & Leisure",
       "industry": "Hotels, Restaurants & Leisure",
-      "marketCap": 109966994084.65477,
+      "marketCap": 109305335884.4721,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/ABNB.png",
       "ipo": "2020-12-10",
-      "strongBuy": 9,
-      "buy": 19,
-      "hold": 20,
+      "strongBuy": 10,
+      "buy": 20,
+      "hold": 19,
       "sell": 2,
       "strongSell": 0,
       "consensus": "Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 10,
+          "b": 20,
+          "h": 19,
+          "s": 2,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 9,
@@ -19097,14 +19105,6 @@
           "sb": 9,
           "b": 18,
           "h": 20,
-          "s": 2,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 8,
-          "b": 18,
-          "h": 21,
           "s": 2,
           "ss": 0
         }
@@ -19496,17 +19496,25 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Technology",
       "industry": "Technology",
-      "marketCap": 183938634314.2621,
+      "marketCap": 179898571976.91748,
       "country": "CA",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/SHOP.png",
       "ipo": "2015-05-21",
       "strongBuy": 11,
-      "buy": 31,
-      "hold": 10,
+      "buy": 32,
+      "hold": 12,
       "sell": 0,
       "strongSell": 1,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 11,
+          "b": 32,
+          "h": 12,
+          "s": 0,
+          "ss": 1
+        },
         {
           "period": "2026-08-01",
           "sb": 11,
@@ -19528,14 +19536,6 @@
           "sb": 10,
           "b": 32,
           "h": 11,
-          "s": 0,
-          "ss": 1
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 10,
-          "b": 33,
-          "h": 12,
           "s": 0,
           "ss": 1
         }
@@ -19927,17 +19927,25 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Financial Services",
       "industry": "Financial Services",
-      "marketCap": 44873201054.82028,
+      "marketCap": 44826150705.79703,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/PYPL.png",
       "ipo": "2015-07-06",
       "strongBuy": 4,
-      "buy": 11,
-      "hold": 34,
+      "buy": 10,
+      "hold": 35,
       "sell": 3,
       "strongSell": 0,
       "consensus": "Strong Sell",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 4,
+          "b": 10,
+          "h": 35,
+          "s": 3,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 4,
@@ -19959,14 +19967,6 @@
           "sb": 4,
           "b": 10,
           "h": 34,
-          "s": 4,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 4,
-          "b": 11,
-          "h": 33,
           "s": 4,
           "ss": 0
         }
@@ -20368,17 +20368,25 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Media",
       "industry": "Media",
-      "marketCap": 23232019870.841457,
+      "marketCap": 23083600910.445103,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/ROKU.png",
       "ipo": "2017-09-28",
-      "strongBuy": 4,
-      "buy": 13,
-      "hold": 18,
+      "strongBuy": 3,
+      "buy": 11,
+      "hold": 22,
       "sell": 0,
       "strongSell": 0,
-      "consensus": "Hold",
+      "consensus": "Sell",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 3,
+          "b": 11,
+          "h": 22,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 4,
@@ -20397,14 +20405,6 @@
         },
         {
           "period": "2026-06-01",
-          "sb": 12,
-          "b": 21,
-          "h": 5,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
           "sb": 12,
           "b": 21,
           "h": 5,
@@ -20813,13 +20813,21 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/ZM.png",
       "ipo": "2019-04-18",
-      "strongBuy": 10,
+      "strongBuy": 11,
       "buy": 13,
-      "hold": 15,
+      "hold": 14,
       "sell": 1,
       "strongSell": 0,
       "consensus": "Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 11,
+          "b": 13,
+          "h": 14,
+          "s": 1,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 10,
@@ -20842,14 +20850,6 @@
           "b": 13,
           "h": 15,
           "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 10,
-          "b": 13,
-          "h": 13,
-          "s": 3,
           "ss": 0
         }
       ],
@@ -21250,17 +21250,25 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Technology",
       "industry": "Technology",
-      "marketCap": 12682540393.138073,
+      "marketCap": 12342659003.499624,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/DOCU.png",
       "ipo": "2018-04-27",
       "strongBuy": 4,
-      "buy": 5,
-      "hold": 19,
+      "buy": 6,
+      "hold": 18,
       "sell": 1,
       "strongSell": 0,
       "consensus": "Sell",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 4,
+          "b": 6,
+          "h": 18,
+          "s": 1,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 4,
@@ -21282,14 +21290,6 @@
           "sb": 4,
           "b": 5,
           "h": 19,
-          "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 4,
-          "b": 6,
-          "h": 18,
           "s": 1,
           "ss": 0
         }
@@ -21681,17 +21681,25 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Media",
       "industry": "Media",
-      "marketCap": 9026091957.244974,
+      "marketCap": 9047908409.297297,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/SNAP.png",
       "ipo": "2017-03-02",
       "strongBuy": 3,
-      "buy": 11,
-      "hold": 33,
+      "buy": 12,
+      "hold": 32,
       "sell": 3,
       "strongSell": 0,
-      "consensus": "Strong Sell",
+      "consensus": "Sell",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 3,
+          "b": 12,
+          "h": 32,
+          "s": 3,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 3,
@@ -21710,14 +21718,6 @@
         },
         {
           "period": "2026-06-01",
-          "sb": 3,
-          "b": 12,
-          "h": 32,
-          "s": 3,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
           "sb": 3,
           "b": 12,
           "h": 32,
@@ -22112,7 +22112,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Media",
       "industry": "Media",
-      "marketCap": 12201213438.124825,
+      "marketCap": 12034151105.13588,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/PINS.png",
       "ipo": "2019-04-18",
@@ -22123,6 +22123,14 @@
       "strongSell": 0,
       "consensus": "Hold",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 6,
+          "b": 18,
+          "h": 21,
+          "s": 0,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 6,
@@ -22145,14 +22153,6 @@
           "b": 17,
           "h": 21,
           "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 7,
-          "b": 16,
-          "h": 21,
-          "s": 1,
           "ss": 0
         }
       ],
@@ -22543,17 +22543,25 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Road & Rail",
       "industry": "Road & Rail",
-      "marketCap": 153416698264.1935,
+      "marketCap": 153682231093.0358,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/UBER.png",
       "ipo": "2019-05-10",
       "strongBuy": 15,
-      "buy": 34,
+      "buy": 35,
       "hold": 7,
       "sell": 1,
       "strongSell": 0,
       "consensus": "Strong Buy",
       "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 15,
+          "b": 35,
+          "h": 7,
+          "s": 1,
+          "ss": 0
+        },
         {
           "period": "2026-08-01",
           "sb": 15,
@@ -22575,14 +22583,6 @@
           "sb": 17,
           "b": 35,
           "h": 8,
-          "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-05-01",
-          "sb": 16,
-          "b": 35,
-          "h": 9,
           "s": 1,
           "ss": 0
         }
@@ -22974,7 +22974,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Road & Rail",
       "industry": "Road & Rail",
-      "marketCap": 6293231558.860947,
+      "marketCap": 6348119894.2615385,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/LYFT.png",
       "ipo": "2019-03-29",
@@ -23846,7 +23846,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Electrical Equipment",
       "industry": "Electrical Equipment",
-      "marketCap": 2927124040.0208335,
+      "marketCap": 2920138063.7916665,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/PLUG.png",
       "ipo": "1999-10-28",
@@ -24287,7 +24287,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Electrical Equipment",
       "industry": "Electrical Equipment",
-      "marketCap": 1312847816.2867093,
+      "marketCap": 1365617582.3493905,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/FCEL.png",
       "ipo": "1992-06-25",
