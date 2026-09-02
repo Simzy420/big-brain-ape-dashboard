@@ -1,8 +1,8 @@
 {
-  "date": "September 02, 2026 19:21 UTC",
+  "date": "September 02, 2026 19:25 UTC",
   "assets": {
     "S&P 500": {
-      "price": 7668.91,
+      "price": 7669.02,
       "change_pct": 0.49,
       "support": 7504.78,
       "resistance": 7816.7,
@@ -28,12 +28,12 @@
         7730.99,
         7686.14,
         7631.47,
-        7668.86
+        7669.02
       ]
     },
     "NASDAQ": {
-      "price": 26212.18,
-      "change_pct": 0.43,
+      "price": 26204.77,
+      "change_pct": 0.4,
       "support": 25420.35,
       "resistance": 26875.52,
       "history": [
@@ -58,12 +58,12 @@
         26541.35,
         26370.89,
         26099.77,
-        26212.18
+        26204.77
       ]
     },
     "Dow Jones": {
-      "price": 53048.39,
-      "change_pct": 0.53,
+      "price": 53070.57,
+      "change_pct": 0.58,
       "support": 52691.31,
       "resistance": 54744.33,
       "history": [
@@ -88,24 +88,24 @@
         53569.44,
         53185.9,
         52766.88,
-        53046.91
+        53070.57
       ]
     },
     "BTC": {
-      "price": 77225.3,
-      "change_pct": 0.01,
+      "price": 77219.5,
+      "change_pct": -0.11,
       "support": 62484.2,
       "resistance": 81500.0
     },
     "ETH": {
-      "price": 2390.65,
-      "change_pct": -1.1,
+      "price": 2390.21,
+      "change_pct": -1.18,
       "support": 1847.5,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 99.35,
-      "change_pct": -0.54,
+      "price": 99.33,
+      "change_pct": -0.58,
       "support": 72.29,
       "resistance": 110.6
     }
@@ -153,7 +153,7 @@
   "whale_flow": "NEUTRAL",
   "metrics": {
     "vix": {
-      "value": "15.2",
+      "value": "15.1",
       "label": "VIX",
       "color": "green"
     },
@@ -168,17 +168,17 @@
       "color": "green"
     },
     "oil": {
-      "value": "$90.76",
+      "value": "$90.83",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4424",
+      "value": "$4427",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$65.76",
+      "value": "$65.79",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -191,27 +191,27 @@
     },
     {
       "label": "BULLISH",
-      "text": "Gold up 1.7% \u2014 safe haven bid",
+      "text": "Gold up 1.8% \u2014 safe haven bid",
       "type": "bullish"
     },
     {
       "label": "BULLISH",
-      "text": "NVDA up 3.3% \u2014 AI demand momentum",
+      "text": "NVDA up 3.2% \u2014 AI demand momentum",
       "type": "bullish"
     }
   ],
-  "btc_funding": 2.909e-05,
+  "btc_funding": 2.953e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 27.55,
-    "daily_avg": 27.29,
-    "daily_pct": 1.0,
-    "weekly_inflow": 191.0,
-    "weekly_avg": 192.2,
+    "daily_inflow": 27.5,
+    "daily_avg": 27.28,
+    "daily_pct": 0.8,
+    "weekly_inflow": 190.95,
+    "weekly_avg": 192.19,
     "weekly_pct": -0.6,
-    "monthly_inflow": 823.72,
-    "monthly_avg": 827.39,
+    "monthly_inflow": 823.67,
+    "monthly_avg": 827.37,
     "monthly_pct": -0.4,
     "large_tx_count": 584853
   },
@@ -238,7 +238,7 @@
       14.51,
       14.92,
       16.34,
-      15.18
+      15.13
     ],
     "yield_10y": [
       4.69,
@@ -287,7 +287,7 @@
       83.4,
       85.76,
       90.22,
-      90.76
+      90.83
     ],
     "gold": [
       4033.7,
@@ -312,7 +312,7 @@
       4478.1,
       4431.1,
       4348.0,
-      4423.8
+      4426.6
     ],
     "silver": [
       57.67,
@@ -337,7 +337,7 @@
       67.0,
       66.22,
       64.62,
-      65.76
+      65.79
     ],
     "dxy": [
       99.96,
@@ -385,7 +385,7 @@
       7730.99,
       7686.14,
       7631.47,
-      7668.86
+      7669.02
     ],
     "nasdaq": [
       25913.9,
@@ -409,54 +409,8 @@
       26541.35,
       26370.89,
       26099.77,
-      26212.18
+      26204.77
     ]
   },
-  "econ_events": [
-    {
-      "label": "ISM MANUFACTURING PMI",
-      "time": "2:00pm ET",
-      "forecast": "55.2",
-      "previous": "55.6",
-      "actual": null,
-      "impact": "High",
-      "country": "USD"
-    },
-    {
-      "label": "ISM MANUFACTURING PRICES",
-      "time": "2:00pm ET",
-      "forecast": "70.5",
-      "previous": "71.1",
-      "actual": null,
-      "impact": "Medium",
-      "country": "USD"
-    },
-    {
-      "label": "JOLTS JOB OPENINGS",
-      "time": "2:00pm ET",
-      "forecast": "7.33M",
-      "previous": "7.36M",
-      "actual": null,
-      "impact": "Medium",
-      "country": "USD"
-    },
-    {
-      "label": "ADP NON-FARM EMPLOYMENT CHANGE",
-      "time": "12:15pm ET",
-      "forecast": "47K",
-      "previous": "44K",
-      "actual": null,
-      "impact": "Medium",
-      "country": "USD"
-    },
-    {
-      "label": "UNEMPLOYMENT CLAIMS",
-      "time": "12:30pm ET",
-      "forecast": "205K",
-      "previous": "203K",
-      "actual": null,
-      "impact": "Medium",
-      "country": "USD"
-    }
-  ]
+  "econ_events": []
 }
