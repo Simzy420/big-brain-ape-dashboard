@@ -1,5 +1,5 @@
 {
-  "date": "September 03, 2026 06:35 UTC",
+  "date": "September 03, 2026 06:40 UTC",
   "assets": {
     "S&P 500": {
       "price": 7666.6,
@@ -92,25 +92,25 @@
       ]
     },
     "BTC": {
-      "price": 77729.7,
-      "change_pct": 0.32,
+      "price": 77718.0,
+      "change_pct": 0.27,
       "support": 62484.2,
       "resistance": 81500.0
     },
     "ETH": {
-      "price": 2407.6,
-      "change_pct": -0.38,
+      "price": 2406.28,
+      "change_pct": -0.54,
       "support": 1852.22,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 100.91,
-      "change_pct": 1.12,
+      "price": 100.85,
+      "change_pct": 0.96,
       "support": 72.29,
       "resistance": 110.6
     }
   },
-  "risk_score": 58,
+  "risk_score": 66,
   "risk_bias": "RISK-ON",
   "fear_greed": {
     "value": 65,
@@ -163,27 +163,32 @@
       "color": "blue"
     },
     "dxy": {
-      "value": "99.4",
+      "value": "99.3",
       "label": "DXY",
       "color": "green"
     },
     "oil": {
-      "value": "$89.86",
+      "value": "$90.00",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4466",
+      "value": "$4468",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$66.29",
+      "value": "$66.36",
       "label": "SILVER",
       "color": "yellow"
     }
   },
   "signals": [
+    {
+      "label": "BULLISH",
+      "text": "Dollar weakening \u2014 risk asset fuel",
+      "type": "bullish"
+    },
     {
       "label": "BULLISH",
       "text": "S&P 500 up 0.5%",
@@ -200,20 +205,20 @@
       "type": "bullish"
     }
   ],
-  "btc_funding": 6.666e-05,
+  "btc_funding": 6.567e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 27.27,
+    "daily_inflow": 27.24,
     "daily_avg": 26.29,
-    "daily_pct": 3.7,
-    "weekly_inflow": 184.06,
+    "daily_pct": 3.6,
+    "weekly_inflow": 184.03,
     "weekly_avg": 192.98,
     "weekly_pct": -4.6,
-    "monthly_inflow": 827.08,
-    "monthly_avg": 815.96,
+    "monthly_inflow": 827.05,
+    "monthly_avg": 815.95,
     "monthly_pct": 1.4,
-    "large_tx_count": 591426
+    "large_tx_count": 585539
   },
   "history": {
     "vix": [
@@ -288,7 +293,7 @@
       85.76,
       90.22,
       91.01,
-      89.86
+      90.0
     ],
     "gold": [
       4033.7,
@@ -314,7 +319,7 @@
       4431.1,
       4348.0,
       4366.3,
-      4465.9
+      4468.4
     ],
     "silver": [
       57.67,
@@ -340,7 +345,7 @@
       66.22,
       64.62,
       64.72,
-      66.29
+      66.36
     ],
     "dxy": [
       99.96,
@@ -365,7 +370,7 @@
       99.43,
       99.67,
       99.56,
-      99.37
+      99.34
     ],
     "sp500": [
       7600.5,
