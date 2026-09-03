@@ -1,12 +1,12 @@
 {
-  "timestamp": 1788445913,
-  "generatedAt": "2026-09-03 14:31 UTC",
+  "timestamp": 1788446933,
+  "generatedAt": "2026-09-03 14:48 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
-      "price": 227.51,
-      "change": 3.1,
-      "changePercentage": 1.3814,
+      "price": 225.97,
+      "change": 1.56,
+      "changePercentage": 0.6952,
       "open": 225.86,
       "high": 229.07,
       "low": 224.75,
@@ -16,10 +16,84 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Semiconductors",
       "industry": "Semiconductors",
-      "marketCap": 5408281060724.041,
+      "marketCap": 5482027089460.45,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/942959144056.png",
       "ipo": "1999-01-22",
+      "strongBuy": 24,
+      "buy": 41,
+      "hold": 3,
+      "sell": 1,
+      "strongSell": 0,
+      "consensus": "Strong Buy",
+      "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 24,
+          "b": 41,
+          "h": 3,
+          "s": 1,
+          "ss": 0
+        },
+        {
+          "period": "2026-08-01",
+          "sb": 23,
+          "b": 41,
+          "h": 3,
+          "s": 1,
+          "ss": 0
+        },
+        {
+          "period": "2026-07-01",
+          "sb": 24,
+          "b": 40,
+          "h": 4,
+          "s": 1,
+          "ss": 0
+        },
+        {
+          "period": "2026-06-01",
+          "sb": 24,
+          "b": 39,
+          "h": 4,
+          "s": 1,
+          "ss": 0
+        }
+      ],
+      "earnings": [
+        {
+          "period": "2026-09-30",
+          "quarter": 2,
+          "estimate": 2.1384,
+          "actual": 2.22,
+          "surprise": 0.0816,
+          "surprisePct": 3.8159
+        },
+        {
+          "period": "2026-06-30",
+          "quarter": 1,
+          "estimate": 1.7922,
+          "actual": 1.87,
+          "surprise": 0.0778,
+          "surprisePct": 4.341
+        },
+        {
+          "period": "2026-03-31",
+          "quarter": 4,
+          "estimate": 1.5634,
+          "actual": 1.62,
+          "surprise": 0.0566,
+          "surprisePct": 3.6203
+        },
+        {
+          "period": "2025-12-31",
+          "quarter": 3,
+          "estimate": 1.2746,
+          "actual": 1.3,
+          "surprise": 0.0254,
+          "surprisePct": 1.9928
+        }
+      ],
       "earningsHistory": [
         {
           "quarter": 1,
@@ -107,19 +181,19 @@
       ],
       "pe": 0,
       "eps": 4.8979,
-      "epsTTM": 6.529999999999999,
-      "revenuePerShare": 10.3928,
-      "revenueGrowthYoY": 70.68,
-      "earningsNonGaap": 6.529999999999999,
-      "nonGaapEPS": 6.529999999999999,
-      "roe": 111.66,
+      "epsTTM": 7.9108,
+      "revenuePerShare": 12.4756,
+      "revenueGrowthYoY": 83.38,
+      "earningsNonGaap": 7.9108,
+      "nonGaapEPS": 7.9108,
+      "roe": 110.11,
       "beta": 2.2209277,
       "yearHigh": 236.54,
       "yearLow": 164.07,
       "priceAvg50": 0,
       "priceAvg200": 0,
-      "grossMargin": 74.15,
-      "netMargin": 62.97,
+      "grossMargin": 74.67,
+      "netMargin": 63.66,
       "dividendYield": 0,
       "volume": 151431250,
       "targetAvg": 325.98773,
@@ -364,18 +438,18 @@
           "o": 226.02,
           "h": 229.07,
           "l": 224.75,
-          "c": 226.7,
-          "v": 37443255
+          "c": 225.99,
+          "v": 42345645
         }
       ]
     },
     "AAPL": {
       "symbol": "AAPL",
-      "price": 330.54,
-      "change": 5.58,
-      "changePercentage": 1.7171,
+      "price": 328.6,
+      "change": 3.64,
+      "changePercentage": 1.1201,
       "open": 325.185,
-      "high": 330.61,
+      "high": 330.69,
       "low": 324.11,
       "prevClose": 324.96,
       "name": "Apple Inc",
@@ -383,7 +457,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Technology",
       "industry": "Technology",
-      "marketCap": 4742524702473.865,
+      "marketCap": 4759599696329.378,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/AAPL.png",
       "ipo": "1980-12-12",
@@ -805,16 +879,16 @@
           "o": 324.95,
           "h": 330.68,
           "l": 324.11,
-          "c": 330.54,
-          "v": 8046636
+          "c": 328.68,
+          "v": 9862817
         }
       ]
     },
     "TSLA": {
       "symbol": "TSLA",
-      "price": 378.86,
-      "change": 21.85,
-      "changePercentage": 6.1203,
+      "price": 379.6,
+      "change": 22.59,
+      "changePercentage": 6.3276,
       "open": 362.905,
       "high": 380.46,
       "low": 362.905,
@@ -824,7 +898,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Automobiles",
       "industry": "Automobiles",
-      "marketCap": 1410027976824.4592,
+      "marketCap": 1471976685811.9297,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/TSLA.png",
       "ipo": "2010-06-29",
@@ -1236,16 +1310,16 @@
           "o": 365.92,
           "h": 380.46,
           "l": 365.91,
-          "c": 378.22,
-          "v": 24965467
+          "c": 379.86,
+          "v": 27715130
         }
       ]
     },
     "MSFT": {
       "symbol": "MSFT",
-      "price": 510.96,
-      "change": 14.14,
-      "changePercentage": 2.8461,
+      "price": 509.1,
+      "change": 12.28,
+      "changePercentage": 2.4717,
       "open": 499.33,
       "high": 512.92,
       "low": 499.33,
@@ -1255,7 +1329,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Technology",
       "industry": "Technology",
-      "marketCap": 3689159389778.2163,
+      "marketCap": 3791780564141.215,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/MSFT.png",
       "ipo": "1986-03-13",
@@ -1677,16 +1751,16 @@
           "o": 502.14,
           "h": 512.92,
           "l": 500.8,
-          "c": 510.9,
-          "v": 5663290
+          "c": 509.21,
+          "v": 6202170
         }
       ]
     },
     "GOOGL": {
       "symbol": "GOOGL",
-      "price": 342.89,
-      "change": 5.77,
-      "changePercentage": 1.7116,
+      "price": 342.16,
+      "change": 5.04,
+      "changePercentage": 1.495,
       "open": 339.645,
       "high": 344.68,
       "low": 339.645,
@@ -1696,7 +1770,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Media",
       "industry": "Media",
-      "marketCap": 4122977600000.0,
+      "marketCap": 4207058849999.9995,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/GOOG.png",
       "ipo": "2004-08-19",
@@ -2108,16 +2182,16 @@
           "o": 340.36,
           "h": 344.66,
           "l": 340.06,
-          "c": 342.9,
-          "v": 5155036
+          "c": 342.07,
+          "v": 5752936
         }
       ]
     },
     "META": {
       "symbol": "META",
-      "price": 611.51,
-      "change": 18.66,
-      "changePercentage": 3.1475,
+      "price": 610.3,
+      "change": 17.45,
+      "changePercentage": 2.9434,
       "open": 601.74,
       "high": 619.42,
       "low": 601.74,
@@ -2127,7 +2201,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Media",
       "industry": "Media",
-      "marketCap": 1510288954163.5625,
+      "marketCap": 1570970542940.2002,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/FB.png",
       "ipo": "2012-05-18",
@@ -2539,16 +2613,16 @@
           "o": 604.49,
           "h": 619.42,
           "l": 604.35,
-          "c": 611.93,
-          "v": 6035150
+          "c": 610.16,
+          "v": 6747960
         }
       ]
     },
     "AMZN": {
       "symbol": "AMZN",
-      "price": 257.88,
-      "change": 2.9,
-      "changePercentage": 1.1373,
+      "price": 257.36,
+      "change": 2.38,
+      "changePercentage": 0.9334,
       "open": 256.455,
       "high": 259.4299,
       "low": 256,
@@ -2558,7 +2632,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Retail",
       "industry": "Retail",
-      "marketCap": 2750294439502.539,
+      "marketCap": 2795165480547.1426,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/AMZN.png",
       "ipo": "1997-05-15",
@@ -2980,16 +3054,16 @@
           "o": 256.32,
           "h": 259.43,
           "l": 256.0,
-          "c": 257.9,
-          "v": 7420885
+          "c": 257.31,
+          "v": 8112031
         }
       ]
     },
     "AMD": {
       "symbol": "AMD",
-      "price": 450.87,
-      "change": -6.19,
-      "changePercentage": -1.3543,
+      "price": 450.43,
+      "change": -6.63,
+      "changePercentage": -1.4506,
       "open": 455.465,
       "high": 455.465,
       "low": 440.5,
@@ -2999,7 +3073,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Semiconductors",
       "industry": "Semiconductors",
-      "marketCap": 746138988560.9298,
+      "marketCap": 730369300176.0696,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/AMD.png",
       "ipo": "1979-10-15",
@@ -3421,26 +3495,26 @@
           "o": 452.7,
           "h": 453.71,
           "l": 440.5,
-          "c": 450.39,
-          "v": 4990269
+          "c": 449.81,
+          "v": 5360624
         }
       ]
     },
     "NFLX": {
       "symbol": "NFLX",
-      "price": 82.42,
-      "change": -0.31,
-      "changePercentage": -0.3747,
+      "price": 82.09,
+      "change": -0.64,
+      "changePercentage": -0.7736,
       "open": 82.945,
       "high": 83.61,
-      "low": 82.25,
+      "low": 81.935,
       "prevClose": 82.73,
       "name": "Netflix Inc",
       "companyName": "Netflix Inc",
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Media",
       "industry": "Media",
-      "marketCap": 344482740944.9607,
+      "marketCap": 346752529085.1632,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/NFLX.png",
       "ipo": "2002-05-23",
@@ -3861,17 +3935,17 @@
           "date": "2026-09-03",
           "o": 83.18,
           "h": 83.6,
-          "l": 82.25,
-          "c": 82.43,
-          "v": 4072681
+          "l": 81.93,
+          "c": 82.12,
+          "v": 4683718
         }
       ]
     },
     "PLTR": {
       "symbol": "PLTR",
-      "price": 184.62,
-      "change": 15.16,
-      "changePercentage": 8.9461,
+      "price": 182.78,
+      "change": 13.32,
+      "changePercentage": 7.8603,
       "open": 171.315,
       "high": 185.83,
       "low": 171.315,
@@ -3881,7 +3955,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Technology",
       "industry": "Technology",
-      "marketCap": 407228158473.15594,
+      "marketCap": 432100193681.2068,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/PLTR.png",
       "ipo": "2020-09-30",
@@ -4303,18 +4377,18 @@
           "o": 172.35,
           "h": 185.83,
           "l": 171.94,
-          "c": 184.56,
-          "v": 16262257
+          "c": 182.9,
+          "v": 17927774
         }
       ]
     },
     "COIN": {
       "symbol": "COIN",
-      "price": 190.6,
-      "change": 15.64,
-      "changePercentage": 8.9392,
+      "price": 191.04,
+      "change": 16.08,
+      "changePercentage": 9.1907,
       "open": 179.3475,
-      "high": 191,
+      "high": 191.22,
       "low": 179.3475,
       "prevClose": 174.96,
       "name": "Coinbase Global Inc",
@@ -4322,7 +4396,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Financial Services",
       "industry": "Financial Services",
-      "marketCap": 46160921520.000015,
+      "marketCap": 49689160953.6,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/COIN.png",
       "ipo": "2021-04-15",
@@ -4725,20 +4799,20 @@
         {
           "date": "2026-09-03",
           "o": 181.48,
-          "h": 191.0,
+          "h": 191.39,
           "l": 181.0,
-          "c": 190.77,
-          "v": 4436482
+          "c": 191.34,
+          "v": 5231847
         }
       ]
     },
     "HOOD": {
       "symbol": "HOOD",
-      "price": 123.48,
-      "change": 16.49,
-      "changePercentage": 15.4127,
+      "price": 123.13,
+      "change": 16.14,
+      "changePercentage": 15.0855,
       "open": 111.695,
-      "high": 123.62,
+      "high": 124.04,
       "low": 111.695,
       "prevClose": 106.99,
       "name": "Robinhood Markets Inc",
@@ -4746,7 +4820,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Financial Services",
       "industry": "Financial Services",
-      "marketCap": 96192815980.89517,
+      "marketCap": 109449690238.98418,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/HOOD.png",
       "ipo": "2021-07-29",
@@ -5158,18 +5232,18 @@
           "o": 113.58,
           "h": 124.04,
           "l": 113.13,
-          "c": 123.97,
-          "v": 22158836
+          "c": 123.53,
+          "v": 24951973
         }
       ]
     },
     "MSTR": {
       "symbol": "MSTR",
-      "price": 137,
-      "change": 13.81,
-      "changePercentage": 11.2103,
+      "price": 138.35,
+      "change": 15.16,
+      "changePercentage": 12.3062,
       "open": 126.2025,
-      "high": 137.02,
+      "high": 138.38,
       "low": 126.2025,
       "prevClose": 123.19,
       "name": "Strategy Inc",
@@ -5177,7 +5251,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Technology",
       "industry": "Technology",
-      "marketCap": 47332739566.95508,
+      "marketCap": 50698557082.512375,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/MSTR.png",
       "ipo": "1986-09-16",
@@ -5587,18 +5661,18 @@
         {
           "date": "2026-09-03",
           "o": 128.04,
-          "h": 137.02,
+          "h": 138.63,
           "l": 127.59,
-          "c": 136.61,
-          "v": 11676368
+          "c": 138.59,
+          "v": 14147533
         }
       ]
     },
     "SPY": {
       "symbol": "SPY",
-      "price": 768.55,
-      "change": 3.39,
-      "changePercentage": 0.443,
+      "price": 768.79,
+      "change": 3.63,
+      "changePercentage": 0.4744,
       "open": 766.83,
       "high": 770.045,
       "low": 766.83,
@@ -5620,7 +5694,7 @@
       "grossMargin": 0,
       "netMargin": 0,
       "dividendYield": 0,
-      "volume": 36485820,
+      "volume": 35411840,
       "targetAvg": 0,
       "targetHigh": 0,
       "targetLow": 0,
@@ -5863,16 +5937,16 @@
           "o": 767.9,
           "h": 770.04,
           "l": 767.53,
-          "c": 768.6,
-          "v": 9391079
+          "c": 768.72,
+          "v": 10163113
         }
       ]
     },
     "QQQ": {
       "symbol": "QQQ",
-      "price": 712.57,
-      "change": 3.33,
-      "changePercentage": 0.4695,
+      "price": 712.17,
+      "change": 2.93,
+      "changePercentage": 0.4131,
       "open": 710.635,
       "high": 713.85,
       "low": 709.69,
@@ -5886,7 +5960,7 @@
       "earningsNonGaap": 0,
       "nonGaapEPS": 0,
       "roe": 0,
-      "beta": 1.2429842,
+      "beta": 1.2431362,
       "yearHigh": 748.65,
       "yearLow": 555.6,
       "priceAvg50": 0,
@@ -5894,7 +5968,7 @@
       "grossMargin": 0,
       "netMargin": 0,
       "dividendYield": 0,
-      "volume": 31460480,
+      "volume": 30227930,
       "targetAvg": 0,
       "targetHigh": 0,
       "targetLow": 0,
@@ -6137,16 +6211,16 @@
           "o": 710.85,
           "h": 713.85,
           "l": 709.69,
-          "c": 712.66,
-          "v": 8493114
+          "c": 712.28,
+          "v": 9211070
         }
       ]
     },
     "DIA": {
       "symbol": "DIA",
-      "price": 533.82,
-      "change": 3.2,
-      "changePercentage": 0.6031,
+      "price": 534.91,
+      "change": 4.29,
+      "changePercentage": 0.8085,
       "open": 532.945,
       "high": 535.57,
       "low": 532.94,
@@ -6160,15 +6234,15 @@
       "earningsNonGaap": 0,
       "nonGaapEPS": 0,
       "roe": 0,
-      "beta": 0.8706516,
+      "beta": 0.8704614,
       "yearHigh": 546.75,
-      "yearLow": 450.155,
+      "yearLow": 450.44,
       "priceAvg50": 0,
       "priceAvg200": 0,
       "grossMargin": 0,
       "netMargin": 0,
       "dividendYield": 0,
-      "volume": 2786810,
+      "volume": 2792030,
       "targetAvg": 0,
       "targetHigh": 0,
       "targetLow": 0,
@@ -6411,16 +6485,16 @@
           "o": 534.04,
           "h": 535.57,
           "l": 532.94,
-          "c": 533.65,
-          "v": 1681056
+          "c": 534.79,
+          "v": 1800107
         }
       ]
     },
     "JPM": {
       "symbol": "JPM",
-      "price": 358.42,
-      "change": 2.2,
-      "changePercentage": 0.6176,
+      "price": 360.29,
+      "change": 4.07,
+      "changePercentage": 1.1426,
       "open": 357.4975,
       "high": 360.86,
       "low": 356.39,
@@ -6430,7 +6504,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Banking",
       "industry": "Banking",
-      "marketCap": 946899148975.8071,
+      "marketCap": 956282517254.0732,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/JPM.png",
       "ipo": "1969-03-05",
@@ -6842,16 +6916,16 @@
           "o": 358.67,
           "h": 360.84,
           "l": 356.39,
-          "c": 358.64,
-          "v": 1199887
+          "c": 359.86,
+          "v": 1366969
         }
       ]
     },
     "BAC": {
       "symbol": "BAC",
-      "price": 62.53,
-      "change": -0.07,
-      "changePercentage": -0.1118,
+      "price": 62.78,
+      "change": 0.18,
+      "changePercentage": 0.2875,
       "open": 62.795,
       "high": 62.94,
       "low": 62.32,
@@ -6861,7 +6935,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Banking",
       "industry": "Banking",
-      "marketCap": 437746070152.93756,
+      "marketCap": 439948763365.8844,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/BAC.png",
       "ipo": "1979-06-05",
@@ -7283,19 +7357,19 @@
           "o": 62.81,
           "h": 62.94,
           "l": 62.32,
-          "c": 62.54,
-          "v": 6537300
+          "c": 62.72,
+          "v": 7304081
         }
       ]
     },
     "V": {
       "symbol": "V",
-      "price": 378,
-      "change": -0.4,
-      "changePercentage": -0.1057,
+      "price": 378.38,
+      "change": -0.02,
+      "changePercentage": -0.0053,
       "open": 379.26,
       "high": 382.21,
-      "low": 377.32,
+      "low": 377.25,
       "prevClose": 378.4,
       "name": "Visa Inc",
       "companyName": "Visa Inc",
@@ -7713,27 +7787,27 @@
           "date": "2026-09-03",
           "o": 380.17,
           "h": 382.21,
-          "l": 377.36,
-          "c": 378.05,
-          "v": 627264
+          "l": 377.25,
+          "c": 378.28,
+          "v": 743288
         }
       ]
     },
     "MA": {
       "symbol": "MA",
-      "price": 586.05,
-      "change": -2.09,
-      "changePercentage": -0.3554,
+      "price": 585.44,
+      "change": -2.7,
+      "changePercentage": -0.4591,
       "open": 589.72,
       "high": 592.97,
-      "low": 585.2,
+      "low": 584.01,
       "prevClose": 588.14,
       "name": "Mastercard Inc",
       "companyName": "Mastercard Inc",
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Financial Services",
       "industry": "Financial Services",
-      "marketCap": 515216462305.6441,
+      "marketCap": 515330378078.559,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/MA.png",
       "ipo": "2006-05-25",
@@ -8144,17 +8218,17 @@
           "date": "2026-09-03",
           "o": 590.69,
           "h": 592.97,
-          "l": 585.2,
-          "c": 585.83,
-          "v": 469727
+          "l": 584.02,
+          "c": 585.71,
+          "v": 522518
         }
       ]
     },
     "DIS": {
       "symbol": "DIS",
-      "price": 107.68,
-      "change": -0.3,
-      "changePercentage": -0.2778,
+      "price": 107.7,
+      "change": -0.28,
+      "changePercentage": -0.2593,
       "open": 108.31,
       "high": 109.2,
       "low": 107.31,
@@ -8164,7 +8238,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Media",
       "industry": "Media",
-      "marketCap": 186447652486.70197,
+      "marketCap": 187293732743.23273,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/DIS.png",
       "ipo": "1957-11-12",
@@ -8586,16 +8660,16 @@
           "o": 108.62,
           "h": 109.19,
           "l": 107.31,
-          "c": 107.64,
-          "v": 950909
+          "c": 107.62,
+          "v": 1097602
         }
       ]
     },
     "KO": {
       "symbol": "KO",
-      "price": 88.76,
-      "change": 0.52,
-      "changePercentage": 0.5893,
+      "price": 88.81,
+      "change": 0.57,
+      "changePercentage": 0.646,
       "open": 88.29,
       "high": 88.93,
       "low": 88.01,
@@ -8605,7 +8679,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Beverages",
       "industry": "Beverages",
-      "marketCap": 379656908593.75,
+      "marketCap": 380818587558.47156,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/KO.png",
       "ipo": "1950-01-26",
@@ -9017,16 +9091,16 @@
           "o": 88.11,
           "h": 88.92,
           "l": 88.01,
-          "c": 88.76,
-          "v": 2441209
+          "c": 88.83,
+          "v": 2643260
         }
       ]
     },
     "PEP": {
       "symbol": "PEP",
-      "price": 138.79,
-      "change": -1.73,
-      "changePercentage": -1.2311,
+      "price": 139.13,
+      "change": -1.39,
+      "changePercentage": -0.9892,
       "open": 140.53,
       "high": 140.75,
       "low": 138.58,
@@ -9036,7 +9110,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Beverages",
       "industry": "Beverages",
-      "marketCap": 191794541487.17792,
+      "marketCap": 190061144298.3383,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/PEP.png",
       "ipo": "1919-12-18",
@@ -9448,16 +9522,16 @@
           "o": 140.37,
           "h": 140.74,
           "l": 138.58,
-          "c": 138.79,
-          "v": 1719921
+          "c": 139.14,
+          "v": 1945554
         }
       ]
     },
     "GME": {
       "symbol": "GME",
-      "price": 19.26,
-      "change": 0.29,
-      "changePercentage": 1.5287,
+      "price": 19.21,
+      "change": 0.24,
+      "changePercentage": 1.2652,
       "open": 19.015,
       "high": 19.28,
       "low": 18.99,
@@ -9467,7 +9541,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Retail",
       "industry": "Retail",
-      "marketCap": 8511672840.549707,
+      "marketCap": 8548465455.469057,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/GME.png",
       "ipo": "2002-02-12",
@@ -9872,16 +9946,16 @@
           "o": 19.0,
           "h": 19.28,
           "l": 19.0,
-          "c": 19.27,
-          "v": 1275873
+          "c": 19.2,
+          "v": 1427636
         }
       ]
     },
     "COST": {
       "symbol": "COST",
-      "price": 919.85,
-      "change": -8.63,
-      "changePercentage": -0.9295,
+      "price": 921.44,
+      "change": -7.04,
+      "changePercentage": -0.7582,
       "open": 928.165,
       "high": 929.77,
       "low": 915.31,
@@ -9891,7 +9965,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Retail",
       "industry": "Retail",
-      "marketCap": 411761225162.1996,
+      "marketCap": 408044854434.8693,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/COST.png",
       "ipo": "1985-12-05",
@@ -10303,16 +10377,16 @@
           "o": 928.0,
           "h": 929.75,
           "l": 915.31,
-          "c": 920.32,
-          "v": 528978
+          "c": 921.56,
+          "v": 593818
         }
       ]
     },
     "LLY": {
       "symbol": "LLY",
-      "price": 1150.78,
-      "change": -9.3,
-      "changePercentage": -0.8017,
+      "price": 1154.23,
+      "change": -5.85,
+      "changePercentage": -0.5043,
       "open": 1167.405,
       "high": 1171.66,
       "low": 1137.5,
@@ -10322,7 +10396,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Pharmaceuticals",
       "industry": "Pharmaceuticals",
-      "marketCap": 1092049493134.4532,
+      "marketCap": 1076832415538.6249,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/LLY.png",
       "ipo": "1970-07-09",
@@ -10734,26 +10808,26 @@
           "o": 1170.0,
           "h": 1171.66,
           "l": 1137.5,
-          "c": 1151.17,
-          "v": 476677
+          "c": 1154.66,
+          "v": 513545
         }
       ]
     },
     "HIMS": {
       "symbol": "HIMS",
-      "price": 27.98,
-      "change": -0.7,
-      "changePercentage": -2.4407,
+      "price": 28.03,
+      "change": -0.65,
+      "changePercentage": -2.2664,
       "open": 28.81,
       "high": 29.12,
-      "low": 27.96,
+      "low": 27.86,
       "prevClose": 28.68,
       "name": "Hims & Hers Health Inc",
       "companyName": "Hims & Hers Health Inc",
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Health Care",
       "industry": "Health Care",
-      "marketCap": 6691428839.413503,
+      "marketCap": 6586974368.436385,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/HIMS.png",
       "ipo": "2019-09-09",
@@ -11174,17 +11248,17 @@
           "date": "2026-09-03",
           "o": 28.88,
           "h": 29.12,
-          "l": 27.91,
-          "c": 27.94,
-          "v": 2700087
+          "l": 27.86,
+          "c": 28.0,
+          "v": 3203669
         }
       ]
     },
     "DKNG": {
       "symbol": "DKNG",
-      "price": 24.54,
-      "change": 0.33,
-      "changePercentage": 1.3631,
+      "price": 24.46,
+      "change": 0.25,
+      "changePercentage": 1.0326,
       "open": 24.295,
       "high": 24.830000000000002,
       "low": 24.295,
@@ -11194,7 +11268,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Hotels, Restaurants & Leisure",
       "industry": "Hotels, Restaurants & Leisure",
-      "marketCap": 12019153333.400171,
+      "marketCap": 12200358334.071665,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/950813883726.png",
       "ipo": "2019-07-03",
@@ -11605,17 +11679,17 @@
           "date": "2026-09-03",
           "o": 24.39,
           "h": 24.82,
-          "l": 24.39,
-          "c": 24.51,
-          "v": 1061903
+          "l": 24.34,
+          "c": 24.38,
+          "v": 1243835
         }
       ]
     },
     "INTC": {
       "symbol": "INTC",
-      "price": 89.09,
-      "change": -0.96,
-      "changePercentage": -1.0661,
+      "price": 89.44,
+      "change": -0.61,
+      "changePercentage": -0.6774,
       "open": 89.79,
       "high": 89.85000000000001,
       "low": 87.725,
@@ -11625,7 +11699,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Semiconductors",
       "industry": "Semiconductors",
-      "marketCap": 473170105857.4255,
+      "marketCap": 470454050629.7533,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/INTC.png",
       "ipo": "1971-10-13",
@@ -12037,18 +12111,18 @@
           "o": 89.35,
           "h": 89.84,
           "l": 87.72,
-          "c": 89.01,
-          "v": 17588529
+          "c": 89.43,
+          "v": 19272581
         }
       ]
     },
     "ORCL": {
       "symbol": "ORCL",
-      "price": 152.15,
-      "change": 6.4,
-      "changePercentage": 4.3911,
+      "price": 152.58,
+      "change": 6.83,
+      "changePercentage": 4.6861,
       "open": 146.795,
-      "high": 152.58,
+      "high": 153.7,
       "low": 146.795,
       "prevClose": 145.75,
       "name": "Oracle Corp",
@@ -12056,7 +12130,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Technology",
       "industry": "Technology",
-      "marketCap": 419828662322.7339,
+      "marketCap": 427346669736.3639,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/ORCL.png",
       "ipo": "1986-03-12",
@@ -12466,18 +12540,18 @@
         {
           "date": "2026-09-03",
           "o": 147.27,
-          "h": 153.2,
+          "h": 153.7,
           "l": 147.0,
-          "c": 153.09,
-          "v": 5900399
+          "c": 152.56,
+          "v": 7038949
         }
       ]
     },
     "TSM": {
       "symbol": "TSM",
-      "price": 409.18,
-      "change": -6.32,
-      "changePercentage": -1.5211,
+      "price": 409.39,
+      "change": -6.11,
+      "changePercentage": -1.4705,
       "open": 414.065,
       "high": 414.065,
       "low": 407.815,
@@ -12487,7 +12561,7 @@
       "exchange": "TAIWAN STOCK EXCHANGE",
       "sector": "Semiconductors",
       "industry": "Semiconductors",
-      "marketCap": 63274980703125.0,
+      "marketCap": 61848700400391.0,
       "country": "TW",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/2330.TW.png",
       "ipo": "1994-09-05",
@@ -12899,16 +12973,16 @@
           "o": 413.29,
           "h": 413.12,
           "l": 407.82,
-          "c": 408.92,
-          "v": 2327024
+          "c": 409.4,
+          "v": 2627445
         }
       ]
     },
     "RIVN": {
       "symbol": "RIVN",
-      "price": 15.79,
-      "change": 0.18,
-      "changePercentage": 1.1531,
+      "price": 15.89,
+      "change": 0.28,
+      "changePercentage": 1.7937,
       "open": 15.71,
       "high": 16.055000000000003,
       "low": 15.69,
@@ -12918,7 +12992,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Automobiles",
       "industry": "Automobiles",
-      "marketCap": 22601104058.444157,
+      "marketCap": 22832761477.124275,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/950373444066.png",
       "ipo": "2021-11-10",
@@ -13330,16 +13404,16 @@
           "o": 15.79,
           "h": 16.05,
           "l": 15.69,
-          "c": 15.78,
-          "v": 3376280
+          "c": 15.81,
+          "v": 4155971
         }
       ]
     },
     "BABA": {
       "symbol": "BABA",
-      "price": 110.62,
-      "change": -1.19,
-      "changePercentage": -1.0643,
+      "price": 110.63,
+      "change": -1.18,
+      "changePercentage": -1.0554,
       "open": 110.095,
       "high": 110.84,
       "low": 109.67,
@@ -13349,7 +13423,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Retail",
       "industry": "Retail",
-      "marketCap": 279901098915.48004,
+      "marketCap": 278589723707.6535,
       "country": "HK",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/BABA.png",
       "ipo": "2014-09-19",
@@ -13529,10 +13603,10 @@
       "netMargin": 7.02,
       "dividendYield": 0,
       "volume": 16812060,
-      "targetAvg": 187.14203,
-      "targetHigh": 238.27348,
-      "targetLow": 95.22385,
-      "targetMedian": 188.51292,
+      "targetAvg": 187.12807,
+      "targetHigh": 238.25572,
+      "targetLow": 95.21675,
+      "targetMedian": 188.49887,
       "history": [
         {
           "date": "2026-07-23",
@@ -13771,16 +13845,16 @@
           "o": 110.39,
           "h": 110.84,
           "l": 109.68,
-          "c": 110.6,
-          "v": 2926169
+          "c": 110.64,
+          "v": 3233939
         }
       ]
     },
     "MU": {
       "symbol": "MU",
-      "price": 931.68,
-      "change": -24.4,
-      "changePercentage": -2.5521,
+      "price": 935.38,
+      "change": -20.7,
+      "changePercentage": -2.1651,
       "open": 955.79,
       "high": 959.76,
       "low": 918.8801,
@@ -13790,7 +13864,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Semiconductors",
       "industry": "Semiconductors",
-      "marketCap": 1079790125754.3247,
+      "marketCap": 1058817312612.9452,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/MU.png",
       "ipo": "1984-06-01",
@@ -14212,16 +14286,16 @@
           "o": 956.78,
           "h": 959.76,
           "l": 918.88,
-          "c": 932.87,
-          "v": 8701485
+          "c": 938.05,
+          "v": 9362958
         }
       ]
     },
     "SNDK": {
       "symbol": "SNDK",
-      "price": 1517.34,
-      "change": -36.06,
-      "changePercentage": -2.3214,
+      "price": 1515.31,
+      "change": -38.09,
+      "changePercentage": -2.452,
       "open": 1546.215,
       "high": 1552.77,
       "low": 1511,
@@ -14231,7 +14305,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Technology",
       "industry": "Technology",
-      "marketCap": 227447283738.24164,
+      "marketCap": 223471279855.14264,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/950906460416.png",
       "ipo": "2025-02-13",
@@ -14643,18 +14717,18 @@
           "o": 1543.75,
           "h": 1552.56,
           "l": 1511.0,
-          "c": 1519.8,
-          "v": 2786080
+          "c": 1523.0,
+          "v": 3101150
         }
       ]
     },
     "CRCL": {
       "symbol": "CRCL",
-      "price": 100.31,
-      "change": 11.67,
-      "changePercentage": 13.1656,
+      "price": 100.57,
+      "change": 11.93,
+      "changePercentage": 13.4589,
       "open": 90.6975,
-      "high": 101.38,
+      "high": 101.48,
       "low": 90.6975,
       "prevClose": 88.64,
       "name": "Circle Internet Group Inc",
@@ -14662,7 +14736,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Technology",
       "industry": "Technology",
-      "marketCap": 22503558108.799282,
+      "marketCap": 25006747798.745365,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/950922886856.png",
       "ipo": "2025-06-05",
@@ -15072,18 +15146,18 @@
         {
           "date": "2026-09-03",
           "o": 92.07,
-          "h": 101.38,
+          "h": 101.47,
           "l": 91.74,
-          "c": 100.31,
-          "v": 10332582
+          "c": 100.08,
+          "v": 11742117
         }
       ]
     },
     "CRWV": {
       "symbol": "CRWV",
-      "price": 81.27,
-      "change": 0.34,
-      "changePercentage": 0.4201,
+      "price": 81.46,
+      "change": 0.53,
+      "changePercentage": 0.6549,
       "open": 80.76,
       "high": 81.94000000000001,
       "low": 79.03,
@@ -15093,7 +15167,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Technology",
       "industry": "Technology",
-      "marketCap": 44635855038.72743,
+      "marketCap": 44031923476.50314,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/950683281286.png",
       "ipo": "2025-03-28",
@@ -15505,16 +15579,16 @@
           "o": 80.1,
           "h": 81.93,
           "l": 79.04,
-          "c": 81.36,
-          "v": 4896175
+          "c": 81.46,
+          "v": 5435497
         }
       ]
     },
     "CAT": {
       "symbol": "CAT",
-      "price": 786.08,
-      "change": -6.2,
-      "changePercentage": -0.7826,
+      "price": 792.3,
+      "change": 0.02,
+      "changePercentage": 0.0025,
       "open": 795.18,
       "high": 797.44,
       "low": 781.49,
@@ -15524,7 +15598,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Machinery",
       "industry": "Machinery",
-      "marketCap": 364191190062.4172,
+      "marketCap": 363386785037.23865,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/CAT.png",
       "ipo": "1929-12-02",
@@ -15936,18 +16010,18 @@
           "o": 796.9,
           "h": 796.25,
           "l": 781.49,
-          "c": 787.02,
-          "v": 448101
+          "c": 792.47,
+          "v": 540274
         }
       ]
     },
     "XOM": {
       "symbol": "XOM",
-      "price": 165.5,
-      "change": 1.35,
-      "changePercentage": 0.8224,
+      "price": 165.13,
+      "change": 0.98,
+      "changePercentage": 0.597,
       "open": 164.055,
-      "high": 165.55,
+      "high": 165.65,
       "low": 163.428,
       "prevClose": 164.15,
       "name": "Exxonmobil Holdings Corp",
@@ -16358,18 +16432,18 @@
         {
           "date": "2026-09-03",
           "o": 164.43,
-          "h": 165.55,
+          "h": 165.64,
           "l": 163.43,
-          "c": 165.41,
-          "v": 1825173
+          "c": 165.19,
+          "v": 2181952
         }
       ]
     },
     "CVX": {
       "symbol": "CVX",
-      "price": 212.7,
-      "change": 0.92,
-      "changePercentage": 0.4344,
+      "price": 212.58,
+      "change": 0.8,
+      "changePercentage": 0.3778,
       "open": 211.69,
       "high": 213.13,
       "low": 211.655,
@@ -16379,7 +16453,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Energy",
       "industry": "Energy",
-      "marketCap": 418428839307.22656,
+      "marketCap": 419673566719.173,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/CVX.png",
       "ipo": "1921-06-24",
@@ -16801,16 +16875,16 @@
           "o": 212.38,
           "h": 213.13,
           "l": 211.65,
-          "c": 212.61,
-          "v": 1148288
+          "c": 212.5,
+          "v": 1291762
         }
       ]
     },
     "BA": {
       "symbol": "BA",
-      "price": 206.38,
-      "change": -2.49,
-      "changePercentage": -1.1921,
+      "price": 206.54,
+      "change": -2.33,
+      "changePercentage": -1.1155,
       "open": 209.52,
       "high": 211.055,
       "low": 206.09,
@@ -16820,7 +16894,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Aerospace & Defense",
       "industry": "Aerospace & Defense",
-      "marketCap": 165084583819.49966,
+      "marketCap": 165282169515.16025,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/BA.png",
       "ipo": "1934-09-05",
@@ -17242,18 +17316,18 @@
           "o": 209.94,
           "h": 211.05,
           "l": 206.09,
-          "c": 206.63,
-          "v": 1465525
+          "c": 206.66,
+          "v": 1602546
         }
       ]
     },
     "WMT": {
       "symbol": "WMT",
-      "price": 107.79,
-      "change": 1.7,
-      "changePercentage": 1.6024,
+      "price": 108.08,
+      "change": 1.99,
+      "changePercentage": 1.8758,
       "open": 106.2475,
-      "high": 107.83,
+      "high": 108.11,
       "low": 106.02,
       "prevClose": 106.09,
       "name": "Walmart Inc",
@@ -17671,18 +17745,18 @@
         {
           "date": "2026-09-03",
           "o": 106.45,
-          "h": 107.83,
+          "h": 108.17,
           "l": 106.02,
-          "c": 107.64,
-          "v": 4465066
+          "c": 108.16,
+          "v": 5835003
         }
       ]
     },
     "HD": {
       "symbol": "HD",
-      "price": 316.16,
-      "change": -2.35,
-      "changePercentage": -0.7378,
+      "price": 317.27,
+      "change": -1.24,
+      "changePercentage": -0.3893,
       "open": 317.8,
       "high": 320.44,
       "low": 315.21,
@@ -17692,7 +17766,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Retail",
       "industry": "Retail",
-      "marketCap": 317774115117.5412,
+      "marketCap": 316776446112.1795,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/HD.png",
       "ipo": "1984-04-19",
@@ -18100,18 +18174,18 @@
           "o": 318.21,
           "h": 320.44,
           "l": 315.21,
-          "c": 315.95,
-          "v": 629314
+          "c": 317.28,
+          "v": 694001
         }
       ]
     },
     "UNH": {
       "symbol": "UNH",
-      "price": 399.63,
-      "change": -0.03,
-      "changePercentage": -0.0075,
+      "price": 401.36,
+      "change": 1.7,
+      "changePercentage": 0.4254,
       "open": 399.8875,
-      "high": 400.82,
+      "high": 401.48,
       "low": 395.3005,
       "prevClose": 399.66,
       "name": "UnitedHealth Group Inc",
@@ -18119,7 +18193,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Health Care",
       "industry": "Health Care",
-      "marketCap": 357817213823.7886,
+      "marketCap": 358292939012.13934,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/UNH.png",
       "ipo": "1984-10-17",
@@ -18539,18 +18613,18 @@
         {
           "date": "2026-09-03",
           "o": 400.02,
-          "h": 400.82,
+          "h": 401.67,
           "l": 395.3,
-          "c": 400.19,
-          "v": 516965
+          "c": 401.4,
+          "v": 586598
         }
       ]
     },
     "JNJ": {
       "symbol": "JNJ",
-      "price": 276.31,
-      "change": 1.1,
-      "changePercentage": 0.3997,
+      "price": 277.14,
+      "change": 1.93,
+      "changePercentage": 0.7013,
       "open": 276.16,
       "high": 278.155,
       "low": 273.155,
@@ -18560,7 +18634,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Pharmaceuticals",
       "industry": "Pharmaceuticals",
-      "marketCap": 663228154954.9625,
+      "marketCap": 662384663965.0636,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/JNJ.png",
       "ipo": "1944-09-25",
@@ -18972,16 +19046,16 @@
           "o": 277.32,
           "h": 278.15,
           "l": 273.15,
-          "c": 276.72,
-          "v": 855492
+          "c": 277.66,
+          "v": 1019782
         }
       ]
     },
     "ABNB": {
       "symbol": "ABNB",
-      "price": 185.34,
-      "change": 2.08,
-      "changePercentage": 1.135,
+      "price": 184,
+      "change": 0.74,
+      "changePercentage": 0.4038,
       "open": 183.7525,
       "high": 187,
       "low": 183.7525,
@@ -18991,7 +19065,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Hotels, Restaurants & Leisure",
       "industry": "Hotels, Restaurants & Leisure",
-      "marketCap": 109733465829.4426,
+      "marketCap": 111679517099.65573,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/ABNB.png",
       "ipo": "2020-12-10",
@@ -19402,27 +19476,27 @@
           "date": "2026-09-03",
           "o": 184.7,
           "h": 187.0,
-          "l": 184.15,
-          "c": 185.15,
-          "v": 982048
+          "l": 183.74,
+          "c": 183.74,
+          "v": 1394870
         }
       ]
     },
     "SHOP": {
       "symbol": "SHOP",
-      "price": 143.27,
-      "change": 1.4,
-      "changePercentage": 0.9868,
+      "price": 142.71,
+      "change": 0.84,
+      "changePercentage": 0.5921,
       "open": 143.11,
       "high": 145.54,
-      "low": 142.83,
+      "low": 142.4638,
       "prevClose": 141.87,
       "name": "Shopify Inc",
       "companyName": "Shopify Inc",
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Technology",
       "industry": "Technology",
-      "marketCap": 182536183895.83862,
+      "marketCap": 186846440751.0827,
       "country": "CA",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/SHOP.png",
       "ipo": "2015-05-21",
@@ -19833,27 +19907,27 @@
           "date": "2026-09-03",
           "o": 143.0,
           "h": 145.54,
-          "l": 142.83,
-          "c": 143.07,
-          "v": 1075782
+          "l": 142.46,
+          "c": 142.57,
+          "v": 1205048
         }
       ]
     },
     "PYPL": {
       "symbol": "PYPL",
-      "price": 54.19,
-      "change": -0.48,
-      "changePercentage": -0.878,
+      "price": 55.25,
+      "change": 0.58,
+      "changePercentage": 1.0609,
       "open": 54.72,
-      "high": 55.25,
-      "low": 54.08,
+      "high": 55.4,
+      "low": 54.01,
       "prevClose": 54.67,
       "name": "PayPal Holdings Inc",
       "companyName": "PayPal Holdings Inc",
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Financial Services",
       "industry": "Financial Services",
-      "marketCap": 46768047478.11908,
+      "marketCap": 46823649505.10792,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/PYPL.png",
       "ipo": "2015-07-06",
@@ -20273,28 +20347,28 @@
         {
           "date": "2026-09-03",
           "o": 54.82,
-          "h": 55.24,
-          "l": 54.08,
-          "c": 54.2,
-          "v": 1964855
+          "h": 55.39,
+          "l": 54.01,
+          "c": 55.09,
+          "v": 4004454
         }
       ]
     },
     "ROKU": {
       "symbol": "ROKU",
-      "price": 157.85,
-      "change": 0.15,
-      "changePercentage": 0.0951,
+      "price": 157.72,
+      "change": 0.02,
+      "changePercentage": 0.0127,
       "open": 157.935,
       "high": 158.85,
-      "low": 157.7,
+      "low": 157.64,
       "prevClose": 157.7,
       "name": "Roku Inc",
       "companyName": "Roku Inc",
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Media",
       "industry": "Media",
-      "marketCap": 23405670962.555134,
+      "marketCap": 23547410804.045116,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/ROKU.png",
       "ipo": "2017-09-28",
@@ -20715,17 +20789,17 @@
           "date": "2026-09-03",
           "o": 158.48,
           "h": 158.85,
-          "l": 157.71,
-          "c": 157.71,
-          "v": 276037
+          "l": 157.64,
+          "c": 157.68,
+          "v": 447675
         }
       ]
     },
     "ZM": {
       "symbol": "ZM",
-      "price": 98.54,
-      "change": 2.68,
-      "changePercentage": 2.7957,
+      "price": 97.58,
+      "change": 1.72,
+      "changePercentage": 1.7943,
       "open": 97.39,
       "high": 99.135,
       "low": 97.28,
@@ -21157,16 +21231,16 @@
           "o": 97.28,
           "h": 99.12,
           "l": 97.28,
-          "c": 98.5,
-          "v": 411545
+          "c": 97.5,
+          "v": 461110
         }
       ]
     },
     "DOCU": {
       "symbol": "DOCU",
-      "price": 67.97,
-      "change": 2.58,
-      "changePercentage": 3.9456,
+      "price": 66.93,
+      "change": 1.54,
+      "changePercentage": 2.3551,
       "open": 66.805,
       "high": 68.47,
       "low": 66.8,
@@ -21176,7 +21250,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Technology",
       "industry": "Technology",
-      "marketCap": 12485867968.590347,
+      "marketCap": 12940316138.96467,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/DOCU.png",
       "ipo": "2018-04-27",
@@ -21587,17 +21661,17 @@
           "date": "2026-09-03",
           "o": 67.06,
           "h": 68.46,
-          "l": 66.8,
-          "c": 67.97,
-          "v": 781692
+          "l": 66.72,
+          "c": 66.73,
+          "v": 932808
         }
       ]
     },
     "SNAP": {
       "symbol": "SNAP",
-      "price": 5.82,
-      "change": 0.23,
-      "changePercentage": 4.1145,
+      "price": 5.73,
+      "change": 0.14,
+      "changePercentage": 2.5045,
       "open": 5.67,
       "high": 6.04,
       "low": 5.67,
@@ -21607,7 +21681,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Media",
       "industry": "Media",
-      "marketCap": 9453795395.856075,
+      "marketCap": 10138730939.694096,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/SNAP.png",
       "ipo": "2017-03-02",
@@ -22019,457 +22093,26 @@
           "o": 5.7,
           "h": 6.04,
           "l": 5.68,
-          "c": 5.79,
-          "v": 12740685
-        }
-      ]
-    },
-    "PINS": {
-      "symbol": "PINS",
-      "price": 21.18,
-      "change": -0.04,
-      "changePercentage": -0.1885,
-      "open": 21.35,
-      "high": 21.916,
-      "low": 21.15,
-      "prevClose": 21.22,
-      "name": "Pinterest Inc",
-      "companyName": "Pinterest Inc",
-      "exchange": "NEW YORK STOCK EXCHANGE, INC.",
-      "sector": "Media",
-      "industry": "Media",
-      "marketCap": 12017162221.488941,
-      "country": "US",
-      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/PINS.png",
-      "ipo": "2019-04-18",
-      "strongBuy": 6,
-      "buy": 18,
-      "hold": 21,
-      "sell": 0,
-      "strongSell": 0,
-      "consensus": "Hold",
-      "recTrend": [
-        {
-          "period": "2026-09-01",
-          "sb": 6,
-          "b": 18,
-          "h": 21,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-08-01",
-          "sb": 6,
-          "b": 18,
-          "h": 21,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-07-01",
-          "sb": 6,
-          "b": 17,
-          "h": 21,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-06-01",
-          "sb": 7,
-          "b": 17,
-          "h": 21,
-          "s": 0,
-          "ss": 0
-        }
-      ],
-      "earnings": [
-        {
-          "period": "2026-06-30",
-          "quarter": 2,
-          "estimate": 0.3642,
-          "actual": 0.43,
-          "surprise": 0.0658,
-          "surprisePct": 18.067
-        },
-        {
-          "period": "2026-03-31",
-          "quarter": 1,
-          "estimate": 0.2351,
-          "actual": 0.27,
-          "surprise": 0.0349,
-          "surprisePct": 14.8447
-        },
-        {
-          "period": "2025-12-31",
-          "quarter": 4,
-          "estimate": 0.7057,
-          "actual": 0.67,
-          "surprise": -0.0357,
-          "surprisePct": -5.0588
-        },
-        {
-          "period": "2025-09-30",
-          "quarter": 3,
-          "estimate": 0.4255,
-          "actual": 0.38,
-          "surprise": -0.0455,
-          "surprisePct": -10.6933
-        }
-      ],
-      "earningsHistory": [
-        {
-          "quarter": 2,
-          "year": 2026,
-          "reportDate": "2026-08-04",
-          "epsEstimate": 0.36,
-          "epsActual": 0.43,
-          "epsSurprise": 0.07,
-          "epsSurprisePct": 20.37,
-          "revenueActual": 1179654000.0
-        },
-        {
-          "quarter": 1,
-          "year": 2026,
-          "reportDate": "2026-05-04",
-          "epsEstimate": 0.22,
-          "epsActual": 0.27,
-          "epsSurprise": 0.05000000000000002,
-          "epsSurprisePct": 24.71,
-          "revenueActual": 1007514000.0
-        },
-        {
-          "quarter": 4,
-          "year": 2025,
-          "reportDate": "2026-02-12",
-          "epsEstimate": 0.67,
-          "epsActual": 0.67,
-          "epsSurprise": 0.0,
-          "epsSurprisePct": -0.69,
-          "revenueActual": 1319347000.0
-        },
-        {
-          "quarter": 3,
-          "year": 2025,
-          "reportDate": "2025-11-04",
-          "epsEstimate": 0.42,
-          "epsActual": 0.38,
-          "epsSurprise": -0.03999999999999998,
-          "epsSurprisePct": -8.82,
-          "revenueActual": 1049205000.0
-        },
-        {
-          "quarter": 2,
-          "year": 2025,
-          "reportDate": "2025-08-07",
-          "epsEstimate": 0.35,
-          "epsActual": 0.33,
-          "epsSurprise": -0.019999999999999962,
-          "epsSurprisePct": -6.17,
-          "revenueActual": 998227000.0
-        }
-      ],
-      "upcomingEarnings": [
-        {
-          "date": "2027-05-03",
-          "quarter": 1,
-          "epsEstimate": 0.3329,
-          "revenueEstimate": 1163266078,
-          "hour": ""
-        },
-        {
-          "date": "2027-02-10",
-          "quarter": 4,
-          "epsEstimate": 0.8555,
-          "revenueEstimate": 1547036111,
-          "hour": "amc"
-        },
-        {
-          "date": "2026-11-02",
-          "quarter": 3,
-          "epsEstimate": 0.4833,
-          "revenueEstimate": 1228727383,
-          "hour": ""
-        }
-      ],
-      "pe": 0,
-      "eps": 0.5421,
-      "epsTTM": 0.21049999999999996,
-      "revenuePerShare": 8.0931,
-      "revenueGrowthYoY": 16.64,
-      "earningsNonGaap": 0.21049999999999996,
-      "nonGaapEPS": 0.21049999999999996,
-      "roe": 6.5,
-      "beta": 0.97646004,
-      "yearHigh": 38.57,
-      "yearLow": 13.84,
-      "priceAvg50": 0,
-      "priceAvg200": 0,
-      "grossMargin": 79.47,
-      "netMargin": 5.46,
-      "dividendYield": 0,
-      "volume": 10492530,
-      "targetAvg": 28.99333,
-      "targetHigh": 42.36,
-      "targetLow": 22.0,
-      "targetMedian": 28.5,
-      "history": [
-        {
-          "date": "2026-07-24",
-          "o": 22.15,
-          "h": 22.41,
-          "l": 21.95,
-          "c": 22.13,
-          "v": 8711000
-        },
-        {
-          "date": "2026-07-27",
-          "o": 22.54,
-          "h": 23.78,
-          "l": 22.5,
-          "c": 23.5,
-          "v": 9334000
-        },
-        {
-          "date": "2026-07-28",
-          "o": 23.47,
-          "h": 24.42,
-          "l": 23.3,
-          "c": 24.36,
-          "v": 17109700
-        },
-        {
-          "date": "2026-07-29",
-          "o": 24.04,
-          "h": 24.63,
-          "l": 23.96,
-          "c": 24.44,
-          "v": 11059900
-        },
-        {
-          "date": "2026-07-30",
-          "o": 23.99,
-          "h": 24.56,
-          "l": 23.72,
-          "c": 24.43,
-          "v": 9843500
-        },
-        {
-          "date": "2026-07-31",
-          "o": 24.04,
-          "h": 24.55,
-          "l": 23.67,
-          "c": 24.01,
-          "v": 9810500
-        },
-        {
-          "date": "2026-08-03",
-          "o": 24.38,
-          "h": 24.63,
-          "l": 23.97,
-          "c": 24.16,
-          "v": 13106900
-        },
-        {
-          "date": "2026-08-04",
-          "o": 24.25,
-          "h": 25.73,
-          "l": 24.2,
-          "c": 25.58,
-          "v": 21955800
-        },
-        {
-          "date": "2026-08-05",
-          "o": 23.98,
-          "h": 25.06,
-          "l": 23.16,
-          "c": 23.36,
-          "v": 22990400
-        },
-        {
-          "date": "2026-08-06",
-          "o": 23.22,
-          "h": 23.77,
-          "l": 23.02,
-          "c": 23.33,
-          "v": 15925200
-        },
-        {
-          "date": "2026-08-07",
-          "o": 23.33,
-          "h": 23.8,
-          "l": 23.22,
-          "c": 23.68,
-          "v": 12427900
-        },
-        {
-          "date": "2026-08-10",
-          "o": 23.58,
-          "h": 24.37,
-          "l": 23.58,
-          "c": 24.37,
-          "v": 10876000
-        },
-        {
-          "date": "2026-08-11",
-          "o": 24.13,
-          "h": 24.23,
-          "l": 23.61,
-          "c": 23.75,
-          "v": 9785900
-        },
-        {
-          "date": "2026-08-12",
-          "o": 23.57,
-          "h": 23.58,
-          "l": 22.77,
-          "c": 22.9,
-          "v": 10744100
-        },
-        {
-          "date": "2026-08-13",
-          "o": 23.0,
-          "h": 23.5,
-          "l": 22.65,
-          "c": 23.32,
-          "v": 7945100
-        },
-        {
-          "date": "2026-08-14",
-          "o": 23.26,
-          "h": 24.23,
-          "l": 23.15,
-          "c": 24.06,
-          "v": 8644600
-        },
-        {
-          "date": "2026-08-17",
-          "o": 23.84,
-          "h": 23.95,
-          "l": 22.99,
-          "c": 23.07,
-          "v": 7557200
-        },
-        {
-          "date": "2026-08-18",
-          "o": 23.18,
-          "h": 23.8,
-          "l": 23.06,
-          "c": 23.06,
-          "v": 7617900
-        },
-        {
-          "date": "2026-08-19",
-          "o": 23.15,
-          "h": 23.67,
-          "l": 22.96,
-          "c": 23.39,
-          "v": 7607300
-        },
-        {
-          "date": "2026-08-20",
-          "o": 23.26,
-          "h": 23.5,
-          "l": 22.8,
-          "c": 23.23,
-          "v": 7178600
-        },
-        {
-          "date": "2026-08-21",
-          "o": 23.24,
-          "h": 23.59,
-          "l": 23.02,
-          "c": 23.4,
-          "v": 6836300
-        },
-        {
-          "date": "2026-08-24",
-          "o": 23.23,
-          "h": 23.68,
-          "l": 22.86,
-          "c": 23.47,
-          "v": 11486900
-        },
-        {
-          "date": "2026-08-25",
-          "o": 23.4,
-          "h": 23.78,
-          "l": 23.3,
-          "c": 23.66,
-          "v": 8510300
-        },
-        {
-          "date": "2026-08-26",
-          "o": 23.57,
-          "h": 23.79,
-          "l": 23.12,
-          "c": 23.31,
-          "v": 10389900
-        },
-        {
-          "date": "2026-08-27",
-          "o": 23.45,
-          "h": 23.51,
-          "l": 22.8,
-          "c": 22.88,
-          "v": 7520700
-        },
-        {
-          "date": "2026-08-28",
-          "o": 22.98,
-          "h": 23.45,
-          "l": 22.98,
-          "c": 23.19,
-          "v": 6673000
-        },
-        {
-          "date": "2026-08-31",
-          "o": 22.09,
-          "h": 22.5,
-          "l": 21.38,
-          "c": 21.71,
-          "v": 23209800
-        },
-        {
-          "date": "2026-09-01",
-          "o": 21.61,
-          "h": 21.9,
-          "l": 21.16,
-          "c": 21.25,
-          "v": 9830700
-        },
-        {
-          "date": "2026-09-02",
-          "o": 21.27,
-          "h": 21.42,
-          "l": 21.0,
-          "c": 21.22,
-          "v": 13271700
-        },
-        {
-          "date": "2026-09-03",
-          "o": 21.4,
-          "h": 21.92,
-          "l": 21.13,
-          "c": 21.13,
-          "v": 2088460
+          "c": 5.72,
+          "v": 14177941
         }
       ]
     },
     "UBER": {
       "symbol": "UBER",
-      "price": 76.61,
-      "change": 0.16,
-      "changePercentage": 0.2093,
+      "price": 75.55,
+      "change": -0.9,
+      "changePercentage": -1.1772,
       "open": 77.1775,
       "high": 78.354,
-      "low": 76.39,
+      "low": 75.52,
       "prevClose": 76.45,
       "name": "Uber Technologies Inc",
       "companyName": "Uber Technologies Inc",
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Road & Rail",
       "industry": "Road & Rail",
-      "marketCap": 156153721378.4357,
+      "marketCap": 159421815736.59775,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/UBER.png",
       "ipo": "2019-05-10",
@@ -22880,27 +22523,27 @@
           "date": "2026-09-03",
           "o": 77.33,
           "h": 78.35,
-          "l": 76.22,
-          "c": 76.23,
-          "v": 3750515
+          "l": 75.43,
+          "c": 75.48,
+          "v": 4527462
         }
       ]
     },
     "LYFT": {
       "symbol": "LYFT",
-      "price": 17.46,
-      "change": 0.11,
-      "changePercentage": 0.634,
+      "price": 17.27,
+      "change": -0.08,
+      "changePercentage": -0.4611,
       "open": 17.53,
       "high": 17.990000000000002,
-      "low": 17.41,
+      "low": 17.245,
       "prevClose": 17.35,
       "name": "Lyft Inc",
       "companyName": "Lyft Inc",
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Road & Rail",
       "industry": "Road & Rail",
-      "marketCap": 6567673563.556948,
+      "marketCap": 6791012281.978098,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/LYFT.png",
       "ipo": "2019-03-29",
@@ -23311,17 +22954,17 @@
           "date": "2026-09-03",
           "o": 17.54,
           "h": 17.98,
-          "l": 17.38,
-          "c": 17.39,
-          "v": 1927448
+          "l": 17.21,
+          "c": 17.24,
+          "v": 2140092
         }
       ]
     },
     "NIO": {
       "symbol": "NIO",
-      "price": 3.78,
-      "change": -0.08,
-      "changePercentage": -2.0725,
+      "price": 3.8,
+      "change": -0.06,
+      "changePercentage": -1.5544,
       "open": 3.82,
       "high": 3.82,
       "low": 3.7114,
@@ -23331,7 +22974,7 @@
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Automobiles",
       "industry": "Automobiles",
-      "marketCap": 9339696493.034998,
+      "marketCap": 9025554314.24232,
       "country": "CN",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/NIO.png",
       "ipo": "2018-09-12",
@@ -23511,10 +23154,10 @@
       "netMargin": -9.09,
       "dividendYield": 0,
       "volume": 40451150,
-      "targetAvg": 6.7389407,
-      "targetHigh": 10.098991,
-      "targetLow": 4.0082297,
-      "targetMedian": 6.638565,
+      "targetAvg": 6.738438,
+      "targetHigh": 10.098238,
+      "targetLow": 4.0079308,
+      "targetMedian": 6.63807,
       "history": [
         {
           "date": "2026-07-24",
@@ -23751,18 +23394,18 @@
         {
           "date": "2026-09-03",
           "o": 3.79,
-          "h": 3.79,
+          "h": 3.8,
           "l": 3.71,
-          "c": 3.76,
-          "v": 22071205
+          "c": 3.79,
+          "v": 24265568
         }
       ]
     },
     "PLUG": {
       "symbol": "PLUG",
-      "price": 2.12,
-      "change": 0.03,
-      "changePercentage": 1.4354,
+      "price": 2.13,
+      "change": 0.04,
+      "changePercentage": 1.9139,
       "open": 2.105,
       "high": 2.13,
       "low": 2.07,
@@ -23772,7 +23415,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Electrical Equipment",
       "industry": "Electrical Equipment",
-      "marketCap": 2920137827.9999995,
+      "marketCap": 2960097608.80421,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/PLUG.png",
       "ipo": "1999-10-28",
@@ -24195,15 +23838,15 @@
           "h": 2.13,
           "l": 2.07,
           "c": 2.11,
-          "v": 10570874
+          "v": 12847290
         }
       ]
     },
     "FCEL": {
       "symbol": "FCEL",
-      "price": 14.09,
-      "change": -0.31,
-      "changePercentage": -2.1528,
+      "price": 14.37,
+      "change": -0.03,
+      "changePercentage": -0.2083,
       "open": 14.2575,
       "high": 14.69,
       "low": 13.83,
@@ -24213,7 +23856,7 @@
       "exchange": "NASDAQ NMS - GLOBAL MARKET",
       "sector": "Electrical Equipment",
       "industry": "Electrical Equipment",
-      "marketCap": 1151340375.4566746,
+      "marketCap": 1144544243.7673612,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/FCEL.png",
       "ipo": "1992-06-25",
@@ -24635,26 +24278,26 @@
           "o": 14.3,
           "h": 14.68,
           "l": 13.83,
-          "c": 14.07,
-          "v": 2930475
+          "c": 14.35,
+          "v": 3369761
         }
       ]
     },
     "SPCE": {
       "symbol": "SPCE",
-      "price": 3.01,
-      "change": 0.06,
-      "changePercentage": 2.0339,
+      "price": 2.99,
+      "change": 0.04,
+      "changePercentage": 1.3559,
       "open": 2.98,
       "high": 3.08,
-      "low": 2.98,
+      "low": 2.97,
       "prevClose": 2.95,
       "name": "Virgin Galactic Holdings Inc",
       "companyName": "Virgin Galactic Holdings Inc",
       "exchange": "NEW YORK STOCK EXCHANGE, INC.",
       "sector": "Aerospace & Defense",
       "industry": "Aerospace & Defense",
-      "marketCap": 447207922.233677,
+      "marketCap": 460093568.84576267,
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/SPCE.png",
       "ipo": "2017-09-18",
@@ -25075,17 +24718,17 @@
           "date": "2026-09-03",
           "o": 2.99,
           "h": 3.08,
-          "l": 2.99,
-          "c": 2.99,
-          "v": 1251384
+          "l": 2.97,
+          "c": 2.97,
+          "v": 1451688
         }
       ]
     },
     "TLT": {
       "symbol": "TLT",
-      "price": 82.28,
-      "change": 0.33,
-      "changePercentage": 0.4027,
+      "price": 82.3,
+      "change": 0.35,
+      "changePercentage": 0.4271,
       "open": 82.285,
       "high": 82.375,
       "low": 82.155,
@@ -25099,7 +24742,7 @@
       "earningsNonGaap": 0,
       "nonGaapEPS": 0,
       "roe": 0,
-      "beta": 0.5145873,
+      "beta": 0.51507926,
       "yearHigh": 92.185,
       "yearLow": 81.17,
       "priceAvg50": 0,
@@ -25107,7 +24750,7 @@
       "grossMargin": 0,
       "netMargin": 0,
       "dividendYield": 0,
-      "volume": 31597370,
+      "volume": 28611860,
       "targetAvg": 0,
       "targetHigh": 0,
       "targetLow": 0,
@@ -25350,16 +24993,16 @@
           "o": 82.34,
           "h": 82.36,
           "l": 82.16,
-          "c": 82.24,
-          "v": 5199508
+          "c": 82.28,
+          "v": 5740575
         }
       ]
     },
     "GLD": {
       "symbol": "GLD",
-      "price": 410.01,
-      "change": 7.23,
-      "changePercentage": 1.795,
+      "price": 410.46,
+      "change": 7.68,
+      "changePercentage": 1.9067,
       "open": 408.505,
       "high": 410.9646,
       "low": 408.505,
@@ -25373,15 +25016,15 @@
       "earningsNonGaap": 0,
       "nonGaapEPS": 0,
       "roe": 0,
-      "beta": 0.18329044,
+      "beta": 0.18026583,
       "yearHigh": 509.7,
-      "yearLow": 320.24,
+      "yearLow": 325.35,
       "priceAvg50": 0,
       "priceAvg200": 0,
       "grossMargin": 0,
       "netMargin": 0,
       "dividendYield": 0,
-      "volume": 14188700,
+      "volume": 13812050,
       "targetAvg": 0,
       "targetHigh": 0,
       "targetLow": 0,
@@ -25624,16 +25267,16 @@
           "o": 410.71,
           "h": 410.96,
           "l": 408.54,
-          "c": 409.86,
-          "v": 3761082
+          "c": 410.53,
+          "v": 3975672
         }
       ]
     },
     "SLV": {
       "symbol": "SLV",
-      "price": 59.99,
-      "change": 0.92,
-      "changePercentage": 1.5575,
+      "price": 60.11,
+      "change": 1.04,
+      "changePercentage": 1.7606,
       "open": 59.77,
       "high": 60.19,
       "low": 59.5999,
@@ -25647,15 +25290,15 @@
       "earningsNonGaap": 0,
       "nonGaapEPS": 0,
       "roe": 0,
-      "beta": 0.5002386,
+      "beta": 0.49661374,
       "yearHigh": 109.83,
-      "yearLow": 36.43,
+      "yearLow": 36.6301,
       "priceAvg50": 0,
       "priceAvg200": 0,
       "grossMargin": 0,
       "netMargin": 0,
       "dividendYield": 0,
-      "volume": 19845100,
+      "volume": 18792360,
       "targetAvg": 0,
       "targetHigh": 0,
       "targetLow": 0,
@@ -25898,18 +25541,18 @@
           "o": 60.02,
           "h": 60.19,
           "l": 59.6,
-          "c": 59.97,
-          "v": 4615774
+          "c": 60.15,
+          "v": 5044594
         }
       ]
     },
     "USO": {
       "symbol": "USO",
-      "price": 143.29,
-      "change": 2.14,
-      "changePercentage": 1.5161,
+      "price": 142.79,
+      "change": 1.64,
+      "changePercentage": 1.1619,
       "open": 141.455,
-      "high": 143.33,
+      "high": 143.35,
       "low": 141.455,
       "prevClose": 141.15,
       "upcomingEarnings": [],
@@ -25921,7 +25564,7 @@
       "earningsNonGaap": 0,
       "nonGaapEPS": 0,
       "roe": 0,
-      "beta": -0.013168272,
+      "beta": -0.01201867,
       "yearHigh": 154.08,
       "yearLow": 65.985,
       "priceAvg50": 0,
@@ -25929,7 +25572,7 @@
       "grossMargin": 0,
       "netMargin": 0,
       "dividendYield": 0,
-      "volume": 4214070,
+      "volume": 4244690,
       "targetAvg": 0,
       "targetHigh": 0,
       "targetLow": 0,
@@ -26172,18 +25815,18 @@
           "o": 142.12,
           "h": 143.35,
           "l": 141.87,
-          "c": 143.26,
-          "v": 1594042
+          "c": 142.72,
+          "v": 1737648
         }
       ]
     },
     "XLE": {
       "symbol": "XLE",
-      "price": 65.39,
-      "change": 0.29,
-      "changePercentage": 0.4455,
+      "price": 65.44,
+      "change": 0.34,
+      "changePercentage": 0.5223,
       "open": 64.975,
-      "high": 65.41,
+      "high": 65.515,
       "low": 64.945,
       "prevClose": 65.1,
       "upcomingEarnings": [],
@@ -26195,15 +25838,15 @@
       "earningsNonGaap": 0,
       "nonGaapEPS": 0,
       "roe": 0,
-      "beta": 0.48636696,
-      "yearHigh": 64.95,
+      "beta": 0.48619768,
+      "yearHigh": 65.345,
       "yearLow": 42.35,
       "priceAvg50": 0,
       "priceAvg200": 0,
       "grossMargin": 0,
       "netMargin": 0,
       "dividendYield": 0,
-      "volume": 26312920,
+      "volume": 26499280,
       "targetAvg": 0,
       "targetHigh": 0,
       "targetLow": 0,
@@ -26444,18 +26087,18 @@
         {
           "date": "2026-09-03",
           "o": 65.12,
-          "h": 65.43,
+          "h": 65.51,
           "l": 64.94,
-          "c": 65.42,
-          "v": 6193939
+          "c": 65.4,
+          "v": 7431373
         }
       ]
     },
     "XLK": {
       "symbol": "XLK",
-      "price": 184.18,
-      "change": 0.58,
-      "changePercentage": 0.3159,
+      "price": 183.99,
+      "change": 0.39,
+      "changePercentage": 0.2124,
       "open": 183.565,
       "high": 184.74,
       "low": 182.49,
@@ -26469,7 +26112,7 @@
       "earningsNonGaap": 0,
       "nonGaapEPS": 0,
       "roe": 0,
-      "beta": 1.365919,
+      "beta": 1.3661982,
       "yearHigh": 198.73,
       "yearLow": 126.68,
       "priceAvg50": 0,
@@ -26477,7 +26120,7 @@
       "grossMargin": 0,
       "netMargin": 0,
       "dividendYield": 0,
-      "volume": 6165610,
+      "volume": 6005240,
       "targetAvg": 0,
       "targetHigh": 0,
       "targetLow": 0,
@@ -26720,16 +26363,16 @@
           "o": 183.52,
           "h": 184.74,
           "l": 182.5,
-          "c": 184.06,
-          "v": 1682785
+          "c": 184.02,
+          "v": 1816914
         }
       ]
     },
     "XLF": {
       "symbol": "XLF",
-      "price": 58.2,
-      "change": 0.54,
-      "changePercentage": 0.9365,
+      "price": 58.26,
+      "change": 0.6,
+      "changePercentage": 1.0406,
       "open": 57.8675,
       "high": 58.52,
       "low": 57.8675,
@@ -26743,7 +26386,7 @@
       "earningsNonGaap": 0,
       "nonGaapEPS": 0,
       "roe": 0,
-      "beta": 0.8767813,
+      "beta": 0.8762751,
       "yearHigh": 58.41,
       "yearLow": 47.67,
       "priceAvg50": 0,
@@ -26751,7 +26394,7 @@
       "grossMargin": 0,
       "netMargin": 0,
       "dividendYield": 0,
-      "volume": 27768080,
+      "volume": 27335730,
       "targetAvg": 0,
       "targetHigh": 0,
       "targetLow": 0,
@@ -26994,16 +26637,16 @@
           "o": 58.0,
           "h": 58.52,
           "l": 58.0,
-          "c": 58.19,
-          "v": 7053155
+          "c": 58.26,
+          "v": 8399764
         }
       ]
     },
     "XLV": {
       "symbol": "XLV",
-      "price": 172.19,
-      "change": -0.76,
-      "changePercentage": -0.4394,
+      "price": 172.4,
+      "change": -0.55,
+      "changePercentage": -0.318,
       "open": 173.74,
       "high": 174.16,
       "low": 171.38,
@@ -27017,7 +26660,7 @@
       "earningsNonGaap": 0,
       "nonGaapEPS": 0,
       "roe": 0,
-      "beta": 0.5479495,
+      "beta": 0.54780716,
       "yearHigh": 176.595,
       "yearLow": 133.725,
       "priceAvg50": 0,
@@ -27025,7 +26668,7 @@
       "grossMargin": 0,
       "netMargin": 0,
       "dividendYield": 0,
-      "volume": 8053400,
+      "volume": 7180040,
       "targetAvg": 0,
       "targetHigh": 0,
       "targetLow": 0,
@@ -27268,8 +26911,8 @@
           "o": 174.07,
           "h": 174.16,
           "l": 171.39,
-          "c": 172.08,
-          "v": 2147753
+          "c": 172.39,
+          "v": 2336089
         }
       ]
     }
