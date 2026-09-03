@@ -1,5 +1,5 @@
 {
-  "date": "September 03, 2026 13:05 UTC",
+  "date": "September 03, 2026 13:10 UTC",
   "assets": {
     "S&P 500": {
       "price": 7666.6,
@@ -92,20 +92,20 @@
       ]
     },
     "BTC": {
-      "price": 78555.0,
-      "change_pct": 2.35,
+      "price": 78500.0,
+      "change_pct": 2.3,
       "support": 62484.2,
       "resistance": 81500.0
     },
     "ETH": {
-      "price": 2419.12,
-      "change_pct": 1.55,
+      "price": 2417.95,
+      "change_pct": 1.51,
       "support": 1852.22,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 101.45,
-      "change_pct": 3.53,
+      "price": 101.48,
+      "change_pct": 3.58,
       "support": 72.29,
       "resistance": 110.6
     }
@@ -153,12 +153,12 @@
   "whale_flow": "NEUTRAL",
   "metrics": {
     "vix": {
-      "value": "15.1",
+      "value": "15.0",
       "label": "VIX",
       "color": "green"
     },
     "yield_10y": {
-      "value": "4.74%",
+      "value": "4.73%",
       "label": "10Y YIELD",
       "color": "blue"
     },
@@ -168,17 +168,17 @@
       "color": "green"
     },
     "oil": {
-      "value": "$91.73",
+      "value": "$91.98",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4541",
+      "value": "$4539",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$67.25",
+      "value": "$67.29",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -196,7 +196,7 @@
     },
     {
       "label": "BULLISH",
-      "text": "BTC up 2.4% \u2014 momentum",
+      "text": "BTC up 2.3% \u2014 momentum",
       "type": "bullish"
     },
     {
@@ -215,18 +215,18 @@
       "type": "bullish"
     }
   ],
-  "btc_funding": 6.865e-05,
+  "btc_funding": 6.627e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 26.01,
-    "daily_avg": 26.11,
-    "daily_pct": -0.4,
-    "weekly_inflow": 182.8,
+    "daily_inflow": 26.03,
+    "daily_avg": 26.12,
+    "daily_pct": -0.3,
+    "weekly_inflow": 182.82,
     "weekly_avg": 192.69,
     "weekly_pct": -5.1,
-    "monthly_inflow": 825.82,
-    "monthly_avg": 815.54,
+    "monthly_inflow": 825.83,
+    "monthly_avg": 815.55,
     "monthly_pct": 1.3,
     "large_tx_count": 660496
   },
@@ -254,7 +254,7 @@
       14.92,
       16.34,
       15.2,
-      15.1
+      15.01
     ],
     "yield_10y": [
       4.69,
@@ -279,7 +279,7 @@
       4.76,
       4.8,
       4.8,
-      4.74
+      4.73
     ],
     "oil": [
       80.34,
@@ -305,7 +305,7 @@
       85.76,
       90.22,
       91.01,
-      91.73
+      91.98
     ],
     "gold": [
       4033.7,
@@ -331,7 +331,7 @@
       4431.1,
       4348.0,
       4366.3,
-      4541.0
+      4539.0
     ],
     "silver": [
       57.67,
@@ -357,7 +357,7 @@
       66.22,
       64.62,
       64.72,
-      67.25
+      67.29
     ],
     "dxy": [
       99.96,
@@ -382,7 +382,7 @@
       99.43,
       99.67,
       99.56,
-      98.95
+      98.99
     ],
     "sp500": [
       7600.5,
@@ -433,5 +433,26 @@
       26217.83
     ]
   },
-  "econ_events": []
+  "econ_events": [
+    {
+      "label": "UNEMPLOYMENT CLAIMS",
+      "date": "09-03-2026",
+      "time": "12:30pm ET",
+      "forecast": "205K",
+      "previous": "203K",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "ISM SERVICES PMI",
+      "date": "09-03-2026",
+      "time": "2:00pm ET",
+      "forecast": "54.2",
+      "previous": "54.1",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    }
+  ]
 }
