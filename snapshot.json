@@ -1,9 +1,9 @@
 {
-  "date": "September 04, 2026 17:25 UTC",
+  "date": "September 04, 2026 17:30 UTC",
   "assets": {
     "S&P 500": {
-      "price": 7716.62,
-      "change_pct": -0.4,
+      "price": 7712.76,
+      "change_pct": -0.45,
       "support": 7611.2,
       "resistance": 7816.7,
       "history": [
@@ -30,12 +30,12 @@
         7631.47,
         7666.6,
         7747.71,
-        7716.62
+        7712.76
       ]
     },
     "NASDAQ": {
-      "price": 26483.46,
-      "change_pct": -0.38,
+      "price": 26471.66,
+      "change_pct": -0.42,
       "support": 25910.82,
       "resistance": 26875.52,
       "history": [
@@ -62,12 +62,12 @@
         26099.77,
         26217.83,
         26584.06,
-        26483.46
+        26471.66
       ]
     },
     "Dow Jones": {
-      "price": 53413.76,
-      "change_pct": -0.51,
+      "price": 53381.03,
+      "change_pct": -0.57,
       "support": 52691.31,
       "resistance": 54744.33,
       "history": [
@@ -94,18 +94,18 @@
         52766.88,
         53061.95,
         53686.11,
-        53413.5
+        53381.03
       ]
     },
     "BTC": {
-      "price": 79559.9,
-      "change_pct": -1.74,
+      "price": 79508.6,
+      "change_pct": -1.79,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2449.33,
-      "change_pct": -1.94,
+      "price": 2447.71,
+      "change_pct": -2.04,
       "support": 1852.22,
       "resistance": 2566.4
     },
@@ -174,17 +174,17 @@
       "color": "red"
     },
     "oil": {
-      "value": "$90.68",
+      "value": "$90.69",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4482",
+      "value": "$4487",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$66.65",
+      "value": "$66.86",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -202,22 +202,22 @@
     },
     {
       "label": "CAUTION",
-      "text": "S&P 500 down -0.4%",
+      "text": "S&P 500 down -0.5%",
       "type": "caution"
     }
   ],
-  "btc_funding": 3.523e-05,
+  "btc_funding": 3.564e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 41.27,
-    "daily_avg": 28.8,
-    "daily_pct": 43.3,
-    "weekly_inflow": 201.59,
-    "weekly_avg": 200.08,
-    "weekly_pct": 0.8,
-    "monthly_inflow": 857.47,
-    "monthly_avg": 818.71,
+    "daily_inflow": 41.16,
+    "daily_avg": 28.78,
+    "daily_pct": 43.0,
+    "weekly_inflow": 201.48,
+    "weekly_avg": 200.05,
+    "weekly_pct": 0.7,
+    "monthly_inflow": 857.36,
+    "monthly_avg": 818.67,
     "monthly_pct": 4.7,
     "large_tx_count": 689901
   },
@@ -298,7 +298,7 @@
       90.22,
       91.01,
       91.3,
-      90.68
+      90.69
     ],
     "gold": [
       4095.4,
@@ -324,7 +324,7 @@
       4348.0,
       4366.3,
       4491.7,
-      4481.7
+      4487.4
     ],
     "silver": [
       60.06,
@@ -350,7 +350,7 @@
       64.62,
       64.72,
       66.97,
-      66.65
+      66.86
     ],
     "dxy": [
       99.89,
@@ -376,7 +376,7 @@
       99.67,
       99.56,
       99.0,
-      99.13
+      99.12
     ],
     "sp500": [
       7736.52,
@@ -402,7 +402,7 @@
       7631.47,
       7666.6,
       7747.71,
-      7716.62
+      7712.76
     ],
     "nasdaq": [
       26584.99,
@@ -428,8 +428,39 @@
       26099.77,
       26217.83,
       26584.06,
-      26483.46
+      26471.66
     ]
   },
-  "econ_events": []
+  "econ_events": [
+    {
+      "label": "AVERAGE HOURLY EARNINGS M/M",
+      "date": "09-04-2026",
+      "time": "12:30pm ET",
+      "forecast": "0.3%",
+      "previous": "0.1%",
+      "actual": null,
+      "impact": "High",
+      "country": "USD"
+    },
+    {
+      "label": "NON-FARM EMPLOYMENT CHANGE",
+      "date": "09-04-2026",
+      "time": "12:30pm ET",
+      "forecast": "55K",
+      "previous": "-23K",
+      "actual": null,
+      "impact": "High",
+      "country": "USD"
+    },
+    {
+      "label": "UNEMPLOYMENT RATE",
+      "date": "09-04-2026",
+      "time": "12:30pm ET",
+      "forecast": "4.1%",
+      "previous": "4.1%",
+      "actual": null,
+      "impact": "High",
+      "country": "USD"
+    }
+  ]
 }
