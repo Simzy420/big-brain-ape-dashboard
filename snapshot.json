@@ -1,5 +1,5 @@
 {
-  "date": "September 04, 2026 02:05 UTC",
+  "date": "September 04, 2026 02:10 UTC",
   "assets": {
     "S&P 500": {
       "price": 7747.71,
@@ -95,20 +95,20 @@
       ]
     },
     "BTC": {
-      "price": 80795.3,
+      "price": 80767.6,
       "change_pct": 4.57,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2500.22,
-      "change_pct": 4.87,
+      "price": 2499.94,
+      "change_pct": 4.94,
       "support": 1852.22,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 103.5,
-      "change_pct": 3.48,
+      "price": 103.51,
+      "change_pct": 3.42,
       "support": 72.29,
       "resistance": 110.6
     }
@@ -171,17 +171,17 @@
       "color": "green"
     },
     "oil": {
-      "value": "$92.08",
+      "value": "$92.00",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4520",
+      "value": "$4526",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$67.42",
+      "value": "$67.47",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -218,20 +218,20 @@
       "type": "bullish"
     }
   ],
-  "btc_funding": 8.595e-05,
+  "btc_funding": 8.45e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 40.35,
-    "daily_avg": 28.67,
-    "daily_pct": 40.8,
-    "weekly_inflow": 200.66,
+    "daily_inflow": 40.34,
+    "daily_avg": 28.66,
+    "daily_pct": 40.7,
+    "weekly_inflow": 200.65,
     "weekly_avg": 199.86,
     "weekly_pct": 0.4,
-    "monthly_inflow": 856.55,
+    "monthly_inflow": 856.53,
     "monthly_avg": 818.4,
     "monthly_pct": 4.7,
-    "large_tx_count": 762707
+    "large_tx_count": 760710
   },
   "history": {
     "vix": [
@@ -310,7 +310,8 @@
       85.76,
       90.22,
       91.01,
-      92.08
+      NaN,
+      92.0
     ],
     "gold": [
       4033.7,
@@ -336,7 +337,8 @@
       4431.1,
       4348.0,
       4366.3,
-      4520.4
+      NaN,
+      4525.8
     ],
     "silver": [
       57.67,
@@ -362,7 +364,8 @@
       66.22,
       64.62,
       64.72,
-      67.42
+      NaN,
+      67.47
     ],
     "dxy": [
       99.96,
@@ -388,7 +391,7 @@
       99.43,
       99.67,
       99.56,
-      98.98
+      98.96
     ],
     "sp500": [
       7736.52,
