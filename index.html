@@ -1,347 +1,476 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Big Brain Ape | NVDA Analysis</title>
-  <script src="https://s3.tradingview.com/tv.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Big Brain Ape — Autonomous AI Trading Agent</title>
+  <meta name="description" content="Don't chase the market. Let the Ape hunt the signal. Big Brain Ape is an autonomous AI trading agent for Hyperliquid perpetuals across 98 assets. If it doesn't make money, it's free.">
+  <meta property="og:title" content="Big Brain Ape — Autonomous AI Trading Agent">
+  <meta property="og:description" content="98 assets. One AI brain. Druckenmiller-style macro strategy. If it doesn't make money, it's free.">
+  <meta property="og:image" content="https://simzy420.github.io/big-brain-ape-dashboard/mascot_transparent.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Big Brain Ape — Autonomous AI Trading Agent">
+  <meta name="twitter:description" content="98 assets. One AI brain. If it doesn't make money, it's free.">
+  <meta name="twitter:image" content="https://simzy420.github.io/big-brain-ape-dashboard/mascot_transparent.png">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0a0a0f;
+      --card: #13131f;
+      --border: #1f1f35;
+      --neon: #00d9ff;
+      --neon2: #00ff9d;
+      --text: #e5e7eb;
+      --muted: #6b7280;
+      --orange: #f0883e;
+    }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-      background: #0a0a0f;
-      color: #e5e7eb;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
-      line-height: 1.5;
+      line-height: 1.6;
+      overflow-x: hidden;
     }
-    .container {
-      max-width: 1100px;
+    a { color: var(--neon); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      background: radial-gradient(ellipse at top, #0d1a2d 0%, #0a0a0f 70%);
+      position: relative;
+    }
+    .hero-mascot {
+      width: 180px;
+      height: 180px;
+      object-fit: contain;
+      margin-bottom: 24px;
+      filter: drop-shadow(0 0 30px rgba(0,217,255,0.4));
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+    .hero h1 {
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1.2;
+      max-width: 600px;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #00d9ff, #00ff9d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero .tagline {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 480px;
+      margin-bottom: 32px;
+    }
+    .hero .explainer {
+      font-size: 16px;
+      color: var(--text);
+      max-width: 500px;
+      margin-bottom: 36px;
+      line-height: 1.7;
+    }
+    .cta-btn {
+      display: inline-block;
+      padding: 18px 48px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #0a0a0f;
+      background: linear-gradient(135deg, #00d9ff, #00ff9d);
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .cta-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 40px rgba(0,217,255,0.4);
+      text-decoration: none;
+    }
+    .hero .free-badge {
+      display: block;
+      margin-top: 12px;
+      font-size: 14px;
+      color: var(--neon2);
+    }
+
+    /* SCROLL INDICATOR */
+    .scroll-hint {
+      margin-top: 40px;
+      font-size: 24px;
+      color: var(--muted);
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+
+    /* SECTIONS */
+    .section {
+      max-width: 800px;
       margin: 0 auto;
-      padding: 20px 16px 40px;
+      padding: 60px 20px;
     }
-    header {
+    .section h2 {
+      font-size: 28px;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 40px;
+      color: var(--text);
+    }
+
+    /* SOCIAL PROOF STATS */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--neon);
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* HOW IT WORKS */
+    .steps {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 28px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid #1f2937;
+      flex-direction: column;
+      gap: 24px;
     }
-    .logo {
+    .step {
       display: flex;
-      align-items: center;
-      gap: 12px;
+      gap: 20px;
+      align-items: flex-start;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
     }
-    .logo-icon {
+    .step-num {
+      flex-shrink: 0;
       width: 48px;
       height: 48px;
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      border-radius: 12px;
+      background: linear-gradient(135deg, #00d9ff, #00ff9d);
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
-    }
-    .logo-text h1 {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #f9fafb;
-    }
-    .logo-text p {
-      font-size: 0.8rem;
-      color: #9ca3af;
-    }
-    .badge {
-      background: #065f46;
-      color: #6ee7b7;
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 999px;
-    }
-
-    /* Price Section */
-    .price-card {
-      background: #111827;
-      border: 1px solid #1f2937;
-      border-radius: 16px;
-      padding: 24px;
-      margin-bottom: 20px;
-    }
-    .ticker-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-    .ticker {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #9ca3af;
-    }
-    .price {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #f9fafb;
-      letter-spacing: -0.5px;
-    }
-    .change {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-top: 4px;
-    }
-    .change.down { color: #f87171; }
-    .change.up { color: #34d399; }
-
-    /* Recommendation */
-    .rec-card {
-      background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
-      border: 1px solid #10b981;
-      border-radius: 16px;
-      padding: 20px 24px;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    .rec-label {
-      font-size: 0.85rem;
-      color: #a7f3d0;
-      margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .rec-value {
-      font-size: 2rem;
+      font-size: 20px;
       font-weight: 800;
-      color: #6ee7b7;
+      color: #0a0a0f;
     }
-    .rec-sub {
-      font-size: 0.9rem;
-      color: #a7f3d0;
-      margin-top: 4px;
+    .step-content h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .step-content p {
+      font-size: 15px;
+      color: var(--muted);
     }
 
-    /* Analyst Ratings */
-    .section {
-      background: #111827;
-      border: 1px solid #1f2937;
+    /* PRICING */
+    .pricing-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .price-card {
+      background: var(--card);
+      border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 20px;
+      padding: 28px;
+      position: relative;
     }
-    .section-title {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #d1d5db;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .price-card.popular {
+      border-color: var(--neon);
+      box-shadow: 0 0 30px rgba(0,217,255,0.15);
     }
-    .consensus {
-      text-align: center;
-      margin-bottom: 16px;
-    }
-    .consensus-value {
-      font-size: 1.6rem;
+    .price-card .badge {
+      position: absolute;
+      top: -12px;
+      right: 24px;
+      background: linear-gradient(135deg, #00d9ff, #00ff9d);
+      color: #0a0a0f;
+      font-size: 12px;
       font-weight: 700;
-      color: #34d399;
+      padding: 4px 12px;
+      border-radius: 20px;
     }
-    .bars {
-      display: flex;
-      height: 12px;
-      border-radius: 6px;
-      overflow: hidden;
-      margin-bottom: 12px;
-    }
-    .bar-strong-buy { background: #10b981; }
-    .bar-buy { background: #34d399; }
-    .bar-hold { background: #fbbf24; }
-    .bar-sell { background: #f87171; }
-    .bar-strong-sell { background: #ef4444; }
-    .ratings-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-      text-align: center;
-      font-size: 0.8rem;
-    }
-    .rating-item span {
-      display: block;
+    .price-name {
+      font-size: 20px;
       font-weight: 700;
-      font-size: 1.1rem;
-      margin-bottom: 2px;
-    }
-
-    /* Metrics Grid */
-    .metrics {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 12px;
-    }
-    .metric {
-      background: #0f172a;
-      border-radius: 12px;
-      padding: 14px;
-      text-align: center;
-    }
-    .metric-label {
-      font-size: 0.75rem;
-      color: #9ca3af;
       margin-bottom: 4px;
     }
-    .metric-value {
-      font-size: 1.15rem;
-      font-weight: 600;
-      color: #f3f4f6;
+    .price-amount {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--neon);
+      margin-bottom: 8px;
+    }
+    .price-amount small {
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+    .price-desc {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .price-features {
+      list-style: none;
+      font-size: 14px;
+      color: var(--text);
+    }
+    .price-features li {
+      padding: 4px 0;
+    }
+    .price-features li::before {
+      content: "✓ ";
+      color: var(--neon2);
+    }
+    .price-discount {
+      font-size: 13px;
+      color: var(--orange);
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
     }
 
-    /* Chart */
-    #tv-chart {
-      height: 480px;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid #1f2937;
-    }
-
-    /* Footer */
-    footer {
+    /* CTA SECTION */
+    .cta-section {
       text-align: center;
-      margin-top: 32px;
-      padding-top: 20px;
-      border-top: 1px solid #1f2937;
-      font-size: 0.8rem;
-      color: #6b7280;
+      padding: 80px 20px 100px;
+      background: radial-gradient(ellipse at center, #0d1a2d 0%, #0a0a0f 70%);
     }
-    footer a {
-      color: #60a5fa;
-      text-decoration: none;
+    .cta-section h2 {
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+    .cta-section p {
+      color: var(--muted);
+      margin-bottom: 32px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      padding: 30px 20px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .footer a { margin: 0 8px; }
+
+    /* MOBILE */
     @media (max-width: 600px) {
-      .price { font-size: 2rem; }
-      .ratings-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
-      #tv-chart { height: 360px; }
+      .hero h1 { font-size: 26px; }
+      .hero .tagline { font-size: 16px; }
+      .hero .explainer { font-size: 15px; }
+      .cta-btn { padding: 16px 36px; font-size: 16px; }
+      .stats { grid-template-columns: 1fr; }
+      .section h2 { font-size: 22px; }
+      .section { padding: 40px 16px; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="logo">
-        <div class="logo-icon">🦍</div>
-        <div class="logo-text">
-          <h1>Big Brain Ape</h1>
-          <p>Autonomous Trading Intelligence</p>
-        </div>
-      </div>
-      <div class="badge">LIVE</div>
-    </header>
 
-    <!-- Price -->
-    <div class="price-card">
-      <div class="ticker-row">
-        <span class="ticker">NVDA · NASDAQ</span>
-      </div>
-      <div class="price" id="price">$214.72</div>
-      <div class="change down" id="change">▼ $2.13 (−0.98%)</div>
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <img src="mascot_transparent.png" alt="Big Brain Ape" class="hero-mascot">
+  <h1>Don't Chase the Market.<br>Let the Ape Hunt the Signal.</h1>
+  <p class="tagline">98 assets. One AI brain. Druckenmiller-style macro strategy.</p>
+  <p class="explainer">
+    Big Brain Ape is an autonomous AI trading agent. It trades Hyperliquid perpetual futures across crypto, stocks, gold, indices, and currencies — 24/7, without you watching charts.
+  </p>
+  <a href="https://t.me/BigBrain2Bot" class="cta-btn">Get Free Analysis</a>
+  <span class="free-badge">First analysis is free. No card needed.</span>
+  <div class="scroll-hint">↓</div>
+</section>
+
+<!-- ============ SOCIAL PROOF ============ -->
+<section class="section">
+  <h2>Why Trust the Ape?</h2>
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-number">98</div>
+      <div class="stat-label">Assets Traded</div>
     </div>
-
-    <!-- Recommendation -->
-    <div class="rec-card">
-      <div class="rec-label">Big Brain Ape Recommendation</div>
-      <div class="rec-value">BUY</div>
-      <div class="rec-sub">Strong analyst consensus · 94% bullish</div>
+    <div class="stat-card">
+      <div class="stat-number">24/7</div>
+      <div class="stat-label">Always Trading</div>
     </div>
-
-    <!-- Analyst Ratings -->
-    <div class="section">
-      <div class="section-title">📊 Analyst Ratings & Price Targets</div>
-      <div class="consensus">
-        <div class="consensus-value">Strong Buy</div>
-        <div style="font-size:0.85rem;color:#9ca3af;margin-top:4px">68 analysts covering</div>
-      </div>
-      <div class="bars">
-        <div class="bar-strong-buy" style="width:34%"></div>
-        <div class="bar-buy" style="width:60%"></div>
-        <div class="bar-hold" style="width:4%"></div>
-        <div class="bar-sell" style="width:2%"></div>
-        <div class="bar-strong-sell" style="width:0%"></div>
-      </div>
-      <div class="ratings-grid">
-        <div class="rating-item"><span style="color:#10b981">23</span>Strong Buy</div>
-        <div class="rating-item"><span style="color:#34d399">41</span>Buy</div>
-        <div class="rating-item"><span style="color:#fbbf24">3</span>Hold</div>
-        <div class="rating-item"><span style="color:#f87171">1</span>Sell</div>
-        <div class="rating-item"><span style="color:#ef4444">0</span>Strong Sell</div>
-      </div>
+    <div class="stat-card">
+      <div class="stat-number">+6.4%</div>
+      <div class="stat-label">Backtest Return (6mo)</div>
     </div>
-
-    <!-- Key Metrics -->
-    <div class="section">
-      <div class="section-title">📈 Key Metrics</div>
-      <div class="metrics">
-        <div class="metric">
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value">$5.20T</div>
-        </div>
-        <div class="metric">
-          <div class="metric-label">52-Week High</div>
-          <div class="metric-value">$236.54</div>
-        </div>
-        <div class="metric">
-          <div class="metric-label">52-Week Low</div>
-          <div class="metric-value">$164.07</div>
-        </div>
-        <div class="metric">
-          <div class="metric-label">50-Day Avg</div>
-          <div class="metric-value">$207.58</div>
-        </div>
-        <div class="metric">
-          <div class="metric-label">200-Day Avg</div>
-          <div class="metric-value">$195.29</div>
-        </div>
-        <div class="metric">
-          <div class="metric-label">Beta</div>
-          <div class="metric-value">2.24</div>
-        </div>
-      </div>
+    <div class="stat-card">
+      <div class="stat-number">5x</div>
+      <div class="stat-label">Max Leverage</div>
     </div>
-
-    <!-- Live Chart -->
-    <div class="section">
-      <div class="section-title">📉 Live Chart</div>
-      <div id="tv-chart"></div>
+    <div class="stat-card">
+      <div class="stat-number">$0</div>
+      <div class="stat-label">Cost to Start</div>
     </div>
-
-    <footer>
-      Powered by <strong>Big Brain Ape</strong> · Autonomous AI Trading Bot<br>
-      <a href="https://t.me/BigBrain2Bot" target="_blank">Telegram</a> · 
-      <a href="https://github.com/Simzy420" target="_blank">GitHub</a>
-    </footer>
+    <div class="stat-card">
+      <div class="stat-number">3-5x</div>
+      <div class="stat-label">Lev. Used in Practice</div>
+    </div>
   </div>
+</section>
 
-  <script>
-    // TradingView Live Chart
-    new TradingView.widget({
-      "width": "100%",
-      "height": "100%",
-      "symbol": "NASDAQ:NVDA",
-      "interval": "D",
-      "timezone": "America/New_York",
-      "theme": "dark",
-      "style": "1",
-      "locale": "en",
-      "toolbar_bg": "#0a0a0f",
-      "enable_publishing": false,
-      "hide_top_toolbar": false,
-      "hide_legend": false,
-      "save_image": false,
-      "container_id": "tv-chart",
-      "studies": [
-        "MASimple@tv-basicstudies",
-        "MAExp@tv-basicstudies"
-      ]
-    });
-  </script>
+<!-- ============ HOW IT WORKS ============ -->
+<section class="section">
+  <h2>How It Works</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h3>Get Free Analysis</h3>
+        <p>Open the Telegram bot. Type any stock or crypto ticker. Get an instant analysis — support, resistance, analyst ratings, earnings, macro context. Free, no signup.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h3>See the Ape Trade</h3>
+        <p>Watch Big Brain Ape's live positions on the dashboard. It trades NVDA, gold, Bitcoin, and 95 more assets using a Druckenmiller-inspired macro strategy — liquidity flows, central bank policy, regime shifts.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h3>Hire the Ape</h3>
+        <p>Ready for autonomous trading? Hire Big Brain Ape to trade for you. 100% autonomous, 3-5x leverage, across 98 assets. If it doesn't make money, the service is free.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="section">
+  <h2>Pricing</h2>
+  <div class="pricing-grid">
+
+    <div class="price-card">
+      <div class="price-name">Free Analysis</div>
+      <div class="price-amount">$0<small> / first analysis</small></div>
+      <div class="price-desc">Try it risk-free. Type any ticker in the Telegram bot.</div>
+      <ul class="price-features">
+        <li>Stock or crypto analysis</li>
+        <li>Support & resistance levels</li>
+        <li>Analyst ratings & price targets</li>
+        <li>Earnings data</li>
+        <li>Macro context</li>
+      </ul>
+      <a href="https://t.me/BigBrain2Bot" class="cta-btn" style="font-size:14px; padding:12px 28px; margin-top:16px;">Start Free</a>
+    </div>
+
+    <div class="price-card popular">
+      <div class="badge">Most Popular</div>
+      <div class="price-name">Single Analysis</div>
+      <div class="price-amount">$0.25<small> / per analysis</small></div>
+      <div class="price-desc">After your free one. Pay per analysis or subscribe.</div>
+      <ul class="price-features">
+        <li>Everything in Free</li>
+        <li>Any stock or crypto ticker</li>
+        <li>Full dashboard access</li>
+        <li>Real-time data</li>
+      </ul>
+      <div class="price-discount">
+        💎 Hold 1,000 $BIGBRAIN tokens? Get unlimited analyses (40% off vs USDC)
+      </div>
+      <a href="https://t.me/BigBrain2Bot" class="cta-btn" style="font-size:14px; padding:12px 28px; margin-top:16px;">Get Analysis</a>
+    </div>
+
+    <div class="price-card">
+      <div class="price-name">Portfolio Review</div>
+      <div class="price-amount">$0.50<small> / full review</small></div>
+      <div class="price-desc">Full analysis for every asset you own. One price, your whole portfolio.</div>
+      <ul class="price-features">
+        <li>Analysis for every holding</li>
+        <li>Macro risk assessment</li>
+        <li>Position sizing review</li>
+        <li>Correlation analysis</li>
+      </ul>
+      <div class="price-discount">
+        💎 Hold 5,000 $BIGBRAIN tokens? Portfolio reviews included
+      </div>
+      <a href="https://t.me/BigBrain2Bot" class="cta-btn" style="font-size:14px; padding:12px 28px; margin-top:16px;">Review My Portfolio</a>
+    </div>
+
+    <div class="price-card">
+      <div class="price-name">Managed Trading</div>
+      <div class="price-amount">$50<small> / month minimum</small></div>
+      <div class="price-desc">Big Brain Ape trades for you. 100% autonomous, 98 assets, Druckenmiller strategy.</div>
+      <ul class="price-features">
+        <li>Autonomous trading 24/7</li>
+        <li>98 assets (crypto, stocks, gold, indices)</li>
+        <li>3-5x leverage</li>
+        <li>Druckenmiller macro strategy</li>
+        <li>If it doesn't make money = free</li>
+      </ul>
+      <div class="price-discount">
+        💎 Hold 10,000 $BIGBRAIN tokens? Get 5% off managed trading
+      </div>
+      <a href="https://t.me/BigBrain2Bot" class="cta-btn" style="font-size:14px; padding:12px 28px; margin-top:16px;">Hire the Ape</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="cta-section">
+  <h2>Stop Watching Charts.</h2>
+  <p>Let the Ape do the work. Get your free analysis in 30 seconds.</p>
+  <a href="https://t.me/BigBrain2Bot" class="cta-btn">Get Free Analysis</a>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <p>
+    <a href="https://t.me/BigBrain2Bot">Telegram Bot</a> |
+    <a href="app35.html">Dashboard</a> |
+    <a href="https://x.com/Big_Brain_Ape">X / Twitter</a>
+  </p>
+  <p style="margin-top:12px; max-width:500px; margin-left:auto; margin-right:auto;">
+    Trading involves substantial risk. Leverage can amplify losses. Past performance does not guarantee future results. Big Brain Ape is software, not financial advice.
+  </p>
+  <p style="margin-top:8px;">© 2026 Big Brain Ape 🦍</p>
+</footer>
+
 </body>
 </html>
