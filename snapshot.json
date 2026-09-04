@@ -1,5 +1,5 @@
 {
-  "date": "September 03, 2026 23:55 UTC",
+  "date": "September 04, 2026 00:00 UTC",
   "assets": {
     "S&P 500": {
       "price": 7747.71,
@@ -95,30 +95,34 @@
       ]
     },
     "BTC": {
-      "price": 81251.6,
-      "change_pct": 5.16,
+      "price": 81217.8,
+      "change_pct": 5.07,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2507.45,
-      "change_pct": 4.93,
+      "price": 2506.42,
+      "change_pct": 4.78,
       "support": 1852.22,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 103.86,
-      "change_pct": 3.55,
+      "price": 103.9,
+      "change_pct": 3.49,
       "support": 72.29,
       "resistance": 110.6
     }
   },
-  "risk_score": 86,
+  "risk_score": 81,
   "risk_bias": "STRONG RISK-ON",
   "fear_greed": {
-    "value": 65,
+    "value": 74,
     "classification": "Greed",
     "history": [
+      {
+        "value": 74,
+        "label": "Greed"
+      },
       {
         "value": 65,
         "label": "Greed"
@@ -141,10 +145,6 @@
       },
       {
         "value": 68,
-        "label": "Greed"
-      },
-      {
-        "value": 73,
         "label": "Greed"
       }
     ]
@@ -171,17 +171,17 @@
       "color": "green"
     },
     "oil": {
-      "value": "$91.86",
+      "value": "$91.81",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4524",
+      "value": "$4522",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$67.58",
+      "value": "$67.56",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -191,6 +191,11 @@
       "label": "BULLISH",
       "text": "VIX low \u2014 market calm",
       "type": "bullish"
+    },
+    {
+      "label": "CAUTION",
+      "text": "Greed elevated (74)",
+      "type": "caution"
     },
     {
       "label": "BULLISH",
@@ -204,34 +209,29 @@
     },
     {
       "label": "BULLISH",
-      "text": "BTC up 5.2% \u2014 momentum",
+      "text": "BTC up 5.1% \u2014 momentum",
       "type": "bullish"
     },
     {
       "label": "BULLISH",
       "text": "Yields falling \u2014 risk on",
       "type": "bullish"
-    },
-    {
-      "label": "BULLISH",
-      "text": "Gold up 3.6% \u2014 safe haven bid",
-      "type": "bullish"
     }
   ],
-  "btc_funding": 8.532e-05,
+  "btc_funding": 8.558e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 39.89,
+    "daily_inflow": 39.91,
     "daily_avg": 28.1,
     "daily_pct": 42.0,
-    "weekly_inflow": 196.69,
-    "weekly_avg": 195.93,
+    "weekly_inflow": 196.71,
+    "weekly_avg": 195.94,
     "weekly_pct": 0.4,
-    "monthly_inflow": 839.7,
-    "monthly_avg": 820.12,
+    "monthly_inflow": 839.72,
+    "monthly_avg": 820.13,
     "monthly_pct": 2.4,
-    "large_tx_count": 708511
+    "large_tx_count": 712367
   },
   "history": {
     "vix": [
@@ -310,7 +310,7 @@
       85.76,
       90.22,
       91.01,
-      91.86
+      91.81
     ],
     "gold": [
       4033.7,
@@ -336,7 +336,7 @@
       4431.1,
       4348.0,
       4366.3,
-      4524.0
+      4522.1
     ],
     "silver": [
       57.67,
@@ -362,7 +362,7 @@
       66.22,
       64.62,
       64.72,
-      67.58
+      67.56
     ],
     "dxy": [
       99.96,
@@ -388,7 +388,7 @@
       99.43,
       99.67,
       99.56,
-      99.0
+      98.98
     ],
     "sp500": [
       7736.52,
@@ -443,23 +443,33 @@
   },
   "econ_events": [
     {
-      "label": "UNEMPLOYMENT CLAIMS",
-      "date": "09-03-2026",
+      "label": "AVERAGE HOURLY EARNINGS M/M",
+      "date": "09-04-2026",
       "time": "12:30pm ET",
-      "forecast": "205K",
-      "previous": "203K",
+      "forecast": "0.3%",
+      "previous": "0.1%",
       "actual": null,
-      "impact": "Medium",
+      "impact": "High",
       "country": "USD"
     },
     {
-      "label": "ISM SERVICES PMI",
-      "date": "09-03-2026",
-      "time": "2:00pm ET",
-      "forecast": "54.2",
-      "previous": "54.1",
+      "label": "NON-FARM EMPLOYMENT CHANGE",
+      "date": "09-04-2026",
+      "time": "12:30pm ET",
+      "forecast": "55K",
+      "previous": "-23K",
       "actual": null,
-      "impact": "Medium",
+      "impact": "High",
+      "country": "USD"
+    },
+    {
+      "label": "UNEMPLOYMENT RATE",
+      "date": "09-04-2026",
+      "time": "12:30pm ET",
+      "forecast": "4.1%",
+      "previous": "4.1%",
+      "actual": null,
+      "impact": "High",
       "country": "USD"
     }
   ]
