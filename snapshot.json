@@ -1,5 +1,5 @@
 {
-  "date": "September 04, 2026 23:40 UTC",
+  "date": "September 04, 2026 23:45 UTC",
   "assets": {
     "S&P 500": {
       "price": 7718.6,
@@ -95,26 +95,26 @@
       ]
     },
     "BTC": {
-      "price": 79628.5,
-      "change_pct": -2.04,
+      "price": 79623.7,
+      "change_pct": -1.94,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2452.33,
-      "change_pct": -2.11,
+      "price": 2452.45,
+      "change_pct": -2.12,
       "support": 1852.22,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 101.86,
-      "change_pct": -2.19,
+      "price": 101.82,
+      "change_pct": -1.98,
       "support": 72.29,
       "resistance": 110.6
     }
   },
-  "risk_score": 42,
-  "risk_bias": "RISK-OFF",
+  "risk_score": 47,
+  "risk_bias": "NEUTRAL",
   "fear_greed": {
     "value": 74,
     "classification": "Greed",
@@ -201,25 +201,20 @@
       "label": "CAUTION",
       "text": "S&P 500 down -0.4%",
       "type": "caution"
-    },
-    {
-      "label": "CAUTION",
-      "text": "BTC down -2.0% \u2014 watch support",
-      "type": "caution"
     }
   ],
-  "btc_funding": 1.562e-05,
+  "btc_funding": 1.304e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 35.87,
-    "daily_avg": 28.03,
-    "daily_pct": 28.0,
-    "weekly_inflow": 196.18,
-    "weekly_avg": 198.81,
-    "weekly_pct": -1.3,
-    "monthly_inflow": 852.06,
-    "monthly_avg": 816.93,
+    "daily_inflow": 35.74,
+    "daily_avg": 28.01,
+    "daily_pct": 27.6,
+    "weekly_inflow": 196.05,
+    "weekly_avg": 198.78,
+    "weekly_pct": -1.4,
+    "monthly_inflow": 851.93,
+    "monthly_avg": 816.88,
     "monthly_pct": 4.3,
     "large_tx_count": 622146
   },
