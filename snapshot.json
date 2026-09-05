@@ -1,5 +1,5 @@
 {
-  "date": "September 04, 2026 23:55 UTC",
+  "date": "September 05, 2026 00:00 UTC",
   "assets": {
     "S&P 500": {
       "price": 7718.6,
@@ -95,30 +95,34 @@
       ]
     },
     "BTC": {
-      "price": 79590.0,
-      "change_pct": -2.04,
+      "price": 79616.4,
+      "change_pct": -1.99,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2453.21,
-      "change_pct": -2.16,
+      "price": 2454.38,
+      "change_pct": -2.08,
       "support": 1852.22,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 101.83,
-      "change_pct": -1.95,
-      "support": 72.29,
+      "price": 101.82,
+      "change_pct": -1.96,
+      "support": 72.39,
       "resistance": 110.6
     }
   },
-  "risk_score": 42,
-  "risk_bias": "RISK-OFF",
+  "risk_score": 47,
+  "risk_bias": "NEUTRAL",
   "fear_greed": {
-    "value": 74,
+    "value": 73,
     "classification": "Greed",
     "history": [
+      {
+        "value": 73,
+        "label": "Greed"
+      },
       {
         "value": 74,
         "label": "Greed"
@@ -141,10 +145,6 @@
       },
       {
         "value": 69,
-        "label": "Greed"
-      },
-      {
-        "value": 68,
         "label": "Greed"
       }
     ]
@@ -194,34 +194,29 @@
     },
     {
       "label": "CAUTION",
-      "text": "Greed elevated (74)",
+      "text": "Greed elevated (73)",
       "type": "caution"
     },
     {
       "label": "CAUTION",
       "text": "S&P 500 down -0.4%",
       "type": "caution"
-    },
-    {
-      "label": "CAUTION",
-      "text": "BTC down -2.0% \u2014 watch support",
-      "type": "caution"
     }
   ],
-  "btc_funding": 1.043e-05,
+  "btc_funding": 1.014e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 35.68,
+    "daily_inflow": 35.67,
     "daily_avg": 28.0,
     "daily_pct": 27.4,
-    "weekly_inflow": 195.99,
+    "weekly_inflow": 195.98,
     "weekly_avg": 198.77,
     "weekly_pct": -1.4,
-    "monthly_inflow": 851.87,
+    "monthly_inflow": 851.86,
     "monthly_avg": 816.86,
     "monthly_pct": 4.3,
-    "large_tx_count": 622146
+    "large_tx_count": 613426
   },
   "history": {
     "vix": [
@@ -433,33 +428,53 @@
   },
   "econ_events": [
     {
-      "label": "AVERAGE HOURLY EARNINGS M/M",
-      "date": "09-04-2026",
-      "time": "12:30pm ET",
-      "forecast": "0.3%",
-      "previous": "0.1%",
+      "label": "ISM MANUFACTURING PMI",
+      "date": "09-01-2026",
+      "time": "2:00pm ET",
+      "forecast": "55.2",
+      "previous": "55.6",
       "actual": null,
       "impact": "High",
       "country": "USD"
     },
     {
-      "label": "NON-FARM EMPLOYMENT CHANGE",
-      "date": "09-04-2026",
-      "time": "12:30pm ET",
-      "forecast": "55K",
-      "previous": "-23K",
+      "label": "ISM MANUFACTURING PRICES",
+      "date": "09-01-2026",
+      "time": "2:00pm ET",
+      "forecast": "70.5",
+      "previous": "71.1",
       "actual": null,
-      "impact": "High",
+      "impact": "Medium",
       "country": "USD"
     },
     {
-      "label": "UNEMPLOYMENT RATE",
-      "date": "09-04-2026",
-      "time": "12:30pm ET",
-      "forecast": "4.1%",
-      "previous": "4.1%",
+      "label": "JOLTS JOB OPENINGS",
+      "date": "09-01-2026",
+      "time": "2:00pm ET",
+      "forecast": "7.33M",
+      "previous": "7.36M",
       "actual": null,
-      "impact": "High",
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "ADP NON-FARM EMPLOYMENT CHANGE",
+      "date": "09-02-2026",
+      "time": "12:15pm ET",
+      "forecast": "47K",
+      "previous": "44K",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "UNEMPLOYMENT CLAIMS",
+      "date": "09-03-2026",
+      "time": "12:30pm ET",
+      "forecast": "205K",
+      "previous": "203K",
+      "actual": null,
+      "impact": "Medium",
       "country": "USD"
     }
   ]
