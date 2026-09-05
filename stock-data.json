@@ -1,6 +1,6 @@
 {
-  "timestamp": 1788621340,
-  "generatedAt": "2026-09-05 15:15 UTC",
+  "timestamp": 1788622360,
+  "generatedAt": "2026-09-05 15:32 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -1492,15 +1492,27 @@
           "hour": ""
         }
       ],
-      "yearHigh": 511,
-      "yearLow": 499.36,
-      "priceAvg50": 499.7,
-      "priceAvg200": 499.7,
+      "pe": 0,
+      "eps": 17.9457,
+      "epsTTM": 17.9466,
+      "revenuePerShare": 44.596,
+      "revenueGrowthYoY": 17.79,
+      "earningsNonGaap": 17.9466,
+      "nonGaapEPS": 17.9466,
+      "roe": 33.22,
+      "beta": 1.0614009,
+      "yearHigh": 553.72,
+      "yearLow": 349.2,
+      "priceAvg50": 0,
+      "priceAvg200": 0,
+      "grossMargin": 67.94,
+      "netMargin": 40.31,
+      "dividendYield": 0,
+      "volume": 22563320,
       "targetAvg": 572.91516,
       "targetHigh": 870.0,
       "targetLow": 400.0,
       "targetMedian": 555.0,
-      "beta": 1.108,
       "history": [
         {
           "date": "2026-07-27",
@@ -3938,6 +3950,15 @@
       "high": 182.19,
       "low": 173.67,
       "prevClose": 182.53,
+      "name": "Palantir Technologies Inc",
+      "companyName": "Palantir Technologies Inc",
+      "exchange": "NASDAQ NMS - GLOBAL MARKET",
+      "sector": "Technology",
+      "industry": "Technology",
+      "marketCap": 418931223381.71893,
+      "country": "US",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/PLTR.png",
+      "ipo": "2020-09-30",
       "strongBuy": 12,
       "buy": 16,
       "hold": 9,
@@ -6611,29 +6632,6 @@
           "epsSurprise": 0.47999999999999954,
           "epsSurprisePct": 10.62,
           "revenueActual": 44882000000.0
-        }
-      ],
-      "upcomingEarnings": [
-        {
-          "date": "2027-04-12",
-          "quarter": 1,
-          "epsEstimate": 6.197,
-          "revenueEstimate": 53402379430,
-          "hour": ""
-        },
-        {
-          "date": "2027-01-14",
-          "quarter": 4,
-          "epsEstimate": 5.9726,
-          "revenueEstimate": 51405622640,
-          "hour": "amc"
-        },
-        {
-          "date": "2026-10-13",
-          "quarter": 3,
-          "epsEstimate": 5.8957,
-          "revenueEstimate": 51500360176,
-          "hour": ""
         }
       ],
       "pe": 0,
@@ -16405,6 +16403,447 @@
           "l": 159.16,
           "c": 159.47,
           "v": 16192900
+        }
+      ]
+    },
+    "CVX": {
+      "symbol": "CVX",
+      "price": 208.6,
+      "change": -2.72,
+      "changePercentage": -1.2871,
+      "open": 209.51,
+      "high": 209.8612,
+      "low": 207.12,
+      "prevClose": 211.32,
+      "name": "Chevron Corp",
+      "companyName": "Chevron Corp",
+      "exchange": "NEW YORK STOCK EXCHANGE, INC.",
+      "sector": "Energy",
+      "industry": "Energy",
+      "marketCap": 412145894997.30365,
+      "country": "US",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/CVX.png",
+      "ipo": "1921-06-24",
+      "strongBuy": 7,
+      "buy": 18,
+      "hold": 4,
+      "sell": 1,
+      "strongSell": 0,
+      "consensus": "Strong Buy",
+      "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 7,
+          "b": 18,
+          "h": 4,
+          "s": 1,
+          "ss": 0
+        },
+        {
+          "period": "2026-08-01",
+          "sb": 8,
+          "b": 18,
+          "h": 4,
+          "s": 1,
+          "ss": 0
+        },
+        {
+          "period": "2026-07-01",
+          "sb": 7,
+          "b": 16,
+          "h": 6,
+          "s": 1,
+          "ss": 0
+        },
+        {
+          "period": "2026-06-01",
+          "sb": 7,
+          "b": 16,
+          "h": 7,
+          "s": 1,
+          "ss": 0
+        }
+      ],
+      "earnings": [
+        {
+          "period": "2026-06-30",
+          "quarter": 2,
+          "estimate": 5.615,
+          "actual": 6.06,
+          "surprise": 0.445,
+          "surprisePct": 7.9252
+        },
+        {
+          "period": "2026-03-31",
+          "quarter": 1,
+          "estimate": 0.9623,
+          "actual": 1.41,
+          "surprise": 0.4477,
+          "surprisePct": 46.524
+        },
+        {
+          "period": "2025-12-31",
+          "quarter": 4,
+          "estimate": 1.4628,
+          "actual": 1.52,
+          "surprise": 0.0572,
+          "surprisePct": 3.9103
+        },
+        {
+          "period": "2025-09-30",
+          "quarter": 3,
+          "estimate": 1.6984,
+          "actual": 1.85,
+          "surprise": 0.1516,
+          "surprisePct": 8.926
+        }
+      ],
+      "earningsHistory": [
+        {
+          "quarter": 2,
+          "year": 2026,
+          "reportDate": "2026-07-31",
+          "epsEstimate": 5.57,
+          "epsActual": 6.06,
+          "epsSurprise": 0.4899999999999993,
+          "epsSurprisePct": 8.84,
+          "revenueActual": 67199000000.0
+        },
+        {
+          "quarter": 1,
+          "year": 2026,
+          "reportDate": "2026-05-01",
+          "epsEstimate": 0.97,
+          "epsActual": 1.41,
+          "epsSurprise": 0.43999999999999995,
+          "epsSurprisePct": 45.56,
+          "revenueActual": 47556000000.0
+        },
+        {
+          "quarter": 4,
+          "year": 2025,
+          "reportDate": "2026-01-30",
+          "epsEstimate": 1.44,
+          "epsActual": 1.52,
+          "epsSurprise": 0.08000000000000007,
+          "epsSurprisePct": 5.2,
+          "revenueActual": 45787000000.0
+        },
+        {
+          "quarter": 3,
+          "year": 2025,
+          "reportDate": "2025-10-31",
+          "epsEstimate": 1.71,
+          "epsActual": 1.85,
+          "epsSurprise": 0.14000000000000012,
+          "epsSurprisePct": 8.39,
+          "revenueActual": 48169000000.0
+        },
+        {
+          "quarter": 2,
+          "year": 2025,
+          "reportDate": "2025-08-01",
+          "epsEstimate": 1.74,
+          "epsActual": 1.77,
+          "epsSurprise": 0.030000000000000027,
+          "epsSurprisePct": 1.71,
+          "revenueActual": 44375000000.0
+        },
+        {
+          "quarter": 1,
+          "year": 2025,
+          "reportDate": "2025-05-02",
+          "epsEstimate": 2.15,
+          "epsActual": 2.18,
+          "epsSurprise": 0.03000000000000025,
+          "epsSurprisePct": 1.31,
+          "revenueActual": 44375000000.0
+        }
+      ],
+      "upcomingEarnings": [
+        {
+          "date": "2027-04-29",
+          "quarter": 1,
+          "epsEstimate": 3.3047,
+          "revenueEstimate": 53624129687,
+          "hour": ""
+        },
+        {
+          "date": "2027-01-28",
+          "quarter": 4,
+          "epsEstimate": 3.9586,
+          "revenueEstimate": 55415209328,
+          "hour": "amc"
+        },
+        {
+          "date": "2026-10-29",
+          "quarter": 3,
+          "epsEstimate": 4.6603,
+          "revenueEstimate": 57274273343,
+          "hour": "bmo"
+        }
+      ],
+      "pe": 0,
+      "eps": 6.6266,
+      "epsTTM": 10.4285,
+      "revenuePerShare": 105.6718,
+      "revenueGrowthYoY": 11.17,
+      "earningsNonGaap": 10.4285,
+      "nonGaapEPS": 10.4285,
+      "roe": 10.979999999999999,
+      "beta": 0.49484676,
+      "yearHigh": 214.71,
+      "yearLow": 146.49,
+      "priceAvg50": 0,
+      "priceAvg200": 0,
+      "grossMargin": 43.65,
+      "netMargin": 9.87,
+      "dividendYield": 0,
+      "volume": 7658070,
+      "targetAvg": 221.20833,
+      "targetHigh": 243.0,
+      "targetLow": 175.0,
+      "targetMedian": 224.5,
+      "history": [
+        {
+          "date": "2026-07-27",
+          "o": 187.04,
+          "h": 190.82,
+          "l": 187.04,
+          "c": 188.36,
+          "v": 7369200
+        },
+        {
+          "date": "2026-07-28",
+          "o": 189.81,
+          "h": 190.31,
+          "l": 185.11,
+          "c": 185.96,
+          "v": 7406800
+        },
+        {
+          "date": "2026-07-29",
+          "o": 190.83,
+          "h": 191.89,
+          "l": 189.13,
+          "c": 190.2,
+          "v": 8101200
+        },
+        {
+          "date": "2026-07-30",
+          "o": 188.27,
+          "h": 191.45,
+          "l": 187.67,
+          "c": 190.65,
+          "v": 6645000
+        },
+        {
+          "date": "2026-07-31",
+          "o": 193.42,
+          "h": 195.84,
+          "l": 189.88,
+          "c": 195.13,
+          "v": 9958100
+        },
+        {
+          "date": "2026-08-03",
+          "o": 193.69,
+          "h": 194.17,
+          "l": 190.15,
+          "c": 191.51,
+          "v": 9544100
+        },
+        {
+          "date": "2026-08-04",
+          "o": 188.5,
+          "h": 189.81,
+          "l": 184.73,
+          "c": 188.75,
+          "v": 9455900
+        },
+        {
+          "date": "2026-08-05",
+          "o": 189.54,
+          "h": 189.72,
+          "l": 184.66,
+          "c": 184.8,
+          "v": 8260600
+        },
+        {
+          "date": "2026-08-06",
+          "o": 187.34,
+          "h": 188.14,
+          "l": 185.4,
+          "c": 187.59,
+          "v": 7182100
+        },
+        {
+          "date": "2026-08-07",
+          "o": 184.6,
+          "h": 186.13,
+          "l": 184.26,
+          "c": 184.95,
+          "v": 7098800
+        },
+        {
+          "date": "2026-08-10",
+          "o": 187.25,
+          "h": 193.3,
+          "l": 187.25,
+          "c": 193.22,
+          "v": 13667300
+        },
+        {
+          "date": "2026-08-11",
+          "o": 192.57,
+          "h": 195.75,
+          "l": 192.57,
+          "c": 194.96,
+          "v": 6049800
+        },
+        {
+          "date": "2026-08-12",
+          "o": 193.53,
+          "h": 195.69,
+          "l": 192.9,
+          "c": 194.9,
+          "v": 7366200
+        },
+        {
+          "date": "2026-08-13",
+          "o": 193.31,
+          "h": 196.39,
+          "l": 192.07,
+          "c": 195.99,
+          "v": 5908900
+        },
+        {
+          "date": "2026-08-14",
+          "o": 197.15,
+          "h": 199.89,
+          "l": 196.64,
+          "c": 198.27,
+          "v": 7910500
+        },
+        {
+          "date": "2026-08-17",
+          "o": 198.99,
+          "h": 201.92,
+          "l": 198.07,
+          "c": 200.95,
+          "v": 8357800
+        },
+        {
+          "date": "2026-08-18",
+          "o": 203.26,
+          "h": 204.44,
+          "l": 201.95,
+          "c": 203.96,
+          "v": 7701600
+        },
+        {
+          "date": "2026-08-19",
+          "o": 205.05,
+          "h": 207.68,
+          "l": 204.26,
+          "c": 205.76,
+          "v": 8689900
+        },
+        {
+          "date": "2026-08-20",
+          "o": 208.9,
+          "h": 208.98,
+          "l": 205.52,
+          "c": 205.77,
+          "v": 8200600
+        },
+        {
+          "date": "2026-08-21",
+          "o": 205.93,
+          "h": 207.82,
+          "l": 205.01,
+          "c": 205.27,
+          "v": 7359100
+        },
+        {
+          "date": "2026-08-24",
+          "o": 203.67,
+          "h": 205.3,
+          "l": 201.75,
+          "c": 203.09,
+          "v": 5853900
+        },
+        {
+          "date": "2026-08-25",
+          "o": 201.03,
+          "h": 202.06,
+          "l": 199.79,
+          "c": 199.89,
+          "v": 8176800
+        },
+        {
+          "date": "2026-08-26",
+          "o": 198.73,
+          "h": 202.39,
+          "l": 198.12,
+          "c": 200.21,
+          "v": 6863100
+        },
+        {
+          "date": "2026-08-27",
+          "o": 199.57,
+          "h": 200.88,
+          "l": 197.82,
+          "c": 199.77,
+          "v": 8112300
+        },
+        {
+          "date": "2026-08-28",
+          "o": 199.98,
+          "h": 202.24,
+          "l": 199.56,
+          "c": 201.86,
+          "v": 5301000
+        },
+        {
+          "date": "2026-08-31",
+          "o": 206.08,
+          "h": 208.42,
+          "l": 203.84,
+          "c": 206.14,
+          "v": 12067400
+        },
+        {
+          "date": "2026-09-01",
+          "o": 209.0,
+          "h": 211.08,
+          "l": 207.8,
+          "c": 211.05,
+          "v": 8551500
+        },
+        {
+          "date": "2026-09-02",
+          "o": 210.49,
+          "h": 212.79,
+          "l": 209.46,
+          "c": 211.78,
+          "v": 7595300
+        },
+        {
+          "date": "2026-09-03",
+          "o": 212.38,
+          "h": 213.2,
+          "l": 211.17,
+          "c": 211.32,
+          "v": 6668200
+        },
+        {
+          "date": "2026-09-04",
+          "o": 209.51,
+          "h": 209.86,
+          "l": 207.12,
+          "c": 208.6,
+          "v": 5458400
         }
       ]
     },
