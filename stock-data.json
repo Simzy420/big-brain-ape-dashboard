@@ -1,6 +1,6 @@
 {
-  "timestamp": 1788707025,
-  "generatedAt": "2026-09-06 15:03 UTC",
+  "timestamp": 1788708166,
+  "generatedAt": "2026-09-06 15:22 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -3518,46 +3518,6 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/NFLX.png",
       "ipo": "2002-05-23",
-      "strongBuy": 14,
-      "buy": 29,
-      "hold": 15,
-      "sell": 0,
-      "strongSell": 0,
-      "consensus": "Strong Buy",
-      "recTrend": [
-        {
-          "period": "2026-09-01",
-          "sb": 14,
-          "b": 29,
-          "h": 15,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-08-01",
-          "sb": 14,
-          "b": 30,
-          "h": 14,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-07-01",
-          "sb": 16,
-          "b": 29,
-          "h": 13,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-06-01",
-          "sb": 16,
-          "b": 29,
-          "h": 13,
-          "s": 0,
-          "ss": 0
-        }
-      ],
       "earnings": [
         {
           "period": "2026-06-30",
@@ -7851,6 +7811,40 @@
           "ss": 0
         }
       ],
+      "earnings": [
+        {
+          "period": "2026-06-30",
+          "quarter": 2,
+          "estimate": 4.9086,
+          "actual": 5.04,
+          "surprise": 0.1314,
+          "surprisePct": 2.6769
+        },
+        {
+          "period": "2026-03-31",
+          "quarter": 1,
+          "estimate": 4.5329,
+          "actual": 4.6,
+          "surprise": 0.0671,
+          "surprisePct": 1.4803
+        },
+        {
+          "period": "2025-12-31",
+          "quarter": 4,
+          "estimate": 4.3756,
+          "actual": 4.76,
+          "surprise": 0.3844,
+          "surprisePct": 8.7851
+        },
+        {
+          "period": "2025-09-30",
+          "quarter": 3,
+          "estimate": 4.4492,
+          "actual": 4.38,
+          "surprise": -0.0692,
+          "surprisePct": -1.5553
+        }
+      ],
       "earningsHistory": [
         {
           "quarter": 2,
@@ -9229,15 +9223,27 @@
           "hour": "bmo"
         }
       ],
-      "yearHigh": 139.465,
-      "yearLow": 137.43,
-      "priceAvg50": 137.63,
-      "priceAvg200": 137.63,
+      "pe": 0,
+      "eps": 6.0015,
+      "epsTTM": 7.622,
+      "revenuePerShare": 70.7845,
+      "revenueGrowthYoY": 5.62,
+      "earningsNonGaap": 7.622,
+      "nonGaapEPS": 7.622,
+      "roe": 50.2,
+      "beta": 0.3343973,
+      "yearHigh": 171.48,
+      "yearLow": 133.73,
+      "priceAvg50": 0,
+      "priceAvg200": 0,
+      "grossMargin": 54.17,
+      "netMargin": 10.78,
+      "dividendYield": 0,
+      "volume": 7211330,
       "targetAvg": 155.0,
       "targetHigh": 183.0,
       "targetLow": 124.0,
       "targetMedian": 155.0,
-      "beta": 0.361,
       "history": [
         {
           "date": "2026-07-27",
@@ -17879,15 +17885,27 @@
           "hour": ""
         }
       ],
-      "yearHigh": 321.8,
-      "yearLow": 316.1,
-      "priceAvg50": 321.05,
-      "priceAvg200": 321.05,
+      "pe": 0,
+      "eps": 14.2271,
+      "epsTTM": 14.282599999999999,
+      "revenuePerShare": 169.8554,
+      "revenueGrowthYoY": 2.5,
+      "earningsNonGaap": 14.282599999999999,
+      "nonGaapEPS": 14.282599999999999,
+      "roe": 102.67999999999999,
+      "beta": 0.94782066,
+      "yearHigh": 426.75,
+      "yearLow": 289.1,
+      "priceAvg50": 0,
+      "priceAvg200": 0,
+      "grossMargin": 33.21,
+      "netMargin": 8.41,
+      "dividendYield": 0,
+      "volume": 3314760,
       "targetAvg": 377.5,
       "targetHigh": 425.0,
       "targetLow": 310.0,
       "targetMedian": 379.0,
-      "beta": 0.955,
       "history": [
         {
           "date": "2026-07-27",
@@ -22919,437 +22937,6 @@
           "l": 75.21,
           "c": 75.76,
           "v": 14391200
-        }
-      ]
-    },
-    "LYFT": {
-      "symbol": "LYFT",
-      "price": 16.72,
-      "change": -0.56,
-      "changePercentage": -3.2407,
-      "open": 17.32,
-      "high": 17.47,
-      "low": 16.69,
-      "prevClose": 17.28,
-      "name": "Lyft Inc",
-      "companyName": "Lyft Inc",
-      "exchange": "NASDAQ NMS - GLOBAL MARKET",
-      "sector": "Road & Rail",
-      "industry": "Road & Rail",
-      "marketCap": 6329193276.083333,
-      "country": "US",
-      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/LYFT.png",
-      "ipo": "2019-03-29",
-      "strongBuy": 6,
-      "buy": 17,
-      "hold": 31,
-      "sell": 1,
-      "strongSell": 1,
-      "consensus": "Sell",
-      "recTrend": [
-        {
-          "period": "2026-09-01",
-          "sb": 6,
-          "b": 17,
-          "h": 31,
-          "s": 1,
-          "ss": 1
-        },
-        {
-          "period": "2026-08-01",
-          "sb": 6,
-          "b": 16,
-          "h": 32,
-          "s": 1,
-          "ss": 1
-        },
-        {
-          "period": "2026-07-01",
-          "sb": 6,
-          "b": 16,
-          "h": 32,
-          "s": 1,
-          "ss": 1
-        },
-        {
-          "period": "2026-06-01",
-          "sb": 6,
-          "b": 14,
-          "h": 33,
-          "s": 1,
-          "ss": 1
-        }
-      ],
-      "earnings": [
-        {
-          "period": "2026-06-30",
-          "quarter": 2,
-          "estimate": 0.145,
-          "actual": 0.13,
-          "surprise": -0.015,
-          "surprisePct": -10.3448
-        },
-        {
-          "period": "2026-03-31",
-          "quarter": 1,
-          "estimate": 0.0616,
-          "actual": 0.04,
-          "surprise": -0.0216,
-          "surprisePct": -35.0649
-        },
-        {
-          "period": "2025-12-31",
-          "quarter": 4,
-          "estimate": 0.1175,
-          "actual": 0.16,
-          "surprise": 0.0425,
-          "surprisePct": 36.1702
-        },
-        {
-          "period": "2025-09-30",
-          "quarter": 3,
-          "estimate": 0.0822,
-          "actual": 0.11,
-          "surprise": 0.0278,
-          "surprisePct": 33.82
-        }
-      ],
-      "earningsHistory": [
-        {
-          "quarter": 2,
-          "year": 2026,
-          "reportDate": "2026-08-06",
-          "epsEstimate": 0.14,
-          "epsActual": 0.13,
-          "epsSurprise": -0.010000000000000009,
-          "epsSurprisePct": -7.74,
-          "revenueActual": 1843544000.0
-        },
-        {
-          "quarter": 1,
-          "year": 2026,
-          "reportDate": "2026-05-07",
-          "epsEstimate": 0.07,
-          "epsActual": 0.04,
-          "epsSurprise": -0.030000000000000006,
-          "epsSurprisePct": -44.27,
-          "revenueActual": 1650489000.0
-        },
-        {
-          "quarter": 4,
-          "year": 2025,
-          "reportDate": "2026-02-10",
-          "epsEstimate": 0.12,
-          "epsActual": 6.59,
-          "epsSurprise": 6.47,
-          "epsSurprisePct": 5480.96,
-          "revenueActual": 1592711000.0
-        },
-        {
-          "quarter": 3,
-          "year": 2025,
-          "reportDate": "2025-11-05",
-          "epsEstimate": 0.07,
-          "epsActual": 0.11,
-          "epsSurprise": 0.039999999999999994,
-          "epsSurprisePct": 53.1,
-          "revenueActual": 1685195000.0
-        },
-        {
-          "quarter": 2,
-          "year": 2025,
-          "reportDate": "2025-08-06",
-          "epsEstimate": 0.04,
-          "epsActual": 0.1,
-          "epsSurprise": 0.060000000000000005,
-          "epsSurprisePct": 130.57,
-          "revenueActual": 1588183000.0
-        }
-      ],
-      "upcomingEarnings": [
-        {
-          "date": "2027-05-05",
-          "quarter": 1,
-          "epsEstimate": 0.1484,
-          "revenueEstimate": 1913915464,
-          "hour": ""
-        },
-        {
-          "date": "2027-02-08",
-          "quarter": 4,
-          "epsEstimate": 0.1884,
-          "revenueEstimate": 2001747205,
-          "hour": "amc"
-        },
-        {
-          "date": "2026-11-03",
-          "quarter": 3,
-          "epsEstimate": 0.2002,
-          "revenueEstimate": 1963366410,
-          "hour": "amc"
-        }
-      ],
-      "pe": 0,
-      "eps": 6.8094,
-      "epsTTM": 6.999600000000001,
-      "revenuePerShare": 17.5287,
-      "revenueGrowthYoY": 10.81,
-      "earningsNonGaap": 6.999600000000001,
-      "nonGaapEPS": 6.999600000000001,
-      "roe": 115.83000000000001,
-      "beta": 2.080337,
-      "yearHigh": 25.54,
-      "yearLow": 12.46,
-      "priceAvg50": 0,
-      "priceAvg200": 0,
-      "grossMargin": 38.02,
-      "netMargin": 42.32,
-      "dividendYield": 0,
-      "volume": 9671630,
-      "targetAvg": 19.81622,
-      "targetHigh": 30.0,
-      "targetLow": 14.5,
-      "targetMedian": 19.0,
-      "history": [
-        {
-          "date": "2026-07-27",
-          "o": 14.43,
-          "h": 15.26,
-          "l": 14.37,
-          "c": 15.09,
-          "v": 14549000
-        },
-        {
-          "date": "2026-07-28",
-          "o": 15.12,
-          "h": 15.46,
-          "l": 15.01,
-          "c": 15.45,
-          "v": 8917500
-        },
-        {
-          "date": "2026-07-29",
-          "o": 15.24,
-          "h": 15.89,
-          "l": 15.12,
-          "c": 15.44,
-          "v": 12712300
-        },
-        {
-          "date": "2026-07-30",
-          "o": 15.6,
-          "h": 15.6,
-          "l": 15.13,
-          "c": 15.55,
-          "v": 9710200
-        },
-        {
-          "date": "2026-07-31",
-          "o": 15.64,
-          "h": 15.92,
-          "l": 15.36,
-          "c": 15.86,
-          "v": 9565300
-        },
-        {
-          "date": "2026-08-03",
-          "o": 16.02,
-          "h": 16.4,
-          "l": 15.92,
-          "c": 16.38,
-          "v": 10260600
-        },
-        {
-          "date": "2026-08-04",
-          "o": 16.33,
-          "h": 16.8,
-          "l": 16.28,
-          "c": 16.73,
-          "v": 8797700
-        },
-        {
-          "date": "2026-08-05",
-          "o": 16.57,
-          "h": 16.77,
-          "l": 16.14,
-          "c": 16.48,
-          "v": 11870800
-        },
-        {
-          "date": "2026-08-06",
-          "o": 16.27,
-          "h": 16.42,
-          "l": 16.06,
-          "c": 16.3,
-          "v": 15577800
-        },
-        {
-          "date": "2026-08-07",
-          "o": 16.82,
-          "h": 17.56,
-          "l": 16.41,
-          "c": 17.46,
-          "v": 23957300
-        },
-        {
-          "date": "2026-08-10",
-          "o": 17.43,
-          "h": 17.73,
-          "l": 17.04,
-          "c": 17.26,
-          "v": 14324200
-        },
-        {
-          "date": "2026-08-11",
-          "o": 17.17,
-          "h": 17.75,
-          "l": 17.15,
-          "c": 17.54,
-          "v": 11321500
-        },
-        {
-          "date": "2026-08-12",
-          "o": 17.5,
-          "h": 17.58,
-          "l": 16.36,
-          "c": 16.58,
-          "v": 15038400
-        },
-        {
-          "date": "2026-08-13",
-          "o": 16.67,
-          "h": 17.19,
-          "l": 16.42,
-          "c": 17.13,
-          "v": 11834900
-        },
-        {
-          "date": "2026-08-14",
-          "o": 17.22,
-          "h": 17.6,
-          "l": 17.16,
-          "c": 17.48,
-          "v": 6689200
-        },
-        {
-          "date": "2026-08-17",
-          "o": 17.47,
-          "h": 17.58,
-          "l": 17.15,
-          "c": 17.22,
-          "v": 6030300
-        },
-        {
-          "date": "2026-08-18",
-          "o": 17.07,
-          "h": 17.51,
-          "l": 16.84,
-          "c": 16.93,
-          "v": 7515000
-        },
-        {
-          "date": "2026-08-19",
-          "o": 16.88,
-          "h": 17.8,
-          "l": 16.82,
-          "c": 17.43,
-          "v": 12410900
-        },
-        {
-          "date": "2026-08-20",
-          "o": 17.25,
-          "h": 17.69,
-          "l": 17.04,
-          "c": 17.4,
-          "v": 9499200
-        },
-        {
-          "date": "2026-08-21",
-          "o": 17.45,
-          "h": 17.66,
-          "l": 17.17,
-          "c": 17.47,
-          "v": 8605100
-        },
-        {
-          "date": "2026-08-24",
-          "o": 17.47,
-          "h": 17.87,
-          "l": 17.35,
-          "c": 17.68,
-          "v": 9504700
-        },
-        {
-          "date": "2026-08-25",
-          "o": 17.68,
-          "h": 17.97,
-          "l": 17.36,
-          "c": 17.65,
-          "v": 10384500
-        },
-        {
-          "date": "2026-08-26",
-          "o": 17.68,
-          "h": 17.8,
-          "l": 17.07,
-          "c": 17.39,
-          "v": 14066700
-        },
-        {
-          "date": "2026-08-27",
-          "o": 17.34,
-          "h": 17.52,
-          "l": 17.02,
-          "c": 17.35,
-          "v": 6763800
-        },
-        {
-          "date": "2026-08-28",
-          "o": 17.38,
-          "h": 17.88,
-          "l": 17.38,
-          "c": 17.7,
-          "v": 8949400
-        },
-        {
-          "date": "2026-08-31",
-          "o": 17.49,
-          "h": 17.72,
-          "l": 16.85,
-          "c": 16.9,
-          "v": 9883300
-        },
-        {
-          "date": "2026-09-01",
-          "o": 16.57,
-          "h": 17.03,
-          "l": 16.54,
-          "c": 16.77,
-          "v": 10264300
-        },
-        {
-          "date": "2026-09-02",
-          "o": 16.82,
-          "h": 17.44,
-          "l": 16.71,
-          "c": 17.35,
-          "v": 8982600
-        },
-        {
-          "date": "2026-09-03",
-          "o": 17.54,
-          "h": 17.98,
-          "l": 17.19,
-          "c": 17.28,
-          "v": 8794900
-        },
-        {
-          "date": "2026-09-04",
-          "o": 17.32,
-          "h": 17.47,
-          "l": 16.69,
-          "c": 16.72,
-          "v": 9063300
         }
       ]
     },
