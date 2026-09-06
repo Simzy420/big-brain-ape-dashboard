@@ -1,5 +1,5 @@
 {
-  "date": "September 06, 2026 22:05 UTC",
+  "date": "September 06, 2026 22:10 UTC",
   "assets": {
     "S&P 500": {
       "price": 7718.6,
@@ -95,20 +95,20 @@
       ]
     },
     "BTC": {
-      "price": 79832.4,
-      "change_pct": 0.01,
+      "price": 79659.6,
+      "change_pct": -0.19,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2503.84,
-      "change_pct": 0.69,
+      "price": 2496.06,
+      "change_pct": 0.5,
       "support": 1852.22,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 105.71,
-      "change_pct": 1.96,
+      "price": 105.15,
+      "change_pct": 1.55,
       "support": 73.53,
       "resistance": 110.6
     }
@@ -201,20 +201,25 @@
       "label": "CAUTION",
       "text": "S&P 500 down -0.4%",
       "type": "caution"
+    },
+    {
+      "label": "BULLISH",
+      "text": "Gold up 1.1% \u2014 safe haven bid",
+      "type": "bullish"
     }
   ],
-  "btc_funding": 6.543e-05,
+  "btc_funding": 6.248e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 18.63,
+    "daily_inflow": 18.66,
     "daily_avg": 28.48,
-    "daily_pct": -34.6,
-    "weekly_inflow": 199.36,
-    "weekly_avg": 198.1,
+    "daily_pct": -34.5,
+    "weekly_inflow": 199.39,
+    "weekly_avg": 198.11,
     "weekly_pct": 0.6,
-    "monthly_inflow": 849.0,
-    "monthly_avg": 807.98,
+    "monthly_inflow": 849.03,
+    "monthly_avg": 807.99,
     "monthly_pct": 5.1,
     "large_tx_count": 895902
   },
@@ -293,6 +298,7 @@
       90.22,
       91.01,
       91.3,
+      91.48,
       91.48
     ],
     "gold": [
@@ -317,6 +323,7 @@
       4348.0,
       4366.3,
       4491.7,
+      4429.8,
       4476.6
     ],
     "silver": [
@@ -341,6 +348,7 @@
       64.62,
       64.72,
       66.97,
+      66.05,
       66.75
     ],
     "dxy": [
@@ -365,7 +373,8 @@
       99.67,
       99.56,
       99.0,
-      99.16
+      99.16,
+      99.17
     ],
     "sp500": [
       7723.55,
