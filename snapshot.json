@@ -1,5 +1,5 @@
 {
-  "date": "September 06, 2026 04:40 UTC",
+  "date": "September 06, 2026 04:45 UTC",
   "assets": {
     "S&P 500": {
       "price": 7718.6,
@@ -95,20 +95,20 @@
       ]
     },
     "BTC": {
-      "price": 79872.6,
-      "change_pct": 0.48,
+      "price": 79899.3,
+      "change_pct": 0.51,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2501.18,
-      "change_pct": 2.1,
+      "price": 2503.64,
+      "change_pct": 2.19,
       "support": 1852.22,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 106.0,
-      "change_pct": 4.08,
+      "price": 106.08,
+      "change_pct": 4.15,
       "support": 73.53,
       "resistance": 110.6
     }
@@ -203,18 +203,18 @@
       "type": "caution"
     }
   ],
-  "btc_funding": 3.048e-05,
+  "btc_funding": 3.069e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 19.18,
+    "daily_inflow": 19.2,
     "daily_avg": 28.56,
     "daily_pct": -32.8,
-    "weekly_inflow": 199.91,
+    "weekly_inflow": 199.93,
     "weekly_avg": 198.23,
-    "weekly_pct": 0.8,
-    "monthly_inflow": 849.55,
-    "monthly_avg": 808.16,
+    "weekly_pct": 0.9,
+    "monthly_inflow": 849.57,
+    "monthly_avg": 808.17,
     "monthly_pct": 5.1,
     "large_tx_count": 792047
   },
@@ -420,53 +420,53 @@
   },
   "econ_events": [
     {
-      "label": "ISM MANUFACTURING PMI",
-      "date": "09-01-2026",
-      "time": "2:00pm ET",
-      "forecast": "55.2",
-      "previous": "55.6",
+      "label": "CORE PPI M/M",
+      "date": "09-10-2026",
+      "time": "12:30pm ET",
+      "forecast": "0.3%",
+      "previous": "0.2%",
       "actual": null,
       "impact": "High",
       "country": "USD"
     },
     {
-      "label": "ISM MANUFACTURING PRICES",
-      "date": "09-01-2026",
-      "time": "2:00pm ET",
-      "forecast": "70.5",
-      "previous": "71.1",
+      "label": "PPI M/M",
+      "date": "09-10-2026",
+      "time": "12:30pm ET",
+      "forecast": "0.4%",
+      "previous": "0.0%",
       "actual": null,
-      "impact": "Medium",
-      "country": "USD"
-    },
-    {
-      "label": "JOLTS JOB OPENINGS",
-      "date": "09-01-2026",
-      "time": "2:00pm ET",
-      "forecast": "7.33M",
-      "previous": "7.36M",
-      "actual": null,
-      "impact": "Medium",
-      "country": "USD"
-    },
-    {
-      "label": "ADP NON-FARM EMPLOYMENT CHANGE",
-      "date": "09-02-2026",
-      "time": "12:15pm ET",
-      "forecast": "47K",
-      "previous": "44K",
-      "actual": null,
-      "impact": "Medium",
+      "impact": "High",
       "country": "USD"
     },
     {
       "label": "UNEMPLOYMENT CLAIMS",
-      "date": "09-03-2026",
+      "date": "09-10-2026",
       "time": "12:30pm ET",
       "forecast": "205K",
-      "previous": "203K",
+      "previous": "206K",
       "actual": null,
       "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "CORE CPI M/M",
+      "date": "09-11-2026",
+      "time": "12:30pm ET",
+      "forecast": "0.2%",
+      "previous": "0.2%",
+      "actual": null,
+      "impact": "High",
+      "country": "USD"
+    },
+    {
+      "label": "CORE CPI Y/Y",
+      "date": "09-11-2026",
+      "time": "12:30pm ET",
+      "forecast": "2.4%",
+      "previous": "2.5%",
+      "actual": null,
+      "impact": "High",
       "country": "USD"
     }
   ]
