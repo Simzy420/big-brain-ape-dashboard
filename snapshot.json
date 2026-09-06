@@ -1,5 +1,5 @@
 {
-  "date": "September 06, 2026 15:50 UTC",
+  "date": "September 06, 2026 15:55 UTC",
   "assets": {
     "S&P 500": {
       "price": 7718.6,
@@ -95,20 +95,20 @@
       ]
     },
     "BTC": {
-      "price": 79662.5,
-      "change_pct": -0.07,
+      "price": 79628.6,
+      "change_pct": -0.12,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2478.8,
-      "change_pct": 0.86,
+      "price": 2478.17,
+      "change_pct": 0.84,
       "support": 1852.22,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 105.74,
-      "change_pct": 2.93,
+      "price": 105.68,
+      "change_pct": 2.82,
       "support": 73.53,
       "resistance": 110.6
     }
@@ -176,12 +176,12 @@
       "color": "yellow"
     },
     "gold": {
-      "value": "$4430",
+      "value": "$4477",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$66.05",
+      "value": "$66.75",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -201,27 +201,22 @@
       "label": "CAUTION",
       "text": "S&P 500 down -0.4%",
       "type": "caution"
-    },
-    {
-      "label": "NEUTRAL",
-      "text": "Gold down -1.4% \u2014 risk appetite",
-      "type": "neutral"
     }
   ],
-  "btc_funding": 2.716e-05,
+  "btc_funding": 2.774e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 20.67,
+    "daily_inflow": 20.63,
     "daily_avg": 28.77,
-    "daily_pct": -28.2,
-    "weekly_inflow": 201.4,
-    "weekly_avg": 198.58,
+    "daily_pct": -28.3,
+    "weekly_inflow": 201.36,
+    "weekly_avg": 198.57,
     "weekly_pct": 1.4,
-    "monthly_inflow": 851.04,
-    "monthly_avg": 808.65,
+    "monthly_inflow": 851.0,
+    "monthly_avg": 808.64,
     "monthly_pct": 5.2,
-    "large_tx_count": 901279
+    "large_tx_count": 906206
   },
   "history": {
     "vix": [
@@ -322,7 +317,7 @@
       4348.0,
       4366.3,
       4491.7,
-      4429.8
+      4476.6
     ],
     "silver": [
       61.44,
@@ -346,7 +341,7 @@
       64.62,
       64.72,
       66.97,
-      66.05
+      66.75
     ],
     "dxy": [
       99.97,
