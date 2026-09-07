@@ -1,5 +1,5 @@
 {
-  "date": "September 07, 2026 11:35 UTC",
+  "date": "September 07, 2026 11:40 UTC",
   "assets": {
     "S&P 500": {
       "price": 7718.6,
@@ -95,26 +95,26 @@
       ]
     },
     "BTC": {
-      "price": 79417.0,
-      "change_pct": -0.65,
+      "price": 79389.8,
+      "change_pct": -0.61,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2491.01,
-      "change_pct": -0.42,
+      "price": 2489.69,
+      "change_pct": -0.37,
       "support": 1852.22,
       "resistance": 2566.4
     },
     "SOL": {
       "price": 104.91,
-      "change_pct": -1.66,
+      "change_pct": -1.44,
       "support": 74.0,
       "resistance": 110.6
     }
   },
-  "risk_score": 37,
-  "risk_bias": "RISK-OFF",
+  "risk_score": 45,
+  "risk_bias": "NEUTRAL",
   "fear_greed": {
     "value": 71,
     "classification": "Greed",
@@ -193,6 +193,11 @@
       "type": "caution"
     },
     {
+      "label": "BULLISH",
+      "text": "Dollar weakening \u2014 risk asset fuel",
+      "type": "bullish"
+    },
+    {
       "label": "CAUTION",
       "text": "S&P 500 down -0.4%",
       "type": "caution"
@@ -203,20 +208,20 @@
       "type": "bullish"
     }
   ],
-  "btc_funding": 2.982e-05,
+  "btc_funding": 2.963e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 22.68,
+    "daily_inflow": 22.67,
     "daily_avg": 27.62,
     "daily_pct": -17.9,
-    "weekly_inflow": 193.36,
+    "weekly_inflow": 193.35,
     "weekly_avg": 200.74,
     "weekly_pct": -3.7,
-    "monthly_inflow": 860.33,
-    "monthly_avg": 805.09,
+    "monthly_inflow": 860.32,
+    "monthly_avg": 805.08,
     "monthly_pct": 6.9,
-    "large_tx_count": 876611
+    "large_tx_count": 860298
   },
   "history": {
     "vix": [
@@ -241,7 +246,7 @@
       15.2,
       14.32,
       14.53,
-      15.18
+      15.23
     ],
     "yield_10y": [
       4.63,
@@ -363,7 +368,7 @@
       99.56,
       99.0,
       99.16,
-      98.96
+      98.95
     ],
     "sp500": [
       7723.55,
