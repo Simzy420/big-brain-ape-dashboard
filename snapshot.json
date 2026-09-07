@@ -1,5 +1,5 @@
 {
-  "date": "September 07, 2026 08:15 UTC",
+  "date": "September 07, 2026 08:20 UTC",
   "assets": {
     "S&P 500": {
       "price": 7718.6,
@@ -95,26 +95,26 @@
       ]
     },
     "BTC": {
-      "price": 79413.8,
-      "change_pct": -0.52,
+      "price": 79428.8,
+      "change_pct": -0.47,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2487.92,
-      "change_pct": -0.38,
+      "price": 2488.97,
+      "change_pct": -0.33,
       "support": 1852.22,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 104.49,
-      "change_pct": -0.72,
+      "price": 104.53,
+      "change_pct": -0.59,
       "support": 74.0,
       "resistance": 110.6
     }
   },
-  "risk_score": 37,
-  "risk_bias": "RISK-OFF",
+  "risk_score": 45,
+  "risk_bias": "NEUTRAL",
   "fear_greed": {
     "value": 71,
     "classification": "Greed",
@@ -166,7 +166,7 @@
       "color": "blue"
     },
     "dxy": {
-      "value": "99.0",
+      "value": "98.9",
       "label": "DXY",
       "color": "green"
     },
@@ -193,6 +193,11 @@
       "type": "caution"
     },
     {
+      "label": "BULLISH",
+      "text": "Dollar weakening \u2014 risk asset fuel",
+      "type": "bullish"
+    },
+    {
       "label": "CAUTION",
       "text": "S&P 500 down -0.4%",
       "type": "caution"
@@ -203,18 +208,18 @@
       "type": "bullish"
     }
   ],
-  "btc_funding": 3.003e-05,
+  "btc_funding": 2.976e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 22.78,
-    "daily_avg": 27.64,
-    "daily_pct": -17.6,
-    "weekly_inflow": 193.46,
-    "weekly_avg": 200.76,
-    "weekly_pct": -3.6,
-    "monthly_inflow": 860.42,
-    "monthly_avg": 805.12,
+    "daily_inflow": 22.73,
+    "daily_avg": 27.63,
+    "daily_pct": -17.7,
+    "weekly_inflow": 193.41,
+    "weekly_avg": 200.75,
+    "weekly_pct": -3.7,
+    "monthly_inflow": 860.38,
+    "monthly_avg": 805.1,
     "monthly_pct": 6.9,
     "large_tx_count": 919509
   },
@@ -241,7 +246,7 @@
       15.2,
       14.32,
       14.53,
-      15.01
+      15.0
     ],
     "yield_10y": [
       4.63,
@@ -363,7 +368,7 @@
       99.56,
       99.0,
       99.16,
-      99.02
+      98.92
     ],
     "sp500": [
       7723.55,
