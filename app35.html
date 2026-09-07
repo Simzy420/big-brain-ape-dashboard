@@ -6,14 +6,6 @@
 <title>Big Brain Ape</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://browser.sentry-cdn.com/10.72.0/bundle.min.js" crossorigin="anonymous"></script>
-<script>
-Sentry.init({
-  dsn: "https://b8e3987e3e518eb80fa7d9e219797293@o4512006544424960.ingest.us.sentry.io/4512006750797824",
-  tracesSampleRate: 0,
-  environment: "production"
-});
-</script>
 <style>
 :root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#e6edf3;--text2:#8b949e;--blue:#58a6ff;--green:#3fb950;--red:#f85149;--orange:#f0883e;--yellow:#d29922}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -392,12 +384,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <div class="big-sq-val" id="big-sq-2">Tap to read today's briefing</div>
 </div>
 </div>
-<!-- HIRE CTA -->
-<div style="background:linear-gradient(135deg,#1a1a2e,#16213e);border:2px solid var(--blue);border-radius:12px;padding:16px;margin:12px 0;text-align:center">
-<div style="font-size:22px;font-weight:800;color:var(--blue);margin-bottom:6px">🦍 Hire Big Brain Ape to Trade for You</div>
-<div style="font-size:17px;color:var(--text2);margin-bottom:10px">100% autonomous. 98 assets. 3-5x leverage. Don't make money = FREE.</div>
-<button style="background:var(--blue);color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:18px;font-weight:700;cursor:pointer" onclick="switchView('pricing')">View Pricing Plans →</button>
-</div>
 
 </div>
 
@@ -471,34 +457,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <li>✓ Correlation check</li>
 </div>
 <button class="price-btn" onclick="payWithCrypto()">Pay 0.50 USDC</button>
-</div>
-<div class="price-card" style="border:2px solid var(--blue)">
-<h3 style="color:var(--blue)">🦍 Hire Big Brain Ape to Trade</h3>
-<div class="price-amount" style="color:var(--blue)">Managed</div>
-<p style="font-size: 19px;color:var(--text2)">100% autonomous trading agent trades for you</p>
-<div class="price-features">
-<li>✓ Trades Hyperliquid Perps (98 assets)</li>
-<li>✓ Stocks, crypto, commodities, currencies</li>
-<li>✓ 3x-5x leverage, Druckenmiller framework</li>
-<li>✓ We provide the margin capital</li>
-<li>✓ Don't make money = it's FREE</li>
-<li>✓ We only take a % of profits</li>
-</div>
-<button class="price-btn" style="background:var(--blue)" onclick="window.open('https://t.me/BigBrain2Bot','_blank')">Get Started</button>
-</div>
-<div class="price-card">
-<h3>🔧 Developer API (x402)</h3>
-<div class="price-amount">$0.01-0.10</div>
-<p style="font-size: 19px;color:var(--text2)">Pay-per-call financial intelligence for bots</p>
-<div class="price-features">
-<li>✓ Stock prices & full analysis</li>
-<li>✓ Crypto market data</li>
-<li>✓ Macro regime classification</li>
-<li>✓ Trading signals with entry/exit</li>
-<li>✓ Live portfolio endpoint</li>
-<li>✓ USDC on Base, x402 protocol</li>
-</div>
-<button class="price-btn" onclick="window.open('https://simzy-bigbrain-api.hf.space/docs','_blank')">View API Docs</button>
 </div>
 </div>
 
@@ -1097,7 +1055,6 @@ if(v>=1e12)return '$'+(v/1e12).toFixed(2)+'T';
 if(v>=1e9)return '$'+(v/1e9).toFixed(2)+'B';
 if(v>=1e6)return '$'+(v/1e6).toFixed(0)+'M';
 return '$'+fmtNum(v);
-}
 // Market Cap — blue (user circled in blue)
 html+=metricCard("Market Cap",d.marketCap?fmtCapShort(d.marketCap):'—','',"var(--blue)");
 // Rev (Annual Revenue) — green if positive, fallback to stock-data.json price
@@ -3464,7 +3421,7 @@ backBtn.style.cssText='width:36px;height:36px;background:#21262d;border-radius:5
 backBtn.textContent='←';
 backBtn.onclick=function(){document.body.removeChild(overlay);document.body.style.overflow='';switchView('home');};
 var title=document.createElement('div');
-title.style.cssText='font-size: 24px;font-weight:700;color:#58a6ff;flex:1;margin-left:12px';
+title.style.cssText='font-size: 24px;font-weight:700;color:#58a6ff;flex:1;margin-left:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
 title.textContent='📈 Daily Market Snapshot';
 var closeBtn=document.createElement('div');
 closeBtn.style.cssText='width:36px;height:36px;background:#21262d;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#f85149;font-size: 30px;cursor:pointer;font-weight:bold;flex-shrink:0';
@@ -3704,235 +3661,380 @@ loadHomeData();
 // ==============================
 // CRYPTO HUB
 // ==============================
-var cryptoCharts={};
-function destroyCryptoCharts(){for(var k in cryptoCharts){if(cryptoCharts[k]){cryptoCharts[k].destroy();cryptoCharts[k]=null}}}
 function loadCrypto(){
-destroyCryptoCharts();
 var out=document.getElementById('cryptoContent');
 if(!out)return;
-var cardStyle='background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px';
-var titleStyle='font-size:22px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;cursor:pointer';
-var dotStyle='width:8px;height:8px;border-radius:50%';
-var spinner='<div class="spinner" style="width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto"></div>';
 var html='<div style="padding:0 2px">';
 
-// === 1. WHALE ACTIVITY ===
-html+='<div style="'+cardStyle+'">';
-html+='<div style="'+titleStyle+'" onclick="window.open(\'https://blockchain.info/unconfirmed-transactions\',\'_blank\')"><div style="'+dotStyle+';background:#3b82f6"></div>🐳 Whale Activity</div>';
-html+='<div id="whaleData" style="min-height:200px">'+spinner+'</div>';
+// === 1. WHALE ACTIVITY 🐳 ===
+html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px">';
+html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:#3b82f6"></div><span style="font-size:26px;font-weight:800">Whale Activity 🐳</span></div>';
+html+='<div id="whaleData" style="display:flex;flex-direction:column;gap:10px"><div class="spinner" style="width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto"></div></div>';
+html+='<div id="whaleHistoryContainer" style="margin-top:12px"></div>';
 html+='</div>';
 
-// === 2. FEAR & GREED ===
-html+='<div style="'+cardStyle+'">';
-html+='<div style="'+titleStyle+'" onclick="window.open(\'https://alternative.me/crypto/fear-and-greed-index/\',\'_blank\')"><div style="'+dotStyle+';background:#f59e0b"></div>😱🤑 Fear & Greed Index</div>';
-html+='<div id="fngData" style="min-height:180px;text-align:center">'+spinner+'</div>';
+// === 2. MARKET CAP & BTC DOMINANCE 📊 (moved up) ===
+html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px">';
+html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:#f97316"></div><span style="font-size:22px;font-weight:700">Market Cap & BTC Dominance 📊</span></div>';
+html+='<div id="globalData" style="text-align:center;padding:10px"><div class="spinner" style="width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto"></div></div>';
 html+='</div>';
 
-// === 3. TOP MOVERS ===
-html+='<div style="'+cardStyle+'">';
-html+='<div style="'+titleStyle+'" onclick="window.open(\'https://www.coingecko.com/en/crypto-gainers-losers\',\'_blank\')"><div style="'+dotStyle+';background:#10b981"></div>🚀📉 Top Movers (24h)</div>';
-html+='<div id="moversData" style="min-height:200px">'+spinner+'</div>';
+// === 3. CRYPTO MARKET SENTIMENT 📊 (new, replaces Fear & Greed) ===
+html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px">';
+html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:#f59e0b"></div><span style="font-size:22px;font-weight:700">Crypto Market Sentiment 📊</span></div>';
+html+='<div id="sentimentData" style="text-align:center;padding:10px"><div class="spinner" style="width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto"></div></div>';
 html+='</div>';
 
-// === 4. FUNDING RATES ===
-html+='<div style="'+cardStyle+'">';
-html+='<div style="'+titleStyle+'" onclick="window.open(\'https://app.hyperliquid.xyz\',\'_blank\')"><div style="'+dotStyle+';background:#8b5cf6"></div>💰 Funding Rates</div>';
-html+='<div style="font-size:13px;color:var(--text2);margin-bottom:10px">Green = shorts pay longs · Red = longs pay shorts (Hyperliquid 8h)</div>';
-html+='<div id="fundingData" style="min-height:240px">'+spinner+'</div>';
+// === 4. TRENDING COINS 🔥 ===
+html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px">';
+html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:#ec4899"></div><span style="font-size:22px;font-weight:700">Trending Coins 🔥</span></div>';
+html+='<div id="trendingData" style="display:flex;flex-direction:column;gap:8px"><div class="spinner" style="width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto"></div></div>';
 html+='</div>';
 
-// === 5. MARKET CAP & DOMINANCE ===
-html+='<div style="'+cardStyle+'">';
-html+='<div style="'+titleStyle+'" onclick="window.open(\'https://www.coingecko.com/en/global-charts\',\'_blank\')"><div style="'+dotStyle+';background:#f97316"></div>📊 Market Cap & BTC Dominance</div>';
-html+='<div id="globalData" style="min-height:280px;text-align:center">'+spinner+'</div>';
+// === 5. TOP 10 GAINERS (24h) 📈 (new, chart) ===
+html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px">';
+html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:#10b981"></div><span style="font-size:22px;font-weight:700">Top 10 Gainers (24h) 📈</span></div>';
+html+='<div style="height:300px;position:relative"><canvas id="gainersChart"></canvas></div>';
 html+='</div>';
 
-// === 6. TRENDING COINS ===
-html+='<div style="'+cardStyle+'">';
-html+='<div style="'+titleStyle+'" onclick="window.open(\'https://www.coingecko.com/en/highlights/trending-crypto\',\'_blank\')"><div style="'+dotStyle+';background:#ec4899"></div>🔥 Trending Coins</div>';
-html+='<div id="trendingData" style="min-height:200px">'+spinner+'</div>';
+// === 6. TOP 10 LOSERS (24h) 📉 (new, chart) ===
+html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px">';
+html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:#ef4444"></div><span style="font-size:22px;font-weight:700">Top 10 Losers (24h) 📉</span></div>';
+html+='<div style="height:300px;position:relative"><canvas id="losersChart"></canvas></div>';
+html+='</div>';
+
+// === 7. FUNDING RATES (Hyperliquid) ===
+html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px">';
+html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:#8b5cf6"></div><span style="font-size:22px;font-weight:700">Funding Rates 💰</span></div>';
+html+='<div style="font-size:14px;color:var(--text2);margin-bottom:8px">Positive = longs pay shorts. Negative = shorts pay longs. (Hyperliquid, 8h)</div>';
+html+='<div id="fundingData" style="display:flex;flex-direction:column;gap:6px"><div class="spinner" style="width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto"></div></div>';
 html+='</div>';
 
 html+='</div>';
 out.innerHTML=html;
 
-// === FETCH 1: Fear & Greed — Gauge chart + 7-day bar chart ===
-fetch('https://api.alternative.me/fng/?limit=7').then(function(r){return r.json()}).then(function(d){
-var el=document.getElementById('fngData');if(!el||!d.data)return;
-var today=d.data[0];var val=parseInt(today.value);
-var color=val<25?'#ef4444':val<45?'#f97316':val<55?'#eab308':val<75?'#84cc16':'#22c55e';
-var emoji=val<25?'😱':val<45?'😰':val<55?'😐':val<75?'😊':'🤑';
-var labels=d.data.map(function(x,i){return x.timestamp?new Date(parseInt(x.timestamp)*1000).toLocaleDateString('en',{weekday:'short'}):''}).reverse();
-var values=d.data.map(function(x){return parseInt(x.value)}).reverse();
-var colors=values.map(function(v){return v<25?'#ef4444':v<45?'#f97316':v<55?'#eab308':v<75?'#84cc16':'#22c55e'});
-var h='<div onclick="window.open(\'https://alternative.me/crypto/fear-and-greed-index/\',\'_blank\')" style="cursor:pointer">';
-h+='<div style="font-size:56px;font-weight:800;color:'+color+'">'+val+' '+emoji+'</div>';
-h+='<div style="font-size:18px;font-weight:600;color:'+color+';margin-top:4px">'+today.value_classification+'</div>';
+// Shared markets data for sentiment + gainers + losers
+var _top50Data=null;
+var _top50Loaded=false;
+var _fundingData=null;
+var _fundingLoaded=false;
+var _globalData=null;
+var _globalLoaded=false;
+
+// Helper: render 24hr whale history (called by button and after whale fetch)
+function renderWhaleHistory(history, expanded){
+  var cont=document.getElementById('whaleHistoryContainer');
+  if(!cont)return;
+  var html='';
+  if(history.length>0){
+    html+='<button id="whaleHistoryBtn" onclick="toggleWhaleHistory()" style="width:100%;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:15px;font-weight:600;cursor:pointer;margin-bottom:8px">'+(expanded?'Hide History':'Show 24hr Whale History')+'</button>';
+  }
+  if(expanded && history.length>0){
+    html+='<div style="display:flex;flex-direction:column;gap:8px;max-height:400px;overflow-y:auto">';
+    for(var i=0;i<history.length;i++){
+      var w=history[i];
+      var usdVal=w.btc*(w.btcPrice||78000);
+      var timeStr=new Date(w.time*1000).toLocaleString('en',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+      html+='<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:10px">';
+      html+='<div><div style="font-size:18px;font-weight:700;color:#3b82f6">🐳 '+w.btc.toFixed(2)+' BTC</div><div style="font-size:14px;color:var(--text2)">~$'+(usdVal/1e6).toFixed(2)+'M · '+timeStr+'</div></div>';
+      html+='<div style="font-size:13px;color:var(--text2);font-family:monospace">'+w.hash.substring(0,16)+'...</div>';
+      html+='</div>';
+    }
+    html+='</div>';
+  }
+  cont.innerHTML=html;
+}
+
+// Global toggle state for whale history
+window._whaleHistoryExpanded=false;
+window.toggleWhaleHistory=function(){
+  window._whaleHistoryExpanded=!window._whaleHistoryExpanded;
+  try{
+    var raw=localStorage.getItem('whaleHistory24h');
+    var history=raw?JSON.parse(raw):[];
+  }catch(e){var history=[];}
+  renderWhaleHistory(history, window._whaleHistoryExpanded);
+};
+
+// --- Fetch Whale Activity (large BTC transactions from blockchain.com) ---
+fetch('https://blockchain.info/unconfirmed-transactions?format=json&limit=50').then(function(r){return r.json()}).then(function(d){
+var el=document.getElementById('whaleData');
+if(!el||!d.txs)return;
+// Filter for large transactions (> 10 BTC = whale territory)
+var whales=[];
+for(var i=0;i<d.txs.length;i++){
+var tx=d.txs[i];
+var totalOut=0;
+if(tx.out){
+for(var j=0;j<tx.out.length;j++){
+totalOut+=(tx.out[j].value||0);
+}
+}
+totalOut=totalOut/1e8; // satoshis to BTC
+if(totalOut>=5){
+whales.push({hash:tx.hash,btc:totalOut,time:tx.time});
+}
+}
+// Sort by size descending
+whales.sort(function(a,b){return b.btc-a.btc});
+var now=Math.floor(Date.now()/1000);
+
+// Store to localStorage (24h history)
+var existing=[];
+try{
+var raw=localStorage.getItem('whaleHistory24h');
+existing=raw?JSON.parse(raw):[];
+}catch(e){existing=[];}
+// Prune entries older than 24 hours
+existing=existing.filter(function(w){return (now-w.time)<86400;});
+// Append new whales (dedupe by hash)
+var existingHashes={};
+for(var i=0;i<existing.length;i++){existingHashes[existing[i].hash]=true;}
+for(var i=0;i<whales.length;i++){
+if(!existingHashes[whales[i].hash]){
+existing.push(whales[i]);
+existingHashes[whales[i].hash]=true;
+}
+}
+// Sort newest first
+existing.sort(function(a,b){return b.time-a.time;});
+try{localStorage.setItem('whaleHistory24h',JSON.stringify(existing));}catch(e){}
+
+// Display top 6
+var h='';
+if(whales.length===0){
+h='<div style="text-align:center;color:var(--text2);padding:20px;font-size:18px">No large unconfirmed BTC transactions right now. Check back soon! 🐳</div>';
+}else{
+for(var i=0;i<Math.min(whales.length,6);i++){
+var w=whales[i];
+var usdVal=w.btc*78000; // approximate BTC price
+var timeStr=new Date(w.time*1000).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'});
+h+='<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:10px">';
+h+='<div><div style="font-size:18px;font-weight:700;color:#3b82f6">🐳 '+w.btc.toFixed(2)+' BTC</div><div style="font-size:14px;color:var(--text2)">~$'+(usdVal/1e6).toFixed(2)+'M · '+timeStr+'</div></div>';
+h+='<div style="font-size:13px;color:var(--text2);font-family:monospace">'+w.hash.substring(0,16)+'...</div>';
 h+='</div>';
-h+='<div style="height:80px;position:relative;margin-top:12px"><canvas id="fngChart"></canvas></div>';
+}
+}
 el.innerHTML=h;
-var ctx=document.getElementById('fngChart');
-if(ctx){cryptoCharts.fng=new Chart(ctx,{type:'bar',data:{labels:labels,datasets:[{data:values,backgroundColor:colors,borderRadius:6,barPercentage:0.6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.raw+' — '+d.data[6-c.dataIndex].value_classification}}}},scales:{y:{display:false,max:100},x:{grid:{display:false},ticks:{color:'var(--text2)',font:{size:11}}}}}})}
-}).catch(function(){var el=document.getElementById('fngData');if(el)el.innerHTML='<div style="color:var(--text2);text-align:center">Failed to load</div>'});
 
-// === FETCH 2: Top Movers — Horizontal bar chart ===
+// Render history button/state
+renderWhaleHistory(existing, window._whaleHistoryExpanded);
+}).catch(function(){var el=document.getElementById('whaleData');if(el)el.innerHTML='<div style="color:var(--text2);text-align:center">Whale data temporarily unavailable</div>'});
+
+// --- Fetch Global Market Cap & BTC Dominance ---
+fetch('https://api.coingecko.com/api/v3/global').then(function(r){return r.json()}).then(function(d){
+var el=document.getElementById('globalData');
+if(!el||!d.data)return;
+var g=d.data;
+_globalData=g;
+_globalLoaded=true;
+var totalMcap=g.total_market_cap.usd;
+var btcDom=g.market_cap_percentage.btc;
+var ethDom=g.market_cap_percentage.eth;
+var vol24h=g.total_volume.usd;
+var mcapChange=g.market_cap_change_percentage_24h_usd||0;
+var h='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">';
+// Total market cap
+h+='<div style="background:var(--bg);border-radius:12px;padding:14px;text-align:center">';
+h+='<div style="font-size:14px;color:var(--text2);font-weight:600">TOTAL MARKET CAP</div>';
+h+='<div style="font-size:26px;font-weight:700;color:var(--text)">$'+(totalMcap/1e12).toFixed(2)+'T</div>';
+h+='<div style="font-size:15px;font-weight:600;color:'+(mcapChange>=0?'var(--green)':'var(--red)')+'">'+(mcapChange>=0?'+':'')+mcapChange.toFixed(1)+'%</div>';
+h+='</div>';
+// 24h volume
+h+='<div style="background:var(--bg);border-radius:12px;padding:14px;text-align:center">';
+h+='<div style="font-size:14px;color:var(--text2);font-weight:600">24H VOLUME</div>';
+h+='<div style="font-size:26px;font-weight:700;color:var(--text)">$'+(vol24h/1e9).toFixed(1)+'B</div>';
+h+='<div style="font-size:15px;color:var(--text2);font-weight:600">Global</div>';
+h+='</div>';
+h+='</div>';
+// BTC vs ETH dominance bars
+h+='<div style="background:var(--bg);border-radius:12px;padding:14px;margin-bottom:8px">';
+h+='<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:16px;font-weight:700;color:#f97316">BTC Dominance</span><span style="font-size:16px;font-weight:700;color:#f97316">'+btcDom.toFixed(1)+'%</span></div>';
+h+='<div style="height:12px;background:var(--card);border-radius:6px;margin-bottom:12px"><div style="height:100%;width:'+btcDom+'%;background:#f97316;border-radius:6px"></div></div>';
+h+='<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:16px;font-weight:700;color:#3b82f6">ETH Dominance</span><span style="font-size:16px;font-weight:700;color:#3b82f6">'+ethDom.toFixed(1)+'%</span></div>';
+h+='<div style="height:12px;background:var(--card);border-radius:6px"><div style="height:100%;width:'+ethDom+'%;background:#3b82f6;border-radius:6px"></div></div>';
+h+='</div>';
+el.innerHTML=h;
+computeSentiment();
+}).catch(function(){var el=document.getElementById('globalData');if(el)el.innerHTML='<div style="color:var(--text2);text-align:center">Failed to load</div>'});
+
+// --- Fetch Top 50 coins (shared for sentiment + gainers + losers) ---
 fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=false&price_change_percentage=24h').then(function(r){return r.json()}).then(function(coins){
-var el=document.getElementById('moversData');if(!el||!coins)return;
-var sorted=coins.slice().sort(function(a,b){return Math.abs(b.price_change_percentage_24h||0)-Math.abs(a.price_change_percentage_24h||0)});
-var topMovers=sorted.slice(0,8);
-var labels=topMovers.map(function(c){return c.symbol.toUpperCase()});
-var pcts=topMovers.map(function(c){return c.price_change_percentage_24h||0});
-var colors=pcts.map(function(p){return p>=0?'#3fb950':'#f85149'});
-var h='<div style="height:200px;position:relative"><canvas id="moversChart"></canvas></div>';
-el.innerHTML=h;
-var ctx=document.getElementById('moversChart');
-if(ctx){cryptoCharts.movers=new Chart(ctx,{type:'bar',data:{labels:labels,datasets:[{data:pcts,backgroundColor:colors,borderRadius:6,barPercentage:0.7}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,onClick:function(e,items){if(items.length>0){var coin=topMovers[items[0].index];window.open('https://www.coingecko.com/en/coins/'+coin.id,'_blank')}},plugins:{legend:{display:false},tooltip:{callbacks:{afterLabel:function(c){var coin=topMovers[c.dataIndex];return '$'+(coin.current_price>=1?coin.current_price.toLocaleString():coin.current_price.toPrecision(4))+' · '+coin.name}}}},scales:{x:{grid:{color:'var(--border)'},ticks:{color:'var(--text2)',font:{size:12},callback:function(v){return v+'%'}}},y:{grid:{display:false},ticks:{color:'var(--text)',font:{size:14,weight:'bold'}}}}}})}
-}).catch(function(){var el=document.getElementById('moversData');if(el)el.innerHTML='<div style="color:var(--text2);text-align:center">Failed to load</div>'});
+if(!coins)return;
+_top50Data=coins;
+_top50Loaded=true;
+computeSentiment();
+renderGainersLosers(coins);
+}).catch(function(){/* gainers/losers error handled in renderGainersLosers */});
 
-// === FETCH 3: Funding Rates — Diverging bar chart ===
+// --- Fetch Funding Rates (Hyperliquid) ---
 fetch('https://api.hyperliquid.xyz/info',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'metaAndAssetCtxs'})}).then(function(r){return r.json()}).then(function(d){
-var el=document.getElementById('fundingData');if(!el||!d||!d[0]||!d[1])return;
-var universe=d[0].universe;var ctxs=d[1];var combined=[];
+var el=document.getElementById('fundingData');
+if(!el||!d||!d[0]||!d[1])return;
+var universe=d[0].universe;
+var ctxs=d[1];
+var combined=[];
 for(var i=0;i<Math.min(universe.length,ctxs.length);i++){
-var ctx=ctxs[i];var oi=parseFloat(ctx.openInterest)||0;
+var ctx=ctxs[i];
+var oi=parseFloat(ctx.openInterest)||0;
 if(oi<1e6)continue;
 combined.push({name:universe[i].name,funding:parseFloat(ctx.funding)||0,oi:oi});
 }
+// Sort by OI and show top 10
 combined.sort(function(a,b){return b.oi-a.oi});
 var top10=combined.slice(0,10);
-var labels=top10.map(function(c){return c.name});
-var rates=top10.map(function(c){return c.funding*100});
-var colors=rates.map(function(r){return r>0.002?'#f85149':r<0?'#3fb950':'#8b949e'});
-var h='<div style="height:240px;position:relative"><canvas id="fundingChart"></canvas></div>';
+
+// Store funding for sentiment
+_fundingData=combined;
+_fundingLoaded=true;
+computeSentiment();
+
+var h='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">';
+for(var i=0;i<top10.length;i++){
+var c=top10[i];
+var fr=c.funding*100;
+var color=fr>0.002?'var(--red)':fr<0?'var(--green)':'var(--text2)';
+h+='<div style="display:flex;justify-content:space-between;padding:6px 10px;background:var(--bg);border-radius:8px">';
+h+='<span style="font-size:15px;font-weight:600">'+c.name+'</span>';
+h+='<span style="font-size:15px;font-weight:700;color:'+color+'">'+(fr>=0?'+':'')+fr.toFixed(4)+'%</span>';
+h+='</div>';
+}
+h+='</div>';
 el.innerHTML=h;
-var ctx=document.getElementById('fundingChart');
-if(ctx){cryptoCharts.funding=new Chart(ctx,{type:'bar',data:{labels:labels,datasets:[{data:rates,backgroundColor:colors,borderRadius:4,barPercentage:0.7}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,onClick:function(e,items){if(items.length>0){window.open('https://app.hyperliquid.xyz','_blank')}},plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){var fr=c.raw;return (fr>=0?'+':'')+fr.toFixed(4)+'% (8h)'}}}},scales:{x:{grid:{color:'var(--border)'},ticks:{color:'var(--text2)',font:{size:11},callback:function(v){return v+'%'}}},y:{grid:{display:false},ticks:{color:'var(--text)',font:{size:13,weight:'bold'}}}}}})}
 }).catch(function(){var el=document.getElementById('fundingData');if(el)el.innerHTML='<div style="color:var(--text2);text-align:center">Failed to load</div>'});
 
-// === FETCH 4: Global Market Cap & BTC Dominance — Donut chart + metric cards ===
-fetch('https://api.coingecko.com/api/v3/global').then(function(r){return r.json()}).then(function(d){
-var el=document.getElementById('globalData');if(!el||!d.data)return;
-var g=d.data;var totalMcap=g.total_market_cap.usd;var btcDom=g.market_cap_percentage.btc;var ethDom=g.market_cap_percentage.eth;var vol24h=g.total_volume.usd;var mcapChange=g.market_cap_change_percentage_24h_usd||0;var otherDom=Math.max(0,100-btcDom-ethDom);
-var h='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">';
-h+='<div style="background:var(--bg);border-radius:12px;padding:12px;text-align:center" onclick="window.open(\'https://www.coingecko.com/en/global-charts\',\'_blank\')" style="cursor:pointer">';
-h+='<div style="font-size:13px;color:var(--text2);font-weight:600">TOTAL MARKET CAP</div>';
-h+='<div style="font-size:24px;font-weight:700;color:var(--blue)">$'+(totalMcap/1e12).toFixed(2)+'T</div>';
-h+='<div style="font-size:14px;font-weight:600;color:'+(mcapChange>=0?'var(--green)':'var(--red)')+'">'+(mcapChange>=0?'+':'')+mcapChange.toFixed(1)+'% 24h</div>';
-h+='</div>';
-h+='<div style="background:var(--bg);border-radius:12px;padding:12px;text-align:center;cursor:pointer" onclick="window.open(\'https://www.coingecko.com/en/global-charts\',\'_blank\')">';
-h+='<div style="font-size:13px;color:var(--text2);font-weight:600">24H VOLUME</div>';
-h+='<div style="font-size:24px;font-weight:700;color:var(--blue)">$'+(vol24h/1e9).toFixed(1)+'B</div>';
-h+='<div style="font-size:14px;color:var(--text2);font-weight:600">Global</div>';
-h+='</div>';
-h+='</div>';
-h+='<div style="height:160px;position:relative"><canvas id="domChart"></canvas></div>';
-el.innerHTML=h;
-var ctx=document.getElementById('domChart');
-if(ctx){cryptoCharts.dom=new Chart(ctx,{type:'doughnut',data:{labels:['BTC '+btcDom.toFixed(1)+'%','ETH '+ethDom.toFixed(1)+'%','Others '+otherDom.toFixed(1)+'%'],datasets:[{data:[btcDom,ethDom,otherDom],backgroundColor:['#f97316','#3b82f6','#8b949e'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{color:'var(--text2)',font:{size:13},padding:12,boxWidth:12}},tooltip:{callbacks:{label:function(c){return c.label}}}}}})}
-}).catch(function(){var el=document.getElementById('globalData');if(el)el.innerHTML='<div style="color:var(--text2);text-align:center">Failed to load</div>'});
-
-// === FETCH 5: Trending Coins — Rank cards with click-through ===
+// --- Fetch Trending Coins ---
 fetch('https://api.coingecko.com/api/v3/search/trending').then(function(r){return r.json()}).then(function(d){
-var el=document.getElementById('trendingData');if(!el||!d.coins)return;
+var el=document.getElementById('trendingData');
+if(!el||!d.coins)return;
 var h='';
-for(var i=0;i<Math.min(d.coins.length,7);i++){
+for(var i=0;i<Math.min(d.coins.length,10);i++){
 var item=d.coins[i].item;
-var rankColor=i===0?'#fbbf24':i===1?'#94a3b8':i===2?'#f97316':'var(--border)';
-h+='<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:10px;cursor:pointer;margin-bottom:6px;border-left:3px solid '+rankColor+'" onclick="window.open(\'https://www.coingecko.com/en/coins/'+item.id+'\',\'_blank\')">';
-h+='<div style="display:flex;align-items:center;gap:10px"><span style="font-size:20px;font-weight:800;color:'+rankColor+';min-width:24px">'+(i+1)+'</span>';
-if(item.thumb){h+='<img src="'+item.thumb+'" style="width:24px;height:24px;border-radius:50%" onerror="this.style.display=\'none\'">'}
-h+='<span style="font-size:17px;font-weight:700">'+item.symbol.toUpperCase()+'</span><span style="font-size:14px;color:var(--text2)">'+item.name+'</span></div>';
+h+='<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg);border-radius:10px">';
+h+='<div style="display:flex;align-items:center;gap:8px"><span style="font-size:18px">'+(i+1)+'</span><span style="font-size:17px;font-weight:700">'+item.symbol.toUpperCase()+'</span><span style="font-size:14px;color:var(--text2)">'+item.name+'</span></div>';
 h+='<div style="font-size:14px;color:var(--text2)">Rank #'+(item.market_cap_rank||'—')+'</div>';
 h+='</div>';
 }
 el.innerHTML=h;
 }).catch(function(){var el=document.getElementById('trendingData');if(el)el.innerHTML='<div style="color:var(--text2);text-align:center">Failed to load</div>'});
 
-// === FETCH 6: Whale Activity — 24h of large BTC transactions via Whale Alert API ===
-var whaleEl=document.getElementById('whaleData');
-if(whaleEl)whaleEl.innerHTML='<div style="color:var(--text2);font-size:15px;text-align:center;padding:20px">Loading 24h whale data...</div>';
-// Try Whale Alert free API (works without key for basic data)
-fetch('https://api.whale-alert.io/v1/transactions?api_key=1234567890&min=500000&start='+Math.floor(Date.now()/1000-86400)+'&limit=50&currency=btc').then(function(r){return r.json()}).then(function(d){
-var el=document.getElementById('whaleData');if(!el)return;
-if(!d||!d.transactions||d.transactions.length===0){
-throw new Error('no data');}
-var txs=d.transactions;
-var h='<div style="font-size:14px;color:var(--text2);margin-bottom:10px">Last 24h · '+txs.length+' large BTC transactions ($500K+)</div>';
-// Build chart data: group by hour
-var now=Date.now();var hourBuckets={};
-for(var i=0;i<txs.length;i++){
-var t=txs[i];var hourAgo=Math.floor((now-t.timestamp*1000)/3600000);
-var key=Math.max(0,Math.min(23,hourAgo));
-if(!hourBuckets[key])hourBuckets[key]={count:0,total:0};
-hourBuckets[key].count++;
-hourBuckets[key].total+=t.amount;
+// --- Render Gainers/Losers Chart.js charts ---
+function renderGainersLosers(coins){
+  if(!coins)return;
+  // Gainers: sort by price_change_percentage_24h descending
+  var gainers=coins.slice().sort(function(a,b){return (b.price_change_percentage_24h||0)-(a.price_change_percentage_24h||0)}).slice(0,10);
+  // Losers: sort ascending (most negative first)
+  var losers=coins.slice().sort(function(a,b){return (a.price_change_percentage_24h||0)-(b.price_change_percentage_24h||0)}).slice(0,10);
+  var gLabels=[],gData=[],lLabels=[],lData=[];
+  for(var i=0;i<gainers.length;i++){gLabels.push((gainers[i].symbol||'').toUpperCase());gData.push(gainers[i].price_change_percentage_24h||0);}
+  for(var i=0;i<losers.length;i++){lLabels.push((losers[i].symbol||'').toUpperCase());lData.push(losers[i].price_change_percentage_24h||0);}
+
+  var gc=document.getElementById('gainersChart');
+  var lc=document.getElementById('losersChart');
+  if(typeof Chart==='undefined'){
+    if(gc)gc.parentElement.innerHTML='<div style="color:var(--text2);text-align:center;padding:20px">Chart.js not loaded</div>';
+    if(lc)lc.parentElement.innerHTML='<div style="color:var(--text2);text-align:center;padding:20px">Chart.js not loaded</div>';
+    return;
+  }
+  if(gc){
+    new Chart(gc,{
+      type:'bar',
+      data:{labels:gLabels,datasets:[{label:'+%',data:gData,backgroundColor:'rgba(16,185,129,0.8)',borderColor:'#10b981',borderWidth:1,borderRadius:4}]},
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return (ctx.raw>=0?'+':'')+ctx.raw.toFixed(2)+'%'}}}},scales:{x:{ticks:{color:'#888',callback:function(v){return v+'%'}},grid:{color:'rgba(128,128,128,0.1)'}},y:{ticks:{color:'#ccc'},grid:{display:false}}}}
+    });
+  }
+  if(lc){
+    new Chart(lc,{
+      type:'bar',
+      data:{labels:lLabels,datasets:[{label:'-%',data:lData,backgroundColor:'rgba(239,68,68,0.8)',borderColor:'#ef4444',borderWidth:1,borderRadius:4}]},
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return (ctx.raw>=0?'+':'')+ctx.raw.toFixed(2)+'%'}}}},scales:{x:{ticks:{color:'#888',callback:function(v){return v+'%'}},grid:{color:'rgba(128,128,128,0.1)'}},y:{ticks:{color:'#ccc'},grid:{display:false}}}}
+    });
+  }
 }
-var labels=[];var data=[];var maxVal=0;
-for(var h2=23;h2>=0;h2--){
-var b=hourBuckets[h2];
-if(b){labels.push((h2===0?'now':h2+'h ago'));data.push(b.total);if(b.total>maxVal)maxVal=b.total;}
-else{labels.push((h2===0?'now':h2+'h ago'));data.push(0);}
+
+// --- Compute Crypto Market Sentiment ---
+function computeSentiment(){
+  if(!_globalLoaded||!_top50Loaded||!_fundingLoaded)return;
+  var el=document.getElementById('sentimentData');
+  if(!el)return;
+  var g=_globalData, coins=_top50Data, funding=_fundingData;
+  if(!g||!coins||!funding)return;
+  var score=50; // start neutral
+
+  // 1. BTC dominance trend (high dominance = risk-off → lower score; low = risk-on → higher)
+  var btcDom=g.market_cap_percentage.btc||50;
+  // BTC dominance > 55% = risk-off (subtract up to 15); < 45% = risk-on (add up to 15)
+  if(btcDom>55){score-=(btcDom-55)*1.2;}
+  else if(btcDom<45){score+=(45-btcDom)*1.2;}
+
+  // 2. Total market cap 24h change (positive = bullish)
+  var mcapChange=g.market_cap_change_percentage_24h_usd||0;
+  // +5% adds ~15, -5% subtracts ~15
+  score+=Math.max(-15,Math.min(15,mcapChange*3));
+
+  // 3. Number of gainers vs losers in top 50
+  var gainers=0,losers=0;
+  for(var i=0;i<coins.length;i++){
+    var pct=coins[i].price_change_percentage_24h||0;
+    if(pct>0)gainers++;else if(pct<0)losers++;
+  }
+  var totalCoins=gainers+losers;
+  if(totalCoins>0){
+    // ratio of gainers: 0 → -20, 1 → +20
+    score+=((gainers/totalCoins)-0.5)*40;
+  }
+
+  // 4. Funding rates aggregate (mostly positive = overheated → subtract; mixed = balanced; negative = fearful)
+  var posCount=0,negCount=0;
+  for(var i=0;i<funding.length;i++){
+    if(funding[i].funding>0)posCount++;else if(funding[i].funding<0)negCount++;
+  }
+  var fTotal=posCount+negCount;
+  if(fTotal>0){
+    var posRatio=posCount/fTotal;
+    // Very positive (>80% long) = overheated → subtract up to 10
+    // Balanced (50%) = neutral
+    // Very negative (<20% long) = fearful → add up to 5 (capitulation = potential bottom)
+    if(posRatio>0.7){score-=(posRatio-0.7)*33;}
+    else if(posRatio<0.3){score+=Math.min(5,(0.3-posRatio)*16);}
+  }
+
+  // Clamp 0-100
+  score=Math.max(0,Math.min(100,Math.round(score)));
+
+  // Color and label
+  var color,label;
+  if(score<30){color='#ef4444';label='Extreme Fear';}
+  else if(score<50){color='#f97316';label='Fear';}
+  else if(score<65){color='#eab308';label='Neutral';}
+  else if(score<=80){color='#84cc16';label='Greed';}
+  else{color='#22c55e';label='Extreme Greed';}
+
+  var h='';
+  // Gauge meter
+  h+='<div style="position:relative;width:100%;max-width:400px;margin:0 auto;height:80px">';
+  // Background arc (gradient bar)
+  h+='<div style="display:flex;height:24px;border-radius:12px;overflow:hidden;margin-top:20px;border:1px solid var(--border)">';
+  h+='<div style="flex:1;background:linear-gradient(90deg,#ef4444,#f97316,#eab308,#84cc16,#22c55e)"></div>';
+  h+='</div>';
+  // Marker
+  h+='<div style="position:absolute;top:14px;left:'+score+'%;transform:translateX(-50%);font-size:22px">▼</div>';
+  h+='<div style="text-align:center;margin-top:4px;font-size:13px;color:var(--text2)"><span style="font-size:32px;font-weight:800;color:'+color+'">'+score+'</span> / 100</div>';
+  h+='</div>';
+  // Label
+  h+='<div style="font-size:24px;font-weight:700;color:'+color+';margin-top:8px">'+label+'</div>';
+  // Summary
+  h+='<div style="font-size:14px;color:var(--text2);margin-top:8px">Market sentiment based on dominance, volume, breadth, and funding</div>';
+  // Breakdown
+  h+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px;text-align:center">';
+  h+='<div style="background:var(--bg);border-radius:10px;padding:10px"><div style="font-size:13px;color:var(--text2)">BTC Dominance</div><div style="font-size:17px;font-weight:700;color:#f97316">'+btcDom.toFixed(1)+'%</div></div>';
+  h+='<div style="background:var(--bg);border-radius:10px;padding:10px"><div style="font-size:13px;color:var(--text2)">MCap 24h</div><div style="font-size:17px;font-weight:700;color:'+(mcapChange>=0?'var(--green)':'var(--red)')+'">'+(mcapChange>=0?'+':'')+mcapChange.toFixed(1)+'%</div></div>';
+  h+='<div style="background:var(--bg);border-radius:10px;padding:10px"><div style="font-size:13px;color:var(--text2)">Gainers/Losers</div><div style="font-size:17px;font-weight:700;color:var(--text)">'+gainers+'/'+losers+'</div></div>';
+  h+='<div style="background:var(--bg);border-radius:10px;padding:10px"><div style="font-size:13px;color:var(--text2)">Funding</div><div style="font-size:17px;font-weight:700;color:'+(posCount>negCount?'var(--red)':'var(--green)')+'">'+posCount+'L/'+negCount+'S</div></div>';
+  h+='</div>';
+  el.innerHTML=h;
 }
-h+='<div style="height:120px;position:relative;margin-bottom:14px"><canvas id="whaleChart"></canvas></div>';
-// List top transactions
-txs.sort(function(a,b){return b.amount-a.amount});
-var topTxs=txs.slice(0,8);
-h+='<div style="display:flex;flex-direction:column;gap:6px">';
-for(var i=0;i<topTxs.length;i++){
-var t=topTxs[i];
-var usdVal=t.amount*78000;
-var timeStr=new Date(t.timestamp*1000).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'});
-var fromType=t.from||{};var toType=t.to||{};
-var fromLabel=fromType.owner_type?fromType.owner_type:'unknown';
-var toLabel=toType.owner_type?toType.owner_type:'unknown';
-var colorBar=fromLabel==='exchange'?'#3b82f6':'#8b5cf6';
-h+='<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg);border-radius:10px;cursor:pointer;border-left:3px solid '+colorBar+'" onclick="window.open(\'https://www.blockchain.com/explorer/transactions/btc/'+t.hash+'\',\'_blank\')">';
-h+='<div><div style="font-size:17px;font-weight:700;color:#3b82f6">🐳 '+t.amount.toFixed(2)+' BTC</div>';
-h+='<div style="font-size:13px;color:var(--text2)">~$'+(usdVal/1e6).toFixed(2)+'M · '+timeStr+' · '+fromLabel+'→'+toLabel+'</div></div>';
-h+='<div style="font-size:12px;color:var(--text2);font-family:monospace">'+t.hash.substring(0,14)+'...</div>';
-h+='</div>';
-}
-h+='</div>';
-el.innerHTML=h;
-var ctx=document.getElementById('whaleChart');
-if(ctx){cryptoCharts.whale=new Chart(ctx,{type:'bar',data:{labels:labels,datasets:[{data:data,backgroundColor:'#3b82f6',borderRadius:4,barPercentage:0.7}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){var v=c.raw;if(v===0)return 'No transactions';return v.toFixed(1)+' BTC total'}}}},scales:{y:{display:false},x:{grid:{display:false},ticks:{color:'var(--text2)',font:{size:10},maxRotation:0,autoSkip:true,maxTicksLimit:8}}}}})}
-}).catch(function(){
-// Fallback to blockchain.com unconfirmed transactions (larger limit)
-fetch('https://blockchain.info/unconfirmed-transactions?format=json&limit=100').then(function(r){return r.json()}).then(function(d){
-var el=document.getElementById('whaleData');if(!el||!d.txs)return;
-var whales=[];
-for(var i=0;i<d.txs.length;i++){
-var tx=d.txs[i];var totalOut=0;
-if(tx.out){for(var j=0;j<tx.out.length;j++){totalOut+=(tx.out[j].value||0)}}
-totalOut=totalOut/1e8;
-if(totalOut>=5){whales.push({hash:tx.hash,btc:totalOut,time:tx.time})}
-}
-whales.sort(function(a,b){return b.btc-a.btc});
-if(whales.length===0){
-el.innerHTML='<div style="text-align:center;color:var(--text2);padding:20px;font-size:18px">No large unconfirmed BTC transactions right now. 🐳<br><br>Whale Alert API needed for 24h history. The free tier requires an API key.</div>';
-return;
-}
-var topWhales=whales.slice(0,8);
-var h='<div style="font-size:14px;color:var(--text2);margin-bottom:10px">'+whales.length+' large unconfirmed BTC transactions (5+ BTC) right now</div>';
-h+='<div style="height:120px;position:relative;margin-bottom:12px"><canvas id="whaleChart"></canvas></div>';
-h+='<div style="display:flex;flex-direction:column;gap:6px">';
-for(var i=0;i<topWhales.length;i++){
-var w=topWhales[i];var usdVal=w.btc*78000;
-var timeStr=new Date(w.time*1000).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'});
-h+='<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg);border-radius:10px;cursor:pointer" onclick="window.open(\'https://blockchain.info/tx/'+w.hash+'\',\'_blank\')">';
-h+='<div><div style="font-size:17px;font-weight:700;color:#3b82f6">🐳 '+w.btc.toFixed(2)+' BTC</div><div style="font-size:13px;color:var(--text2)">~$'+(usdVal/1e6).toFixed(2)+'M · '+timeStr+'</div></div>';
-h+='<div style="font-size:12px;color:var(--text2);font-family:monospace">'+w.hash.substring(0,14)+'...</div>';
-h+='</div>';
-}
-h+='</div>';
-el.innerHTML=h;
-var labels=topWhales.map(function(w){return w.btc.toFixed(1)+' BTC'});
-var data=topWhales.map(function(w){return w.btc});
-var ctx=document.getElementById('whaleChart');
-if(ctx){cryptoCharts.whale=new Chart(ctx,{type:'bar',data:{labels:labels,datasets:[{data:data,backgroundColor:'#3b82f6',borderRadius:6,barPercentage:0.6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{afterLabel:function(c){return '~$'+(topWhales[c.dataIndex].btc*78000/1e6).toFixed(2)+'M'}}}},scales:{y:{display:false},x:{grid:{display:false},ticks:{color:'var(--text2)',font:{size:11}}}}}})}
-}).catch(function(){var el=document.getElementById('whaleData');if(el)el.innerHTML='<div style="color:var(--text2);text-align:center">Whale data temporarily unavailable</div>'});
-});
-}
+} // end loadCrypto
 </script>
 </body>
 </html>
