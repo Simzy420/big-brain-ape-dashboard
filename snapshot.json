@@ -1,5 +1,5 @@
 {
-  "date": "September 06, 2026 23:55 UTC",
+  "date": "September 07, 2026 00:00 UTC",
   "assets": {
     "S&P 500": {
       "price": 7718.6,
@@ -95,30 +95,34 @@
       ]
     },
     "BTC": {
-      "price": 80334.8,
-      "change_pct": 0.64,
+      "price": 80240.9,
+      "change_pct": 0.56,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2513.22,
+      "price": 2510.43,
       "change_pct": 1.26,
       "support": 1852.22,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 106.51,
-      "change_pct": 3.17,
-      "support": 73.53,
+      "price": 106.39,
+      "change_pct": 3.18,
+      "support": 74.0,
       "resistance": 110.6
     }
   },
   "risk_score": 47,
   "risk_bias": "NEUTRAL",
   "fear_greed": {
-    "value": 73,
+    "value": 71,
     "classification": "Greed",
     "history": [
+      {
+        "value": 71,
+        "label": "Greed"
+      },
       {
         "value": 73,
         "label": "Greed"
@@ -142,10 +146,6 @@
       {
         "value": 69,
         "label": "Greed"
-      },
-      {
-        "value": 62,
-        "label": "Greed"
       }
     ]
   },
@@ -166,9 +166,9 @@
       "color": "blue"
     },
     "dxy": {
-      "value": "99.1",
+      "value": "99.2",
       "label": "DXY",
-      "color": "green"
+      "color": "red"
     },
     "oil": {
       "value": "$91.48",
@@ -194,7 +194,7 @@
     },
     {
       "label": "CAUTION",
-      "text": "Greed elevated (73)",
+      "text": "Greed elevated (71)",
       "type": "caution"
     },
     {
@@ -208,20 +208,20 @@
       "type": "bullish"
     }
   ],
-  "btc_funding": 3.189e-05,
+  "btc_funding": 2.792e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 19.6,
-    "daily_avg": 28.62,
-    "daily_pct": -31.5,
-    "weekly_inflow": 200.33,
-    "weekly_avg": 198.33,
+    "daily_inflow": 19.69,
+    "daily_avg": 28.63,
+    "daily_pct": -31.2,
+    "weekly_inflow": 200.43,
+    "weekly_avg": 198.35,
     "weekly_pct": 1.0,
-    "monthly_inflow": 849.97,
-    "monthly_avg": 808.3,
+    "monthly_inflow": 850.07,
+    "monthly_avg": 808.33,
     "monthly_pct": 5.2,
-    "large_tx_count": 886467
+    "large_tx_count": 893391
   },
   "history": {
     "vix": [
@@ -374,7 +374,7 @@
       99.56,
       99.0,
       99.16,
-      99.14
+      99.16
     ],
     "sp500": [
       7723.55,
