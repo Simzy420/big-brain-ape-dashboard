@@ -1,5 +1,5 @@
 {
-  "date": "September 07, 2026 19:50 UTC",
+  "date": "September 07, 2026 19:55 UTC",
   "assets": {
     "S&P 500": {
       "price": 7718.6,
@@ -95,26 +95,26 @@
       ]
     },
     "BTC": {
-      "price": 79343.3,
-      "change_pct": -0.56,
+      "price": 79334.0,
+      "change_pct": -0.57,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2495.29,
-      "change_pct": 0.23,
+      "price": 2494.06,
+      "change_pct": 0.18,
       "support": 1852.22,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 104.29,
-      "change_pct": -1.13,
+      "price": 104.27,
+      "change_pct": -1.11,
       "support": 74.0,
       "resistance": 110.6
     }
   },
-  "risk_score": 45,
-  "risk_bias": "NEUTRAL",
+  "risk_score": 37,
+  "risk_bias": "RISK-OFF",
   "fear_greed": {
     "value": 71,
     "classification": "Greed",
@@ -166,9 +166,9 @@
       "color": "blue"
     },
     "dxy": {
-      "value": "98.9",
+      "value": "99.2",
       "label": "DXY",
-      "color": "green"
+      "color": "red"
     },
     "oil": {
       "value": "$91.48",
@@ -193,11 +193,6 @@
       "type": "caution"
     },
     {
-      "label": "BULLISH",
-      "text": "Dollar weakening \u2014 risk asset fuel",
-      "type": "bullish"
-    },
-    {
       "label": "CAUTION",
       "text": "S&P 500 down -0.4%",
       "type": "caution"
@@ -208,17 +203,17 @@
       "type": "bullish"
     }
   ],
-  "btc_funding": 2.355e-05,
+  "btc_funding": 2.357e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 24.47,
+    "daily_inflow": 24.45,
     "daily_avg": 27.88,
-    "daily_pct": -12.2,
-    "weekly_inflow": 195.15,
+    "daily_pct": -12.3,
+    "weekly_inflow": 195.13,
     "weekly_avg": 201.16,
     "weekly_pct": -3.0,
-    "monthly_inflow": 862.11,
+    "monthly_inflow": 862.1,
     "monthly_avg": 805.67,
     "monthly_pct": 7.0,
     "large_tx_count": 709933
@@ -368,7 +363,7 @@
       99.56,
       99.0,
       99.16,
-      98.93
+      99.18
     ],
     "sp500": [
       7723.55,
