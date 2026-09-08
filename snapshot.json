@@ -1,15 +1,12 @@
 {
-  "date": "September 08, 2026 13:25 UTC",
+  "date": "September 08, 2026 13:30 UTC",
   "assets": {
     "S&P 500": {
-      "price": 7718.6,
-      "change_pct": -0.38,
+      "price": 7712.3,
+      "change_pct": -0.08,
       "support": 7611.2,
       "resistance": 7816.7,
       "history": [
-        7723.55,
-        7709.96,
-        7757.64,
         7753.11,
         7728.2,
         7748.5,
@@ -29,7 +26,8 @@
         7631.47,
         7666.6,
         7747.71,
-        7718.6
+        7718.6,
+        7711.79
       ]
     },
     "NASDAQ": {
@@ -38,9 +36,6 @@
       "support": 25910.82,
       "resistance": 26875.52,
       "history": [
-        26363.44,
-        26348.35,
-        26690.62,
         26605.36,
         26445.45,
         26588.49,
@@ -60,18 +55,16 @@
         26099.77,
         26217.83,
         26584.06,
-        26506.99
+        26506.99,
+        26530.28
       ]
     },
     "Dow Jones": {
-      "price": 53414.25,
-      "change_pct": -0.51,
+      "price": 53005.07,
+      "change_pct": -0.77,
       "support": 52691.31,
-      "resistance": 54744.33,
+      "resistance": 54222.85,
       "history": [
-        54349.12,
-        53885.1,
-        54036.93,
         53975.98,
         53791.85,
         53770.27,
@@ -91,30 +84,31 @@
         52766.88,
         53061.95,
         53686.11,
-        53414.25
+        53414.25,
+        53005.07
       ]
     },
     "BTC": {
-      "price": 78344.3,
-      "change_pct": -1.57,
+      "price": 78313.3,
+      "change_pct": -1.62,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2469.55,
-      "change_pct": -1.52,
+      "price": 2467.73,
+      "change_pct": -1.59,
       "support": 1852.22,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 102.82,
-      "change_pct": -2.69,
+      "price": 102.84,
+      "change_pct": -2.67,
       "support": 74.0,
       "resistance": 110.6
     }
   },
-  "risk_score": 50,
-  "risk_bias": "NEUTRAL",
+  "risk_score": 58,
+  "risk_bias": "RISK-ON",
   "fear_greed": {
     "value": 69,
     "classification": "Greed",
@@ -149,8 +143,8 @@
       }
     ]
   },
-  "sector_tech": "NEUTRAL",
-  "sector_color": "gray",
+  "sector_tech": "COOL",
+  "sector_color": "blue",
   "put_call": "0.85",
   "options_bias": "NEUTRAL",
   "whale_flow": "NEUTRAL",
@@ -161,7 +155,7 @@
       "color": "green"
     },
     "yield_10y": {
-      "value": "4.76%",
+      "value": "4.77%",
       "label": "10Y YIELD",
       "color": "blue"
     },
@@ -171,17 +165,17 @@
       "color": "green"
     },
     "oil": {
-      "value": "$92.51",
+      "value": "$92.75",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4452",
+      "value": "$4453",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$67.21",
+      "value": "$67.22",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -193,25 +187,25 @@
       "type": "bullish"
     },
     {
-      "label": "CAUTION",
-      "text": "S&P 500 down -0.4%",
-      "type": "caution"
+      "label": "BULLISH",
+      "text": "NVDA up 1.2% \u2014 AI demand momentum",
+      "type": "bullish"
     }
   ],
   "btc_funding": 0.0001,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 30.02,
-    "daily_avg": 27.68,
-    "daily_pct": 8.5,
-    "weekly_inflow": 193.74,
-    "weekly_avg": 204.84,
+    "daily_inflow": 30.09,
+    "daily_avg": 27.69,
+    "daily_pct": 8.7,
+    "weekly_inflow": 193.81,
+    "weekly_avg": 204.85,
     "weekly_pct": -5.4,
-    "monthly_inflow": 877.86,
-    "monthly_avg": 803.6,
+    "monthly_inflow": 877.93,
+    "monthly_avg": 803.62,
     "monthly_pct": 9.2,
-    "large_tx_count": 720600
+    "large_tx_count": 725953
   },
   "history": {
     "vix": [
@@ -236,7 +230,7 @@
       14.32,
       14.53,
       15.3,
-      15.42
+      15.41
     ],
     "yield_10y": [
       4.7,
@@ -259,7 +253,7 @@
       4.8,
       4.76,
       4.78,
-      4.76
+      4.77
     ],
     "oil": [
       82.13,
@@ -282,7 +276,7 @@
       91.01,
       91.3,
       91.48,
-      92.52
+      92.75
     ],
     "gold": [
       4361.8,
@@ -305,7 +299,7 @@
       4366.3,
       4491.7,
       4429.8,
-      4452.1
+      4452.9
     ],
     "silver": [
       65.11,
@@ -328,7 +322,7 @@
       64.72,
       66.97,
       66.05,
-      67.21
+      67.22
     ],
     "dxy": [
       99.81,
@@ -351,12 +345,9 @@
       99.56,
       99.0,
       99.16,
-      98.84
+      98.83
     ],
     "sp500": [
-      7723.55,
-      7709.96,
-      7757.64,
       7753.11,
       7728.2,
       7748.5,
@@ -376,12 +367,10 @@
       7631.47,
       7666.6,
       7747.71,
-      7718.6
+      7718.6,
+      7711.79
     ],
     "nasdaq": [
-      26363.44,
-      26348.35,
-      26690.62,
       26605.36,
       26445.45,
       26588.49,
@@ -401,7 +390,8 @@
       26099.77,
       26217.83,
       26584.06,
-      26506.99
+      26506.99,
+      26530.28
     ]
   },
   "econ_events": [
