@@ -95,8 +95,107 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 
 <div class="footer">Tasks added by your AI agents · Tap a task to expand · Tap checkbox to mark done</div>
 
+<!-- CHAT BOX -->
+<div id="chatSection" style="max-width:600px;margin:0 auto 80px;padding:0 20px;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+    <h2 style="font-size:18px;font-weight:800;letter-spacing:-.3px;">💬 Chat with Big Brain Ape</h2>
+    <span id="chatStatus" style="font-size:12px;color:var(--text2);">Connecting...</span>
+  </div>
+  <div id="chatMessages" style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:12px;"></div>
+  <div style="display:flex;gap:10px;">
+    <input id="chatInput" type="text" placeholder="Type a message..." style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;font-size:16px;color:var(--text);outline:none;" autocomplete="off">
+    <button id="chatSend" onclick="sendMessage()" style="background:var(--blue);color:#fff;border:none;border-radius:12px;padding:14px 20px;font-size:16px;font-weight:700;cursor:pointer;white-space:nowrap;">Send</button>
+  </div>
+</div>
+
 <script>
 var TASKS_URL='https://simzy420.github.io/big-brain-ape-dashboard/tasks.json';
+var CHAT_URL='https://simzy-bba-chat.hf.space';
+var chatLastTs=0;
+var chatConnected=false;
+
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function renderChatMessages(msgs){
+  var box=document.getElementById('chatMessages');
+  var html='';
+  for(var i=0;i<msgs.length;i++){
+    var m=msgs[i];
+    var isUser=m.role==='user';
+    var time=new Date(m.ts*1000).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    var bg=isUser?'var(--blue)':'var(--card)';
+    var color=isUser?'#fff':'var(--text)';
+    var border=isUser?'none':'1px solid var(--border)';
+    var align=isUser?'flex-end':'flex-start';
+    html+='<div style="display:flex;justify-content:'+align+'"><div style="max-width:80%;background:'+bg+';color:'+color+';border:'+border+';border-radius:14px;padding:10px 14px;font-size:15px;line-height:1.4;">'+escapeHtml(m.text)+'<div style="font-size:11px;opacity:.6;margin-top:4px;">'+time+'</div></div></div>';
+  }
+  box.innerHTML=html;
+  box.scrollTop=box.scrollHeight;
+}
+
+function pollChat(){
+  fetch(CHAT_URL+'/messages?since='+chatLastTs).then(function(r){return r.json()}).then(function(data){
+    if(!chatConnected){
+      chatConnected=true;
+      document.getElementById('chatStatus').textContent='Online';
+      document.getElementById('chatStatus').style.color='var(--green)';
+    }
+    if(data.messages&&data.messages.length>0){
+      for(var i=0;i<data.messages.length;i++){
+        if(data.messages[i].ts>chatLastTs)chatLastTs=data.messages[i].ts;
+      }
+      // Fetch ALL messages to re-render the full chat
+      fetch(CHAT_URL+'/messages?since=0').then(function(r){return r.json()}).then(function(all){
+        renderChatMessages(all.messages||[]);
+      });
+    }
+  }).catch(function(e){
+    chatConnected=false;
+    document.getElementById('chatStatus').textContent='Offline';
+    document.getElementById('chatStatus').style.color='var(--red)';
+  });
+}
+
+function sendMessage(){
+  var input=document.getElementById('chatInput');
+  var text=input.value.trim();
+  if(!text)return;
+  input.value='';
+  document.getElementById('chatSend').disabled=true;
+  document.getElementById('chatSend').textContent='...';
+  
+  // Show message immediately
+  var box=document.getElementById('chatMessages');
+  var time=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  var div=document.createElement('div');
+  div.style.cssText='display:flex;justify-content:flex-end';
+  div.innerHTML='<div style="max-width:80%;background:var(--blue);color:#fff;border-radius:14px;padding:10px 14px;font-size:15px;line-height:1.4;">'+escapeHtml(text)+'<div style="font-size:11px;opacity:.6;margin-top:4px;">'+time+'</div></div>';
+  box.appendChild(div);
+  box.scrollTop=box.scrollHeight;
+  
+  fetch(CHAT_URL+'/send',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text,user:'Simzy'})}).then(function(r){return r.json()}).then(function(data){
+    document.getElementById('chatSend').disabled=false;
+    document.getElementById('chatSend').textContent='Send';
+    chatLastTs=data.message.ts;
+  }).catch(function(e){
+    document.getElementById('chatSend').disabled=false;
+    document.getElementById('chatSend').textContent='Send';
+    // Show error in chat
+    var errDiv=document.createElement('div');
+    errDiv.style.cssText='text-align:center;color:var(--red);font-size:13px;padding:8px;';
+    errDiv.textContent='Failed to send — check connection';
+    box.appendChild(errDiv);
+  });
+}
+
+// Enter key sends
+document.getElementById('chatInput').addEventListener('keydown',function(e){
+  if(e.key==='Enter'){e.preventDefault();sendMessage()}
+});
+
+// Start polling
+pollChat();
+setInterval(pollChat,5000);
 var STORAGE_KEY='bba-task-done';
 
 function getDoneIds(){
