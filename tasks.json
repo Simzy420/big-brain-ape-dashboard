@@ -1,0 +1,99 @@
+{
+  "tasks": [
+    {
+      "id": "telegram-token",
+      "priority": "high",
+      "title": "Get Telegram Bot Token",
+      "subtitle": "Needed for the sniper bot to run",
+      "steps": [
+        "Open Telegram and search for @BotFather",
+        "Send the message: /newbot",
+        "Pick a name for your bot (e.g. Big Brain Ape Sniper)",
+        "Pick a username ending in 'bot' (e.g. BigBrainApeSniper_bot)",
+        "BotFather will reply with a token that looks like 123456:ABC-DEF...",
+        "Copy that token and send it to me here in Telegram"
+      ],
+      "links": [
+        {"label": "Open @BotFather", "url": "https://t.me/BotFather"}
+      ]
+    },
+    {
+      "id": "sniper-name",
+      "priority": "high",
+      "title": "Pick a Name for the Sniper Bot",
+      "subtitle": "We can't build the website or finish the bot without a name",
+      "steps": [
+        "Think of a name for your memecoin sniper bot product",
+        "It's a Clawd Agents clone — 5 AI specialists, non-custodial, 2% fee on wins",
+        "Send me the name here in Telegram",
+        "Once I have the name I'll build the website, landing page, and finish the bot"
+      ],
+      "links": [
+        {"label": "See Clawd Agents for inspiration", "url": "https://clawdagents.trade"}
+      ]
+    },
+    {
+      "id": "openai-key",
+      "priority": "medium",
+      "title": "Get OpenAI API Key",
+      "subtitle": "Powers the Codex coding bot and GPT Image 2 generator",
+      "steps": [
+        "Go to the OpenAI API keys page (link below)",
+        "Log in or create an account",
+        "Click 'Create new secret key'",
+        "Copy the key (starts with sk-proj-...)",
+        "Send the key to me here in Telegram",
+        "Note: You may need to add a few dollars of credit. New accounts sometimes get free credits."
+      ],
+      "links": [
+        {"label": "OpenAI API Keys", "url": "https://platform.openai.com/api-keys"}
+      ]
+    },
+    {
+      "id": "reddit-banner",
+      "priority": "low",
+      "title": "Upload Reddit Banner",
+      "subtitle": "Your BAYC ape banner is ready to go",
+      "steps": [
+        "Log into Reddit with your @Big-Brain-Ape-Bot account",
+        "Go to your profile settings",
+        "Upload the banner image (I'll send it to you here if you need it)",
+        "Save and you're done"
+      ],
+      "links": [
+        {"label": "Reddit Profile Settings", "url": "https://www.reddit.com/settings/"}
+      ]
+    },
+    {
+      "id": "github-rename",
+      "priority": "low",
+      "title": "Rename GitHub Account",
+      "subtitle": "Change Simzy420 to Big-Brain-Ape for a clean brand",
+      "steps": [
+        "Go to GitHub Settings (link below)",
+        "Click 'Change username' (you can only do this once every 30 days)",
+        "Type: Big-Brain-Ape (confirmed available)",
+        "Confirm the rename — all repos, stars, and followers move automatically",
+        "Tell me when done — I'll update all links, the showcase PR, and X bio"
+      ],
+      "links": [
+        {"label": "GitHub Account Settings", "url": "https://github.com/settings/admin"}
+      ]
+    },
+    {
+      "id": "virtuals-review",
+      "priority": "low",
+      "title": "Submit Virtuals Builder Review",
+      "subtitle": "Unlock Elite tier — $2000/week compute credits (5 min form)",
+      "steps": [
+        "Open the Virtuals Builder Review form (link below)",
+        "Fill in your project details (Big Brain Ape trading agent)",
+        "Submit the form",
+        "Tell me when done so I can track the status"
+      ],
+      "links": [
+        {"label": "Virtuals Builder Review Form", "url": "https://virtualsprotocol.typeform.com/to/BwtdGEAL"}
+      ]
+    }
+  ]
+}
