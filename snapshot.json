@@ -1,5 +1,5 @@
 {
-  "date": "September 08, 2026 09:45 UTC",
+  "date": "September 08, 2026 09:50 UTC",
   "assets": {
     "S&P 500": {
       "price": 7718.6,
@@ -95,26 +95,26 @@
       ]
     },
     "BTC": {
-      "price": 78750.1,
-      "change_pct": -0.76,
+      "price": 78772.3,
+      "change_pct": -0.77,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2493.53,
-      "change_pct": 0.17,
+      "price": 2493.79,
+      "change_pct": 0.15,
       "support": 1852.22,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 103.67,
-      "change_pct": -1.15,
+      "price": 103.69,
+      "change_pct": -1.14,
       "support": 74.0,
       "resistance": 110.6
     }
   },
-  "risk_score": 42,
-  "risk_bias": "RISK-OFF",
+  "risk_score": 50,
+  "risk_bias": "NEUTRAL",
   "fear_greed": {
     "value": 69,
     "classification": "Greed",
@@ -171,22 +171,27 @@
       "color": "green"
     },
     "oil": {
-      "value": "$94.00",
+      "value": "$94.02",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4441",
+      "value": "$4442",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$66.56",
+      "value": "$66.61",
       "label": "SILVER",
       "color": "yellow"
     }
   },
   "signals": [
+    {
+      "label": "BULLISH",
+      "text": "Dollar weakening \u2014 risk asset fuel",
+      "type": "bullish"
+    },
     {
       "label": "CAUTION",
       "text": "S&P 500 down -0.4%",
@@ -197,14 +202,14 @@
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 28.62,
+    "daily_inflow": 28.68,
     "daily_avg": 27.48,
-    "daily_pct": 4.2,
-    "weekly_inflow": 192.34,
-    "weekly_avg": 204.51,
-    "weekly_pct": -6.0,
-    "monthly_inflow": 876.46,
-    "monthly_avg": 803.13,
+    "daily_pct": 4.3,
+    "weekly_inflow": 192.39,
+    "weekly_avg": 204.52,
+    "weekly_pct": -5.9,
+    "monthly_inflow": 876.52,
+    "monthly_avg": 803.15,
     "monthly_pct": 9.1,
     "large_tx_count": 707926
   },
@@ -231,7 +236,7 @@
       14.32,
       14.53,
       15.3,
-      15.72
+      15.67
     ],
     "yield_10y": [
       4.63,
@@ -280,7 +285,7 @@
       91.01,
       91.3,
       91.48,
-      94.0
+      94.02
     ],
     "gold": [
       4361.8,
@@ -303,7 +308,7 @@
       4366.3,
       4491.7,
       4429.8,
-      4440.8
+      4442.1
     ],
     "silver": [
       65.11,
@@ -326,7 +331,7 @@
       64.72,
       66.97,
       66.05,
-      66.56
+      66.61
     ],
     "dxy": [
       99.81,
@@ -349,7 +354,7 @@
       99.56,
       99.0,
       99.16,
-      98.97
+      98.95
     ],
     "sp500": [
       7723.55,
