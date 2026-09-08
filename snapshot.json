@@ -1,5 +1,5 @@
 {
-  "date": "September 08, 2026 01:20 UTC",
+  "date": "September 08, 2026 01:25 UTC",
   "assets": {
     "S&P 500": {
       "price": 7718.6,
@@ -95,20 +95,20 @@
       ]
     },
     "BTC": {
-      "price": 79300.0,
-      "change_pct": -0.73,
+      "price": 79381.5,
+      "change_pct": -0.63,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2497.83,
-      "change_pct": -0.27,
+      "price": 2502.42,
+      "change_pct": -0.04,
       "support": 1852.22,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 104.05,
-      "change_pct": -1.26,
+      "price": 104.21,
+      "change_pct": -1.07,
       "support": 74.0,
       "resistance": 110.6
     }
@@ -171,17 +171,17 @@
       "color": "red"
     },
     "oil": {
-      "value": "$92.49",
+      "value": "$92.45",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4468",
+      "value": "$4475",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$67.22",
+      "value": "$67.51",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -191,20 +191,25 @@
       "label": "CAUTION",
       "text": "S&P 500 down -0.4%",
       "type": "caution"
+    },
+    {
+      "label": "BULLISH",
+      "text": "Gold up 1.0% \u2014 safe haven bid",
+      "type": "bullish"
     }
   ],
-  "btc_funding": 7.354e-05,
+  "btc_funding": 7.496e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 22.79,
-    "daily_avg": 26.64,
-    "daily_pct": -14.5,
-    "weekly_inflow": 186.5,
+    "daily_inflow": 22.81,
+    "daily_avg": 26.65,
+    "daily_pct": -14.4,
+    "weekly_inflow": 186.52,
     "weekly_avg": 203.15,
     "weekly_pct": -8.2,
-    "monthly_inflow": 870.63,
-    "monthly_avg": 801.21,
+    "monthly_inflow": 870.65,
+    "monthly_avg": 801.22,
     "monthly_pct": 8.7,
     "large_tx_count": 655597
   },
@@ -281,7 +286,7 @@
       91.01,
       91.3,
       91.48,
-      92.49
+      92.45
     ],
     "gold": [
       4340.7,
@@ -305,7 +310,7 @@
       4366.3,
       4491.7,
       4429.8,
-      4468.2
+      4475.2
     ],
     "silver": [
       63.33,
@@ -329,7 +334,7 @@
       64.72,
       66.97,
       66.05,
-      67.22
+      67.51
     ],
     "dxy": [
       99.6,
