@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Big Brain Ape — Tasks</title>
+<style>
+:root{
+  --bg:#0a0a0f;--card:#151521;--border:#252535;--text:#e8e8f0;--text2:#8a8aa0;
+  --blue:#3b82f6;--green:#22c55e;--red:#ef4444;--orange:#f59e0b;--purple:#a855f7;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;padding-bottom:80px}
+
+/* HEADER */
+.header{position:sticky;top:0;z-index:100;background:rgba(10,10,15,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:16px 20px;display:flex;align-items:center;justify-content:space-between}
+.header h1{font-size:22px;font-weight:800;letter-spacing:-.5px}
+.header h1 span{color:var(--blue)}
+.header .count{font-size:13px;color:var(--text2);background:var(--card);padding:4px 12px;border-radius:20px;border:1px solid var(--border)}
+
+/* PROGRESS BAR */
+.progress-bar{height:4px;background:var(--card);border-radius:2px;margin:0 20px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--blue));transition:width .4s ease;border-radius:2px}
+
+/* TASK CARDS */
+.tasks{padding:16px 20px;display:flex;flex-direction:column;gap:14px;max-width:600px;margin:0 auto}
+.task-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all .3s ease}
+.task-card.done{opacity:.45;border-color:var(--green)}
+.task-card.high{border-left:3px solid var(--red)}
+.task-card.medium{border-left:3px solid var(--orange)}
+.task-card.low{border-left:3px solid var(--blue)}
+
+/* TASK HEADER ROW (checkbox + title) */
+.task-header{display:flex;align-items:flex-start;gap:14px;padding:16px 18px;cursor:pointer}
+.checkbox{flex-shrink:0;width:26px;height:26px;border:2px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;transition:all .25s ease;cursor:pointer;margin-top:1px}
+.checkbox:hover{border-color:var(--green)}
+.checkbox.checked{background:var(--green);border-color:var(--green)}
+.checkbox svg{width:16px;height:16px;opacity:0;transition:opacity .2s ease}
+.checkbox.checked svg{opacity:1}
+
+.task-title-wrap{flex:1;min-width:0}
+.task-title{font-size:17px;font-weight:700;line-height:1.3}
+.task-card.done .task-title{text-decoration:line-through;color:var(--text2)}
+.task-subtitle{font-size:14px;color:var(--text2);margin-top:3px;line-height:1.3}
+.priority-tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;margin-top:8px;text-transform:uppercase;letter-spacing:.5px}
+.priority-tag.high{background:rgba(239,68,68,.15);color:var(--red)}
+.priority-tag.medium{background:rgba(245,158,11,.15);color:var(--orange)}
+.priority-tag.low{background:rgba(59,130,246,.15);color:var(--blue)}
+
+/* EXPAND CHEVRON */
+.chevron{flex-shrink:0;color:var(--text2);font-size:20px;transition:transform .3s ease;margin-top:2px}
+.task-card.expanded .chevron{transform:rotate(180deg)}
+
+/* EXPANDED CONTENT */
+.task-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.task-card.expanded .task-body{max-height:800px}
+.task-body-inner{padding:0 18px 18px 18px}
+
+/* LINKS */
+.task-links{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.task-link{display:inline-flex;align-items:center;gap:6px;background:var(--blue);color:#fff;text-decoration:none;padding:10px 16px;border-radius:10px;font-size:15px;font-weight:600;transition:all .2s ease}
+.task-link:active{transform:scale(.96)}
+.task-link svg{width:16px;height:16px}
+
+/* STEPS */
+.steps-label{font-size:13px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.step{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.step:last-child{border-bottom:none}
+.step-num{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);margin-top:1px}
+.step-text{font-size:15px;line-height:1.4;color:var(--text)}
+
+/* DONE BANNER */
+.done-banner{text-align:center;padding:40px 20px;color:var(--text2)}
+.done-banner .emoji{font-size:48px;margin-bottom:12px}
+.done-banner h2{font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px}
+.done-banner p{font-size:14px}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:60px 20px;color:var(--text2)}
+.empty .emoji{font-size:48px;margin-bottom:12px}
+
+/* FOOTER */
+.footer{text-align:center;padding:20px;font-size:12px;color:var(--text2);opacity:.5}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🦍 Big Brain <span>Ape</span></h1>
+  <div class="count" id="counter">0/0</div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+<div class="tasks" id="taskList"></div>
+
+<div class="footer">Tasks added by your AI agents · Tap a task to expand · Tap checkbox to mark done</div>
+
+<script>
+var TASKS_URL='https://simzy420.github.io/big-brain-ape-dashboard/tasks.json';
+var STORAGE_KEY='bba-task-done';
+
+function getDoneIds(){
+  try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||[]}catch(e){return[]}
+}
+function saveDoneIds(ids){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(ids))}catch(e){}
+}
+function toggleDone(id){
+  var ids=getDoneIds();
+  if(ids.indexOf(id)>=0){ids=ids.filter(function(x){return x!==id})}
+  else{ids.push(id)}
+  saveDoneIds(ids);
+  render();
+}
+
+function render(){
+  fetch(TASKS_URL+'?t='+Date.now()).then(function(r){return r.json()}).then(function(data){
+    var tasks=data.tasks||[];
+    var doneIds=getDoneIds();
+    var doneCount=0;
+    var html='';
+
+    // Sort: not-done first (by priority), then done
+    var priOrder={high:0,medium:1,low:2};
+    tasks.sort(function(a,b){
+      var aDone=doneIds.indexOf(a.id)>=0;
+      var bDone=doneIds.indexOf(b.id)>=0;
+      if(aDone&&!bDone)return 1;
+      if(!aDone&&bDone)return-1;
+      return(priOrder[a.priority]||2)-(priOrder[b.priority]||2);
+    });
+
+    if(tasks.length===0){
+      html='<div class="empty"><div class="emoji">📋</div><p>No tasks right now. Your agents will add things here when they need you.</p></div>';
+    }
+
+    for(var i=0;i<tasks.length;i++){
+      var t=tasks[i];
+      var isDone=doneIds.indexOf(t.id)>=0;
+      if(isDone)doneCount++;
+      var cls='task-card '+t.priority+(isDone?' done':'');
+      var checked=isDone?'checked':'';
+
+      // Links
+      var linksHtml='';
+      if(t.links&&t.links.length>0){
+        linksHtml='<div class="task-links">';
+        for(var j=0;j<t.links.length;j++){
+          linksHtml+='<a class="task-link" href="'+t.links[j].url+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'+t.links[j].label+'</a>';
+        }
+        linksHtml+='</div>';
+      }
+
+      // Steps
+      var stepsHtml='<div class="steps-label">Step by step</div>';
+      for(var s=0;s<t.steps.length;s++){
+        stepsHtml+='<div class="step"><div class="step-num">'+(s+1)+'</div><div class="step-text">'+t.steps[s]+'</div></div>';
+      }
+
+      html+=
+        '<div class="'+cls+'" id="card-'+t.id+'">'+
+          '<div class="task-header" onclick="toggleExpand(\''+t.id+'\')">'+
+            '<div class="checkbox '+checked+'" onclick="event.stopPropagation();toggleDone(\''+t.id+'\')">'+
+              '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>'+
+            '</div>'+
+            '<div class="task-title-wrap">'+
+              '<div class="task-title">'+t.title+'</div>'+
+              '<div class="task-subtitle">'+t.subtitle+'</div>'+
+              '<span class="priority-tag '+t.priority+'">'+t.priority+'</span>'+
+            '</div>'+
+            '<div class="chevron">⌄</div>'+
+          '</div>'+
+          '<div class="task-body"><div class="task-body-inner">'+
+            linksHtml+stepsHtml+
+          '</div></div>'+
+        '</div>';
+    }
+
+    // All done banner
+    if(tasks.length>0&&doneCount===tasks.length){
+      html+='<div class="done-banner"><div class="emoji">🎉</div><h2>All done!</h2><p>You\'ve completed everything. New tasks will appear here when your agents need you.</p></div>';
+    }
+
+    document.getElementById('taskList').innerHTML=html;
+    document.getElementById('counter').textContent=doneCount+'/'+tasks.length;
+    document.getElementById('progressFill').style.width=(tasks.length>0?(doneCount/tasks.length*100):0)+'%';
+  }).catch(function(e){
+    document.getElementById('taskList').innerHTML='<div class="empty"><div class="emoji">⚠️</div><p>Could not load tasks. Pull down to refresh.</p></div>';
+  });
+}
+
+function toggleExpand(id){
+  var card=document.getElementById('card-'+id);
+  if(card)card.classList.toggle('expanded');
+}
+
+render();
+// Auto-refresh every 5 minutes to pick up new tasks from agents
+setInterval(render,300000);
+</script>
+</body>
+</html>
