@@ -1,5 +1,5 @@
 {
-  "date": "September 08, 2026 03:55 UTC",
+  "date": "September 08, 2026 04:00 UTC",
   "assets": {
     "S&P 500": {
       "price": 7718.6,
@@ -95,20 +95,20 @@
       ]
     },
     "BTC": {
-      "price": 78890.6,
-      "change_pct": -0.93,
+      "price": 78875.9,
+      "change_pct": -0.86,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2483.88,
-      "change_pct": -0.59,
+      "price": 2484.99,
+      "change_pct": -0.44,
       "support": 1852.22,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 103.31,
-      "change_pct": -1.65,
+      "price": 103.28,
+      "change_pct": -1.53,
       "support": 74.0,
       "resistance": 110.6
     }
@@ -171,17 +171,17 @@
       "color": "red"
     },
     "oil": {
-      "value": "$92.96",
+      "value": "$91.48",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4478",
+      "value": "$4430",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$67.57",
+      "value": "$66.05",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -193,25 +193,25 @@
       "type": "caution"
     },
     {
-      "label": "BULLISH",
-      "text": "Gold up 1.1% \u2014 safe haven bid",
-      "type": "bullish"
+      "label": "NEUTRAL",
+      "text": "Gold down -1.4% \u2014 risk appetite",
+      "type": "neutral"
     }
   ],
-  "btc_funding": 8.098e-05,
+  "btc_funding": 8.091e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 23.17,
-    "daily_avg": 26.7,
-    "daily_pct": -13.2,
-    "weekly_inflow": 186.88,
-    "weekly_avg": 203.24,
-    "weekly_pct": -8.0,
-    "monthly_inflow": 871.01,
-    "monthly_avg": 801.34,
+    "daily_inflow": 23.13,
+    "daily_avg": 26.69,
+    "daily_pct": -13.3,
+    "weekly_inflow": 186.85,
+    "weekly_avg": 203.23,
+    "weekly_pct": -8.1,
+    "monthly_inflow": 870.98,
+    "monthly_avg": 801.32,
     "monthly_pct": 8.7,
-    "large_tx_count": 690549
+    "large_tx_count": 684422
   },
   "history": {
     "vix": [
@@ -265,7 +265,6 @@
       4.78
     ],
     "oil": [
-      78.18,
       82.13,
       83.2,
       83.27,
@@ -285,11 +284,9 @@
       90.22,
       91.01,
       91.3,
-      91.48,
-      92.96
+      91.48
     ],
     "gold": [
-      4340.7,
       4361.8,
       4383.0,
       4408.9,
@@ -309,11 +306,9 @@
       4348.0,
       4366.3,
       4491.7,
-      4429.8,
-      4478.0
+      4429.8
     ],
     "silver": [
-      63.33,
       65.11,
       64.77,
       65.56,
@@ -333,11 +328,9 @@
       64.62,
       64.72,
       66.97,
-      66.05,
-      67.57
+      66.05
     ],
     "dxy": [
-      99.6,
       99.81,
       99.82,
       100.01,
