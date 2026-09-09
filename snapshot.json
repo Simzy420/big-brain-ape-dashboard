@@ -1,5 +1,5 @@
 {
-  "date": "September 09, 2026 12:50 UTC",
+  "date": "September 09, 2026 12:55 UTC",
   "assets": {
     "S&P 500": {
       "price": 7673.52,
@@ -89,20 +89,20 @@
       ]
     },
     "BTC": {
-      "price": 79585.1,
-      "change_pct": 1.55,
+      "price": 79545.5,
+      "change_pct": 1.41,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2510.76,
-      "change_pct": 1.51,
+      "price": 2509.02,
+      "change_pct": 1.4,
       "support": 1852.22,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 104.72,
-      "change_pct": 1.5,
+      "price": 104.64,
+      "change_pct": 1.36,
       "support": 74.0,
       "resistance": 110.6
     }
@@ -165,17 +165,17 @@
       "color": "green"
     },
     "oil": {
-      "value": "$95.82",
+      "value": "$95.80",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4436",
+      "value": "$4443",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$66.64",
+      "value": "$66.86",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -187,25 +187,30 @@
       "type": "caution"
     },
     {
+      "label": "BULLISH",
+      "text": "Gold up 1.1% \u2014 safe haven bid",
+      "type": "bullish"
+    },
+    {
       "label": "CAUTION",
       "text": "NVDA down -2.0% \u2014 watch AI sector",
       "type": "caution"
     }
   ],
-  "btc_funding": 4.783e-05,
+  "btc_funding": 4.794e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 34.55,
-    "daily_avg": 29.78,
-    "daily_pct": 16.0,
-    "weekly_inflow": 208.48,
-    "weekly_avg": 209.67,
-    "weekly_pct": -0.6,
-    "monthly_inflow": 898.59,
-    "monthly_avg": 808.55,
+    "daily_inflow": 34.61,
+    "daily_avg": 29.79,
+    "daily_pct": 16.2,
+    "weekly_inflow": 208.54,
+    "weekly_avg": 209.69,
+    "weekly_pct": -0.5,
+    "monthly_inflow": 898.66,
+    "monthly_avg": 808.57,
     "monthly_pct": 11.1,
-    "large_tx_count": 551697
+    "large_tx_count": 560907
   },
   "history": {
     "vix": [
@@ -231,7 +236,7 @@
       14.53,
       15.3,
       15.72,
-      16.42
+      16.35
     ],
     "yield_10y": [
       4.7,
@@ -279,7 +284,7 @@
       91.3,
       91.48,
       93.03,
-      95.82
+      95.8
     ],
     "gold": [
       4361.8,
@@ -303,7 +308,7 @@
       4491.7,
       4429.8,
       4393.9,
-      4436.5
+      4443.2
     ],
     "silver": [
       65.11,
@@ -327,7 +332,7 @@
       66.97,
       66.05,
       66.3,
-      66.64
+      66.86
     ],
     "dxy": [
       99.81,
@@ -351,7 +356,7 @@
       99.0,
       99.16,
       98.84,
-      98.66
+      98.65
     ],
     "sp500": [
       7753.11,
