@@ -57,6 +57,52 @@ body {
   margin-top: 4px;
 }
 
+/* TABS BAR */
+.tab-bar {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 12px 16px;
+  position: sticky;
+  top: 84px;
+  z-index: 99;
+  background: var(--bg);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) var(--bg);
+}
+.tab-bar::-webkit-scrollbar { height: 6px; }
+.tab-bar::-webkit-scrollbar-track { background: var(--bg); }
+.tab-bar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+.tab {
+  flex-shrink: 0;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 20px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--muted);
+  text-align: center;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.tab.active {
+  background: linear-gradient(135deg, #0099ff, #00cc66);
+  color: #fff;
+  border-color: transparent;
+}
+.tab .tab-count {
+  display: inline-block;
+  background: rgba(0,0,0,0.3);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 16px;
+  margin-left: 4px;
+}
+
 /* MAIN */
 .container {
   max-width: 700px;
@@ -65,12 +111,8 @@ body {
 }
 
 /* SECTIONS */
-.section {
-  display: none;
-}
-.section.active {
-  display: block;
-}
+.section { display: none; }
+.section.active { display: block; }
 
 /* CARD */
 .card {
@@ -88,9 +130,7 @@ body {
 }
 
 /* FORM FIELDS */
-.field {
-  margin-bottom: 20px;
-}
+.field { margin-bottom: 20px; }
 .field label {
   display: block;
   font-size: 20px;
@@ -123,9 +163,7 @@ body {
   display: flex;
   gap: 12px;
 }
-.field-row .field {
-  flex: 1;
-}
+.field-row .field { flex: 1; }
 
 /* VOICE BUTTON */
 .voice-btn {
@@ -142,10 +180,9 @@ body {
   cursor: pointer;
   margin-top: 8px;
   transition: transform 0.1s;
+  font-family: inherit;
 }
-.voice-btn:active {
-  transform: scale(0.95);
-}
+.voice-btn:active { transform: scale(0.95); }
 .voice-btn.recording {
   background: linear-gradient(135deg, #ff3b30, #ff9500);
   animation: pulse 1s infinite;
@@ -154,15 +191,10 @@ body {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.6; }
 }
-.voice-icon {
-  font-size: 24px;
-}
+.voice-icon { font-size: 24px; }
 
 /* PHOTO BUTTONS */
-.photo-buttons {
-  display: flex;
-  gap: 12px;
-}
+.photo-buttons { display: flex; gap: 12px; }
 .photo-btn {
   flex: 1;
   display: flex;
@@ -184,18 +216,14 @@ body {
   border-color: var(--blue);
   background: rgba(0,153,255,0.1);
 }
-.photo-btn-icon {
-  font-size: 40px;
-}
+.photo-btn-icon { font-size: 40px; }
 .photo-preview {
   width: 100%;
   border-radius: 12px;
   margin-top: 12px;
   display: none;
 }
-.photo-preview.show {
-  display: block;
-}
+.photo-preview.show { display: block; }
 .photo-filename {
   font-size: 18px;
   color: var(--green);
@@ -217,9 +245,7 @@ body {
   transition: transform 0.1s;
   font-family: inherit;
 }
-.btn:active {
-  transform: scale(0.98);
-}
+.btn:active { transform: scale(0.98); }
 .btn-primary {
   background: linear-gradient(135deg, #00cc66, #0099ff);
   color: #fff;
@@ -237,7 +263,134 @@ body {
   padding: 16px;
 }
 
-/* WORK ORDER LIST */
+/* ACTION BUTTONS (for inbox cards) */
+.action-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+.action-btn {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 18px;
+  font-size: 26px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.1s;
+  font-family: inherit;
+}
+.action-btn:active { transform: scale(0.98); }
+.action-btn.accept { background: var(--green); color: #fff; }
+.action-btn.bid { background: var(--blue); color: #fff; }
+.action-btn.decline { background: var(--red); color: #fff; }
+
+/* WO CARD (workflow cards) */
+.wo-card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.wo-card .wo-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+.wo-card h3 {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--blue);
+  word-break: break-word;
+}
+.wo-card .wo-est {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--green);
+  white-space: nowrap;
+}
+.wo-card .wo-field {
+  margin-bottom: 8px;
+}
+.wo-card .wo-field-label {
+  font-size: 18px;
+  color: var(--muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.wo-card .wo-field-value {
+  font-size: 22px;
+  color: var(--text);
+  word-break: break-word;
+}
+.wo-card .bid-amount-box {
+  background: var(--bg);
+  border: 2px solid var(--blue);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-top: 10px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--blue);
+}
+.wo-card .completed-badge {
+  display: inline-block;
+  background: rgba(0,204,102,0.2);
+  color: var(--green);
+  border: 2px solid var(--green);
+  border-radius: 20px;
+  padding: 8px 20px;
+  font-size: 22px;
+  font-weight: 800;
+  margin-top: 10px;
+}
+.wo-card .completed-summary {
+  background: var(--bg);
+  border: 2px solid var(--green);
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 10px;
+  font-size: 20px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  line-height: 1.6;
+}
+.wo-card .complete-btn {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 18px;
+  font-size: 26px;
+  font-weight: 800;
+  cursor: pointer;
+  background: linear-gradient(135deg, #00cc66, #0099ff);
+  color: #fff;
+  margin-top: 14px;
+  transition: transform 0.1s;
+  font-family: inherit;
+}
+.wo-card .complete-btn:active { transform: scale(0.98); }
+.wo-card .delete-btn {
+  width: 100%;
+  border: 2px solid var(--red);
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  background: transparent;
+  color: var(--red);
+  margin-top: 10px;
+  transition: transform 0.1s;
+  font-family: inherit;
+}
+.wo-card .delete-btn:active { transform: scale(0.98); }
+
+/* OLD WO ITEM (saved list) */
 .wo-item {
   background: var(--card);
   border: 2px solid var(--border);
@@ -247,9 +400,7 @@ body {
   cursor: pointer;
   transition: border-color 0.2s;
 }
-.wo-item:active {
-  border-color: var(--blue);
-}
+.wo-item:active { border-color: var(--blue); }
 .wo-item h3 {
   font-size: 24px;
   font-weight: 700;
@@ -309,43 +460,10 @@ body {
   margin-top: 8px;
 }
 
-/* TABS / NAV */
-.tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-.tab {
-  flex: 1;
-  background: var(--card);
-  border: 2px solid var(--border);
-  border-radius: 12px;
-  padding: 14px;
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--muted);
-  text-align: center;
-  cursor: pointer;
-}
-.tab.active {
-  background: linear-gradient(135deg, #0099ff, #00cc66);
-  color: #fff;
-  border-color: transparent;
-}
-
 /* EMPTY STATE */
-.empty {
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--muted);
-}
-.empty-icon {
-  font-size: 64px;
-  margin-bottom: 16px;
-}
-.empty p {
-  font-size: 22px;
-}
+.empty { text-align: center; padding: 60px 20px; color: var(--muted); }
+.empty-icon { font-size: 64px; margin-bottom: 16px; }
+.empty p { font-size: 22px; }
 
 /* TOAST */
 .toast {
@@ -363,10 +481,10 @@ body {
   opacity: 0;
   transition: opacity 0.3s;
   pointer-events: none;
+  max-width: 90vw;
+  text-align: center;
 }
-.toast.show {
-  opacity: 1;
-}
+.toast.show { opacity: 1; }
 
 /* LINE ITEMS */
 .line-item {
@@ -397,16 +515,9 @@ body {
   font-weight: 700;
   cursor: pointer;
 }
-.line-item .field {
-  margin-bottom: 10px;
-}
-.line-item .field label {
-  font-size: 16px;
-}
-.line-item .field input {
-  font-size: 20px;
-  padding: 12px;
-}
+.line-item .field { margin-bottom: 10px; }
+.line-item .field label { font-size: 16px; }
+.line-item .field input { font-size: 20px; padding: 12px; }
 
 /* ADD ITEM BUTTON */
 .add-item-btn {
@@ -420,6 +531,7 @@ body {
   cursor: pointer;
   width: 100%;
   margin-top: 8px;
+  font-family: inherit;
 }
 
 /* API STATUS BADGE */
@@ -435,12 +547,58 @@ body {
 .api-badge.connected { background: rgba(0,204,102,0.2); color: var(--green); }
 .api-badge.manual { background: rgba(255,149,0,0.2); color: var(--orange); }
 
-/* SCROLL HINT */
-.scroll-hint {
+/* MODAL (for bid amount input) */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 24px;
+  max-width: 500px;
+  width: 100%;
+}
+.modal h2 {
+  font-size: 28px;
+  color: var(--blue);
+  margin-bottom: 16px;
+}
+.modal .field input {
+  font-size: 28px;
   text-align: center;
-  color: var(--muted);
+}
+
+/* PREFILL BANNER */
+.prefill-banner {
+  background: linear-gradient(135deg, #0099ff, #00cc66);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+}
+.prefill-banner .clear-prefill {
+  display: inline-block;
+  background: rgba(0,0,0,0.3);
+  border: none;
+  border-radius: 20px;
+  padding: 6px 16px;
   font-size: 18px;
-  margin-top: 20px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 8px;
+  font-family: inherit;
 }
 </style>
 </head>
@@ -452,21 +610,94 @@ body {
   <p>Work Order Manager<span id="apiBadge" class="api-badge manual">Manual Mode</span></p>
 </div>
 
+<!-- TAB BAR (horizontally scrollable) -->
+<div class="tab-bar">
+  <div class="tab active" id="tabInbox" onclick="showSection('inbox')">📋 Inbox <span class="tab-count" id="inboxCount">0</span></div>
+  <div class="tab" id="tabAccepted" onclick="showSection('accepted')">✅ Accepted <span class="tab-count" id="acceptedCount">0</span></div>
+  <div class="tab" id="tabBidding" onclick="showSection('bidding')">🔨 Bidding <span class="tab-count" id="biddingCount">0</span></div>
+  <div class="tab" id="tabDeclined" onclick="showSection('declined')">❌ Declined <span class="tab-count" id="declinedCount">0</span></div>
+  <div class="tab" id="tabNew" onclick="showSection('new')">📝 New Entry</div>
+  <div class="tab" id="tabSaved" onclick="showSection('saved')">💾 Saved <span class="tab-count" id="savedCount">0</span></div>
+</div>
+
 <div class="container">
 
-  <!-- TABS -->
-  <div class="tabs">
-    <div class="tab active" id="tabNew" onclick="showSection('new')">📝 New Entry</div>
-    <div class="tab" id="tabSaved" onclick="showSection('saved')">📋 Saved (<span id="savedCount">0</span>)</div>
+  <!-- ===== INBOX SECTION ===== -->
+  <div class="section active" id="sectionInbox">
+    <button class="btn btn-primary" onclick="toggleAddForm()" id="addFormToggle">+ ➕ Add New Work Order</button>
+    <div id="addWoForm" style="display:none; margin-top:16px;">
+      <div class="card">
+        <h2>➕ New Work Order from Corrigo</h2>
+        <p style="color:var(--muted);font-size:20px;margin-bottom:16px">Enter the details dad tells you about the incoming job.</p>
+
+        <div class="field">
+          <label>Work Order Number</label>
+          <input type="text" id="newWoNumber" placeholder="Tap or speak the number" autocomplete="off">
+          <button class="voice-btn" onclick="startVoice('newWoNumber', this)">
+            <span class="voice-icon">🎙️</span> Speak Number
+          </button>
+        </div>
+
+        <div class="field">
+          <label>Date Received</label>
+          <input type="date" id="newWoDate">
+        </div>
+
+        <div class="field">
+          <label>Location / Site</label>
+          <input type="text" id="newWoLocation" placeholder="Where is the job?" autocomplete="off">
+          <button class="voice-btn" onclick="startVoice('newWoLocation', this)">
+            <span class="voice-icon">🎙️</span> Speak Location
+          </button>
+        </div>
+
+        <div class="field">
+          <label>Description of Work</label>
+          <textarea id="newWoDescription" placeholder="What needs to be done?"></textarea>
+          <button class="voice-btn" onclick="startVoice('newWoDescription', this)">
+            <span class="voice-icon">🎙️</span> Speak Description
+          </button>
+        </div>
+
+        <div class="field">
+          <label>Estimated Dollar Amount</label>
+          <input type="number" id="newWoEstAmount" placeholder="0.00" step="0.01" inputmode="decimal">
+          <button class="voice-btn" onclick="startVoice('newWoEstAmount', this)">
+            <span class="voice-icon">🎙️</span> Speak Amount
+          </button>
+        </div>
+
+        <button class="btn btn-primary" onclick="addWorkOrderToInbox()">➕ Add to Inbox</button>
+        <div style="height:10px"></div>
+        <button class="btn btn-secondary" onclick="clearAddForm()">🗑️ Clear Form</button>
+      </div>
+    </div>
+    <div id="inboxList" style="margin-top:16px;"></div>
+  </div>
+
+  <!-- ===== ACCEPTED SECTION ===== -->
+  <div class="section" id="sectionAccepted">
+    <div id="acceptedList"></div>
+  </div>
+
+  <!-- ===== BIDDING SECTION ===== -->
+  <div class="section" id="sectionBidding">
+    <div id="biddingList"></div>
+  </div>
+
+  <!-- ===== DECLINED SECTION ===== -->
+  <div class="section" id="sectionDeclined">
+    <div id="declinedList"></div>
   </div>
 
   <!-- ===== NEW ENTRY SECTION ===== -->
-  <div class="section active" id="sectionNew">
-    
+  <div class="section" id="sectionNew">
+    <div id="prefillBanner" style="display:none;"></div>
+
     <!-- WORK ORDER INFO -->
     <div class="card">
       <h2>📋 Work Order Info</h2>
-      
+
       <div class="field">
         <label>Work Order Number</label>
         <input type="text" id="woNumber" placeholder="Tap or speak the number" autocomplete="off">
@@ -546,17 +777,11 @@ body {
     <button class="btn btn-primary" onclick="generateSummary()">✅ Generate Summary</button>
     <div style="height:12px"></div>
     <button class="btn btn-secondary" onclick="clearForm()">🗑️ Clear Form</button>
-
   </div>
 
   <!-- ===== SAVED SECTION ===== -->
   <div class="section" id="sectionSaved">
-    <div id="savedList">
-      <div class="empty">
-        <div class="empty-icon">📋</div>
-        <p>No saved work orders yet.<br>Create one and save it!</p>
-      </div>
-    </div>
+    <div id="savedList"></div>
   </div>
 
   <!-- ===== SUMMARY VIEW (hidden until generated) ===== -->
@@ -573,7 +798,7 @@ body {
       </p>
       <button class="btn btn-primary" onclick="copySummary()">📋 Copy Text for Corrigo</button>
       <div style="height:12px"></div>
-      <button class="btn btn-secondary" onclick="saveWorkOrder()">💾 Save This Work Order</button>
+      <button class="btn btn-primary" onclick="saveWorkOrder()" style="background:linear-gradient(135deg,#0099ff,#00cc66)">💾 Save This Work Order</button>
       <div style="height:12px"></div>
       <button class="btn btn-secondary" onclick="showSection('new')">← Back to New Entry</button>
     </div>
@@ -584,28 +809,413 @@ body {
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+<!-- MODAL: Bid Amount Input -->
+<div class="modal-overlay" id="bidModal">
+  <div class="modal">
+    <h2>🔨 Enter Bid Amount</h2>
+    <p style="color:var(--muted);font-size:20px;margin-bottom:16px">How much will you quote for this job?</p>
+    <div class="field">
+      <label>Bid Amount ($)</label>
+      <input type="number" id="bidAmountInput" placeholder="0.00" step="0.01" inputmode="decimal">
+    </div>
+    <button class="btn btn-primary" onclick="confirmBid()">✅ Submit Bid</button>
+    <div style="height:10px"></div>
+    <button class="btn btn-secondary" onclick="cancelBid()">Cancel</button>
+  </div>
+</div>
+
 <script>
 // ============ STATE ============
 let currentPhoto = null;
 let lineItemCount = 0;
 let currentSummary = null;
+let pendingBidWoId = null;
+let prefillWoId = null;
+let prefillSourceTab = null; // 'accepted' or 'bidding'
 
-// ============ SECTION NAVIGATION ============
+// ============ DATA HELPERS ============
+function getData(key) {
+  try { return JSON.parse(localStorage.getItem(key) || '[]'); }
+  catch(e) { return []; }
+}
+function saveData(key, arr) {
+  localStorage.setItem(key, JSON.stringify(arr));
+}
+function genId() {
+  return 'wo_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+}
+
+// ============ TAB / SECTION NAVIGATION ============
 function showSection(name) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  
+
   if (name === 'summary') {
     document.getElementById('sectionSummary').classList.add('active');
+    document.getElementById('tabNew').classList.add('active');
   } else if (name === 'saved') {
     document.getElementById('sectionSaved').classList.add('active');
     document.getElementById('tabSaved').classList.add('active');
     renderSaved();
+  } else if (name === 'inbox') {
+    document.getElementById('sectionInbox').classList.add('active');
+    document.getElementById('tabInbox').classList.add('active');
+    renderInbox();
+  } else if (name === 'accepted') {
+    document.getElementById('sectionAccepted').classList.add('active');
+    document.getElementById('tabAccepted').classList.add('active');
+    renderAccepted();
+  } else if (name === 'bidding') {
+    document.getElementById('sectionBidding').classList.add('active');
+    document.getElementById('tabBidding').classList.add('active');
+    renderBidding();
+  } else if (name === 'declined') {
+    document.getElementById('sectionDeclined').classList.add('active');
+    document.getElementById('tabDeclined').classList.add('active');
+    renderDeclined();
   } else {
+    // 'new'
     document.getElementById('sectionNew').classList.add('active');
     document.getElementById('tabNew').classList.add('active');
   }
   window.scrollTo(0, 0);
+}
+
+// ============ COUNT UPDATES ============
+function updateAllCounts() {
+  document.getElementById('inboxCount').textContent = getData('corrigo_inbox').length;
+  document.getElementById('acceptedCount').textContent = getData('corrigo_accepted').length;
+  document.getElementById('biddingCount').textContent = getData('corrigo_bidding').length;
+  document.getElementById('declinedCount').textContent = getData('corrigo_declined').length;
+  document.getElementById('savedCount').textContent = getData('bba_work_orders').length;
+}
+
+// ============ ADD NEW WORK ORDER FORM TOGGLE ============
+function toggleAddForm() {
+  const form = document.getElementById('addWoForm');
+  if (form.style.display === 'none') {
+    form.style.display = 'block';
+    document.getElementById('addFormToggle').textContent = '✕ Close Form';
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    form.style.display = 'none';
+    document.getElementById('addFormToggle').textContent = '+ ➕ Add New Work Order';
+  }
+}
+
+function clearAddForm() {
+  document.getElementById('newWoNumber').value = '';
+  document.getElementById('newWoDate').value = '';
+  document.getElementById('newWoLocation').value = '';
+  document.getElementById('newWoDescription').value = '';
+  document.getElementById('newWoEstAmount').value = '';
+  document.getElementById('newWoDate').valueAsDate = new Date();
+}
+
+function addWorkOrderToInbox() {
+  const number = document.getElementById('newWoNumber').value.trim();
+  const date = document.getElementById('newWoDate').value;
+  const location = document.getElementById('newWoLocation').value.trim();
+  const description = document.getElementById('newWoDescription').value.trim();
+  const estAmount = parseFloat(document.getElementById('newWoEstAmount').value) || 0;
+
+  if (!number && !location && !description) {
+    showToast('⚠️ Add at least a number, location, or description');
+    return;
+  }
+
+  const wo = {
+    id: genId(),
+    number: number,
+    date: date,
+    location: location,
+    description: description,
+    estimatedAmount: estAmount,
+    status: 'inbox',
+    bidAmount: null,
+    completedSummary: null,
+    photo: null,
+    timestamp: new Date().toISOString()
+  };
+
+  let inbox = getData('corrigo_inbox');
+  inbox.unshift(wo);
+  saveData('corrigo_inbox', inbox);
+
+  clearAddForm();
+  document.getElementById('addWoForm').style.display = 'none';
+  document.getElementById('addFormToggle').textContent = '+ ➕ Add New Work Order';
+  updateAllCounts();
+  renderInbox();
+  showToast('✅ Work order added to inbox!');
+}
+
+// ============ RENDER: INBOX ============
+function renderInbox() {
+  let inbox = getData('corrigo_inbox');
+  updateAllCounts();
+  if (inbox.length === 0) {
+    document.getElementById('inboxList').innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">📋</div>
+        <p>No new work orders.<br>Tap "Add New Work Order" above to add one.</p>
+      </div>`;
+    return;
+  }
+  let html = '';
+  inbox.forEach(wo => {
+    html += renderWoCard(wo, 'inbox');
+  });
+  document.getElementById('inboxList').innerHTML = html;
+}
+
+// ============ RENDER: ACCEPTED ============
+function renderAccepted() {
+  let accepted = getData('corrigo_accepted');
+  updateAllCounts();
+  if (accepted.length === 0) {
+    document.getElementById('acceptedList').innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">✅</div>
+        <p>No accepted work orders yet.<br>Accept one from the Inbox!</p>
+      </div>`;
+    return;
+  }
+  let html = '';
+  accepted.forEach(wo => {
+    html += renderWoCard(wo, 'accepted');
+  });
+  document.getElementById('acceptedList').innerHTML = html;
+}
+
+// ============ RENDER: BIDDING ============
+function renderBidding() {
+  let bidding = getData('corrigo_bidding');
+  updateAllCounts();
+  if (bidding.length === 0) {
+    document.getElementById('biddingList').innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">🔨</div>
+        <p>No bids in progress.<br>Move a job here from the Inbox!</p>
+      </div>`;
+    return;
+  }
+  let html = '';
+  bidding.forEach(wo => {
+    html += renderWoCard(wo, 'bidding');
+  });
+  document.getElementById('biddingList').innerHTML = html;
+}
+
+// ============ RENDER: DECLINED ============
+function renderDeclined() {
+  let declined = getData('corrigo_declined');
+  updateAllCounts();
+  if (declined.length === 0) {
+    document.getElementById('declinedList').innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">❌</div>
+        <p>No declined work orders.<br>Declined jobs show here for record keeping.</p>
+      </div>`;
+    return;
+  }
+  let html = '';
+  declined.forEach(wo => {
+    html += renderWoCard(wo, 'declined');
+  });
+  document.getElementById('declinedList').innerHTML = html;
+}
+
+// ============ RENDER: WO CARD (generic for all tabs) ============
+function renderWoCard(wo, tab) {
+  const dateDisplay = wo.date ? new Date(wo.date + 'T00:00:00').toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : 'No date';
+  const estDisplay = wo.estimatedAmount ? '$' + wo.estimatedAmount.toFixed(2) : '—';
+  let html = '<div class="wo-card">';
+
+  // Header: number + estimated amount
+  html += '<div class="wo-card-header">';
+  html += '<h3>#' + escapeHtml(wo.number || 'No #') + '</h3>';
+  html += '<div class="wo-est">' + estDisplay + '</div>';
+  html += '</div>';
+
+  // Date
+  html += '<div class="wo-field"><div class="wo-field-label">📅 Date</div><div class="wo-field-value">' + dateDisplay + '</div></div>';
+
+  // Location
+  if (wo.location) {
+    html += '<div class="wo-field"><div class="wo-field-label">📍 Location</div><div class="wo-field-value">' + escapeHtml(wo.location) + '</div></div>';
+  }
+
+  // Description
+  if (wo.description) {
+    html += '<div class="wo-field"><div class="wo-field-label">🔨 Description</div><div class="wo-field-value">' + escapeHtml(wo.description) + '</div></div>';
+  }
+
+  // Bid amount (bidding tab)
+  if (tab === 'bidding' && wo.bidAmount) {
+    html += '<div class="bid-amount-box">🔨 Bid Amount: $' + wo.bidAmount.toFixed(2) + '</div>';
+  }
+
+  // Completed badge + summary
+  if (wo.status === 'completed' && wo.completedSummary) {
+    html += '<div class="completed-badge">✅ Completed</div>';
+    html += '<div class="completed-summary">' + escapeHtml(wo.completedSummary.copyText || 'Summary saved') + '</div>';
+  }
+
+  // Action buttons
+  if (tab === 'inbox') {
+    html += '<div class="action-btns">';
+    html += '<button class="action-btn accept" onclick="acceptWo(\'' + wo.id + '\')">✅ Accept</button>';
+    html += '<button class="action-btn bid" onclick="bidWo(\'' + wo.id + '\')">🔨 Bid (Over $500)</button>';
+    html += '<button class="action-btn decline" onclick="declineWo(\'' + wo.id + '\')">❌ Decline</button>';
+    html += '</div>';
+    html += '<button class="delete-btn" onclick="deleteWo(\'' + wo.id + '\',\'corrigo_inbox\')">🗑️ Delete</button>';
+  } else if (tab === 'accepted' || tab === 'bidding') {
+    if (wo.status !== 'completed') {
+      html += '<button class="complete-btn" onclick="completeJob(\'' + wo.id + '\',\'' + tab + '\')">📝 Complete Job</button>';
+    }
+    html += '<button class="delete-btn" onclick="deleteWo(\'' + wo.id + '\',\'' + (tab === 'accepted' ? 'corrigo_accepted' : 'corrigo_bidding') + '\')">🗑️ Delete</button>';
+  } else if (tab === 'declined') {
+    html += '<button class="delete-btn" onclick="deleteWo(\'' + wo.id + '\',\'corrigo_declined\')">🗑️ Delete</button>';
+  }
+
+  html += '</div>';
+  return html;
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// ============ WORKFLOW ACTIONS ============
+function acceptWo(id) {
+  let inbox = getData('corrigo_inbox');
+  let accepted = getData('corrigo_accepted');
+  const idx = inbox.findIndex(w => w.id === id);
+  if (idx === -1) return;
+  const wo = inbox[idx];
+  wo.status = 'accepted';
+  accepted.unshift(wo);
+  inbox.splice(idx, 1);
+  saveData('corrigo_inbox', inbox);
+  saveData('corrigo_accepted', accepted);
+  updateAllCounts();
+  renderInbox();
+  showToast('✅ Accepted! Moved to Accepted tab.');
+}
+
+function bidWo(id) {
+  pendingBidWoId = id;
+  document.getElementById('bidAmountInput').value = '';
+  document.getElementById('bidModal').classList.add('show');
+  setTimeout(() => document.getElementById('bidAmountInput').focus(), 100);
+}
+
+function confirmBid() {
+  const bidAmount = parseFloat(document.getElementById('bidAmountInput').value) || 0;
+  if (bidAmount <= 0) {
+    showToast('⚠️ Enter a valid bid amount');
+    return;
+  }
+  if (!pendingBidWoId) return;
+
+  let inbox = getData('corrigo_inbox');
+  let bidding = getData('corrigo_bidding');
+  const idx = inbox.findIndex(w => w.id === pendingBidWoId);
+  if (idx === -1) { cancelBid(); return; }
+  const wo = inbox[idx];
+  wo.status = 'bidding';
+  wo.bidAmount = bidAmount;
+  bidding.unshift(wo);
+  inbox.splice(idx, 1);
+  saveData('corrigo_inbox', inbox);
+  saveData('corrigo_bidding', bidding);
+
+  cancelBid();
+  updateAllCounts();
+  renderInbox();
+  showToast('🔨 Moved to Bidding! Bid: $' + bidAmount.toFixed(2));
+}
+
+function cancelBid() {
+  pendingBidWoId = null;
+  document.getElementById('bidModal').classList.remove('show');
+}
+
+function declineWo(id) {
+  if (!confirm('Are you sure you want to decline this work order?')) return;
+  let inbox = getData('corrigo_inbox');
+  let declined = getData('corrigo_declined');
+  const idx = inbox.findIndex(w => w.id === id);
+  if (idx === -1) return;
+  const wo = inbox[idx];
+  wo.status = 'declined';
+  declined.unshift(wo);
+  inbox.splice(idx, 1);
+  saveData('corrigo_inbox', inbox);
+  saveData('corrigo_declined', declined);
+  updateAllCounts();
+  renderInbox();
+  showToast('❌ Declined. Moved to Declined tab.');
+}
+
+function deleteWo(id, storageKey) {
+  if (!confirm('Delete this work order permanently?')) return;
+  let arr = getData(storageKey);
+  arr = arr.filter(w => w.id !== id);
+  saveData(storageKey, arr);
+  updateAllCounts();
+  // Re-render current tab
+  if (storageKey === 'corrigo_inbox') renderInbox();
+  else if (storageKey === 'corrigo_accepted') renderAccepted();
+  else if (storageKey === 'corrigo_bidding') renderBidding();
+  else if (storageKey === 'corrigo_declined') renderDeclined();
+  showToast('🗑️ Deleted');
+}
+
+// ============ COMPLETE JOB (prefill New Entry form) ============
+function completeJob(id, sourceTab) {
+  let arr = getData(sourceTab === 'accepted' ? 'corrigo_accepted' : 'corrigo_bidding');
+  const wo = arr.find(w => w.id === id);
+  if (!wo) return;
+
+  prefillWoId = id;
+  prefillSourceTab = sourceTab;
+
+  // Pre-fill the New Entry form
+  document.getElementById('woNumber').value = wo.number || '';
+  document.getElementById('woDate').value = wo.date || '';
+  document.getElementById('woLocation').value = wo.location || '';
+  document.getElementById('woDescription').value = wo.description || '';
+
+  // Clear existing line items
+  document.getElementById('lineItems').innerHTML = '';
+  lineItemCount = 0;
+  // Add one default labor item
+  addLineItem('Labor');
+
+  // Clear photo
+  document.getElementById('photoPreview').classList.remove('show');
+  document.getElementById('photoPreview').src = '';
+  document.getElementById('photoFilename').textContent = '';
+  currentPhoto = null;
+
+  // Show prefill banner
+  const banner = document.getElementById('prefillBanner');
+  banner.style.display = 'block';
+  banner.innerHTML = '📝 Completing Work Order #' + escapeHtml(wo.number || '?') + ' from ' + (sourceTab === 'accepted' ? 'Accepted' : 'Bidding') + ' tab.<br>Fill in hours, materials, and photo below, then Generate Summary & Save.<br><button class="clear-prefill" onclick="clearPrefill()">Cancel Pre-fill</button>';
+
+  showSection('new');
+  showToast('📝 Form pre-filled! Add hours & materials below.');
+}
+
+function clearPrefill() {
+  prefillWoId = null;
+  prefillSourceTab = null;
+  document.getElementById('prefillBanner').style.display = 'none';
 }
 
 // ============ VOICE INPUT ============
@@ -615,60 +1225,75 @@ function startVoice(targetId, btn) {
     showToast('⚠️ Voice not supported on this browser. Try Safari or Chrome.');
     return;
   }
-  
+
+  // Stop any existing recognition
+  if (window._currentRec) {
+    try { window._currentRec.stop(); } catch(e){}
+  }
+
   const recognition = new SR();
   recognition.continuous = false;
   recognition.interimResults = false;
   recognition.lang = 'en-US';
-  
+  window._currentRec = recognition;
+
+  // Save original button content for restoration
+  const origHTML = btn.innerHTML;
   btn.classList.add('recording');
   btn.innerHTML = '<span class="voice-icon">🔴</span> Listening...';
-  
+
   recognition.onresult = function(event) {
     const transcript = event.results[0][0].transcript;
     const target = document.getElementById(targetId);
-    if (target.tagName === 'TEXTAREA' || target.type === 'text' || target.type === 'date') {
-      // For date field, try to parse spoken date
-      if (targetId === 'woDate') {
+    if (target) {
+      if (target.tagName === 'TEXTAREA' || target.type === 'text') {
+        target.value = (target.value ? target.value + ' ' : '') + transcript;
+      } else if (target.type === 'date') {
         const parsed = parseSpokenDate(transcript);
         target.value = parsed || target.value;
-      } else {
-        target.value = (target.value ? target.value + ' ' : '') + transcript;
+      } else if (target.type === 'number') {
+        // Try to extract a number from spoken text
+        const numMatch = transcript.replace(/dollars?/gi,'').match(/[\d.]+/);
+        if (numMatch) target.value = numMatch[0];
       }
     }
     showToast('✅ Got it: ' + transcript.substring(0, 40));
   };
-  
+
   recognition.onerror = function(event) {
     showToast('⚠️ Voice error: ' + event.error);
   };
-  
+
   recognition.onend = function() {
     btn.classList.remove('recording');
-    const fieldLabel = targetId === 'woNumber' ? 'Speak Number' : 
-                       targetId === 'woLocation' ? 'Speak Location' : 
-                       targetId === 'woDescription' ? 'Speak Description' : 'Speak';
-    btn.innerHTML = '<span class="voice-icon">🎙️</span> ' + fieldLabel;
+    btn.innerHTML = origHTML;
+    window._currentRec = null;
   };
-  
-  recognition.start();
+
+  try {
+    recognition.start();
+  } catch(e) {
+    showToast('⚠️ Could not start voice. Try again.');
+    btn.classList.remove('recording');
+    btn.innerHTML = origHTML;
+    window._currentRec = null;
+  }
 }
 
 function parseSpokenDate(text) {
   text = text.toLowerCase().trim();
-  // Try to parse things like "September 7" or "Sept 7 2026" or "9/7/26"
   const months = ['january','february','march','april','may','june','july','august','september','october','november','december'];
   const monthsAbbr = ['jan','feb','mar','apr','may','jun','jul','aug','sep','sept','oct','nov','dec'];
-  
+
   // Try MM/DD/YYYY format
   const slashMatch = text.match(/(\d{1,2})\/(\d{1,2})\/?(\d{2,4})?/);
   if (slashMatch) {
     let m = slashMatch[1].padStart(2,'0');
     let d = slashMatch[2].padStart(2,'0');
     let y = slashMatch[3] ? (slashMatch[3].length === 2 ? '20' + slashMatch[3] : slashMatch[3]) : new Date().getFullYear();
-    return `${y}-${m}-${d}`;
+    return y + '-' + m + '-' + d;
   }
-  
+
   // Try month name format
   for (let i = 0; i < months.length; i++) {
     if (text.includes(months[i]) || text.includes(monthsAbbr[i])) {
@@ -679,7 +1304,7 @@ function parseSpokenDate(text) {
         let y = new Date().getFullYear();
         const yearMatch = text.match(/\b(20\d{2})\b/);
         if (yearMatch) y = yearMatch[1];
-        return `${y}-${m}-${d}`;
+        return y + '-' + m + '-' + d;
       }
     }
   }
@@ -731,7 +1356,6 @@ function addLineItem(type) {
   `;
   document.getElementById('lineItems').appendChild(div);
   updateItemTitle(lineItemCount);
-  // Set default guys to 1
   document.getElementById('item' + lineItemCount + 'Guys').value = 1;
 }
 
@@ -787,25 +1411,25 @@ function generateSummary() {
   const location = document.getElementById('woLocation').value.trim();
   const description = document.getElementById('woDescription').value.trim();
   const payment = document.getElementById('woPayment').value;
-  
+
   if (!description && !location && lineItemCount === 0) {
     showToast('⚠️ Add some work info first!');
     return;
   }
-  
+
   const total = calculateTotal();
-  
+
   // Build summary display
   let summaryHTML = '';
-  if (number) summaryHTML += `<div class="summary-line"><span class="label">Work Order #</span><span class="value">${number}</span></div>`;
+  if (number) summaryHTML += `<div class="summary-line"><span class="label">Work Order #</span><span class="value">${escapeHtml(number)}</span></div>`;
   if (date) {
     const dateDisplay = new Date(date + 'T00:00:00').toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', year:'numeric' });
     summaryHTML += `<div class="summary-line"><span class="label">Date</span><span class="value">${dateDisplay}</span></div>`;
   }
-  if (location) summaryHTML += `<div class="summary-line"><span class="label">Location</span><span class="value">${location}</span></div>`;
-  if (description) summaryHTML += `<div class="summary-line"><span class="label">Work Done</span><span class="value">${description}</span></div>`;
-  if (payment) summaryHTML += `<div class="summary-line"><span class="label">Payment</span><span class="value">${payment}</span></div>`;
-  
+  if (location) summaryHTML += `<div class="summary-line"><span class="label">Location</span><span class="value">${escapeHtml(location)}</span></div>`;
+  if (description) summaryHTML += `<div class="summary-line"><span class="label">Work Done</span><span class="value">${escapeHtml(description)}</span></div>`;
+  if (payment) summaryHTML += `<div class="summary-line"><span class="label">Payment</span><span class="value">${escapeHtml(payment)}</span></div>`;
+
   // Line items
   for (let i = 1; i <= lineItemCount; i++) {
     const el = document.getElementById('item' + i);
@@ -815,23 +1439,23 @@ function generateSummary() {
     const qty = parseFloat(document.getElementById('item' + i + 'Qty').value) || 0;
     const rate = parseFloat(document.getElementById('item' + i + 'Rate').value) || 0;
     const guys = parseFloat(document.getElementById('item' + i + 'Guys').value) || 1;
-    
+
     if (qty > 0 || desc) {
       const lineTotal = type === 'Labor' ? qty * rate * guys : qty * rate;
       const guysText = type === 'Labor' && guys > 1 ? ` (${guys} guys)` : '';
       const qtyLabel = type === 'Labor' ? 'hrs' : 'qty';
-      summaryHTML += `<div class="summary-line"><span class="label">${type}: ${desc}${guysText}</span><span class="value">${qty} ${qtyLabel} × $${rate.toFixed(2)} = $${lineTotal.toFixed(2)}</span></div>`;
+      summaryHTML += `<div class="summary-line"><span class="label">${escapeHtml(type)}: ${escapeHtml(desc)}${guysText}</span><span class="value">${qty} ${qtyLabel} × $${rate.toFixed(2)} = $${lineTotal.toFixed(2)}</span></div>`;
     }
   }
-  
+
   if (currentPhoto) {
     summaryHTML += `<div class="summary-line"><span class="label">Photo</span><span class="value">✅ Attached</span></div>`;
   }
-  
+
   summaryHTML += `<div class="summary-total"><span>TOTAL</span><span>$${total.toFixed(2)}</span></div>`;
-  
+
   document.getElementById('summaryContent').innerHTML = summaryHTML;
-  
+
   // Build copyable text for Corrigo
   let copyText = '';
   copyText += 'SIMS CONSTRUCTION\n';
@@ -845,7 +1469,7 @@ function generateSummary() {
   if (payment) copyText += `Payment Method: ${payment}\n`;
   copyText += '========================================\n';
   copyText += 'LABOR & MATERIALS:\n';
-  
+
   let laborTotal = 0, materialTotal = 0;
   for (let i = 1; i <= lineItemCount; i++) {
     const el = document.getElementById('item' + i);
@@ -855,7 +1479,7 @@ function generateSummary() {
     const qty = parseFloat(document.getElementById('item' + i + 'Qty').value) || 0;
     const rate = parseFloat(document.getElementById('item' + i + 'Rate').value) || 0;
     const guys = parseFloat(document.getElementById('item' + i + 'Guys').value) || 1;
-    
+
     if (qty > 0 || desc) {
       const lineTotal = type === 'Labor' ? qty * rate * guys : qty * rate;
       const guysText = type === 'Labor' && guys > 1 ? ` (${guys} guys)` : '';
@@ -864,7 +1488,7 @@ function generateSummary() {
       else materialTotal += lineTotal;
     }
   }
-  
+
   copyText += '========================================\n';
   copyText += `Labor Total: $${laborTotal.toFixed(2)}\n`;
   copyText += `Materials Total: $${materialTotal.toFixed(2)}\n`;
@@ -872,14 +1496,14 @@ function generateSummary() {
   if (currentPhoto) copyText += `Photo: ${currentPhoto.name} (attached separately in Corrigo)\n`;
   copyText += '========================================\n';
   copyText += 'Customer: The Church of Jesus Christ of Latter-day Saints\n';
-  
+
   currentSummary = {
     number, date, location, description, payment,
     total, photo: currentPhoto,
     copyText,
     timestamp: new Date().toISOString()
   };
-  
+
   // Also save line items data
   currentSummary.items = [];
   for (let i = 1; i <= lineItemCount; i++) {
@@ -893,7 +1517,7 @@ function generateSummary() {
       guys: parseFloat(document.getElementById('item' + i + 'Guys').value) || 1
     });
   }
-  
+
   showSection('summary');
   showToast('✅ Summary ready!');
 }
@@ -901,7 +1525,7 @@ function generateSummary() {
 // ============ COPY ============
 function copySummary() {
   if (!currentSummary) return;
-  
+
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(currentSummary.copyText).then(() => {
       showToast('📋 Copied! Now paste into Corrigo Pro');
@@ -932,42 +1556,59 @@ function fallbackCopy(text) {
 // ============ SAVE / LOAD ============
 function saveWorkOrder() {
   if (!currentSummary) return;
-  
+
+  // Save to bba_work_orders (existing key — keep working)
   let saved = JSON.parse(localStorage.getItem('bba_work_orders') || '[]');
   saved.unshift(currentSummary);
   localStorage.setItem('bba_work_orders', JSON.stringify(saved));
-  
-  showToast('💾 Saved! You can find it in the Saved tab');
+
+  // If this was a pre-filled job from Accepted/Bidding, mark it as completed
+  if (prefillWoId && prefillSourceTab) {
+    const storageKey = prefillSourceTab === 'accepted' ? 'corrigo_accepted' : 'corrigo_bidding';
+    let arr = getData(storageKey);
+    const idx = arr.findIndex(w => w.id === prefillWoId);
+    if (idx !== -1) {
+      arr[idx].status = 'completed';
+      arr[idx].completedSummary = currentSummary;
+      arr[idx].photo = currentSummary.photo;
+      saveData(storageKey, arr);
+    }
+    clearPrefill();
+  }
+
+  updateAllCounts();
+  showToast('💾 Saved! Work order marked complete.');
   document.getElementById('savedCount').textContent = saved.length;
 }
 
 function renderSaved() {
   let saved = JSON.parse(localStorage.getItem('bba_work_orders') || '[]');
   document.getElementById('savedCount').textContent = saved.length;
-  
+  updateAllCounts();
+
   if (saved.length === 0) {
     document.getElementById('savedList').innerHTML = `
       <div class="empty">
-        <div class="empty-icon">📋</div>
+        <div class="empty-icon">💾</div>
         <p>No saved work orders yet.<br>Create one and save it!</p>
       </div>`;
     return;
   }
-  
+
   let html = '';
   saved.forEach((wo, i) => {
     const dateDisplay = wo.date ? new Date(wo.date + 'T00:00:00').toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : 'No date';
     const photoBadge = wo.photo ? ' 📸' : '';
     html += `
       <div class="wo-item" onclick="viewSaved(${i})">
-        <h3>#${wo.number || 'No #'} — ${dateDisplay}</h3>
-        <div class="wo-meta">${wo.location || 'No location'}${photoBadge}</div>
-        <div class="wo-meta">${wo.description ? wo.description.substring(0,50) : 'No description'}</div>
+        <h3>#${escapeHtml(wo.number || 'No #')} — ${dateDisplay}</h3>
+        <div class="wo-meta">${escapeHtml(wo.location || 'No location')}${photoBadge}</div>
+        <div class="wo-meta">${escapeHtml(wo.description ? wo.description.substring(0,50) : 'No description')}</div>
         <div class="wo-meta" style="color:var(--green);font-weight:700">$${wo.total.toFixed(2)}</div>
         <span class="wo-status completed">Saved</span>
       </div>`;
   });
-  
+
   html += `<button class="btn btn-danger" style="margin-top:16px" onclick="clearAllSaved()">🗑️ Clear All Saved</button>`;
   document.getElementById('savedList').innerHTML = html;
 }
@@ -975,36 +1616,35 @@ function renderSaved() {
 function viewSaved(index) {
   let saved = JSON.parse(localStorage.getItem('bba_work_orders') || '[]');
   if (!saved[index]) return;
-  
+
   currentSummary = saved[index];
   currentPhoto = saved[index].photo || null;
-  
-  // Render summary
+
   let summaryHTML = '';
   const wo = saved[index];
-  if (wo.number) summaryHTML += `<div class="summary-line"><span class="label">Work Order #</span><span class="value">${wo.number}</span></div>`;
+  if (wo.number) summaryHTML += `<div class="summary-line"><span class="label">Work Order #</span><span class="value">${escapeHtml(wo.number)}</span></div>`;
   if (wo.date) {
     const dateDisplay = new Date(wo.date + 'T00:00:00').toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', year:'numeric' });
     summaryHTML += `<div class="summary-line"><span class="label">Date</span><span class="value">${dateDisplay}</span></div>`;
   }
-  if (wo.location) summaryHTML += `<div class="summary-line"><span class="label">Location</span><span class="value">${wo.location}</span></div>`;
-  if (wo.description) summaryHTML += `<div class="summary-line"><span class="label">Work Done</span><span class="value">${wo.description}</span></div>`;
-  if (wo.payment) summaryHTML += `<div class="summary-line"><span class="label">Payment</span><span class="value">${wo.payment}</span></div>`;
-  
+  if (wo.location) summaryHTML += `<div class="summary-line"><span class="label">Location</span><span class="value">${escapeHtml(wo.location)}</span></div>`;
+  if (wo.description) summaryHTML += `<div class="summary-line"><span class="label">Work Done</span><span class="value">${escapeHtml(wo.description)}</span></div>`;
+  if (wo.payment) summaryHTML += `<div class="summary-line"><span class="label">Payment</span><span class="value">${escapeHtml(wo.payment)}</span></div>`;
+
   if (wo.items) {
     wo.items.forEach(item => {
       if (item.qty > 0 || item.desc) {
         const lineTotal = item.type === 'Labor' ? item.qty * item.rate * item.guys : item.qty * item.rate;
         const guysText = item.type === 'Labor' && item.guys > 1 ? ` (${item.guys} guys)` : '';
         const qtyLabel = item.type === 'Labor' ? 'hrs' : 'qty';
-        summaryHTML += `<div class="summary-line"><span class="label">${item.type}: ${item.desc}${guysText}</span><span class="value">${item.qty} ${qtyLabel} × $${item.rate.toFixed(2)} = $${lineTotal.toFixed(2)}</span></div>`;
+        summaryHTML += `<div class="summary-line"><span class="label">${escapeHtml(item.type)}: ${escapeHtml(item.desc)}${guysText}</span><span class="value">${item.qty} ${qtyLabel} × $${item.rate.toFixed(2)} = $${lineTotal.toFixed(2)}</span></div>`;
       }
     });
   }
-  
+
   if (wo.photo) summaryHTML += `<div class="summary-line"><span class="label">Photo</span><span class="value">✅ Attached</span></div>`;
   summaryHTML += `<div class="summary-total"><span>TOTAL</span><span>$${wo.total.toFixed(2)}</span></div>`;
-  
+
   document.getElementById('summaryContent').innerHTML = summaryHTML;
   showSection('summary');
 }
@@ -1012,7 +1652,7 @@ function viewSaved(index) {
 function clearAllSaved() {
   if (confirm('Delete ALL saved work orders? This cannot be undone.')) {
     localStorage.removeItem('bba_work_orders');
-    document.getElementById('savedCount').textContent = '0';
+    updateAllCounts();
     renderSaved();
     showToast('🗑️ All cleared');
   }
@@ -1032,6 +1672,9 @@ function clearForm() {
   document.getElementById('photoFilename').textContent = '';
   currentPhoto = null;
   lineItemCount = 0;
+  clearPrefill();
+  addLineItem('Labor');
+  document.getElementById('woDate').valueAsDate = new Date();
   showToast('🗑️ Form cleared');
 }
 
@@ -1044,17 +1687,20 @@ function showToast(msg) {
 }
 
 // ============ INIT ============
-// Set today's date as default
+// Set today's date as default on New Entry form
 document.getElementById('woDate').valueAsDate = new Date();
+
+// Set today's date on Add New Work Order form
+document.getElementById('newWoDate').valueAsDate = new Date();
 
 // Add one default labor line item
 addLineItem('Labor');
 
-// Update saved count on load
-let savedCount = JSON.parse(localStorage.getItem('bba_work_orders') || '[]').length;
-document.getElementById('savedCount').textContent = savedCount;
+// Update all counts on load
+updateAllCounts();
 
-// Pre-fill company info (read-only display)
+// Render inbox on load (default tab)
+renderInbox();
 </script>
 
 </body>
