@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Work Orders">
+<title>Sims Construction — Work Orders</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0f0f17;
+  --card: #1c1c2e;
+  --border: #33334d;
+  --text: #ffffff;
+  --muted: #8888aa;
+  --blue: #0099ff;
+  --green: #00cc66;
+  --orange: #ff9500;
+  --red: #ff3b30;
+  --big: 24px;
+  --bigger: 28px;
+  --biggest: 32px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: var(--big);
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  padding-bottom: 120px;
+}
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, #0099ff, #00cc66);
+  padding: 20px 16px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+.header h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+.header p {
+  font-size: 18px;
+  color: rgba(255,255,255,0.9);
+  margin-top: 4px;
+}
+
+/* MAIN */
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* SECTIONS */
+.section {
+  display: none;
+}
+.section.active {
+  display: block;
+}
+
+/* CARD */
+.card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.card h2 {
+  font-size: var(--bigger);
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--blue);
+}
+
+/* FORM FIELDS */
+.field {
+  margin-bottom: 20px;
+}
+.field label {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.field input, .field textarea, .field select {
+  width: 100%;
+  background: var(--bg);
+  border: 3px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  font-size: var(--big);
+  color: var(--text);
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.field input:focus, .field textarea:focus, .field select:focus {
+  border-color: var(--blue);
+}
+.field textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+.field-row {
+  display: flex;
+  gap: 12px;
+}
+.field-row .field {
+  flex: 1;
+}
+
+/* VOICE BUTTON */
+.voice-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #00cc66, #0099ff);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 14px 24px;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: transform 0.1s;
+}
+.voice-btn:active {
+  transform: scale(0.95);
+}
+.voice-btn.recording {
+  background: linear-gradient(135deg, #ff3b30, #ff9500);
+  animation: pulse 1s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+.voice-icon {
+  font-size: 24px;
+}
+
+/* PHOTO UPLOAD */
+.photo-area {
+  border: 3px dashed var(--border);
+  border-radius: 16px;
+  padding: 30px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.photo-area:active {
+  border-color: var(--blue);
+  background: rgba(0,153,255,0.1);
+}
+.photo-area-icon {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+.photo-area-text {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.photo-preview {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 12px;
+  display: none;
+}
+.photo-preview.show {
+  display: block;
+}
+.photo-filename {
+  font-size: 18px;
+  color: var(--green);
+  margin-top: 8px;
+  word-break: break-all;
+}
+
+/* BUTTONS */
+.btn {
+  display: block;
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 20px;
+  font-size: var(--biggest);
+  font-weight: 800;
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.1s;
+  font-family: inherit;
+}
+.btn:active {
+  transform: scale(0.98);
+}
+.btn-primary {
+  background: linear-gradient(135deg, #00cc66, #0099ff);
+  color: #fff;
+}
+.btn-secondary {
+  background: var(--border);
+  color: var(--text);
+  font-size: 22px;
+  padding: 16px;
+}
+.btn-danger {
+  background: var(--red);
+  color: #fff;
+  font-size: 22px;
+  padding: 16px;
+}
+
+/* WORK ORDER LIST */
+.wo-item {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.wo-item:active {
+  border-color: var(--blue);
+}
+.wo-item h3 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.wo-item .wo-meta {
+  font-size: 20px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.wo-item .wo-status {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-top: 8px;
+}
+.wo-status.new { background: rgba(255,149,0,0.2); color: var(--orange); }
+.wo-status.accepted { background: rgba(0,153,255,0.2); color: var(--blue); }
+.wo-status.completed { background: rgba(0,204,102,0.2); color: var(--green); }
+
+/* SUMMARY */
+.summary-box {
+  background: var(--bg);
+  border: 3px solid var(--green);
+  border-radius: 14px;
+  padding: 20px;
+  font-size: 22px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  margin-bottom: 16px;
+}
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding: 8px 0;
+}
+.summary-line .label {
+  color: var(--muted);
+  font-weight: 700;
+}
+.summary-line .value {
+  font-weight: 700;
+  text-align: right;
+}
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--green);
+  padding: 16px 0 4px;
+  border-top: 3px solid var(--green);
+  margin-top: 8px;
+}
+
+/* TABS / NAV */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.tab {
+  flex: 1;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--muted);
+  text-align: center;
+  cursor: pointer;
+}
+.tab.active {
+  background: linear-gradient(135deg, #0099ff, #00cc66);
+  color: #fff;
+  border-color: transparent;
+}
+
+/* EMPTY STATE */
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted);
+}
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+.empty p {
+  font-size: 22px;
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--green);
+  color: #fff;
+  padding: 16px 32px;
+  border-radius: 50px;
+  font-size: 22px;
+  font-weight: 700;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.toast.show {
+  opacity: 1;
+}
+
+/* LINE ITEMS */
+.line-item {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.line-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.line-item-header h4 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--blue);
+}
+.line-item-remove {
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.line-item .field {
+  margin-bottom: 10px;
+}
+.line-item .field label {
+  font-size: 16px;
+}
+.line-item .field input {
+  font-size: 20px;
+  padding: 12px;
+}
+
+/* ADD ITEM BUTTON */
+.add-item-btn {
+  background: transparent;
+  border: 2px dashed var(--blue);
+  color: var(--blue);
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* API STATUS BADGE */
+.api-badge {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+.api-badge.connected { background: rgba(0,204,102,0.2); color: var(--green); }
+.api-badge.manual { background: rgba(255,149,0,0.2); color: var(--orange); }
+
+/* SCROLL HINT */
+.scroll-hint {
+  text-align: center;
+  color: var(--muted);
+  font-size: 18px;
+  margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>🔧 Sims Construction</h1>
+  <p>Work Order Manager<span id="apiBadge" class="api-badge manual">Manual Mode</span></p>
+</div>
+
+<div class="container">
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" id="tabNew" onclick="showSection('new')">📝 New Entry</div>
+    <div class="tab" id="tabSaved" onclick="showSection('saved')">📋 Saved (<span id="savedCount">0</span>)</div>
+  </div>
+
+  <!-- ===== NEW ENTRY SECTION ===== -->
+  <div class="section active" id="sectionNew">
+    
+    <!-- WORK ORDER INFO -->
+    <div class="card">
+      <h2>📋 Work Order Info</h2>
+      
+      <div class="field">
+        <label>Work Order Number</label>
+        <input type="text" id="woNumber" placeholder="Tap or speak the number" autocomplete="off">
+        <button class="voice-btn" onclick="startVoice('woNumber', this)">
+          <span class="voice-icon">🎙️</span> Speak Number
+        </button>
+      </div>
+
+      <div class="field">
+        <label>Date Work Done</label>
+        <input type="date" id="woDate">
+      </div>
+
+      <div class="field">
+        <label>Location / Site</label>
+        <input type="text" id="woLocation" placeholder="Where did dad work?" autocomplete="off">
+        <button class="voice-btn" onclick="startVoice('woLocation', this)">
+          <span class="voice-icon">🎙️</span> Speak Location
+        </button>
+      </div>
+    </div>
+
+    <!-- WORK DESCRIPTION -->
+    <div class="card">
+      <h2>🔨 What Did Dad Do?</h2>
+      <div class="field">
+        <label>Description of Work</label>
+        <textarea id="woDescription" placeholder="Example: Fix paint, sheetrock repair, matching texture"></textarea>
+        <button class="voice-btn" onclick="startVoice('woDescription', this)">
+          <span class="voice-icon">🎙️</span> Speak Description
+        </button>
+      </div>
+    </div>
+
+    <!-- LINE ITEMS -->
+    <div class="card">
+      <h2>💵 Labor & Materials</h2>
+      <div id="lineItems"></div>
+      <button class="add-item-btn" onclick="addLineItem()">+ Add Labor or Material</button>
+    </div>
+
+    <!-- PHOTO -->
+    <div class="card">
+      <h2>📸 Job Photo</h2>
+      <div class="photo-area" onclick="document.getElementById('photoInput').click()">
+        <div class="photo-area-icon">📷</div>
+        <div class="photo-area-text">Tap to Take Photo<br>or Upload Picture</div>
+        <input type="file" id="photoInput" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(this)">
+        <img class="photo-preview" id="photoPreview">
+        <div class="photo-filename" id="photoFilename"></div>
+      </div>
+    </div>
+
+    <!-- PAYMENT -->
+    <div class="card">
+      <h2>💳 Payment Method</h2>
+      <div class="field">
+        <select id="woPayment">
+          <option value="">Select payment method</option>
+          <option value="Check">Check</option>
+          <option value="Cash">Cash</option>
+          <option value="Money Order">Money Order</option>
+          <option value="Credit Card">Credit Card</option>
+          <option value="Account">On Account</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <button class="btn btn-primary" onclick="generateSummary()">✅ Generate Summary</button>
+    <div style="height:12px"></div>
+    <button class="btn btn-secondary" onclick="clearForm()">🗑️ Clear Form</button>
+
+  </div>
+
+  <!-- ===== SAVED SECTION ===== -->
+  <div class="section" id="sectionSaved">
+    <div id="savedList">
+      <div class="empty">
+        <div class="empty-icon">📋</div>
+        <p>No saved work orders yet.<br>Create one and save it!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SUMMARY VIEW (hidden until generated) ===== -->
+  <div class="section" id="sectionSummary">
+    <div class="card">
+      <h2>✅ Work Order Summary</h2>
+      <div class="summary-box" id="summaryContent"></div>
+    </div>
+
+    <div class="card">
+      <h2>📋 Copy for Corrigo</h2>
+      <p style="color:var(--muted);font-size:20px;margin-bottom:12px">
+        Tap the button below, then paste into Corrigo Pro's work order form.
+      </p>
+      <button class="btn btn-primary" onclick="copySummary()">📋 Copy Text for Corrigo</button>
+      <div style="height:12px"></div>
+      <button class="btn btn-secondary" onclick="saveWorkOrder()">💾 Save This Work Order</button>
+      <div style="height:12px"></div>
+      <button class="btn btn-secondary" onclick="showSection('new')">← Back to New Entry</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ============ STATE ============
+let currentPhoto = null;
+let lineItemCount = 0;
+let currentSummary = null;
+
+// ============ SECTION NAVIGATION ============
+function showSection(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  
+  if (name === 'summary') {
+    document.getElementById('sectionSummary').classList.add('active');
+  } else if (name === 'saved') {
+    document.getElementById('sectionSaved').classList.add('active');
+    document.getElementById('tabSaved').classList.add('active');
+    renderSaved();
+  } else {
+    document.getElementById('sectionNew').classList.add('active');
+    document.getElementById('tabNew').classList.add('active');
+  }
+  window.scrollTo(0, 0);
+}
+
+// ============ VOICE INPUT ============
+function startVoice(targetId, btn) {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) {
+    showToast('⚠️ Voice not supported on this browser. Try Safari or Chrome.');
+    return;
+  }
+  
+  const recognition = new SR();
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.lang = 'en-US';
+  
+  btn.classList.add('recording');
+  btn.innerHTML = '<span class="voice-icon">🔴</span> Listening...';
+  
+  recognition.onresult = function(event) {
+    const transcript = event.results[0][0].transcript;
+    const target = document.getElementById(targetId);
+    if (target.tagName === 'TEXTAREA' || target.type === 'text' || target.type === 'date') {
+      // For date field, try to parse spoken date
+      if (targetId === 'woDate') {
+        const parsed = parseSpokenDate(transcript);
+        target.value = parsed || target.value;
+      } else {
+        target.value = (target.value ? target.value + ' ' : '') + transcript;
+      }
+    }
+    showToast('✅ Got it: ' + transcript.substring(0, 40));
+  };
+  
+  recognition.onerror = function(event) {
+    showToast('⚠️ Voice error: ' + event.error);
+  };
+  
+  recognition.onend = function() {
+    btn.classList.remove('recording');
+    const fieldLabel = targetId === 'woNumber' ? 'Speak Number' : 
+                       targetId === 'woLocation' ? 'Speak Location' : 
+                       targetId === 'woDescription' ? 'Speak Description' : 'Speak';
+    btn.innerHTML = '<span class="voice-icon">🎙️</span> ' + fieldLabel;
+  };
+  
+  recognition.start();
+}
+
+function parseSpokenDate(text) {
+  text = text.toLowerCase().trim();
+  // Try to parse things like "September 7" or "Sept 7 2026" or "9/7/26"
+  const months = ['january','february','march','april','may','june','july','august','september','october','november','december'];
+  const monthsAbbr = ['jan','feb','mar','apr','may','jun','jul','aug','sep','sept','oct','nov','dec'];
+  
+  // Try MM/DD/YYYY format
+  const slashMatch = text.match(/(\d{1,2})\/(\d{1,2})\/?(\d{2,4})?/);
+  if (slashMatch) {
+    let m = slashMatch[1].padStart(2,'0');
+    let d = slashMatch[2].padStart(2,'0');
+    let y = slashMatch[3] ? (slashMatch[3].length === 2 ? '20' + slashMatch[3] : slashMatch[3]) : new Date().getFullYear();
+    return `${y}-${m}-${d}`;
+  }
+  
+  // Try month name format
+  for (let i = 0; i < months.length; i++) {
+    if (text.includes(months[i]) || text.includes(monthsAbbr[i])) {
+      const dayMatch = text.match(/\b(\d{1,2})\b/);
+      if (dayMatch) {
+        let m = String(i+1).padStart(2,'0');
+        let d = dayMatch[1].padStart(2,'0');
+        let y = new Date().getFullYear();
+        const yearMatch = text.match(/\b(20\d{2})\b/);
+        if (yearMatch) y = yearMatch[1];
+        return `${y}-${m}-${d}`;
+      }
+    }
+  }
+  return null;
+}
+
+// ============ LINE ITEMS ============
+function addLineItem(type) {
+  lineItemCount++;
+  const div = document.createElement('div');
+  div.className = 'line-item';
+  div.id = 'item' + lineItemCount;
+  div.innerHTML = `
+    <div class="line-item-header">
+      <h4 id="item${lineItemCount}Title">${type || 'Labor'} Item</h4>
+      <button class="line-item-remove" onclick="removeLineItem(${lineItemCount})">✕ Remove</button>
+    </div>
+    <div class="field">
+      <label>Type</label>
+      <select id="item${lineItemCount}Type" onchange="updateItemTitle(${lineItemCount})">
+        <option value="Labor" ${type==='Labor'?'selected':''}>Labor (Hours)</option>
+        <option value="Material" ${type==='Material'?'selected':''}>Material</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Description</label>
+      <input type="text" id="item${lineItemCount}Desc" placeholder="What kind of work or material?">
+      <button class="voice-btn" style="font-size:16px;padding:10px 18px" onclick="startVoice('item${lineItemCount}Desc', this)">
+        <span class="voice-icon">🎙️</span> Speak
+      </button>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label id="item${lineItemCount}QtyLabel">Hours</label>
+        <input type="number" id="item${lineItemCount}Qty" placeholder="0" step="0.5" inputmode="decimal">
+      </div>
+      <div class="field">
+        <label>Rate / Price</label>
+        <input type="number" id="item${lineItemCount}Rate" placeholder="0.00" step="0.01" inputmode="decimal">
+      </div>
+    </div>
+    <div class="field">
+      <label>Number of Guys (optional)</label>
+      <input type="number" id="item${lineItemCount}Guys" placeholder="1" min="1" inputmode="numeric">
+      <button class="voice-btn" style="font-size:16px;padding:10px 18px" onclick="startVoice('item${lineItemCount}Guys', this)">
+        <span class="voice-icon">🎙️</span> Speak
+      </button>
+    </div>
+  `;
+  document.getElementById('lineItems').appendChild(div);
+  updateItemTitle(lineItemCount);
+  // Set default guys to 1
+  document.getElementById('item' + lineItemCount + 'Guys').value = 1;
+}
+
+function updateItemTitle(id) {
+  const type = document.getElementById('item' + id + 'Type').value;
+  document.getElementById('item' + id + 'Title').textContent = type + ' Item';
+  document.getElementById('item' + id + 'QtyLabel').textContent = type === 'Labor' ? 'Hours' : 'Quantity';
+}
+
+function removeLineItem(id) {
+  document.getElementById('item' + id).remove();
+}
+
+// ============ PHOTO ============
+function handlePhoto(input) {
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('photoPreview').src = e.target.result;
+      document.getElementById('photoPreview').classList.add('show');
+      document.getElementById('photoFilename').textContent = '✅ Photo attached: ' + file.name;
+      currentPhoto = { name: file.name, data: e.target.result };
+      showToast('✅ Photo attached!');
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+// ============ CALCULATE TOTAL ============
+function calculateTotal() {
+  let total = 0;
+  for (let i = 1; i <= lineItemCount; i++) {
+    const el = document.getElementById('item' + i);
+    if (!el) continue;
+    const qty = parseFloat(document.getElementById('item' + i + 'Qty').value) || 0;
+    const rate = parseFloat(document.getElementById('item' + i + 'Rate').value) || 0;
+    const guys = parseFloat(document.getElementById('item' + i + 'Guys').value) || 1;
+    const type = document.getElementById('item' + i + 'Type').value;
+    if (type === 'Labor') {
+      total += qty * rate * guys;
+    } else {
+      total += qty * rate;
+    }
+  }
+  return total;
+}
+
+// ============ GENERATE SUMMARY ============
+function generateSummary() {
+  const number = document.getElementById('woNumber').value.trim();
+  const date = document.getElementById('woDate').value;
+  const location = document.getElementById('woLocation').value.trim();
+  const description = document.getElementById('woDescription').value.trim();
+  const payment = document.getElementById('woPayment').value;
+  
+  if (!description && !location && lineItemCount === 0) {
+    showToast('⚠️ Add some work info first!');
+    return;
+  }
+  
+  const total = calculateTotal();
+  
+  // Build summary display
+  let summaryHTML = '';
+  if (number) summaryHTML += `<div class="summary-line"><span class="label">Work Order #</span><span class="value">${number}</span></div>`;
+  if (date) {
+    const dateDisplay = new Date(date + 'T00:00:00').toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', year:'numeric' });
+    summaryHTML += `<div class="summary-line"><span class="label">Date</span><span class="value">${dateDisplay}</span></div>`;
+  }
+  if (location) summaryHTML += `<div class="summary-line"><span class="label">Location</span><span class="value">${location}</span></div>`;
+  if (description) summaryHTML += `<div class="summary-line"><span class="label">Work Done</span><span class="value">${description}</span></div>`;
+  if (payment) summaryHTML += `<div class="summary-line"><span class="label">Payment</span><span class="value">${payment}</span></div>`;
+  
+  // Line items
+  for (let i = 1; i <= lineItemCount; i++) {
+    const el = document.getElementById('item' + i);
+    if (!el) continue;
+    const type = document.getElementById('item' + i + 'Type').value;
+    const desc = document.getElementById('item' + i + 'Desc').value.trim();
+    const qty = parseFloat(document.getElementById('item' + i + 'Qty').value) || 0;
+    const rate = parseFloat(document.getElementById('item' + i + 'Rate').value) || 0;
+    const guys = parseFloat(document.getElementById('item' + i + 'Guys').value) || 1;
+    
+    if (qty > 0 || desc) {
+      const lineTotal = type === 'Labor' ? qty * rate * guys : qty * rate;
+      const guysText = type === 'Labor' && guys > 1 ? ` (${guys} guys)` : '';
+      const qtyLabel = type === 'Labor' ? 'hrs' : 'qty';
+      summaryHTML += `<div class="summary-line"><span class="label">${type}: ${desc}${guysText}</span><span class="value">${qty} ${qtyLabel} × $${rate.toFixed(2)} = $${lineTotal.toFixed(2)}</span></div>`;
+    }
+  }
+  
+  if (currentPhoto) {
+    summaryHTML += `<div class="summary-line"><span class="label">Photo</span><span class="value">✅ Attached</span></div>`;
+  }
+  
+  summaryHTML += `<div class="summary-total"><span>TOTAL</span><span>$${total.toFixed(2)}</span></div>`;
+  
+  document.getElementById('summaryContent').innerHTML = summaryHTML;
+  
+  // Build copyable text for Corrigo
+  let copyText = '';
+  copyText += 'SIMS CONSTRUCTION\n';
+  copyText += '237 North 9th Street, Montpelier, Idaho 83254\n';
+  copyText += 'Gary Sims (208) 317-7214\n';
+  copyText += '========================================\n';
+  if (number) copyText += `Work Order #: ${number}\n`;
+  if (date) copyText += `Date: ${date}\n`;
+  if (location) copyText += `Location: ${location}\n`;
+  if (description) copyText += `Work Performed: ${description}\n`;
+  if (payment) copyText += `Payment Method: ${payment}\n`;
+  copyText += '========================================\n';
+  copyText += 'LABOR & MATERIALS:\n';
+  
+  let laborTotal = 0, materialTotal = 0;
+  for (let i = 1; i <= lineItemCount; i++) {
+    const el = document.getElementById('item' + i);
+    if (!el) continue;
+    const type = document.getElementById('item' + i + 'Type').value;
+    const desc = document.getElementById('item' + i + 'Desc').value.trim();
+    const qty = parseFloat(document.getElementById('item' + i + 'Qty').value) || 0;
+    const rate = parseFloat(document.getElementById('item' + i + 'Rate').value) || 0;
+    const guys = parseFloat(document.getElementById('item' + i + 'Guys').value) || 1;
+    
+    if (qty > 0 || desc) {
+      const lineTotal = type === 'Labor' ? qty * rate * guys : qty * rate;
+      const guysText = type === 'Labor' && guys > 1 ? ` (${guys} guys)` : '';
+      copyText += `  ${type}: ${desc}${guysText} — ${qty} ${type==='Labor'?'hours':'units'} @ $${rate.toFixed(2)} = $${lineTotal.toFixed(2)}\n`;
+      if (type === 'Labor') laborTotal += lineTotal;
+      else materialTotal += lineTotal;
+    }
+  }
+  
+  copyText += '========================================\n';
+  copyText += `Labor Total: $${laborTotal.toFixed(2)}\n`;
+  copyText += `Materials Total: $${materialTotal.toFixed(2)}\n`;
+  copyText += `TOTAL DUE: $${total.toFixed(2)}\n`;
+  if (currentPhoto) copyText += `Photo: ${currentPhoto.name} (attached separately in Corrigo)\n`;
+  copyText += '========================================\n';
+  copyText += 'Customer: The Church of Jesus Christ of Latter-day Saints\n';
+  
+  currentSummary = {
+    number, date, location, description, payment,
+    total, photo: currentPhoto,
+    copyText,
+    timestamp: new Date().toISOString()
+  };
+  
+  // Also save line items data
+  currentSummary.items = [];
+  for (let i = 1; i <= lineItemCount; i++) {
+    const el = document.getElementById('item' + i);
+    if (!el) continue;
+    currentSummary.items.push({
+      type: document.getElementById('item' + i + 'Type').value,
+      desc: document.getElementById('item' + i + 'Desc').value.trim(),
+      qty: parseFloat(document.getElementById('item' + i + 'Qty').value) || 0,
+      rate: parseFloat(document.getElementById('item' + i + 'Rate').value) || 0,
+      guys: parseFloat(document.getElementById('item' + i + 'Guys').value) || 1
+    });
+  }
+  
+  showSection('summary');
+  showToast('✅ Summary ready!');
+}
+
+// ============ COPY ============
+function copySummary() {
+  if (!currentSummary) return;
+  
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(currentSummary.copyText).then(() => {
+      showToast('📋 Copied! Now paste into Corrigo Pro');
+    }).catch(() => {
+      fallbackCopy(currentSummary.copyText);
+    });
+  } else {
+    fallbackCopy(currentSummary.copyText);
+  }
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showToast('📋 Copied! Now paste into Corrigo Pro');
+  } catch(e) {
+    showToast('⚠️ Copy failed — text is shown below to manually copy');
+  }
+  document.body.removeChild(ta);
+}
+
+// ============ SAVE / LOAD ============
+function saveWorkOrder() {
+  if (!currentSummary) return;
+  
+  let saved = JSON.parse(localStorage.getItem('bba_work_orders') || '[]');
+  saved.unshift(currentSummary);
+  localStorage.setItem('bba_work_orders', JSON.stringify(saved));
+  
+  showToast('💾 Saved! You can find it in the Saved tab');
+  document.getElementById('savedCount').textContent = saved.length;
+}
+
+function renderSaved() {
+  let saved = JSON.parse(localStorage.getItem('bba_work_orders') || '[]');
+  document.getElementById('savedCount').textContent = saved.length;
+  
+  if (saved.length === 0) {
+    document.getElementById('savedList').innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">📋</div>
+        <p>No saved work orders yet.<br>Create one and save it!</p>
+      </div>`;
+    return;
+  }
+  
+  let html = '';
+  saved.forEach((wo, i) => {
+    const dateDisplay = wo.date ? new Date(wo.date + 'T00:00:00').toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : 'No date';
+    const photoBadge = wo.photo ? ' 📸' : '';
+    html += `
+      <div class="wo-item" onclick="viewSaved(${i})">
+        <h3>#${wo.number || 'No #'} — ${dateDisplay}</h3>
+        <div class="wo-meta">${wo.location || 'No location'}${photoBadge}</div>
+        <div class="wo-meta">${wo.description ? wo.description.substring(0,50) : 'No description'}</div>
+        <div class="wo-meta" style="color:var(--green);font-weight:700">$${wo.total.toFixed(2)}</div>
+        <span class="wo-status completed">Saved</span>
+      </div>`;
+  });
+  
+  html += `<button class="btn btn-danger" style="margin-top:16px" onclick="clearAllSaved()">🗑️ Clear All Saved</button>`;
+  document.getElementById('savedList').innerHTML = html;
+}
+
+function viewSaved(index) {
+  let saved = JSON.parse(localStorage.getItem('bba_work_orders') || '[]');
+  if (!saved[index]) return;
+  
+  currentSummary = saved[index];
+  currentPhoto = saved[index].photo || null;
+  
+  // Render summary
+  let summaryHTML = '';
+  const wo = saved[index];
+  if (wo.number) summaryHTML += `<div class="summary-line"><span class="label">Work Order #</span><span class="value">${wo.number}</span></div>`;
+  if (wo.date) {
+    const dateDisplay = new Date(wo.date + 'T00:00:00').toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', year:'numeric' });
+    summaryHTML += `<div class="summary-line"><span class="label">Date</span><span class="value">${dateDisplay}</span></div>`;
+  }
+  if (wo.location) summaryHTML += `<div class="summary-line"><span class="label">Location</span><span class="value">${wo.location}</span></div>`;
+  if (wo.description) summaryHTML += `<div class="summary-line"><span class="label">Work Done</span><span class="value">${wo.description}</span></div>`;
+  if (wo.payment) summaryHTML += `<div class="summary-line"><span class="label">Payment</span><span class="value">${wo.payment}</span></div>`;
+  
+  if (wo.items) {
+    wo.items.forEach(item => {
+      if (item.qty > 0 || item.desc) {
+        const lineTotal = item.type === 'Labor' ? item.qty * item.rate * item.guys : item.qty * item.rate;
+        const guysText = item.type === 'Labor' && item.guys > 1 ? ` (${item.guys} guys)` : '';
+        const qtyLabel = item.type === 'Labor' ? 'hrs' : 'qty';
+        summaryHTML += `<div class="summary-line"><span class="label">${item.type}: ${item.desc}${guysText}</span><span class="value">${item.qty} ${qtyLabel} × $${item.rate.toFixed(2)} = $${lineTotal.toFixed(2)}</span></div>`;
+      }
+    });
+  }
+  
+  if (wo.photo) summaryHTML += `<div class="summary-line"><span class="label">Photo</span><span class="value">✅ Attached</span></div>`;
+  summaryHTML += `<div class="summary-total"><span>TOTAL</span><span>$${wo.total.toFixed(2)}</span></div>`;
+  
+  document.getElementById('summaryContent').innerHTML = summaryHTML;
+  showSection('summary');
+}
+
+function clearAllSaved() {
+  if (confirm('Delete ALL saved work orders? This cannot be undone.')) {
+    localStorage.removeItem('bba_work_orders');
+    document.getElementById('savedCount').textContent = '0';
+    renderSaved();
+    showToast('🗑️ All cleared');
+  }
+}
+
+// ============ CLEAR FORM ============
+function clearForm() {
+  if (!confirm('Clear the entire form?')) return;
+  document.getElementById('woNumber').value = '';
+  document.getElementById('woDate').value = '';
+  document.getElementById('woLocation').value = '';
+  document.getElementById('woDescription').value = '';
+  document.getElementById('woPayment').value = '';
+  document.getElementById('lineItems').innerHTML = '';
+  document.getElementById('photoPreview').classList.remove('show');
+  document.getElementById('photoPreview').src = '';
+  document.getElementById('photoFilename').textContent = '';
+  currentPhoto = null;
+  lineItemCount = 0;
+  showToast('🗑️ Form cleared');
+}
+
+// ============ TOAST ============
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ============ INIT ============
+// Set today's date as default
+document.getElementById('woDate').valueAsDate = new Date();
+
+// Add one default labor line item
+addLineItem('Labor');
+
+// Update saved count on load
+let savedCount = JSON.parse(localStorage.getItem('bba_work_orders') || '[]').length;
+document.getElementById('savedCount').textContent = savedCount;
+
+// Pre-fill company info (read-only display)
+</script>
+
+</body>
+</html>
