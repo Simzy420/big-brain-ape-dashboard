@@ -1,5 +1,5 @@
 {
-  "date": "September 09, 2026 01:35 UTC",
+  "date": "September 09, 2026 01:40 UTC",
   "assets": {
     "S&P 500": {
       "price": 7673.52,
@@ -89,20 +89,20 @@
       ]
     },
     "BTC": {
-      "price": 78740.0,
-      "change_pct": -0.69,
+      "price": 78822.8,
+      "change_pct": -0.6,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2492.56,
-      "change_pct": -0.25,
+      "price": 2498.01,
+      "change_pct": -0.02,
       "support": 1852.22,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 103.48,
-      "change_pct": -0.62,
+      "price": 103.78,
+      "change_pct": -0.33,
       "support": 74.0,
       "resistance": 110.6
     }
@@ -165,17 +165,17 @@
       "color": "green"
     },
     "oil": {
-      "value": "$94.46",
+      "value": "$94.51",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4414",
+      "value": "$4415",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$66.71",
+      "value": "$66.69",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -190,22 +190,27 @@
       "label": "CAUTION",
       "text": "S&P 500 down -0.6%",
       "type": "caution"
+    },
+    {
+      "label": "CAUTION",
+      "text": "NVDA down -2.0% \u2014 watch AI sector",
+      "type": "caution"
     }
   ],
-  "btc_funding": 6.607e-05,
+  "btc_funding": 6.65e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 37.31,
+    "daily_inflow": 37.35,
     "daily_avg": 30.18,
-    "daily_pct": 23.6,
-    "weekly_inflow": 211.25,
-    "weekly_avg": 210.32,
-    "weekly_pct": 0.4,
-    "monthly_inflow": 901.36,
-    "monthly_avg": 809.46,
+    "daily_pct": 23.7,
+    "weekly_inflow": 211.28,
+    "weekly_avg": 210.33,
+    "weekly_pct": 0.5,
+    "monthly_inflow": 901.4,
+    "monthly_avg": 809.48,
     "monthly_pct": 11.4,
-    "large_tx_count": 636157
+    "large_tx_count": 642004
   },
   "history": {
     "vix": [
@@ -276,7 +281,7 @@
       91.01,
       91.3,
       91.48,
-      94.46
+      94.51
     ],
     "gold": [
       4361.8,
@@ -299,7 +304,7 @@
       4366.3,
       4491.7,
       4429.8,
-      4414.2
+      4415.4
     ],
     "silver": [
       65.11,
@@ -322,7 +327,7 @@
       64.72,
       66.97,
       66.05,
-      66.71
+      66.68
     ],
     "dxy": [
       99.81,
