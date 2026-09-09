@@ -1,5 +1,5 @@
 {
-  "date": "September 09, 2026 11:40 UTC",
+  "date": "September 09, 2026 11:45 UTC",
   "assets": {
     "S&P 500": {
       "price": 7673.52,
@@ -89,20 +89,20 @@
       ]
     },
     "BTC": {
-      "price": 78993.2,
-      "change_pct": 0.74,
+      "price": 79029.4,
+      "change_pct": 0.79,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2493.0,
-      "change_pct": 0.77,
+      "price": 2493.48,
+      "change_pct": 0.8,
       "support": 1852.22,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 103.71,
-      "change_pct": 0.8,
+      "price": 103.77,
+      "change_pct": 0.85,
       "support": 74.0,
       "resistance": 110.6
     }
@@ -165,17 +165,17 @@
       "color": "green"
     },
     "oil": {
-      "value": "$95.42",
+      "value": "$95.51",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4450",
+      "value": "$4448",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$67.09",
+      "value": "$67.02",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -188,7 +188,7 @@
     },
     {
       "label": "BULLISH",
-      "text": "Gold up 1.3% \u2014 safe haven bid",
+      "text": "Gold up 1.2% \u2014 safe haven bid",
       "type": "bullish"
     },
     {
@@ -197,7 +197,7 @@
       "type": "caution"
     }
   ],
-  "btc_funding": 6.166e-05,
+  "btc_funding": 6.062e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
@@ -210,7 +210,7 @@
     "monthly_inflow": 897.95,
     "monthly_avg": 808.34,
     "monthly_pct": 11.1,
-    "large_tx_count": 582210
+    "large_tx_count": 584983
   },
   "history": {
     "vix": [
@@ -236,7 +236,7 @@
       14.53,
       15.3,
       15.72,
-      16.28
+      16.32
     ],
     "yield_10y": [
       4.7,
@@ -283,7 +283,7 @@
       91.3,
       91.48,
       93.03,
-      95.42
+      95.51
     ],
     "gold": [
       4361.8,
@@ -307,7 +307,7 @@
       4491.7,
       4429.8,
       4393.9,
-      4450.4
+      4448.0
     ],
     "silver": [
       65.11,
@@ -331,7 +331,7 @@
       66.97,
       66.05,
       66.3,
-      67.09
+      67.02
     ],
     "dxy": [
       99.81,
@@ -355,7 +355,7 @@
       99.0,
       99.16,
       98.84,
-      98.66
+      98.65
     ],
     "sp500": [
       7753.11,
@@ -406,6 +406,16 @@
   },
   "econ_events": [
     {
+      "label": "PRESIDENT TRUMP SPEAKS",
+      "date": "09-10-2026",
+      "time": "1:15am ET",
+      "forecast": "\u2014",
+      "previous": "\u2014",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
       "label": "CORE PPI M/M",
       "date": "09-10-2026",
       "time": "12:30pm ET",
@@ -441,16 +451,6 @@
       "time": "12:30pm ET",
       "forecast": "0.2%",
       "previous": "0.2%",
-      "actual": null,
-      "impact": "High",
-      "country": "USD"
-    },
-    {
-      "label": "CORE CPI Y/Y",
-      "date": "09-11-2026",
-      "time": "12:30pm ET",
-      "forecast": "2.4%",
-      "previous": "2.5%",
       "actual": null,
       "impact": "High",
       "country": "USD"
