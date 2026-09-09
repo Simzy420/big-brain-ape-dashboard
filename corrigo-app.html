@@ -158,27 +158,34 @@ body {
   font-size: 24px;
 }
 
-/* PHOTO UPLOAD */
-.photo-area {
-  border: 3px dashed var(--border);
-  border-radius: 16px;
-  padding: 30px;
-  text-align: center;
+/* PHOTO BUTTONS */
+.photo-buttons {
+  display: flex;
+  gap: 12px;
+}
+.photo-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg);
+  border: 3px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 12px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
+  font-family: inherit;
 }
-.photo-area:active {
+.photo-btn:active {
   border-color: var(--blue);
   background: rgba(0,153,255,0.1);
 }
-.photo-area-icon {
-  font-size: 48px;
-  margin-bottom: 8px;
-}
-.photo-area-text {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--muted);
+.photo-btn-icon {
+  font-size: 40px;
 }
 .photo-preview {
   width: 100%;
@@ -504,13 +511,20 @@ body {
     <!-- PHOTO -->
     <div class="card">
       <h2>📸 Job Photo</h2>
-      <div class="photo-area" onclick="document.getElementById('photoInput').click()">
-        <div class="photo-area-icon">📷</div>
-        <div class="photo-area-text">Tap to Take Photo<br>or Upload Picture</div>
-        <input type="file" id="photoInput" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(this)">
-        <img class="photo-preview" id="photoPreview">
-        <div class="photo-filename" id="photoFilename"></div>
+      <div class="photo-buttons">
+        <button class="photo-btn" onclick="document.getElementById('photoInputCamera').click()">
+          <span class="photo-btn-icon">📷</span>
+          <span>Take Photo</span>
+        </button>
+        <button class="photo-btn" onclick="document.getElementById('photoInputGallery').click()">
+          <span class="photo-btn-icon">🖼️</span>
+          <span>Choose from Photos</span>
+        </button>
       </div>
+      <input type="file" id="photoInputCamera" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(this)">
+      <input type="file" id="photoInputGallery" accept="image/*" style="display:none" onchange="handlePhoto(this)">
+      <img class="photo-preview" id="photoPreview">
+      <div class="photo-filename" id="photoFilename"></div>
     </div>
 
     <!-- PAYMENT -->
