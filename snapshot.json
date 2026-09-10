@@ -1,5 +1,5 @@
 {
-  "date": "September 10, 2026 06:45 UTC",
+  "date": "September 10, 2026 06:50 UTC",
   "assets": {
     "S&P 500": {
       "price": 7636.36,
@@ -92,20 +92,20 @@
       ]
     },
     "BTC": {
-      "price": 78188.5,
-      "change_pct": -1.22,
+      "price": 78444.1,
+      "change_pct": -0.84,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2475.0,
-      "change_pct": -0.99,
+      "price": 2481.82,
+      "change_pct": -0.66,
       "support": 1862.11,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 101.71,
-      "change_pct": -2.72,
+      "price": 102.0,
+      "change_pct": -2.42,
       "support": 74.0,
       "resistance": 110.6
     }
@@ -168,17 +168,17 @@
       "color": "green"
     },
     "oil": {
-      "value": "$95.52",
+      "value": "$95.48",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4458",
+      "value": "$4464",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$68.21",
+      "value": "$68.27",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -193,22 +193,27 @@
       "label": "CAUTION",
       "text": "Yields rising \u2014 risk off",
       "type": "caution"
+    },
+    {
+      "label": "BULLISH",
+      "text": "Gold up 1.1% \u2014 safe haven bid",
+      "type": "bullish"
     }
   ],
   "btc_funding": 0.0001,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 33.98,
-    "daily_avg": 29.0,
-    "daily_pct": 17.2,
-    "weekly_inflow": 203.01,
-    "weekly_avg": 213.0,
-    "weekly_pct": -4.7,
-    "monthly_inflow": 912.87,
-    "monthly_avg": 810.54,
+    "daily_inflow": 34.13,
+    "daily_avg": 29.02,
+    "daily_pct": 17.6,
+    "weekly_inflow": 203.16,
+    "weekly_avg": 213.04,
+    "weekly_pct": -4.6,
+    "monthly_inflow": 913.02,
+    "monthly_avg": 810.59,
     "monthly_pct": 12.6,
-    "large_tx_count": 644367
+    "large_tx_count": 647667
   },
   "history": {
     "vix": [
@@ -283,7 +288,7 @@
       91.48,
       93.03,
       96.05,
-      95.52
+      95.48
     ],
     "gold": [
       4361.8,
@@ -308,7 +313,7 @@
       4429.8,
       4393.9,
       4416.0,
-      4457.9
+      4463.5
     ],
     "silver": [
       65.11,
@@ -333,7 +338,7 @@
       66.05,
       66.3,
       67.94,
-      68.21
+      68.27
     ],
     "dxy": [
       99.81,
