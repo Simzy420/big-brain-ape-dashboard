@@ -197,6 +197,7 @@ document.getElementById('chatInput').addEventListener('keydown',function(e){
 pollChat();
 setInterval(pollChat,5000);
 var STORAGE_KEY='bba-task-done';
+var ALL_TASKS=[];
 
 function getDoneIds(){
   try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||[]}catch(e){return[]}
@@ -204,10 +205,23 @@ function getDoneIds(){
 function saveDoneIds(ids){
   try{localStorage.setItem(STORAGE_KEY,JSON.stringify(ids))}catch(e){}
 }
+function notifyTaskDone(task){
+  var msg='✅ Task completed: "'+task.title+'"';
+  if(task.subtitle)msg+=' — '+task.subtitle;
+  try{
+    fetch(CHAT_URL+'/send',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:msg,user:'Simzy'})}).then(function(){}).catch(function(){});
+  }catch(e){}
+}
 function toggleDone(id){
   var ids=getDoneIds();
-  if(ids.indexOf(id)>=0){ids=ids.filter(function(x){return x!==id})}
-  else{ids.push(id)}
+  var wasDone=ids.indexOf(id)>=0;
+  if(wasDone){ids=ids.filter(function(x){return x!==id})}
+  else{
+    ids.push(id);
+    var task=null;
+    for(var i=0;i<ALL_TASKS.length;i++){if(ALL_TASKS[i].id===id){task=ALL_TASKS[i];break}}
+    if(task)notifyTaskDone(task);
+  }
   saveDoneIds(ids);
   render();
 }
@@ -215,6 +229,7 @@ function toggleDone(id){
 function render(){
   fetch(TASKS_URL+'?t='+Date.now()).then(function(r){return r.json()}).then(function(data){
     var tasks=data.tasks||[];
+    ALL_TASKS=tasks;
     var doneIds=getDoneIds();
     var doneCount=0;
     var html='';
