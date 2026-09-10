@@ -1,5 +1,5 @@
 {
-  "date": "September 09, 2026 23:55 UTC",
+  "date": "September 10, 2026 00:00 UTC",
   "assets": {
     "S&P 500": {
       "price": 7636.36,
@@ -92,20 +92,20 @@
       ]
     },
     "BTC": {
-      "price": 78227.1,
-      "change_pct": -0.2,
+      "price": 78249.4,
+      "change_pct": -0.23,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2466.73,
-      "change_pct": -0.65,
-      "support": 1852.22,
+      "price": 2466.3,
+      "change_pct": -0.71,
+      "support": 1862.11,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 101.62,
-      "change_pct": -1.61,
+      "price": 101.46,
+      "change_pct": -1.81,
       "support": 74.0,
       "resistance": 110.6
     }
@@ -113,9 +113,13 @@
   "risk_score": 37,
   "risk_bias": "RISK-OFF",
   "fear_greed": {
-    "value": 66,
+    "value": 69,
     "classification": "Greed",
     "history": [
+      {
+        "value": 69,
+        "label": "Greed"
+      },
       {
         "value": 66,
         "label": "Greed"
@@ -138,10 +142,6 @@
       },
       {
         "value": 74,
-        "label": "Greed"
-      },
-      {
-        "value": 65,
         "label": "Greed"
       }
     ]
@@ -168,17 +168,17 @@
       "color": "green"
     },
     "oil": {
-      "value": "$97.17",
+      "value": "$97.14",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4438",
+      "value": "$4437",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$67.82",
+      "value": "$67.81",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -195,18 +195,18 @@
       "type": "caution"
     }
   ],
-  "btc_funding": 3.625e-05,
+  "btc_funding": 3.562e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 34.95,
-    "daily_avg": 29.84,
-    "daily_pct": 17.1,
-    "weekly_inflow": 208.88,
-    "weekly_avg": 209.76,
+    "daily_inflow": 34.99,
+    "daily_avg": 29.85,
+    "daily_pct": 17.2,
+    "weekly_inflow": 208.93,
+    "weekly_avg": 209.78,
     "weekly_pct": -0.4,
-    "monthly_inflow": 898.99,
-    "monthly_avg": 808.68,
+    "monthly_inflow": 899.04,
+    "monthly_avg": 808.7,
     "monthly_pct": 11.2,
     "large_tx_count": 758490
   },
@@ -282,7 +282,7 @@
       91.3,
       91.48,
       93.03,
-      97.17
+      97.14
     ],
     "gold": [
       4361.8,
@@ -306,7 +306,7 @@
       4491.7,
       4429.8,
       4393.9,
-      4437.8
+      4437.4
     ],
     "silver": [
       65.11,
@@ -330,7 +330,7 @@
       66.97,
       66.05,
       66.3,
-      67.82
+      67.81
     ],
     "dxy": [
       99.81,
@@ -354,7 +354,7 @@
       99.0,
       99.16,
       98.84,
-      98.75
+      98.76
     ],
     "sp500": [
       7753.11,
@@ -444,16 +444,6 @@
       "previous": "206K",
       "actual": null,
       "impact": "Medium",
-      "country": "USD"
-    },
-    {
-      "label": "CORE CPI M/M",
-      "date": "09-11-2026",
-      "time": "12:30pm ET",
-      "forecast": "0.2%",
-      "previous": "0.2%",
-      "actual": null,
-      "impact": "High",
       "country": "USD"
     }
   ]
