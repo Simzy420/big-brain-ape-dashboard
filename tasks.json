@@ -1,98 +1,144 @@
 {
   "tasks": [
     {
-      "id": "telegram-token",
+      "id": "merge-mascot-pr",
       "priority": "high",
-      "title": "Get Telegram Bot Token",
-      "subtitle": "Needed for the sniper bot to run",
+      "title": "Review & merge Big Brain Ape mascot PR",
+      "subtitle": "Puts your ape on the sniper site + Telegram assets",
       "steps": [
-        "Open Telegram and search for @BotFather",
-        "Send the message: /newbot",
-        "Pick a name for your bot (e.g. Big Brain Ape Sniper)",
-        "Pick a username ending in 'bot' (e.g. BigBrainApeSniper_bot)",
-        "BotFather will reply with a token that looks like 123456:ABC-DEF...",
-        "Copy that token and send it to me here in Telegram"
+        "Open the PR link below",
+        "Check the Screenshots / Files changed for the ape branding",
+        "If it looks good, click Merge pull request \u2192 Confirm",
+        "Tell Chief of Staff when merged (or leave a PR comment)"
       ],
       "links": [
-        {"label": "Open @BotFather", "url": "https://t.me/BotFather"}
+        {
+          "label": "Open PR #10",
+          "url": "https://github.com/Simzy420/telegram-memecoin-sniper-bot-/pull/10"
+        },
+        {
+          "label": "Repo",
+          "url": "https://github.com/Simzy420/telegram-memecoin-sniper-bot-"
+        }
       ]
     },
     {
-      "id": "sniper-name",
-      "priority": "high",
-      "title": "Pick a Name for the Sniper Bot",
-      "subtitle": "We can't build the website or finish the bot without a name",
+      "id": "gmail-identity-filters",
+      "priority": "medium",
+      "title": "Create Gmail filters for Identity labels",
+      "subtitle": "API scopes block us from creating filters \u2014 2 min in Gmail UI",
       "steps": [
-        "Think of a name for your memecoin sniper bot product",
-        "It's a Clawd Agents clone — 5 AI specialists, non-custodial, 2% fee on wins",
-        "Send me the name here in Telegram",
-        "Once I have the name I'll build the website, landing page, and finish the bot"
+        "Open Gmail Settings \u2192 Filters and Blocked Addresses (link below)",
+        "Create filter: To has caseylsims@gmail.com \u2192 Apply label Identity/Gmail",
+        "Create filter: To has caseysims463@yahoo.com \u2192 Apply label Identity/Yahoo",
+        "Optionally check 'Also apply to matching conversations'",
+        "Save both filters"
       ],
       "links": [
-        {"label": "See Clawd Agents for inspiration", "url": "https://clawdagents.trade"}
+        {
+          "label": "Gmail Filters",
+          "url": "https://mail.google.com/mail/u/0/#settings/filters"
+        }
+      ]
+    },
+    {
+      "id": "bitly-finish-signup",
+      "priority": "low",
+      "title": "Finish Bitly free signup (password step)",
+      "subtitle": "Only if you still want short links \u2014 signup was stuck on password",
+      "steps": [
+        "Open the Bitly signup link below (or bitly.com \u2192 Sign up)",
+        "Complete email + password",
+        "Verify email if asked",
+        "Tell Chief of Staff when done so we can connect the connector"
+      ],
+      "links": [
+        {
+          "label": "Bitly Sign Up",
+          "url": "https://bitly.com/a/sign_up"
+        }
       ]
     },
     {
       "id": "openai-key",
       "priority": "medium",
-      "title": "Get OpenAI API Key",
-      "subtitle": "Powers the Codex coding bot and GPT Image 2 generator",
+      "title": "Get OpenAI API Key (for AI specialist agents)",
+      "subtitle": "ClawdAgents-style team needs LLM calls for Scout/Analyst/etc.",
       "steps": [
-        "Go to the OpenAI API keys page (link below)",
+        "Go to OpenAI API keys (link below)",
         "Log in or create an account",
-        "Click 'Create new secret key'",
-        "Copy the key (starts with sk-proj-...)",
-        "Send the key to me here in Telegram",
-        "Note: You may need to add a few dollars of credit. New accounts sometimes get free credits."
+        "Click Create new secret key",
+        "Copy the key (starts with sk-...)",
+        "Send it here in chat (or store via secure secret request when asked) \u2014 do not paste into GitHub"
       ],
       "links": [
-        {"label": "OpenAI API Keys", "url": "https://platform.openai.com/api-keys"}
+        {
+          "label": "OpenAI API Keys",
+          "url": "https://platform.openai.com/api-keys"
+        }
       ]
     },
     {
-      "id": "reddit-banner",
-      "priority": "low",
-      "title": "Upload Reddit Banner",
-      "subtitle": "Your BAYC ape banner is ready to go",
+      "id": "confirm-sniper-product-name",
+      "priority": "high",
+      "title": "Confirm public product name",
+      "subtitle": "Site + Telegram will match ClawdAgents layout under YOUR name",
       "steps": [
-        "Log into Reddit with your @Big-Brain-Ape-Bot account",
-        "Go to your profile settings",
-        "Upload the banner image (I'll send it to you here if you need it)",
-        "Save and you're done"
+        "Decide the public name users see (suggestion: Big Brain Ape)",
+        "Confirm Telegram username stays @Big_Brain_Ape_Bot or name a new one",
+        "Reply in chat with: product name + preferred @username",
+        "Reference for vibe (not the name): clawdagents.trade and t.me/BigBrain2Bot"
       ],
       "links": [
-        {"label": "Reddit Profile Settings", "url": "https://www.reddit.com/settings/"}
+        {
+          "label": "ClawdAgents reference",
+          "url": "https://clawdagents.trade/"
+        },
+        {
+          "label": "BigBrain2Bot team vibe",
+          "url": "https://t.me/BigBrain2Bot"
+        },
+        {
+          "label": "Your bot now",
+          "url": "https://t.me/Big_Brain_Ape_Bot"
+        }
       ]
     },
     {
       "id": "github-rename",
       "priority": "low",
-      "title": "Rename GitHub Account",
+      "title": "Rename GitHub Account (optional)",
       "subtitle": "Change Simzy420 to Big-Brain-Ape for a clean brand",
       "steps": [
         "Go to GitHub Settings (link below)",
-        "Click 'Change username' (you can only do this once every 30 days)",
-        "Type: Big-Brain-Ape (confirmed available)",
-        "Confirm the rename — all repos, stars, and followers move automatically",
-        "Tell me when done — I'll update all links, the showcase PR, and X bio"
+        "Click Change username (once every 30 days)",
+        "Type: Big-Brain-Ape (check availability first)",
+        "Confirm \u2014 repos/stars/followers move automatically",
+        "Tell Chief of Staff when done so links get updated"
       ],
       "links": [
-        {"label": "GitHub Account Settings", "url": "https://github.com/settings/admin"}
+        {
+          "label": "GitHub Account Settings",
+          "url": "https://github.com/settings/admin"
+        }
       ]
     },
     {
       "id": "virtuals-review",
       "priority": "low",
       "title": "Submit Virtuals Builder Review",
-      "subtitle": "Unlock Elite tier — $2000/week compute credits (5 min form)",
+      "subtitle": "Unlock Elite tier \u2014 compute credits (5 min form)",
       "steps": [
-        "Open the Virtuals Builder Review form (link below)",
-        "Fill in your project details (Big Brain Ape trading agent)",
-        "Submit the form",
-        "Tell me when done so I can track the status"
+        "Open the Virtuals Builder Review form",
+        "Fill in Big Brain Ape project details",
+        "Submit",
+        "Tell Chief of Staff when done"
       ],
       "links": [
-        {"label": "Virtuals Builder Review Form", "url": "https://virtualsprotocol.typeform.com/to/BwtdGEAL"}
+        {
+          "label": "Virtuals Builder Review Form",
+          "url": "https://virtualsprotocol.typeform.com/to/BwtdGEAL"
+        }
       ]
     }
   ]
