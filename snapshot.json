@@ -1,9 +1,9 @@
 {
-  "date": "September 10, 2026 17:35 UTC",
+  "date": "September 10, 2026 17:40 UTC",
   "assets": {
     "S&P 500": {
-      "price": 7599.59,
-      "change_pct": -0.48,
+      "price": 7594.42,
+      "change_pct": -0.55,
       "support": 7580.06,
       "resistance": 7816.7,
       "history": [
@@ -29,12 +29,12 @@
         7718.6,
         7673.52,
         7636.36,
-        7599.59
+        7594.42
       ]
     },
     "NASDAQ": {
-      "price": 26140.57,
-      "change_pct": -0.43,
+      "price": 26118.44,
+      "change_pct": -0.51,
       "support": 25910.82,
       "resistance": 26875.52,
       "history": [
@@ -60,12 +60,12 @@
         26506.99,
         26421.41,
         26253.34,
-        26140.57
+        26118.44
       ]
     },
     "Dow Jones": {
-      "price": 52060.44,
-      "change_pct": -0.61,
+      "price": 52036.0,
+      "change_pct": -0.66,
       "support": 52006.96,
       "resistance": 54222.85,
       "history": [
@@ -91,30 +91,30 @@
         53414.25,
         52786.07,
         52380.66,
-        52060.44
+        52036.0
       ]
     },
     "BTC": {
-      "price": 77439.4,
-      "change_pct": -1.69,
+      "price": 77296.4,
+      "change_pct": -1.78,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2468.33,
-      "change_pct": -1.0,
+      "price": 2462.51,
+      "change_pct": -1.14,
       "support": 1862.11,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 100.24,
-      "change_pct": -3.12,
+      "price": 99.91,
+      "change_pct": -3.36,
       "support": 74.0,
       "resistance": 110.6
     }
   },
-  "risk_score": 37,
-  "risk_bias": "RISK-OFF",
+  "risk_score": 29,
+  "risk_bias": "STRONG RISK-OFF",
   "fear_greed": {
     "value": 69,
     "classification": "Greed",
@@ -156,7 +156,7 @@
   "whale_flow": "NEUTRAL",
   "metrics": {
     "vix": {
-      "value": "17.3",
+      "value": "17.4",
       "label": "VIX",
       "color": "green"
     },
@@ -171,17 +171,17 @@
       "color": "red"
     },
     "oil": {
-      "value": "$101.81",
+      "value": "$101.93",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4405",
+      "value": "$4407",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$64.89",
+      "value": "$64.93",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -189,7 +189,12 @@
   "signals": [
     {
       "label": "CAUTION",
-      "text": "S&P 500 down -0.5%",
+      "text": "Dollar strengthening \u2014 headwind",
+      "type": "caution"
+    },
+    {
+      "label": "CAUTION",
+      "text": "S&P 500 down -0.6%",
       "type": "caution"
     },
     {
@@ -199,24 +204,24 @@
     },
     {
       "label": "CAUTION",
-      "text": "NVDA down -2.3% \u2014 watch AI sector",
+      "text": "NVDA down -2.4% \u2014 watch AI sector",
       "type": "caution"
     }
   ],
-  "btc_funding": 6.079e-05,
+  "btc_funding": 5.903e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 32.51,
-    "daily_avg": 28.79,
-    "daily_pct": 12.9,
-    "weekly_inflow": 201.53,
-    "weekly_avg": 212.66,
+    "daily_inflow": 32.68,
+    "daily_avg": 28.81,
+    "daily_pct": 13.4,
+    "weekly_inflow": 201.7,
+    "weekly_avg": 212.7,
     "weekly_pct": -5.2,
-    "monthly_inflow": 911.4,
-    "monthly_avg": 810.05,
+    "monthly_inflow": 911.57,
+    "monthly_avg": 810.11,
     "monthly_pct": 12.5,
-    "large_tx_count": 678831
+    "large_tx_count": 684338
   },
   "history": {
     "vix": [
@@ -243,7 +248,7 @@
       15.3,
       15.72,
       16.46,
-      17.32
+      17.44
     ],
     "yield_10y": [
       4.7,
@@ -293,7 +298,7 @@
       91.48,
       93.03,
       96.05,
-      101.81
+      101.93
     ],
     "gold": [
       4361.8,
@@ -318,7 +323,7 @@
       4429.8,
       4393.9,
       4416.0,
-      4404.8
+      4407.0
     ],
     "silver": [
       65.11,
@@ -343,7 +348,7 @@
       66.05,
       66.3,
       67.94,
-      64.89
+      64.93
     ],
     "dxy": [
       99.81,
@@ -393,7 +398,7 @@
       7718.6,
       7673.52,
       7636.36,
-      7599.59
+      7594.42
     ],
     "nasdaq": [
       26605.36,
@@ -418,7 +423,7 @@
       26506.99,
       26421.41,
       26253.34,
-      26140.57
+      26118.44
     ]
   },
   "econ_events": [
