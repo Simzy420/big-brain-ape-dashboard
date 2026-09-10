@@ -1,5 +1,5 @@
 {
-  "date": "September 10, 2026 00:20 UTC",
+  "date": "September 10, 2026 00:25 UTC",
   "assets": {
     "S&P 500": {
       "price": 7636.36,
@@ -92,20 +92,20 @@
       ]
     },
     "BTC": {
-      "price": 78222.2,
-      "change_pct": -0.57,
+      "price": 78216.0,
+      "change_pct": -0.53,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2465.54,
-      "change_pct": -1.07,
+      "price": 2465.49,
+      "change_pct": -1.02,
       "support": 1862.11,
       "resistance": 2566.4
     },
     "SOL": {
-      "price": 101.28,
-      "change_pct": -2.27,
+      "price": 101.25,
+      "change_pct": -2.31,
       "support": 74.0,
       "resistance": 110.6
     }
@@ -168,17 +168,17 @@
       "color": "green"
     },
     "oil": {
-      "value": "$96.82",
+      "value": "$96.74",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4438",
+      "value": "$4440",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$67.90",
+      "value": "$67.92",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -193,22 +193,27 @@
       "label": "CAUTION",
       "text": "Yields rising \u2014 risk off",
       "type": "caution"
+    },
+    {
+      "label": "BULLISH",
+      "text": "Gold up 1.0% \u2014 safe haven bid",
+      "type": "bullish"
     }
   ],
-  "btc_funding": 3.275e-05,
+  "btc_funding": 3.215e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
     "daily_inflow": 35.08,
     "daily_avg": 29.16,
     "daily_pct": 20.3,
-    "weekly_inflow": 204.1,
+    "weekly_inflow": 204.11,
     "weekly_avg": 213.26,
     "weekly_pct": -4.3,
     "monthly_inflow": 913.97,
     "monthly_avg": 810.9,
     "monthly_pct": 12.7,
-    "large_tx_count": 758534
+    "large_tx_count": 762558
   },
   "history": {
     "vix": [
@@ -282,7 +287,7 @@
       91.3,
       91.48,
       93.03,
-      96.82
+      96.74
     ],
     "gold": [
       4361.8,
@@ -306,7 +311,7 @@
       4491.7,
       4429.8,
       4393.9,
-      4437.9
+      4439.6
     ],
     "silver": [
       65.11,
@@ -330,7 +335,7 @@
       66.97,
       66.05,
       66.3,
-      67.9
+      67.92
     ],
     "dxy": [
       99.81,
@@ -354,7 +359,7 @@
       99.0,
       99.16,
       98.84,
-      98.79
+      98.78
     ],
     "sp500": [
       7753.11,
