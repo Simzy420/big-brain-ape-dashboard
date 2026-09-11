@@ -251,6 +251,31 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
 .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
 .sr-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+/* CHAT BOX */
+.bba-chat-fab{position:fixed;bottom:20px;right:20px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#58a6ff,#3fb950);border:none;color:#0d1117;font-size:24px;font-weight:700;cursor:pointer;z-index:9999;box-shadow:0 4px 20px rgba(88,166,255,0.4);display:flex;align-items:center;justify-content:center;transition:transform .2s}
+.bba-chat-fab:active{transform:scale(.9)}
+.bba-chat-panel{position:fixed;bottom:0;right:0;left:0;max-width:500px;margin:0 auto;height:70vh;background:var(--bg);border-top:2px solid var(--border);border-radius:16px 16px 0 0;z-index:9999;display:none;flex-direction:column;box-shadow:0 -4px 30px rgba(0,0,0,0.5)}
+.bba-chat-panel.open{display:flex}
+.bba-chat-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
+.bba-chat-header h3{font-size:17px;font-weight:700;color:var(--blue)}
+.bba-chat-close{background:var(--card);border:1px solid var(--border);color:var(--text2);font-size:18px;width:32px;height:32px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.bba-chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;-webkit-overflow-scrolling:touch}
+.bba-chat-bubble{max-width:85%;padding:10px 14px;border-radius:14px;font-size:15px;line-height:1.5;word-wrap:break-word}
+.bba-chat-bubble.user{align-self:flex-end;background:linear-gradient(135deg,#58a6ff,#3fb950);color:#0d1117;border-radius:14px 14px 4px 14px}
+.bba-chat-bubble.ape{align-self:flex-start;background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:14px 14px 14px 4px}
+.bba-chat-bubble.thinking{align-self:flex-start;background:var(--card);border:1px solid var(--border);color:var(--text2);font-style:italic}
+.bba-chat-bubble.error{align-self:flex-start;background:rgba(248,81,73,0.15);border:1px solid var(--red);color:var(--red)}
+.bba-chat-typing{display:inline-block;animation:bba-bounce 1.4s infinite ease-in-out}
+.bba-chat-typing:nth-child(2){animation-delay:.2s}
+.bba-chat-typing:nth-child(3){animation-delay:.4s}
+@keyframes bba-bounce{0%,80%,100%{transform:scale(0)}40%{transform:scale(1)}}
+.bba-chat-input-row{display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--border);background:var(--bg)}
+.bba-chat-input{flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-size:16px;font-family:inherit;outline:none}
+.bba-chat-input:focus{border-color:var(--blue)}
+.bba-chat-send{background:linear-gradient(135deg,#58a6ff,#3fb950);border:none;color:#0d1117;font-size:15px;font-weight:700;padding:12px 18px;border-radius:10px;cursor:pointer;white-space:nowrap;transition:opacity .2s}
+.bba-chat-send:disabled{opacity:.4}
+.bba-chat-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:9998;display:none}
+.bba-chat-overlay.open{display:block}
 </style>
 </head>
 <body>
@@ -4083,6 +4108,131 @@ function computeSentiment(){
   el.innerHTML=h;
 }
 } // end loadCrypto
+
+// ============ CHAT BOX ============
+var bbaChatSecret='bba-chat-2026';
+var bbaChatURL='https://simzy-bba-chat.hf.space';
+var bbaChatPollTimer=null;
+var bbaChatMsgId=null;
+
+function bbaChatToggle(){
+  var panel=document.getElementById('bbaChatPanel');
+  var overlay=document.getElementById('bbaChatOverlay');
+  if(panel.classList.contains('open')){
+    panel.classList.remove('open');overlay.classList.remove('open');
+    if(bbaChatPollTimer){clearInterval(bbaChatPollTimer);bbaChatPollTimer=null;}
+  }else{
+    panel.classList.add('open');overlay.classList.add('open');
+    setTimeout(function(){document.getElementById('bbaChatInput').focus();},300);
+  }
+}
+
+function bbaChatAddBubble(text,cls){
+  var msgs=document.getElementById('bbaChatMessages');
+  var d=document.createElement('div');
+  d.className='bba-chat-bubble '+cls;
+  d.innerHTML=text;
+  msgs.appendChild(d);
+  msgs.scrollTop=msgs.scrollHeight;
+  return d;
+}
+
+function bbaChatSend(){
+  var input=document.getElementById('bbaChatInput');
+  var text=input.value.trim();
+  if(!text)return;
+  input.value='';
+  document.getElementById('bbaChatSend').disabled=true;
+  bbaChatAddBubble(text.replace(/</g,'&lt;'),'user');
+  
+  // Thinking indicator
+  var think=bbaChatAddBubble('<span class="bba-chat-typing">●</span><span class="bba-chat-typing">●</span><span class="bba-chat-typing">●</span>','thinking');
+  
+  // Send to backend
+  fetch(bbaChatURL+'/message',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({text:text,secret:bbaChatSecret,source:'analysis-app'})
+  }).then(function(r){
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    return r.json();
+  }).then(function(data){
+    bbaChatMsgId=data.id||null;
+    // Start polling for response
+    bbaChatPollTimer=setInterval(function(){bbaChatPoll(think);},10000);
+    // Also poll immediately
+    setTimeout(function(){bbaChatPoll(think);},3000);
+  }).catch(function(err){
+    think.remove();
+    bbaChatAddBubble('The Ape is sleeping. Try again later.','error');
+    document.getElementById('bbaChatSend').disabled=false;
+  });
+}
+
+function bbaChatPoll(thinkEl){
+  fetch(bbaChatURL+'/pending?secret='+bbaChatSecret,{method:'GET'})
+  .then(function(r){return r.json();})
+  .then(function(data){
+    var msgs=data.pending||[];
+    // Find our message with a response
+    for(var i=0;i<msgs.length;i++){
+      var m=msgs[i];
+      if(m.response&&m.response.length>0){
+        // Check if this is a response to our message
+        if(!bbaChatMsgId||m.id===bbaChatMsgId||m.source==='analysis-app'){
+          if(thinkEl)thinkEl.remove();
+          bbaChatAddBubble(m.response.replace(/</g,'&lt;').replace(/\n/g,'<br>'),'ape');
+          if(bbaChatPollTimer){clearInterval(bbaChatPollTimer);bbaChatPollTimer=null;}
+          document.getElementById('bbaChatSend').disabled=false;
+          bbaChatMsgId=null;
+          break;
+        }
+      }
+    }
+  }).catch(function(){});
+}
+
+// Enter key sends
+document.addEventListener('DOMContentLoaded',function(){
+  var input=document.getElementById('bbaChatInput');
+  if(input){
+    input.addEventListener('keydown',function(e){
+      if(e.key==='Enter'){e.preventDefault();bbaChatSend();}
+    });
+  }
+  // Stop polling after 3 minutes max
+  setInterval(function(){
+    if(bbaChatPollTimer){
+      var msgs=document.getElementById('bbaChatMessages');
+      var thinking=msgs.querySelector('.bba-chat-bubble.thinking');
+      if(thinking){
+        // Check if thinking bubble has been there too long
+        // Reset after 3 min by checking if send button still disabled
+        if(document.getElementById('bbaChatSend').disabled){
+          // Keep polling - Hermes responds within 2 min usually
+        }
+      }
+    }
+  },60000);
+});
 </script>
+
+<!-- Chat Box UI -->
+<div class="bba-chat-overlay" id="bbaChatOverlay" onclick="bbaChatToggle()"></div>
+<div class="bba-chat-panel" id="bbaChatPanel">
+  <div class="bba-chat-header">
+    <h3>💬 Ask the Ape</h3>
+    <button class="bba-chat-close" onclick="bbaChatToggle()">✕</button>
+  </div>
+  <div class="bba-chat-messages" id="bbaChatMessages">
+    <div class="bba-chat-bubble ape">Hey! I'm Big Brain Ape. Ask me anything about stocks, crypto, or the market. I'll get back to you in a minute or two. 🦍</div>
+  </div>
+  <div class="bba-chat-input-row">
+    <input type="text" class="bba-chat-input" id="bbaChatInput" placeholder="Ask about any stock or crypto..." autocomplete="off">
+    <button class="bba-chat-send" id="bbaChatSend" onclick="bbaChatSend()">Send</button>
+  </div>
+</div>
+<button class="bba-chat-fab" onclick="bbaChatToggle()">💬</button>
+
 </body>
 </html>
