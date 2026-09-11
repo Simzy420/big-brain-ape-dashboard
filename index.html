@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Big Brain Ape — Autonomous AI Trading Agent</title>
-  <meta name="description" content="Don't chase the market. Let the Ape hunt the signal. Big Brain Ape is an autonomous AI trading agent for Hyperliquid perpetuals across 98 assets. If it doesn't make money, it's free.">
+  <meta name="description" content="Don't chase the market. Let the Ape hunt the signal. Big Brain Ape is an autonomous AI trading agent for Hyperliquid perpetuals across 98 assets. Free analysis. Hire the Ape for $19.99/mo.">
   <meta property="og:title" content="Big Brain Ape — Autonomous AI Trading Agent">
-  <meta property="og:description" content="98 assets. One AI brain. Druckenmiller-style macro strategy. If it doesn't make money, it's free.">
+  <meta property="og:description" content="98 assets. One AI brain. Druckenmiller-style macro strategy. Free analysis. Hire the Ape for $19.99/mo.">
   <meta property="og:image" content="https://simzy420.github.io/big-brain-ape-dashboard/mascot_transparent.png">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Big Brain Ape — Autonomous AI Trading Agent">
-  <meta name="twitter:description" content="98 assets. One AI brain. If it doesn't make money, it's free.">
+  <meta name="twitter:description" content="98 assets. One AI brain. Free analysis. Hire the Ape for $19.99/mo.">
   <meta name="twitter:image" content="https://simzy420.github.io/big-brain-ape-dashboard/mascot_transparent.png">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -105,12 +105,6 @@
       font-size: 14px;
       color: var(--neon2);
     }
-    .hero .beta-badge {
-      display: block;
-      margin-top: 8px;
-      font-size: 13px;
-      color: var(--orange);
-    }
     .margin-highlight {
       background: linear-gradient(135deg, rgba(0,217,255,0.15), rgba(0,255,136,0.15));
       border: 2px solid var(--neon2);
@@ -151,26 +145,39 @@
       color: var(--text);
     }
 
-    /* SOCIAL PROOF STATS */
-    .stats {
+    /* WHAT I TRADE - asset grid */
+    .asset-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 16px;
     }
-    .stat-card {
+    .asset-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 24px;
       text-align: center;
     }
-    .stat-number {
+    .asset-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+    .asset-name {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .asset-count {
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .asset-card .stat-number {
       font-size: 36px;
       font-weight: 800;
       color: var(--neon);
       margin-bottom: 4px;
     }
-    .stat-label {
+    .asset-card .stat-label {
       font-size: 14px;
       color: var(--muted);
     }
@@ -274,13 +281,6 @@
       content: "✓ ";
       color: var(--neon2);
     }
-    .price-discount {
-      font-size: 13px;
-      color: var(--orange);
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1px solid var(--border);
-    }
 
     /* CTA SECTION */
     .cta-section {
@@ -316,7 +316,7 @@
       .hero .tagline { font-size: 16px; }
       .hero .explainer { font-size: 15px; }
       .cta-btn { padding: 16px 36px; font-size: 16px; }
-      .stats { grid-template-columns: 1fr; }
+      .asset-grid { grid-template-columns: 1fr; }
       .section h2 { font-size: 22px; }
       .section { padding: 40px 16px; }
     }
@@ -336,63 +336,49 @@
     For every $1 you invest, Big Brain Ape invests $5. You keep 100% of the profits. 0% interest and no borrowing fees.
   </div>
   <a href="https://simzy420.github.io/big-brain-ape-dashboard/app35.html" class="cta-btn">Get Free Analysis</a>
-  <span class="free-badge">5 free analyses per day. No card needed.</span>
-  <span class="beta-badge">🧪 BETA — Be an early tester. Find bugs, help us build it better.</span>
+  <span class="free-badge">100% free. No card needed. No limit.</span>
   <div class="scroll-hint">↓</div>
 </section>
 
-<!-- ============ SOCIAL PROOF ============ -->
+<!-- ============ WHAT I TRADE ============ -->
 <section class="section">
-  <h2>Why Trust the Ape?</h2>
-  <div class="stats">
-    <div class="stat-card">
-      <div class="stat-number">98</div>
-      <div class="stat-label">Assets Traded</div>
+  <h2>What I Trade</h2>
+  <div class="asset-grid">
+    <div class="asset-card">
+      <div class="asset-icon">₿</div>
+      <div class="asset-name">Crypto Perps</div>
+      <div class="asset-count">BTC, ETH, SOL, DOGE + 60 more</div>
     </div>
-    <div class="stat-card">
+    <div class="asset-card">
+      <div class="asset-icon">📈</div>
+      <div class="asset-name">Stock Perps</div>
+      <div class="asset-count">NVDA, TSLA, AAPL, META + 25 more</div>
+    </div>
+    <div class="asset-card">
+      <div class="asset-icon">🥇</div>
+      <div class="asset-name">Commodities</div>
+      <div class="asset-count">Gold, Silver, Oil, Copper, Uranium</div>
+    </div>
+    <div class="asset-card">
+      <div class="asset-icon">💱</div>
+      <div class="asset-name">Currencies & Indices</div>
+      <div class="asset-count">EUR, JPY, DXY, S&P 500, Nikkei 225</div>
+    </div>
+    <div class="asset-card">
+      <div class="stat-number">98</div>
+      <div class="stat-label">Total Assets</div>
+    </div>
+    <div class="asset-card">
       <div class="stat-number">24/7</div>
       <div class="stat-label">Always Trading</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-number">+6.4%</div>
-      <div class="stat-label">Backtest Return (6mo)</div>
-    </div>
-    <div class="stat-card">
+    <div class="asset-card">
       <div class="stat-number">5x</div>
       <div class="stat-label">Max Leverage</div>
     </div>
-    <div class="stat-card">
+    <div class="asset-card">
       <div class="stat-number">$0</div>
       <div class="stat-label">Cost to Start</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">3-5x</div>
-      <div class="stat-label">Lev. Used in Practice</div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ BETA TESTER SECTION ============ -->
-<section class="section">
-  <h2>🧪 Be a Beta Tester</h2>
-  <div class="step" style="border-color: var(--orange);">
-    <div class="step-content">
-      <h3>We're in beta. We need your help.</h3>
-      <p style="margin-bottom:16px;">Big Brain Ape is live and working, but it's still early. We're looking for beta testers to try it out, push it to its limits, and tell us what breaks.</p>
-      <ul class="price-features" style="margin-bottom:16px;">
-        <li>Type any stock ticker (NVDA, AAPL, TSLA, MSFT, etc.)</li>
-        <li>Type any crypto ticker (BTC, ETH, SOL, DOGE, etc.)</li>
-        <li>Check the support and resistance levels — are they accurate?</li>
-        <li>Look at the analyst ratings — do they match what you see elsewhere?</li>
-        <li>Try it on your phone — does everything load and display right?</li>
-        <li>Find anything broken, missing, or confusing? Tell us.</li>
-      </ul>
-      <p style="color: var(--text); font-size:15px;">Found a bug? Have feedback? Report it here:</p>
-      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:12px;">
-        <a href="https://t.me/BigBrain2Bot" class="cta-btn" style="font-size:14px; padding:12px 24px;">Report via Telegram</a>
-        <a href="https://github.com/Simzy420/big-brain-ape-dashboard/issues/new" class="cta-btn" style="font-size:14px; padding:12px 24px; background: var(--card); color: var(--neon); border: 1px solid var(--neon);">Report on GitHub</a>
-      </div>
-      <p style="margin-top:12px; font-size:13px; color: var(--muted);">Beta testers get the first 1,000 $BIGBRAIN tokens airdropped when the token launches. Early users, bug reporters, and active testers get priority.</p>
     </div>
   </div>
 </section>
@@ -405,7 +391,7 @@
       <div class="step-num">1</div>
       <div class="step-content">
         <h3>Get Free Analysis</h3>
-        <p>Open the app. Type any stock or crypto ticker. Get an instant analysis — support, resistance, analyst ratings, earnings, macro context. 5 free per day, no signup.</p>
+        <p>Open the app. Type any stock or crypto ticker. Get an instant analysis — support, resistance, analyst ratings, earnings, macro context. 100% free, no signup, no limit.</p>
       </div>
     </div>
     <div class="step">
@@ -432,8 +418,8 @@
 
     <div class="price-card">
       <div class="price-name">Free Analysis</div>
-      <div class="price-amount">$0<small> / 5 per day</small></div>
-      <div class="price-desc">5 free analyses every day. Type any ticker in the app.</div>
+      <div class="price-amount">$0<small> / unlimited</small></div>
+      <div class="price-desc">Free stock and crypto analysis. No limit. No card needed.</div>
       <ul class="price-features">
         <li>Stock or crypto analysis</li>
         <li>Support & resistance levels</li>
@@ -444,44 +430,24 @@
       <a href="https://simzy420.github.io/big-brain-ape-dashboard/app35.html" class="cta-btn" style="font-size:14px; padding:12px 28px; margin-top:16px;">Start Free</a>
     </div>
 
-    <div class="price-card popular">
-      <div class="badge">Most Popular</div>
-      <div class="price-name">Single Analysis</div>
-      <div class="price-amount">$0.25<small> / per analysis</small></div>
-      <div class="price-desc">After your free one. Pay per analysis or subscribe.</div>
-      <ul class="price-features">
-        <li>Everything in Free</li>
-        <li>Any stock or crypto ticker</li>
-        <li>Full dashboard access</li>
-        <li>Real-time data</li>
-      </ul>
-      <div class="price-discount">
-        💎 Hold 1,000 $BIGBRAIN tokens? Get unlimited analyses (40% off vs USDC)
-      </div>
-      <a href="https://simzy420.github.io/big-brain-ape-dashboard/app35.html" class="cta-btn" style="font-size:14px; padding:12px 28px; margin-top:16px;">Get Analysis</a>
-    </div>
-
     <div class="price-card">
-      <div class="price-name">Portfolio Review</div>
-      <div class="price-amount">$0.50<small> / full review</small></div>
-      <div class="price-desc">Full analysis for every asset you own. One price, your whole portfolio.</div>
+      <div class="price-name">Telegram Sniper Bot</div>
+      <div class="price-amount">2%<small> of winnings</small></div>
+      <div class="price-desc">Hire the sniper bot to catch new token launches. Free if you don't profit — you only pay when you win.</div>
       <ul class="price-features">
-        <li>Analysis for every holding</li>
-        <li>Macro risk assessment</li>
-        <li>Position sizing review</li>
-        <li>Correlation analysis</li>
+        <li>Snipes new token launches automatically</li>
+        <li>2% of profits only — zero upfront cost</li>
+        <li>Free if you don't make money</li>
+        <li>Runs on Telegram, 24/7</li>
       </ul>
-      <div class="price-discount">
-        💎 Hold 5,000 $BIGBRAIN tokens? Portfolio reviews included
-      </div>
-      <a href="https://simzy420.github.io/big-brain-ape-dashboard/app35.html" class="cta-btn" style="font-size:14px; padding:12px 28px; margin-top:16px;">Review My Portfolio</a>
+      <a href="https://t.me/BigBrain2Bot" class="cta-btn" style="font-size:14px; padding:12px 28px; margin-top:16px;">Hire the Sniper</a>
     </div>
 
     <div class="price-card popular">
       <div class="badge">Most Popular</div>
       <div class="price-name">Hire the Ape</div>
       <div class="price-amount">$19.99<small> / month</small></div>
-      <div class="price-desc">Big Brain Ape trades for you. 100% autonomous. Cancel anytime.</div>
+      <div class="price-desc">Big Brain Ape trades perps for you on Hyperliquid. 100% autonomous. Cancel anytime.</div>
       <ul class="price-features">
         <li>For every $1 you put in, the Ape invests $5</li>
         <li>0% interest, no borrowing fees</li>
@@ -491,9 +457,6 @@
         <li>Full dashboard access included</li>
         <li>Cancel anytime</li>
       </ul>
-      <div class="price-discount">
-        💎 Hold 10,000 $BIGBRAIN tokens? Get 5% off
-      </div>
       <a href="https://t.me/BigBrain2Bot" class="cta-btn" style="font-size:14px; padding:12px 28px; margin-top:16px;">Hire the Ape — $19.99/mo</a>
     </div>
 
@@ -504,7 +467,32 @@
 <section class="cta-section">
   <h2>Stop Watching Charts.</h2>
   <p>Let the Ape do the work. Get your free analysis in 30 seconds.</p>
-  <a href="https://simzy420.github.io/big-brain-ape-dashboard/app35.html" class="cta-btn">Try the Beta — Free</a>
+  <a href="https://simzy420.github.io/big-brain-ape-dashboard/app35.html" class="cta-btn">Get Free Analysis</a>
+</section>
+
+<!-- ============ BETA TESTER SECTION (moved to bottom) ============ -->
+<section class="section" style="padding-top:40px;">
+  <h2>🧪 Be a Beta Tester</h2>
+  <div class="step" style="border-color: var(--orange);">
+    <div class="step-content">
+      <h3>We're in beta. We need your help.</h3>
+      <p style="margin-bottom:16px;">Big Brain Ape is live and working, but it's still early. We're looking for beta testers to try it out, push it to its limits, and tell us what breaks.</p>
+      <ul class="price-features" style="margin-bottom:16px;">
+        <li>Type any stock ticker (NVDA, AAPL, TSLA, MSFT, etc.)</li>
+        <li>Type any crypto ticker (BTC, ETH, SOL, DOGE, etc.)</li>
+        <li>Check the support and resistance levels — are they accurate?</li>
+        <li>Look at the analyst ratings — do they match what you see elsewhere?</li>
+        <li>Try it on your phone — does everything load and display right?</li>
+        <li>Find anything broken, missing, or confusing? Tell us.</li>
+      </ul>
+      <p style="color: var(--text); font-size:15px;">Found a bug? Have feedback? Report it here:</p>
+      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:12px;">
+        <a href="https://t.me/BigBrain2Bot" class="cta-btn" style="font-size:14px; padding:12px 24px;">Report via Telegram</a>
+        <a href="https://github.com/Simzy420/big-brain-ape-dashboard/issues/new" class="cta-btn" style="font-size:14px; padding:12px 24px; background: var(--card); color: var(--neon); border: 1px solid var(--neon);">Report on GitHub</a>
+      </div>
+      <p style="margin-top:12px; font-size:13px; color: var(--muted);">Beta testers get the first 1,000 $BIGBRAIN tokens airdropped when the token launches. Early users, bug reporters, and active testers get priority.</p>
+    </div>
+  </div>
 </section>
 
 <!-- ============ FOOTER ============ -->
