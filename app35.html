@@ -4149,10 +4149,10 @@ function bbaChatSend(){
   var think=bbaChatAddBubble('<span class="bba-chat-typing">●</span><span class="bba-chat-typing">●</span><span class="bba-chat-typing">●</span>','thinking');
   
   // Send to backend
-  fetch(bbaChatURL+'/message',{
+  fetch(bbaChatURL+'/send',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({text:text,secret:bbaChatSecret,source:'analysis-app'})
+    body:JSON.stringify({text:text,secret:bba-chat-2026,source:'analysis-app'})
   }).then(function(r){
     if(!r.ok)throw new Error('HTTP '+r.status);
     return r.json();
