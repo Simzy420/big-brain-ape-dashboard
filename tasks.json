@@ -60,25 +60,6 @@
       ]
     },
     {
-      "id": "openai-key",
-      "priority": "medium",
-      "title": "Get OpenAI API Key (for AI specialist agents)",
-      "subtitle": "ClawdAgents-style team needs LLM calls for Scout/Analyst/etc.",
-      "steps": [
-        "Go to OpenAI API keys (link below)",
-        "Log in or create an account",
-        "Click Create new secret key",
-        "Copy the key (starts with sk-...)",
-        "Send it here in chat (or store via secure secret request when asked) \u2014 do not paste into GitHub"
-      ],
-      "links": [
-        {
-          "label": "OpenAI API Keys",
-          "url": "https://platform.openai.com/api-keys"
-        }
-      ]
-    },
-    {
       "id": "github-rename",
       "priority": "low",
       "title": "Rename GitHub Account (optional)",
@@ -130,6 +111,27 @@
         {
           "label": "Open Postiz",
           "url": "https://platform.postiz.com/auth/login"
+        }
+      ]
+    },
+    {
+      "id": "rpc-keys-helius-alchemy",
+      "priority": "low",
+      "title": "Optional: Helius + Alchemy RPC keys",
+      "subtitle": "Only before real-money trading \u2014 public RPCs fine for early tests",
+      "steps": [
+        "Create a free Helius account and copy a Solana RPC URL/API key",
+        "Create a free Alchemy account and copy an EVM app key (ETH/Base/BNB)",
+        "Tell Chief of Staff you\u2019re ready \u2014 they\u2019ll send secure fields (don\u2019t paste in chat)"
+      ],
+      "links": [
+        {
+          "label": "Helius",
+          "url": "https://www.helius.dev/"
+        },
+        {
+          "label": "Alchemy",
+          "url": "https://www.alchemy.com/"
         }
       ]
     }
