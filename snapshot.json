@@ -1,5 +1,5 @@
 {
-  "date": "September 11, 2026 23:55 UTC",
+  "date": "September 12, 2026 00:00 UTC",
   "assets": {
     "S&P 500": {
       "price": 7656.98,
@@ -92,20 +92,20 @@
       ]
     },
     "BTC": {
-      "price": 77164.9,
-      "change_pct": 0.73,
+      "price": 77191.0,
+      "change_pct": 0.84,
       "support": 62484.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2513.73,
-      "change_pct": 3.19,
-      "support": 1862.11,
+      "price": 2515.47,
+      "change_pct": 3.23,
+      "support": 1863.2,
       "resistance": 2666.0
     },
     "SOL": {
-      "price": 102.37,
-      "change_pct": 3.73,
+      "price": 102.41,
+      "change_pct": 3.84,
       "support": 74.0,
       "resistance": 110.6
     }
@@ -113,9 +113,13 @@
   "risk_score": 53,
   "risk_bias": "NEUTRAL",
   "fear_greed": {
-    "value": 56,
+    "value": 63,
     "classification": "Greed",
     "history": [
+      {
+        "value": 63,
+        "label": "Greed"
+      },
       {
         "value": 56,
         "label": "Greed"
@@ -134,10 +138,6 @@
       },
       {
         "value": 71,
-        "label": "Greed"
-      },
-      {
-        "value": 73,
         "label": "Greed"
       },
       {
@@ -195,18 +195,18 @@
       "type": "caution"
     }
   ],
-  "btc_funding": 5.949e-05,
+  "btc_funding": 6.093e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 35.54,
-    "daily_avg": 28.46,
-    "daily_pct": 24.9,
-    "weekly_inflow": 199.22,
-    "weekly_avg": 215.28,
+    "daily_inflow": 35.35,
+    "daily_avg": 28.43,
+    "daily_pct": 24.3,
+    "weekly_inflow": 199.03,
+    "weekly_avg": 215.23,
     "weekly_pct": -7.5,
-    "monthly_inflow": 922.61,
-    "monthly_avg": 812.39,
+    "monthly_inflow": 922.42,
+    "monthly_avg": 812.33,
     "monthly_pct": 13.6,
     "large_tx_count": 766738
   },
@@ -413,6 +413,46 @@
   },
   "econ_events": [
     {
+      "label": "PRESIDENT TRUMP SPEAKS",
+      "date": "09-10-2026",
+      "time": "1:15am ET",
+      "forecast": "\u2014",
+      "previous": "\u2014",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "CORE PPI M/M",
+      "date": "09-10-2026",
+      "time": "12:30pm ET",
+      "forecast": "0.3%",
+      "previous": "0.2%",
+      "actual": null,
+      "impact": "High",
+      "country": "USD"
+    },
+    {
+      "label": "PPI M/M",
+      "date": "09-10-2026",
+      "time": "12:30pm ET",
+      "forecast": "0.4%",
+      "previous": "0.0%",
+      "actual": null,
+      "impact": "High",
+      "country": "USD"
+    },
+    {
+      "label": "UNEMPLOYMENT CLAIMS",
+      "date": "09-10-2026",
+      "time": "12:30pm ET",
+      "forecast": "205K",
+      "previous": "206K",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
       "label": "CORE CPI M/M",
       "date": "09-11-2026",
       "time": "12:30pm ET",
@@ -420,46 +460,6 @@
       "previous": "0.2%",
       "actual": null,
       "impact": "High",
-      "country": "USD"
-    },
-    {
-      "label": "CORE CPI Y/Y",
-      "date": "09-11-2026",
-      "time": "12:30pm ET",
-      "forecast": "2.4%",
-      "previous": "2.5%",
-      "actual": null,
-      "impact": "High",
-      "country": "USD"
-    },
-    {
-      "label": "CPI M/M",
-      "date": "09-11-2026",
-      "time": "12:30pm ET",
-      "forecast": "0.4%",
-      "previous": "0.1%",
-      "actual": null,
-      "impact": "High",
-      "country": "USD"
-    },
-    {
-      "label": "CPI Y/Y",
-      "date": "09-11-2026",
-      "time": "12:30pm ET",
-      "forecast": "3.4%",
-      "previous": "3.4%",
-      "actual": null,
-      "impact": "High",
-      "country": "USD"
-    },
-    {
-      "label": "PRELIM UOM CONSUMER SENTIMENT",
-      "date": "09-11-2026",
-      "time": "2:00pm ET",
-      "forecast": "51.0",
-      "previous": "51.0",
-      "actual": null,
-      "impact": "Medium",
       "country": "USD"
     }
   ]
