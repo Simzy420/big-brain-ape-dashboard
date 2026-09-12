@@ -1,6 +1,24 @@
 {
   "tasks": [
     {
+      "id": "merge-archive-pr12",
+      "priority": "medium",
+      "title": "Review & merge daily trade-archive PR #12",
+      "subtitle": "UTC day folders for backtests (empty until the engine is live)",
+      "steps": [
+        "Open PR #12",
+        "Skim docs/TRADE_ARCHIVES.md for the YYYY-MM-DD layout",
+        "Confirm live fills stay gitignored under data/trade-archives/",
+        "Merge if good"
+      ],
+      "links": [
+        {
+          "label": "Open PR #12",
+          "url": "https://github.com/Simzy420/telegram-memecoin-sniper-bot-/pull/12"
+        }
+      ]
+    },
+    {
       "id": "merge-mascot-pr",
       "priority": "high",
       "title": "Review & merge landing PR #11",
