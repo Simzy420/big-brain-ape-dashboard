@@ -1,6 +1,6 @@
 {
-  "timestamp": 1789228233,
-  "generatedAt": "2026-09-12 15:50 UTC",
+  "timestamp": 1789229313,
+  "generatedAt": "2026-09-12 16:08 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -1051,15 +1051,27 @@
           "hour": "amc"
         }
       ],
-      "yearHigh": 368.66,
-      "yearLow": 361.6,
-      "priceAvg50": 365.44,
-      "priceAvg200": 365.44,
+      "pe": 0,
+      "eps": 1.0754,
+      "epsTTM": 1.0766,
+      "revenuePerShare": 29.2709,
+      "revenueGrowthYoY": 11.75,
+      "earningsNonGaap": 1.0766,
+      "nonGaapEPS": 1.0766,
+      "roe": 4.569999999999999,
+      "beta": 1.7487764,
+      "yearHigh": 498.83,
+      "yearLow": 297.38,
+      "priceAvg50": 0,
+      "priceAvg200": 0,
+      "grossMargin": 18.85,
+      "netMargin": 3.67,
+      "dividendYield": 0,
+      "volume": 43691600,
       "targetAvg": 390.09283,
       "targetHigh": 600.0,
       "targetLow": 125.0,
       "targetMedian": 410.0,
-      "beta": 1.845,
       "history": [
         {
           "date": "2026-07-31",
@@ -1911,27 +1923,15 @@
           "hour": "amc"
         }
       ],
-      "pe": 0,
-      "eps": 10.807,
-      "epsTTM": 19.9118,
-      "revenuePerShare": 36.2228,
-      "revenueGrowthYoY": 20.05,
-      "earningsNonGaap": 19.9118,
-      "nonGaapEPS": 19.9118,
-      "roe": 50.839999999999996,
-      "beta": 1.2162428,
-      "yearHigh": 408.61,
-      "yearLow": 235.84,
-      "priceAvg50": 0,
-      "priceAvg200": 0,
-      "grossMargin": 60.9,
-      "netMargin": 54.77,
-      "dividendYield": 0,
-      "volume": 25169840,
+      "yearHigh": 342.98,
+      "yearLow": 335.03,
+      "priceAvg50": 338.5,
+      "priceAvg200": 338.5,
       "targetAvg": 428.06668,
       "targetHigh": 515.0,
       "targetLow": 340.0,
       "targetMedian": 429.0,
+      "beta": 1.225,
       "history": [
         {
           "date": "2026-07-31",
@@ -3224,15 +3224,27 @@
           "hour": "amc"
         }
       ],
-      "yearHigh": 521.06,
-      "yearLow": 501.35,
-      "priceAvg50": 516.13,
-      "priceAvg200": 516.13,
+      "pe": 0,
+      "eps": 2.6498,
+      "epsTTM": 3.8971999999999998,
+      "revenuePerShare": 24.8975,
+      "revenueGrowthYoY": 39.54,
+      "earningsNonGaap": 3.8971999999999998,
+      "nonGaapEPS": 3.8971999999999998,
+      "roe": 10.07,
+      "beta": 2.5197756,
+      "yearHigh": 584.73,
+      "yearLow": 149.85,
+      "priceAvg50": 0,
+      "priceAvg200": 0,
+      "grossMargin": 53.2,
+      "netMargin": 15.58,
+      "dividendYield": 0,
+      "volume": 17330160,
       "targetAvg": 615.068,
       "targetHigh": 1250.0,
       "targetLow": 365.0,
       "targetMedian": 610.0,
-      "beta": 2.476,
       "history": [
         {
           "date": "2026-07-31",
@@ -9646,27 +9658,15 @@
           "hour": ""
         }
       ],
-      "pe": 0,
-      "eps": 0.762,
-      "epsTTM": 1.508,
-      "revenuePerShare": 5.9919,
-      "revenueGrowthYoY": -7.71,
-      "earningsNonGaap": 1.508,
-      "nonGaapEPS": 1.508,
-      "roe": 15.72,
-      "beta": 1.6901711,
-      "yearHigh": 28.1,
-      "yearLow": 17.79,
-      "priceAvg50": 0,
-      "priceAvg200": 0,
-      "grossMargin": 37.89,
-      "netMargin": 25.16,
-      "dividendYield": 0,
-      "volume": 9125050,
+      "yearHigh": 21.36,
+      "yearLow": 20.835,
+      "priceAvg50": 21.15,
+      "priceAvg200": 21.15,
       "targetAvg": 0,
       "targetHigh": 0,
       "targetLow": 0,
       "targetMedian": 0,
+      "beta": 1.714,
       "history": [
         {
           "date": "2026-07-31",
@@ -12084,6 +12084,15 @@
       "high": 166,
       "low": 149.84,
       "prevClose": 152.94,
+      "name": "Oracle Corp",
+      "companyName": "Oracle Corp",
+      "exchange": "NEW YORK STOCK EXCHANGE, INC.",
+      "sector": "Technology",
+      "industry": "Technology",
+      "marketCap": 432877180864.9664,
+      "country": "US",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/ORCL.png",
+      "ipo": "1986-03-12",
       "strongBuy": 15,
       "buy": 24,
       "hold": 9,
@@ -13072,6 +13081,29 @@
           "revenueActual": 1303000000.0
         }
       ],
+      "upcomingEarnings": [
+        {
+          "date": "2027-04-28",
+          "quarter": 1,
+          "epsEstimate": -0.5173,
+          "revenueEstimate": 2721351401,
+          "hour": ""
+        },
+        {
+          "date": "2027-02-10",
+          "quarter": 4,
+          "epsEstimate": -0.5746,
+          "revenueEstimate": 2537034157,
+          "hour": "amc"
+        },
+        {
+          "date": "2026-11-02",
+          "quarter": 3,
+          "epsEstimate": -0.6544,
+          "revenueEstimate": 1998763154,
+          "hour": "amc"
+        }
+      ],
       "pe": 0,
       "eps": -3.0742,
       "epsTTM": -2.5821,
@@ -13530,10 +13562,10 @@
       "netMargin": 7.02,
       "dividendYield": 0,
       "volume": 8860120,
-      "targetAvg": 186.09125,
-      "targetHigh": 238.28058,
-      "targetLow": 95.226685,
-      "targetMedian": 188.51779,
+      "targetAvg": 186.37189,
+      "targetHigh": 238.63992,
+      "targetLow": 95.37029,
+      "targetMedian": 188.80208,
       "history": [
         {
           "date": "2026-07-31",
@@ -16543,27 +16575,15 @@
           "hour": "bmo"
         }
       ],
-      "pe": 0,
-      "eps": 6.6266,
-      "epsTTM": 10.4285,
-      "revenuePerShare": 105.6718,
-      "revenueGrowthYoY": 11.17,
-      "earningsNonGaap": 10.4285,
-      "nonGaapEPS": 10.4285,
-      "roe": 10.979999999999999,
-      "beta": 0.48966902,
-      "yearHigh": 217.4,
-      "yearLow": 146.49,
-      "priceAvg50": 0,
-      "priceAvg200": 0,
-      "grossMargin": 43.65,
-      "netMargin": 9.87,
-      "dividendYield": 0,
-      "volume": 7950650,
+      "yearHigh": 215.55,
+      "yearLow": 212.02,
+      "priceAvg50": 214.06,
+      "priceAvg200": 214.06,
       "targetAvg": 221.20833,
       "targetHigh": 243.0,
       "targetLow": 175.0,
       "targetMedian": 224.5,
+      "beta": 0.491,
       "history": [
         {
           "date": "2026-07-31",
@@ -23051,29 +23071,6 @@
           "revenueActual": 1588183000.0
         }
       ],
-      "upcomingEarnings": [
-        {
-          "date": "2027-05-05",
-          "quarter": 1,
-          "epsEstimate": 0.1484,
-          "revenueEstimate": 1913915464,
-          "hour": ""
-        },
-        {
-          "date": "2027-02-08",
-          "quarter": 4,
-          "epsEstimate": 0.1884,
-          "revenueEstimate": 2001747205,
-          "hour": "amc"
-        },
-        {
-          "date": "2026-11-03",
-          "quarter": 3,
-          "epsEstimate": 0.2002,
-          "revenueEstimate": 1963366410,
-          "hour": "amc"
-        }
-      ],
       "pe": 0,
       "eps": 6.8094,
       "epsTTM": 6.999600000000001,
@@ -23532,10 +23529,10 @@
       "netMargin": -4.17,
       "dividendYield": 0,
       "volume": 49785000,
-      "targetAvg": 6.3633504,
-      "targetHigh": 10.099292,
-      "targetLow": 4.008349,
-      "targetMedian": 6.0123744,
+      "targetAvg": 6.3729463,
+      "targetHigh": 10.114522,
+      "targetLow": 4.014394,
+      "targetMedian": 6.021441,
       "history": [
         {
           "date": "2026-07-31",
