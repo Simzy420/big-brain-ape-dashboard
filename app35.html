@@ -981,39 +981,39 @@ if(v>=1e6)return '$'+(v/1e6).toFixed(0)+'M';
 return '$'+fmtNum(v);
 }
 // Market Cap — orange
-html+=metricCard("Market Cap",d.marketCap?fmtCapShort(d.marketCap):'—','',"var(--orange)");
+html+=metricCard("Market Cap",d.marketCap?fmtCapShort(d.marketCap):'—',"","#059B7F");
 // Revenue (Annual Revenue) — orange
 var sdPrice=d.price||0;
 if(d.revenuePerShare&&d.marketCap&&sdPrice>0){
 var shares=d.marketCap/sdPrice;
 var annRev=d.revenuePerShare*shares;
 var revStr=annRev>=1e9?'$'+(annRev/1e9).toFixed(1)+'B':'$'+(annRev/1e6).toFixed(0)+'M';
-html+=metricCard("Revenue",revStr,"Trailing 12 Mo","var(--orange)");
+html+=metricCard("Revenue",revStr,"Trailing 12 Mo","#059B7F");
 }else{
 html+=metricCard("Revenue",'—',"Trailing 12 Mo","var(--text2)");
 }
 // EPS (TTM) — green
-html+=metricCard("EPS (TTM)",d.eps?fmtNum(d.eps):'—',"Trailing 12 Mo","var(--neon2)");
+html+=metricCard("EPS (TTM)",d.eps?fmtNum(d.eps):'—',"Trailing 12 Mo","#059B7F");
 // Rev Growth — green
 if(d.revenueGrowthYoY){
 var rgyStr=(d.revenueGrowthYoY>=0?'+':'')+d.revenueGrowthYoY.toFixed(1)+'%';
-html+=metricCard("Rev Growth",rgyStr,"YoY Growth","var(--neon2)");
+html+=metricCard("Rev Growth",rgyStr,"YoY Growth","#059B7F");
 }else{
 html+=metricCard("Rev Growth",'—',"YoY Growth","var(--text2)");
 }
 // 52-Week Range — green
-html+=metricCard("52-Week Range",d.yearLow?'$'+fmtNum(d.yearLow)+' – $'+fmtNum(d.yearHigh):'—',"","var(--neon2)");
+html+=metricCard("52-Week Range",d.yearLow?'$'+fmtNum(d.yearLow)+' – $'+fmtNum(d.yearHigh):'—',"","#059B7F");
 // Non Gaap EPS — green
 var ngEps=d.earningsNonGaap||d.eps||0;
-html+=metricCard("Non Gaap EPS",'$'+fmtNum(ngEps||0),"Trailing 12 Mo",ngEps?"var(--neon2)":"var(--text2)");
+html+=metricCard("Non Gaap EPS",'$'+fmtNum(ngEps||0),"Trailing 12 Mo",ngEps?"#059B7F":"var(--text2)");
 // Avg Price Target — blue (no percentage subtitle)
 if(d.targetAvg){
-html+=metricCard("Avg Price Target",'$'+fmtNum(d.targetAvg),"","var(--neon)");
+html+=metricCard("Avg Price Target",'$'+fmtNum(d.targetAvg),"","#059B7F");
 }else{
 html+=metricCard("Avg Price Target",'—',"","var(--text2)");
 }
 // Beta — blue
-html+=metricCard("Beta",d.beta?fmtNum(d.beta):'—',"5 Yr Expected","var(--neon)");
+html+=metricCard("Beta",d.beta?fmtNum(d.beta):'—',"5 Yr Expected","#059B7F");
 html+='</div>';
 
 // === SUPPORT & RESISTANCE ===
