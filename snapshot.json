@@ -1,5 +1,5 @@
 {
-  "date": "September 13, 2026 03:55 UTC",
+  "date": "September 13, 2026 04:00 UTC",
   "assets": {
     "S&P 500": {
       "price": 7656.98,
@@ -92,20 +92,20 @@
       ]
     },
     "BTC": {
-      "price": 77177.2,
-      "change_pct": -0.08,
+      "price": 77170.0,
+      "change_pct": -0.09,
       "support": 62681.1,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2520.18,
+      "price": 2519.82,
       "change_pct": 0.31,
       "support": 1868.01,
       "resistance": 2666.0
     },
     "SOL": {
-      "price": 101.64,
-      "change_pct": 0.11,
+      "price": 101.54,
+      "change_pct": -0.05,
       "support": 74.0,
       "resistance": 110.6
     }
@@ -173,12 +173,12 @@
       "color": "yellow"
     },
     "gold": {
-      "value": "$4366",
+      "value": "$4409",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$64.55",
+      "value": "$65.19",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -193,22 +193,27 @@
       "label": "CAUTION",
       "text": "Yields rising \u2014 risk off",
       "type": "caution"
+    },
+    {
+      "label": "BULLISH",
+      "text": "Gold up 1.0% \u2014 safe haven bid",
+      "type": "bullish"
     }
   ],
-  "btc_funding": 7.758e-05,
+  "btc_funding": 7.813e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 15.3,
+    "daily_inflow": 15.32,
     "daily_avg": 27.3,
-    "daily_pct": -44.0,
-    "weekly_inflow": 191.08,
+    "daily_pct": -43.9,
+    "weekly_inflow": 191.11,
     "weekly_avg": 213.26,
     "weekly_pct": -10.4,
-    "monthly_inflow": 913.96,
-    "monthly_avg": 809.87,
+    "monthly_inflow": 913.99,
+    "monthly_avg": 809.88,
     "monthly_pct": 12.9,
-    "large_tx_count": 824109
+    "large_tx_count": 829432
   },
   "history": {
     "vix": [
@@ -263,7 +268,6 @@
       4.97
     ],
     "oil": [
-      83.27,
       81.25,
       82.4,
       84.5,
@@ -287,7 +291,6 @@
       100.05
     ],
     "gold": [
-      4408.9,
       4363.6,
       4380.4,
       4417.8,
@@ -308,10 +311,9 @@
       4393.9,
       4416.0,
       4364.5,
-      4366.2
+      4408.9
     ],
     "silver": [
-      65.56,
       64.87,
       64.99,
       66.12,
@@ -332,10 +334,9 @@
       66.3,
       67.94,
       64.28,
-      64.55
+      65.19
     ],
     "dxy": [
-      100.01,
       99.96,
       99.67,
       99.64,
