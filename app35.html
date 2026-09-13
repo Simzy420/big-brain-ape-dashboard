@@ -1093,31 +1093,28 @@ html+=metricCard("Revenue",revStr,"Trailing 12 Mo","var(--orange)");
 }else{
 html+=metricCard("Revenue",'—',"Trailing 12 Mo","var(--text2)");
 }
-// EPS (TTM) — orange
-html+=metricCard("EPS (TTM)",d.eps?fmtNum(d.eps):'—',"Trailing 12 Mo","var(--orange)");
-// Rev Growth — orange
+// EPS (TTM) — green
+html+=metricCard("EPS (TTM)",d.eps?fmtNum(d.eps):'—',"Trailing 12 Mo","var(--neon2)");
+// Rev Growth — green
 if(d.revenueGrowthYoY){
 var rgyStr=(d.revenueGrowthYoY>=0?'+':'')+d.revenueGrowthYoY.toFixed(1)+'%';
-html+=metricCard("Rev Growth",rgyStr,"YoY Growth","var(--orange)");
+html+=metricCard("Rev Growth",rgyStr,"YoY Growth","var(--neon2)");
 }else{
 html+=metricCard("Rev Growth",'—',"YoY Growth","var(--text2)");
 }
-// 52-Week Range — orange
-html+=metricCard("52-Week Range",d.yearLow?'$'+fmtNum(d.yearLow)+' – $'+fmtNum(d.yearHigh):'—','',"var(--orange)");
-// Non Gaap EPS — orange
+// 52-Week Range — green
+html+=metricCard("52-Week Range",d.yearLow?'$'+fmtNum(d.yearLow)+' – $'+fmtNum(d.yearHigh):'—',"","var(--neon2)");
+// Non Gaap EPS — green
 var ngEps=d.earningsNonGaap||d.eps||0;
-html+=metricCard("Non Gaap EPS",'$'+fmtNum(ngEps||0),"Trailing 12 Mo",ngEps?"var(--orange)":"var(--text2)");
-// Avg Price Target — orange
+html+=metricCard("Non Gaap EPS",'$'+fmtNum(ngEps||0),"Trailing 12 Mo",ngEps?"var(--neon2)":"var(--text2)");
+// Avg Price Target — blue (no percentage subtitle)
 if(d.targetAvg){
-var ptUpside=(d.targetAvg-sdPrice)/sdPrice*100;
-var ptStr='$'+fmtNum(d.targetAvg);
-var ptSub='<span style="color:var(--orange);font-size:26px;font-weight:700">'+(ptUpside>=0?'+':'')+ptUpside.toFixed(0)+'%</span>';
-html+=metricCard("Avg Price Target",ptStr,ptSub,"var(--orange)");
+html+=metricCard("Avg Price Target",'$'+fmtNum(d.targetAvg),"","var(--neon)");
 }else{
 html+=metricCard("Avg Price Target",'—',"","var(--text2)");
 }
-// Beta — orange
-html+=metricCard("Beta",d.beta?fmtNum(d.beta):'—',"5 Yr Expected","var(--orange)");
+// Beta — blue
+html+=metricCard("Beta",d.beta?fmtNum(d.beta):'—',"5 Yr Expected","var(--neon)");
 html+='</div>';
 
 // === SUPPORT & RESISTANCE ===
