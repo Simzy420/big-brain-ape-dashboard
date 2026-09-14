@@ -446,64 +446,65 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <!-- PRICING VIEW -->
 <div id="view-pricing" class="view">
 <div class="header"><button class="back-btn" onclick="switchView('home')">‹ Back</button><h1>Pricing <span>Plans</span> 🦍</h1></div>
-<div class="price-card">
-<h3>Single Analysis</h3>
-<div class="price-amount">$0.25</div>
-<p style="font-size: 19px;color:var(--text2)">One stock or crypto deep analysis</p>
+<div class="price-card" style="border-color:var(--green);box-shadow:0 0 20px rgba(63,185,80,0.15)">
+<h3>Free Analysis</h3>
+<div class="price-amount">$0</div>
+<p style="font-size: 19px;color:var(--text2)">Unlimited stock & crypto analysis — no card, no limit</p>
 <div class="price-features">
 <li>✓ Full rating (Buy/Sell/Hold)</li>
-<li>✓ Analyst consensus</li>
+<li>✓ Analyst consensus & price targets</li>
 <li>✓ Technical indicators</li>
-<li>✓ Price chart</li>
-<li>✓ Key financials</li>
+<li>✓ Support & resistance levels</li>
+<li>✓ Key financials & earnings</li>
+<li>✓ Daily macro briefing</li>
+<li>✓ Portfolio review</li>
+<li>✓ Crypto hub with live data</li>
 </div>
-<button class="price-btn" onclick="payWithCrypto()">Pay 0.25 USDC</button>
+<button class="price-btn" onclick="switchView('home')" style="background:var(--green)">Start Free — No Signup</button>
 </div>
-<div class="price-card">
-<h3>Daily Briefing</h3>
-<div class="price-amount">$0.25/day</div>
-<p style="font-size: 19px;color:var(--text2)">Morning macro briefing delivered to your chat</p>
+<div class="price-card" style="border-color:var(--blue);box-shadow:0 0 20px rgba(88,166,255,0.15)">
+<h3>Managed Trading</h3>
+<div class="price-amount">$19.99<small style="font-size:14px;color:var(--text2)"> /month</small></div>
+<p style="font-size: 19px;color:var(--text2)">Big Brain Ape trades for you on Hyperliquid — 100% autonomous</p>
 <div class="price-features">
-<li>✓ Fed & liquidity analysis</li>
-<li>✓ Market regime classification</li>
-<li>✓ Key levels to watch</li>
-<li>✓ Trade setups</li>
+<li>✓ For every $1 you put in, the Ape invests $5</li>
+<li>✓ 0% interest, no borrowing fees</li>
+<li>✓ You keep 100% of the profits</li>
+<li>✓ 98 assets (crypto, stocks, gold, indices)</li>
+<li>✓ Druckenmiller macro strategy</li>
+<li>✓ Cancel anytime</li>
 </div>
-<button class="price-btn" onclick="payWithCrypto()">Subscribe</button>
-</div>
-<div class="price-card">
-<h3>Portfolio Review</h3>
-<div class="price-amount">$0.50</div>
-<p style="font-size: 19px;color:var(--text2)">Full analysis of every asset you own</p>
-<div class="price-features">
-<li>✓ Every position analyzed</li>
-<li>✓ Risk assessment</li>
-<li>✓ Rebalancing suggestions</li>
-<li>✓ Correlation check</li>
-</div>
-<button class="price-btn" onclick="payWithCrypto()">Pay 0.50 USDC</button>
+<button class="price-btn" onclick="switchView('pay')">Hire the Ape — $19.99/mo</button>
 </div>
 </div>
 
 <!-- PAY VIEW -->
 <div id="view-pay" class="view">
 <div class="header"><button class="back-btn" onclick="switchView('home')">‹ Back</button><h1>Payment <span>Options</span> 🦍</h1></div>
+<p style="text-align:center;font-size:22px;font-weight:700;margin-bottom:16px">Managed Trading — $19.99/month</p>
+<p style="text-align:center;font-size:17px;color:var(--text2);margin-bottom:20px">Pick your payment method. Cancel anytime.</p>
 <div class="briefing-card">
-<h3>💳 Pay with Crypto</h3>
-<p>Send USDC on Base network to:</p>
-<p style="font-size: 19px;font-family:monospace;color:var(--blue);word-break:break-all;margin-top:8px">0x37a8023762c69f7150d878733fd9f635f1070fc6</p>
-<p style="font-size: 18px;margin-top:8px">Then reply "I paid" in the chat</p>
+<h3>💳 Credit / Debit Card (Stripe)</h3>
+<p>Auto-recurring $19.99/month. Cancel anytime.</p>
+<button class="price-btn" onclick="payWithStripe()" style="margin-top:12px">Pay with Card — $19.99/mo</button>
+<p style="font-size:14px;color:var(--text2);margin-top:8px">Visa, Mastercard, AMEX accepted</p>
 </div>
 <div class="briefing-card">
-<h3>💵 Pay with Cash App</h3>
-<p>Cashtag: $BigBrainApe</p>
-<img src="cashapp-qr.jpg" style="width:200px;border-radius:12px;margin-top:12px;display:block;margin-left:auto;margin-right:auto" onerror="this.style.display='none'">
+<h3>💵 Cash App</h3>
+<p>Send $19.99 to $BigBrainApe</p>
+<a href="https://cash.app/$BigBrainApe/19.99" target="_blank" class="price-btn" style="display:inline-block;text-align:center;text-decoration:none;margin-top:12px">Pay $19.99 via Cash App</a>
+<p style="font-size:14px;color:var(--text2);margin-top:8px">After paying, message @BigBrain2Bot "I paid Cash App" to activate</p>
 </div>
 <div class="briefing-card">
-<h3>⭐ Pay with Telegram Stars</h3>
-<p>25 Stars = 1 analysis</p>
-<p>500 Stars = Daily briefing (1 month)</p>
-<p>1000 Stars = Unlimited (1 month)</p>
+<h3>🪙 Crypto (USDC)</h3>
+<p>Send 19.99 USDC on Base network to:</p>
+<p style="font-size: 17px;font-family:monospace;color:var(--blue);word-break:break-all;margin-top:8px">0x37a8023762c69f7150d878733fd9f635f1070fc6</p>
+<p style="font-size: 16px;margin-top:8px">Then message @BigBrain2Bot "I paid" to activate</p>
+</div>
+<div class="briefing-card">
+<h3>⭐ Telegram Stars</h3>
+<p>2000 Stars = 1 month managed trading</p>
+<button class="price-btn" onclick="payWithStars()" style="margin-top:12px">Pay 2000 Stars</button>
 </div>
 </div>
 
@@ -3656,6 +3657,20 @@ function dataCell(label,val){return'<div class="data-cell"><div class="data-labe
 // PAYMENT
 // ==============================
 function payWithCrypto(){switchView('pay')}
+function payWithStripe(){
+  // Stripe checkout — will be wired with API keys once Casey provides them
+  alert('Card payment coming soon! Stripe is being set up.\n\nFor now, use Cash App, USDC, or Stars to subscribe.')
+}
+function payWithStars(){
+  // Telegram Stars payment via bot
+  var tg=window.Telegram&&Telegram.WebApp?Telegram.WebApp:null
+  if(tg&&tg.openInvoice){
+    // Will be wired with real invoice link once Stars product is configured
+    alert('Stars payment coming soon! Use the bot @BigBrain2Bot to pay with Stars.')
+  }else{
+    window.open('https://t.me/BigBrain2Bot','_blank')
+  }
+}
 
 
 // Handle news item clicks
