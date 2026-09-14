@@ -37,19 +37,16 @@ for (let i = 0; i < js.length; i++) {
 
 console.log("Final brace depth: " + depth);
 
-if (depth > 1) {
-  console.error("FAIL: Brace depth is " + depth + " — missing closing brace(s). This will break the app.");
+// Final validation: extract JS and run node --check for real syntax validation
+const { execSync } = require("child_process");
+const tmpFile = "/tmp/bba_lint_check.js";
+fs.writeFileSync(tmpFile, js);
+try {
+  execSync("node --check " + tmpFile, { stdio: "pipe" });
+  console.log("OK: node --check passed — JavaScript is syntactically valid.");
+  console.log("\nBrace check passed.");
+} catch (e) {
+  console.error("FAIL: node --check found syntax errors:");
+  console.error(e.stderr ? e.stderr.toString() : e.message);
   process.exit(1);
 }
-if (depth < 0) {
-  console.error("FAIL: Brace depth is " + depth + " — extra closing brace(s). This will break the app.");
-  process.exit(1);
-}
-if (depth === 1) {
-  console.log("WARN: One unclosed function (known pattern, browser auto-closes). OK but should be fixed eventually.");
-}
-if (depth === 0) {
-  console.log("OK: All braces balanced.");
-}
-
-console.log("\nBrace check passed.");

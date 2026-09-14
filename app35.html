@@ -448,19 +448,30 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <div class="header"><button class="back-btn" onclick="switchView('home')">‹ Back</button><h1>Pricing <span>Plans</span> 🦍</h1></div>
 <div class="price-card" style="border-color:var(--green);box-shadow:0 0 20px rgba(63,185,80,0.15)">
 <h3>Free Analysis</h3>
-<div class="price-amount">$0</div>
-<p style="font-size: 19px;color:var(--text2)">Unlimited stock & crypto analysis — no card, no limit</p>
+<div class="price-amount">$0<small style="font-size:14px;color:var(--text2)"> — 5/day, then $0.25 each</small></div>
+<p style="font-size: 19px;color:var(--text2)">5 free analyses every day. After that, $0.25 per analysis.</p>
 <div class="price-features">
 <li>✓ Full rating (Buy/Sell/Hold)</li>
 <li>✓ Analyst consensus & price targets</li>
 <li>✓ Technical indicators</li>
 <li>✓ Support & resistance levels</li>
 <li>✓ Key financials & earnings</li>
-<li>✓ Daily macro briefing</li>
-<li>✓ Portfolio review</li>
 <li>✓ Crypto hub with live data</li>
 </div>
-<button class="price-btn" onclick="switchView('home')" style="background:var(--green)">Start Free — No Signup</button>
+<button class="price-btn" onclick="switchView('home')" style="background:var(--green)">Start Free — 5 Per Day</button>
+</div>
+<div class="price-card">
+<h3>Single Analysis</h3>
+<div class="price-amount">$0.25</div>
+<p style="font-size: 19px;color:var(--text2)">After your 5 free daily analyses</p>
+<div class="price-features">
+<li>✓ Full rating (Buy/Sell/Hold)</li>
+<li>✓ Analyst consensus</li>
+<li>✓ Technical indicators</li>
+<li>✓ Price chart</li>
+<li>✓ Key financials</li>
+</div>
+<button class="price-btn" onclick="switchView('pay')">Pay $0.25 — USDC / Cash App / Stars</button>
 </div>
 <div class="price-card" style="border-color:var(--blue);box-shadow:0 0 20px rgba(88,166,255,0.15)">
 <h3>Managed Trading</h3>
@@ -481,30 +492,34 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <!-- PAY VIEW -->
 <div id="view-pay" class="view">
 <div class="header"><button class="back-btn" onclick="switchView('home')">‹ Back</button><h1>Payment <span>Options</span> 🦍</h1></div>
-<p style="text-align:center;font-size:22px;font-weight:700;margin-bottom:16px">Managed Trading — $19.99/month</p>
-<p style="text-align:center;font-size:17px;color:var(--text2);margin-bottom:20px">Pick your payment method. Cancel anytime.</p>
+<p style="text-align:center;font-size:22px;font-weight:700;margin-bottom:16px">$0.25 per analysis or $19.99/mo managed trading</p>
+<p style="text-align:center;font-size:17px;color:var(--text2);margin-bottom:20px">Pick your payment method.</p>
 <div class="briefing-card">
 <h3>💳 Credit / Debit Card (Stripe)</h3>
-<p>Auto-recurring $19.99/month. Cancel anytime.</p>
-<button class="price-btn" onclick="payWithStripe()" style="margin-top:12px">Pay with Card — $19.99/mo</button>
+<p>Auto-recurring $19.99/month for managed trading. Or $0.25 per analysis.</p>
+<button class="price-btn" onclick="payWithStripe()" style="margin-top:12px">Pay with Card</button>
 <p style="font-size:14px;color:var(--text2);margin-top:8px">Visa, Mastercard, AMEX accepted</p>
 </div>
 <div class="briefing-card">
 <h3>💵 Cash App</h3>
-<p>Send $19.99 to $BigBrainApe</p>
-<a href="https://cash.app/$BigBrainApe/19.99" target="_blank" class="price-btn" style="display:inline-block;text-align:center;text-decoration:none;margin-top:12px">Pay $19.99 via Cash App</a>
+<p>$19.99/mo managed trading: send $19.99 to $BigBrainApe</p>
+<a href="https://cash.app/$BigBrainApe/19.99" target="_blank" class="price-btn" style="display:inline-block;text-align:center;text-decoration:none;margin-top:8px">Pay $19.99 via Cash App</a>
+<p style="font-size:14px;color:var(--text2);margin-top:8px">$0.25 analysis: send $0.25 to $BigBrainApe</p>
+<a href="https://cash.app/$BigBrainApe/0.25" target="_blank" class="price-btn" style="display:inline-block;text-align:center;text-decoration:none;margin-top:8px;font-size:15px">Pay $0.25 via Cash App</a>
 <p style="font-size:14px;color:var(--text2);margin-top:8px">After paying, message @BigBrain2Bot "I paid Cash App" to activate</p>
 </div>
 <div class="briefing-card">
 <h3>🪙 Crypto (USDC)</h3>
-<p>Send 19.99 USDC on Base network to:</p>
+<p>Send USDC on Base network to:</p>
 <p style="font-size: 17px;font-family:monospace;color:var(--blue);word-break:break-all;margin-top:8px">0x37a8023762c69f7150d878733fd9f635f1070fc6</p>
-<p style="font-size: 16px;margin-top:8px">Then message @BigBrain2Bot "I paid" to activate</p>
+<p style="font-size: 16px;margin-top:8px">$0.25 = 1 analysis credit · $19.99 = 1 month managed trading</p>
+<p style="font-size: 16px;margin-top:4px">Then message @BigBrain2Bot "I paid" to activate</p>
 </div>
 <div class="briefing-card">
 <h3>⭐ Telegram Stars</h3>
-<p>2000 Stars = 1 month managed trading</p>
-<button class="price-btn" onclick="payWithStars()" style="margin-top:12px">Pay 2000 Stars</button>
+<p>25 Stars = 1 analysis ($0.25)</p>
+<p>2000 Stars = 1 month managed trading ($19.99)</p>
+<button class="price-btn" onclick="payWithStars()" style="margin-top:12px">Pay with Stars</button>
 </div>
 </div>
 
