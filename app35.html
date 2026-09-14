@@ -1573,13 +1573,13 @@ if(sub)s+='<div style="font-size: 17px;color:var(--text2);margin-top:2px">'+sub+
 s+='</div>';
 return s;
 }
-html+=cMetricCard("Market Cap",'$'+fmtCap(m.market_cap.usd/1e6)+'M');
-html+=cMetricCard("24h Volume",'$'+fmtCap(m.total_volume.usd/1e6)+'M');
+html+=cMetricCard("Market Cap",fmtCryptoCap(m.market_cap.usd));
+html+=cMetricCard("24h Volume",fmtCryptoCap(m.total_volume.usd));
 html+=cMetricCard("24h High",'$'+fmtCrypto(m.high_24h.usd));
 html+=cMetricCard("24h Low",'$'+fmtCrypto(m.low_24h.usd));
 html+=cMetricCard("ATH",'$'+fmtCrypto(m.ath.usd));
 html+=cMetricCard("From ATH",fmtNum(m.ath_change_percentage.usd)+'%');
-html+=cMetricCard("Circulating Supply",fmtNum(m.circulating_supply));
+html+=cMetricCard("Circulating Supply",fmtCryptoSupply(m.circulating_supply));
 html+=cMetricCard("Market Cap Rank",'#'+(m.market_cap_rank||'—'));
 html+='</div>';
 
@@ -3663,6 +3663,8 @@ out.innerHTML='<div class="briefing-card"><p>Unable to load snapshot data.</p></
 function fmtNum(n){if(!n||isNaN(n))return'0.00';return Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
 function fmtCrypto(n){if(!n||isNaN(n))return'0';if(n>=1000)return fmtNum(n);if(n>=1)return Number(n).toFixed(2);if(n>=0.01)return Number(n).toFixed(4);return Number(n).toFixed(6)}
 function fmtCap(n){if(!n||isNaN(n))return'0';if(n>=1000)return fmtNum(n)+'B';return fmtNum(n)+'M'}
+function fmtCryptoCap(v){if(!v||isNaN(v))return'$0';if(v>=1e12)return'$'+(v/1e12).toFixed(2)+'T';if(v>=1e9)return'$'+(v/1e9).toFixed(2)+'B';if(v>=1e6)return'$'+(v/1e6).toFixed(1)+'M';if(v>=1e3)return'$'+(v/1e3).toFixed(1)+'K';return'$'+fmtNum(v)}
+function fmtCryptoSupply(v){if(!v||isNaN(v))return'0';if(v>=1e12)return(v/1e12).toFixed(2)+'T';if(v>=1e9)return(v/1e9).toFixed(2)+'B';if(v>=1e6)return(v/1e6).toFixed(2)+'M';if(v>=1e3)return(v/1e3).toFixed(1)+'K';return fmtNum(v)}
 function fmtPct(n){if(!n||isNaN(n))return'0.00%';return(n>=0?'+':'')+Number(n).toFixed(2)+'%'}
 function pct(a,b){if(!b)return 0;return((a-b)/b)*100}
 function formatDate(d){return d.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}
