@@ -1,5 +1,5 @@
 {
-  "date": "September 14, 2026 05:40 UTC",
+  "date": "September 14, 2026 05:45 UTC",
   "assets": {
     "S&P 500": {
       "price": 7656.98,
@@ -92,25 +92,25 @@
       ]
     },
     "BTC": {
-      "price": 77583.8,
-      "change_pct": 0.41,
+      "price": 77526.7,
+      "change_pct": 0.33,
       "support": 62681.1,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2514.7,
-      "change_pct": -0.31,
+      "price": 2513.33,
+      "change_pct": -0.36,
       "support": 1868.01,
       "resistance": 2666.0
     },
     "SOL": {
-      "price": 101.12,
-      "change_pct": -0.65,
+      "price": 101.04,
+      "change_pct": -0.78,
       "support": 74.0,
       "resistance": 110.6
     }
   },
-  "risk_score": 45,
+  "risk_score": 53,
   "risk_bias": "NEUTRAL",
   "fear_greed": {
     "value": 57,
@@ -168,27 +168,22 @@
       "color": "red"
     },
     "oil": {
-      "value": "$102.57",
+      "value": "$102.49",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4368",
+      "value": "$4373",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$64.33",
+      "value": "$64.47",
       "label": "SILVER",
       "color": "yellow"
     }
   },
   "signals": [
-    {
-      "label": "CAUTION",
-      "text": "Dollar strengthening \u2014 headwind",
-      "type": "caution"
-    },
     {
       "label": "BULLISH",
       "text": "S&P 500 up 0.9%",
@@ -204,16 +199,16 @@
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 19.83,
-    "daily_avg": 26.94,
-    "daily_pct": -26.4,
-    "weekly_inflow": 188.61,
-    "weekly_avg": 215.65,
+    "daily_inflow": 19.85,
+    "daily_avg": 26.95,
+    "daily_pct": -26.3,
+    "weekly_inflow": 188.62,
+    "weekly_avg": 215.66,
     "weekly_pct": -12.5,
-    "monthly_inflow": 924.23,
+    "monthly_inflow": 924.25,
     "monthly_avg": 806.55,
     "monthly_pct": 14.6,
-    "large_tx_count": 730797
+    "large_tx_count": 724374
   },
   "history": {
     "vix": [
@@ -288,7 +283,7 @@
       96.05,
       102.48,
       100.05,
-      102.57
+      102.5
     ],
     "gold": [
       4380.4,
@@ -311,7 +306,7 @@
       4416.0,
       4364.5,
       4366.2,
-      4368.1
+      4373.1
     ],
     "silver": [
       64.99,
@@ -334,7 +329,7 @@
       67.94,
       64.28,
       64.55,
-      64.33
+      64.47
     ],
     "dxy": [
       99.67,
