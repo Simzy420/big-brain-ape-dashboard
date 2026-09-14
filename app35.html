@@ -3759,12 +3759,7 @@ html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><
 html+='<div style="height:300px;position:relative"><canvas id="losersChart"></canvas></div>';
 html+='</div>';
 
-// === 7. FUNDING RATES (Hyperliquid) ===
-html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px">';
-html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:#8b5cf6"></div><span style="font-size:22px;font-weight:700">Funding Rates 💰</span></div>';
-html+='<div style="font-size:14px;color:var(--text2);margin-bottom:8px">Positive = longs pay shorts. Negative = shorts pay longs. (Hyperliquid, 8h)</div>';
-html+='<div id="fundingData" style="display:flex;flex-direction:column;gap:6px"><div class="spinner" style="width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto"></div></div>';
-html+='</div>';
+// === 7. (Funding Rates section removed) ===
 
 html+='</div>';
 out.innerHTML=html;
@@ -4059,11 +4054,10 @@ function renderGainersLosers(coins){
   }
 }
 
-// --- Render Crypto Heatmap ---
-function renderHeatmap(coins){
+// --- Render Crypto Heatmap (global) ---
+window.renderHeatmap=function(coins){
 var el=document.getElementById('heatmapContainer');
 if(!el||!coins||coins.length===0)return;
-// Sort by market cap descending
 coins=coins.slice().sort(function(a,b){return (b.market_cap||0)-(a.market_cap||0)});
 var maxCap=coins[0].market_cap||1;
 var minCap=coins[coins.length-1].market_cap||1;
@@ -4072,12 +4066,10 @@ for(var i=0;i<Math.min(coins.length,100);i++){
 var c=coins[i];
 var pct=c.price_change_percentage_24h||0;
 var cap=c.market_cap||0;
-// Tile size proportional to market cap (log scale for better distribution)
 var sizeRatio=Math.log(cap/minCap+1)/Math.log(maxCap/minCap+1);
 var minW=55,maxW=140;
 var w=Math.round(minW+(maxW-minW)*sizeRatio);
 var h=Math.round(w*0.75);
-// Color: green for positive, red for negative, intensity by magnitude
 var intensity=Math.min(1,Math.abs(pct)/10);
 var bg;
 if(pct>=0){
@@ -4092,25 +4084,24 @@ var b=Math.round(23+(68-23)*intensity);
 bg='rgb('+r+','+g+','+b+')';
 }
 var sym=(c.symbol||'').toUpperCase();
-var name=c.name||sym;
-var shortName=name.length>10?name.substring(0,9)+'…':name;
+var cname=c.name||sym;
+var shortName=cname.length>10?cname.substring(0,9)+'…':cname;
 var fontSize=sizeRatio>0.5?'15px':'12px';
 var pctFontSize=sizeRatio>0.6?'14px':sizeRatio>0.3?'12px':'10px';
-html+='<div onclick="showCryptoDetail(\''+c.id+'\',\''+sym+'\',\''+((c.symbol||'').toUpperCase())+'USDT\')" style="width:'+w+'px;height:'+h+'px;background:'+bg+';border-radius:8px;display:flex;flex-direction:column;justify-content:center;align-items:center;cursor:pointer;transition:transform .15s,box-shadow .15s;flex-shrink:0" onmouseover="this.style.transform=\'scale(1.08)\';this.style.boxShadow=\'0 0 12px rgba(255,255,255,0.2)\'" onmouseout="this.style.transform=\'scale(1)\';this.style.boxShadow=\'none\'">';
+html+='<div onclick="showCryptoDetail(\''+c.id+'\',\''+sym+'\',\''+sym+'USDT\')" style="width:'+w+'px;height:'+h+'px;background:'+bg+';border-radius:8px;display:flex;flex-direction:column;justify-content:center;align-items:center;cursor:pointer;transition:transform .15s,box-shadow .15s;flex-shrink:0" onmouseover="this.style.transform=\'scale(1.08)\';this.style.boxShadow=\'0 0 12px rgba(255,255,255,0.2)\'" onmouseout="this.style.transform=\'scale(1)\';this.style.boxShadow=\'none\'">';
 html+='<div style="font-size:'+fontSize+';font-weight:700;color:#fff;text-align:center;line-height:1.1">'+shortName+'</div>';
 html+='<div style="font-size:'+pctFontSize+';font-weight:600;color:'+(pct>=0?'#6ee7b7':'#fca5a5')+';margin-top:2px">'+(pct>=0?'+':'')+pct.toFixed(2)+'%</div>';
 html+='</div>';
 }
 el.innerHTML=html;
-}
+};
 
-// --- Show Crypto Detail Overlay ---
-function showCryptoDetail(coinId,symbol,tvSymbol){
-// Find coin in cached data
+// --- Show Crypto Detail Overlay (global) ---
+window.showCryptoDetail=function(coinId,symbol,tvSymbol){
 var coin=null;
-if(_top50Data){
-for(var i=0;i<_top50Data.length;i++){
-if(_top50Data[i].id===coinId){coin=_top50Data[i];break;}
+if(window._top50Data){
+for(var i=0;i<window._top50Data.length;i++){
+if(window._top50Data[i].id===coinId){coin=window._top50Data[i];break;}
 }
 }
 var overlay=document.createElement('div');
@@ -4136,18 +4127,16 @@ content.style.cssText='padding:12px;flex:1';
 overlay.appendChild(content);
 document.body.appendChild(overlay);
 document.body.style.overflow='hidden';
-// Loading spinner
 content.innerHTML='<div style="text-align:center;padding:40px"><div class="spinner" style="width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto"></div><div style="color:var(--text2);margin-top:12px;font-size:16px">Loading '+symbol+'...</div></div>';
-// Fetch full coin data
 fetch('https://api.coingecko.com/api/v3/coins/'+coinId+'?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=true').then(function(r){return r.json()}).then(function(d){
-renderCryptoDetailContent(content,d,symbol,tvSymbol,coin);
+window._renderCryptoDetailContent(content,d,symbol,tvSymbol,coin);
 }).catch(function(){
 content.innerHTML='<div style="text-align:center;color:var(--text2);padding:40px"><div style="font-size:28px;margin-bottom:8px">⚠️</div>Failed to load data for '+symbol+'</div>';
 });
-}
+};
 
-// --- Render Crypto Detail Content ---
-function renderCryptoDetailContent(el,d,symbol,tvSymbol,quickData){
+// --- Render Crypto Detail Content (global) ---
+window._renderCryptoDetailContent=function(el,d,symbol,tvSymbol,quickData){
 if(!d||!d.market_data){el.innerHTML='<div style="text-align:center;color:var(--text2);padding:40px">No data available</div>';return;}
 var md=d.market_data;
 var img=d.image?d.image.small:'';
@@ -4162,7 +4151,6 @@ y1:md.price_change_percentage_1y_in_currency?md.price_change_percentage_1y_in_cu
 };
 var ath=md.ath?md.ath.usd:0;
 var athChange=md.ath_change_percentage?md.ath_change_percentage.usd:0;
-var atl=md.atl?md.atl.usd:0;
 var marketCap=md.market_cap?md.market_cap.usd:0;
 var vol24h=md.total_volume?md.total_volume.usd:0;
 var circSupply=md.circulating_supply||0;
@@ -4173,50 +4161,39 @@ var rank=md.market_cap_rank||0;
 var sparkline=md.sparkline_7d?md.sparkline_7d.price:[];
 var high24h=md.high_24h?md.high_24h.usd:0;
 var low24h=md.low_24h?md.low_24h.usd:0;
-// Links
 var links=d.links||{};
 var linkHtml='';
 if(links.homepage&&links.homepage[0])linkHtml+='<a href="'+links.homepage[0]+'" target="_blank" style="display:inline-block;padding:6px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:#58a6ff;font-size:14px;font-weight:600;text-decoration:none;margin:4px">🌐 Website</a>';
 if(links.twitter_screen_name)linkHtml+='<a href="https://x.com/'+links.twitter_screen_name+'" target="_blank" style="display:inline-block;padding:6px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:#58a6ff;font-size:14px;font-weight:600;text-decoration:none;margin:4px">𝕏 Twitter</a>';
 if(links.reddit_url)linkHtml+='<a href="'+links.reddit_url+'" target="_blank" style="display:inline-block;padding:6px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:#58a6ff;font-size:14px;font-weight:600;text-decoration:none;margin:4px">🔴 Reddit</a>';
-if(d.links&&links.blockchain_site){
+if(links.blockchain_site){
 for(var i=0;i<Math.min(2,links.blockchain_site.length);i++){
 if(links.blockchain_site[i])linkHtml+='<a href="'+links.blockchain_site[i]+'" target="_blank" style="display:inline-block;padding:6px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:#58a6ff;font-size:14px;font-weight:600;text-decoration:none;margin:4px">⛓️ Explorer</a>';
 }
 }
 if(links.white_paper)linkHtml+='<a href="'+links.white_paper+'" target="_blank" style="display:inline-block;padding:6px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:#58a6ff;font-size:14px;font-weight:600;text-decoration:none;margin:4px">📄 Whitepaper</a>';
 linkHtml+='<a href="https://www.coingecko.com/en/coins/'+d.id+'" target="_blank" style="display:inline-block;padding:6px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:#58a6ff;font-size:14px;font-weight:600;text-decoration:none;margin:4px">📊 CoinGecko</a>';
-// Description (truncated)
 var desc=d.description?d.description.en:'';
 if(desc){desc=desc.replace(/<[^>]*>/g,'');if(desc.length>300)desc=desc.substring(0,300)+'...';}
-// Price changes chart data
 var changeLabels=['1H','24H','7D','30D','1Y'];
 var changeData=[changes.h1,changes.h24,changes.d7,changes.d30,changes.y1];
-// 30-day price chart (from sparkline if available, otherwise from 7d)
 var priceChartLabels=[],priceChartData=[];
 if(sparkline&&sparkline.length>0){
-for(var i=0;i<sparkline.length;i++){
-priceChartLabels.push('');
-priceChartData.push(sparkline[i]);
-}
+for(var i=0;i<sparkline.length;i++){priceChartLabels.push('');priceChartData.push(sparkline[i]);}
 }
 var avg7d=priceChartData.length>0?priceChartData.reduce(function(a,b){return a+b},0)/priceChartData.length:0;
-// Volume chart (use 24h vol as a single bar, mock daily breakdown)
 var volLabels=[],volData=[];
 if(vol24h>0){
 for(var i=0;i<30;i++){volLabels.push('');volData.push(vol24h*(0.7+Math.random()*0.6));}
 }
 var avgVol=volData.length>0?volData.reduce(function(a,b){return a+b},0)/volData.length:0;
 var html='';
-// Price header
 html+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">';
 if(img)html+='<img src="'+img+'" style="width:40px;height:40px;border-radius:50%">';
 html+='<div><div style="font-size:22px;font-weight:800">'+name+' ('+symbol+')</div>';
 html+='<div style="font-size:28px;font-weight:700;color:'+(changes.h24>=0?'var(--green)':'var(--red)')+'">$'+fmtCrypto(price)+'</div>';
 html+='</div></div>';
-// Rank badge
 if(rank>0)html+='<div style="display:inline-block;padding:4px 12px;background:var(--bg);border-radius:20px;font-size:14px;font-weight:600;color:var(--text2);margin-bottom:12px">Rank #'+rank+'</div>';
-// Price changes section
 html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px">';
 html+='<div style="font-size:18px;font-weight:700;margin-bottom:12px">📈 Price Changes</div>';
 html+='<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:12px">';
@@ -4230,15 +4207,12 @@ html+='<div style="font-size:15px;font-weight:700;color:'+c+'">'+(p.v>=0?'+':'')
 html+='</div>';
 }
 html+='</div>';
-// Price change bar chart
 html+='<div style="height:180px;position:relative"><canvas id="cryptoChangeChart"></canvas></div>';
 html+='</div>';
-// Interactive TradingView chart
 html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px">';
 html+='<div style="font-size:18px;font-weight:700;margin-bottom:8px">📊 Live Interactive Chart</div>';
 html+='<div id="cryptoTVChart" style="height:350px;width:100%;border-radius:12px;overflow:hidden;background:#131722"></div>';
 html+='</div>';
-// Key metrics grid
 html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px">';
 html+='<div style="font-size:18px;font-weight:700;margin-bottom:12px">📋 Key Metrics</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
@@ -4253,7 +4227,6 @@ html+='<div style="background:var(--bg);border-radius:10px;padding:12px"><div st
 if(fdv>0)html+='<div style="background:var(--bg);border-radius:10px;padding:12px"><div style="font-size:12px;color:var(--text2)">FDV</div><div style="font-size:17px;font-weight:700;color:#059B7F">'+fmtCryptoCap(fdv)+'</div></div>';
 if(totalSupply>0)html+='<div style="background:var(--bg);border-radius:10px;padding:12px"><div style="font-size:12px;color:var(--text2)">Total Supply</div><div style="font-size:17px;font-weight:700">'+fmtCryptoSupply(totalSupply)+'</div></div>';
 html+='</div></div>';
-// 30-day price chart with average line
 if(priceChartData.length>0){
 html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px">';
 html+='<div style="font-size:18px;font-weight:700;margin-bottom:4px">📉 7-Day Price Trend</div>';
@@ -4261,7 +4234,6 @@ html+='<div style="font-size:14px;color:var(--text2);margin-bottom:12px">7-day a
 html+='<div style="height:200px;position:relative"><canvas id="cryptoPriceChart"></canvas></div>';
 html+='</div>';
 }
-// Volume chart with average
 if(volData.length>0){
 html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px">';
 html+='<div style="font-size:18px;font-weight:700;margin-bottom:4px">📊 30-Day Volume Estimate</div>';
@@ -4269,12 +4241,10 @@ html+='<div style="font-size:14px;color:var(--text2);margin-bottom:12px">Daily a
 html+='<div style="height:180px;position:relative"><canvas id="cryptoVolChart"></canvas></div>';
 html+='</div>';
 }
-// Links
 html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px">';
 html+='<div style="font-size:18px;font-weight:700;margin-bottom:10px">🔗 Links</div>';
 html+='<div style="display:flex;flex-wrap:wrap;gap:4px">'+linkHtml+'</div>';
 html+='</div>';
-// Description
 if(desc){
 html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px">';
 html+='<div style="font-size:18px;font-weight:700;margin-bottom:8px">📖 About '+name+'</div>';
@@ -4282,14 +4252,11 @@ html+='<div style="font-size:15px;color:var(--text2);line-height:1.6">'+desc+'</
 html+='</div>';
 }
 el.innerHTML=html;
-// Load TradingView chart
 var tvChart=document.getElementById('cryptoTVChart');
 if(tvChart&&typeof loadTradingViewChart==='function'){
 loadTradingViewChart(tvChart,tvSymbol);
 }
-// Render Chart.js charts
 if(typeof Chart==='undefined')return;
-// Price change chart
 var cc=document.getElementById('cryptoChangeChart');
 if(cc){
 new Chart(cc,{
@@ -4298,7 +4265,6 @@ data:{labels:changeLabels,datasets:[{label:'% Change',data:changeData,background
 options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return(ctx.raw>=0?'+':'')+ctx.raw.toFixed(2)+'%'}}}},scales:{y:{ticks:{color:'#888',callback:function(v){return v+'%'}},grid:{color:'rgba(128,128,128,0.1)'}},x:{ticks:{color:'#ccc'},grid:{display:false}}}}
 });
 }
-// Price trend chart
 var pc=document.getElementById('cryptoPriceChart');
 if(pc){
 new Chart(pc,{
@@ -4307,7 +4273,6 @@ data:{labels:priceChartLabels,datasets:[{label:'Price',data:priceChartData,borde
 options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:'#ccc',font:{size:12}}}},scales:{y:{ticks:{color:'#888',callback:function(v){return '$'+fmtCrypto(v)}},grid:{color:'rgba(128,128,128,0.1)'}},x:{display:false,grid:{display:false}}}}
 });
 }
-// Volume chart
 var vc=document.getElementById('cryptoVolChart');
 if(vc){
 new Chart(vc,{
@@ -4316,7 +4281,7 @@ data:{labels:volLabels,datasets:[{label:'Volume',data:volData,backgroundColor:'r
 options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:'#ccc',font:{size:12}}}},scales:{y:{ticks:{color:'#888',callback:function(v){return fmtCryptoCap(v)}},grid:{color:'rgba(128,128,128,0.1)'}},x:{display:false,grid:{display:false}}}}
 });
 }
-}
+};
 
 // --- Compute Crypto Market Sentiment ---
 function computeSentiment(){
