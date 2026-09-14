@@ -1177,9 +1177,6 @@ html+='Analyst data loading for '+sym+'.';
 html+='</div></div>';
 html+='</div></div>';
 
-// === RECENT NEWS ===
-html+='<div id="newsContainer" style="margin-bottom:18px"></div>';
-
 // === INDIVIDUAL ANALYST RATINGS & PRICE TARGETS ===
 html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px">';
 html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:var(--blue)"></div><span style="font-size: 24px;font-weight:650">Individual Analyst Ratings & Price Targets</span></div>';
@@ -1187,6 +1184,9 @@ html+='<div id="analystList" style="display:flex;flex-direction:column;gap:0">';
 html+='<div style="text-align:center;padding:20px;color:var(--text2);font-size: 19px"><div class="spinner" style="width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 8px"></div>Loading analyst ratings...</div>';
 html+='</div>';
 html+='</div>';
+
+// === RECENT NEWS ===
+html+='<div id="newsContainer" style="margin-bottom:18px"></div>';
 
 out.innerHTML=html;
 
@@ -1614,15 +1614,15 @@ html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><
 html+='<div class="tv-chart-container" id="tvChartContainer" style="height:400px;border-radius:12px;overflow:hidden;background:#131722"></div>';
 html+='</div>';
 
-// === RECENT NEWS ===
-html+='<div id="newsContainer" style="margin-bottom:18px"></div>';
-
 // === INDIVIDUAL ANALYST RATINGS (from analyst-ratings.json) ===
 html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px">';
 html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:var(--blue)"></div><span style="font-size: 24px;font-weight:650">Individual Analyst Ratings & Price Targets</span></div>';
 html+='<div id="analystList" style="display:flex;flex-direction:column;gap:0">';
 html+='<div style="text-align:center;padding:20px;color:var(--text2);font-size: 19px">No individual analyst ratings available for '+symbol+' (crypto not covered by stock analysts)</div>';
 html+='</div></div>';
+
+// === RECENT NEWS ===
+html+='<div id="newsContainer" style="margin-bottom:18px"></div>';
 
 out.innerHTML=html;
 
