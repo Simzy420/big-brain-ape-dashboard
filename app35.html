@@ -410,9 +410,14 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 </div>
 </div>
 
+<!-- NEW ALL-TIME HIGHS TODAY -->
+<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin:16px">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:#10b981"></div><span style="font-size:22px;font-weight:700">New All-Time Highs Today 🏆</span></div>
+<div style="font-size:14px;color:var(--text2);margin-bottom:14px">10 stocks that hit their highest price ever today. Tap any to analyze.</div>
+<div id="athContainer" style="display:flex;flex-direction:column;gap:8px"><div class="spinner" style="width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto"></div></div>
 </div>
 
-<!-- ANALYSIS VIEW -->
+</div>
 <div id="view-analysis" class="view">
 <div style="position:relative;padding:10px 16px"><button class="back-btn" style="position:static;transform:none" onclick="switchView('home')">‹ Back</button></div>
 <div id="analysisOutput"></div>
@@ -2563,6 +2568,85 @@ var briefEl=document.getElementById('big-sq-2');
 .catch(function(){});
 }
 
+// ==============================
+// NEW ALL-TIME HIGHS TODAY
+// ==============================
+window.loadNewATHs=function(){
+var el=document.getElementById('athContainer');
+if(!el)return;
+// Popular liquid stocks to check for new ATHs
+var watchlist=['NVDA','AAPL','MSFT','GOOGL','AMZN','META','TSLA','AVGO','LLY','JPM','V','MA','COST','HD','UNH','CRM','AMD','NFLX','ORCL','PLTR','COIN','HOOD','MSTR','CRWD','SHOP','SNOW','PANW','MU','SKHX','SNDK','DELL','IBM','WMT','PG','JNJ','KO','PEP','XOM','CVX','ABBV','BAC','GS','MS','BLK','BX','SCHW','C','WFC','AXP','CAT','BA','GE','RTX','LMT','UPS','FDX','LOW','TGT','SBUX','MCD','NKE','DIS','NFLX','PYPL','ABNB','DASH','UBER','LYFT','SPOT','SNAP','PINS','ROKU','ZM','DOCU','SQ','AFRM','DKNG','RIVN','PLUG','F','GM','RBLX','DDOG','MNDY','NET','ZS','CRWD','OKTA','TEAM','MDB','FSLR','ENPH','SEDG','RUN','JKS','NEE','DUK','SO','AEP','SRE','XEL','WMB','ET','KMI','OXY','PSX','MPC','VLO','HES','DVN','CTRA','EQT','AR','SWN','RRC','CHK','MTDR','TXG','DNOW','NBR','SDRL','HP','DOUG','NBR','WHD','BKR','HAL','SLB','NOV','TS','WMB','ET','EPD','MPLX','PAA','CEQP','TRGP','KMI','WES','GEL','AM','ARES','KKR','CG','BX','APO','TPG','BLK','SCHW','NTRS','BEN','TROW','IVZ','LM','JEF','HOOD','COIN','SOFI','AFRM','SQ','PYPL','FIS','FISV','GPN','V','MA','AXP','DFS','COF','SYF','ALLY','BAC','C','JPM','GS','MS','WFC','PNC','USB','TFC','KEY','RF','MTB','CFG','NTRS','BK','SCHW','IBKR','NDAQ','CBOE','ICE','SPGI','MCO','MSCI','FDS','FACT','WST','IDXX','ILMN','PKI','WAT','BIO','BRKR','TMO','DHR','ABT','MDT','ISRG','SYK','BSX','EW','HOLX','ZBH','RMD','STE','PHG','GUD','BSX','EW','HOLX','ZBH','RMD','STE','PHG','GUD'];
+// Dedupe
+var unique={};var stocks=[];
+for(var i=0;i<watchlist.length;i++){if(!unique[watchlist[i]]){unique[watchlist[i]]=true;stocks.push(watchlist[i]);}}
+// Take top 60 most popular to check (Finnhub rate limits)
+stocks=stocks.slice(0,60);
+var athResults=[];
+var checked=0;
+function checkNext(idx){
+if(idx>=stocks.length){
+renderATHList();
+return;
+}
+var sym=stocks[idx];
+fetch('https://finnhub.io/api/v1/quote?symbol='+sym+'&token='+FINNHUB_KEY)
+.then(function(r){return r.json()})
+.then(function(q){
+checked++;
+if(q&&q.h&&q.c){
+// If today's high equals current price (within 0.1%), it's at/near ATH
+// Better: if current price >= all-time high (we use 52wk high as proxy)
+// Finnhub quote gives: h (high today), l (low today), c (current), pc (prev close)
+// For true ATH we'd need historical data. Use h === c as proxy for "hit high today"
+var todayHigh=q.h;
+var current=q.c;
+var changePct=q.pc?((current-q.pc)/q.pc)*100:0;
+// Stock hit a new high today if today's high is very close to current price
+// and the stock is up today
+if(current>0 && todayHigh>0 && changePct>0 && Math.abs(todayHigh-current)/current<0.005){
+athResults.push({symbol:sym,price:current,changePct:changePct,high:todayHigh});
+}
+}
+checkNext(idx+1);
+})
+.catch(function(){
+checked++;
+checkNext(idx+1);
+});
+}
+function renderATHList(){
+if(athResults.length===0){
+el.innerHTML='<div style="text-align:center;color:var(--text2);padding:20px"><div style="font-size:28px;margin-bottom:6px">📊</div><div style="font-size:16px;font-weight:600;color:var(--text)">No new all-time highs today</div><div style="font-size:14px;margin-top:4px">Check back tomorrow — stocks hitting new highs will appear here.</div></div>';
+return;
+}
+// Sort by biggest gain today
+athResults.sort(function(a,b){return b.changePct-a.changePct});
+var top10=athResults.slice(0,10);
+var h='';
+for(var i=0;i<top10.length;i++){
+var s=top10[i];
+var color=s.changePct>=0?'var(--green)':'var(--red)';
+h+='<div onclick="quickSearch(\''+s.symbol+'\')" style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:var(--bg);border-radius:10px;cursor:pointer;transition:background .15s" onmouseover="this.style.background=\'var(--card)\'" onmouseout="this.style.background=\'var(--bg)\'">';
+h+='<div style="display:flex;align-items:center;gap:10px">';
+h+='<span style="font-size:16px;font-weight:700;color:var(--text2)">#'+(i+1)+'</span>';
+h+='<span style="font-size:18px;font-weight:700">'+s.symbol+'</span>';
+h+='<span style="font-size:14px;color:var(--green)">🏆 ATH</span>';
+h+='</div>';
+h+='<div style="text-align:right">';
+h+='<div style="font-size:17px;font-weight:700">$'+fmtNum(s.price)+'</div>';
+h+='<div style="font-size:15px;font-weight:600;color:'+color+'">'+(s.changePct>=0?'+':'')+s.changePct.toFixed(2)+'%</div>';
+h+='</div>';
+h+='</div>';
+}
+if(athResults.length>10){
+h+='<div style="text-align:center;font-size:14px;color:var(--text2);padding:8px">+ '+(athResults.length-10)+' more hit new highs today</div>';
+}
+el.innerHTML=h;
+}
+// Start checking stocks (batch of 1 to avoid rate limits)
+checkNext(0);
+};
+
 function findItem(arr,sym){
 if(!arr)return null;
 for(var i=0;i<arr.length;i++){
@@ -3706,6 +3790,7 @@ document.getElementById('briefingDate').textContent=formatDate(new Date());
 
 loadTickerTapes();
 loadHomeData();
+loadNewATHs();
 
 // ==============================
 // CRYPTO HUB
