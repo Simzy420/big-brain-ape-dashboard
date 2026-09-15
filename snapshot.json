@@ -1,5 +1,5 @@
 {
-  "date": "September 15, 2026 01:35 UTC",
+  "date": "September 15, 2026 01:40 UTC",
   "assets": {
     "S&P 500": {
       "price": 7619.98,
@@ -86,20 +86,20 @@
       ]
     },
     "BTC": {
-      "price": 77918.2,
-      "change_pct": 1.7,
+      "price": 77917.7,
+      "change_pct": 1.44,
       "support": 62723.9,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2512.83,
-      "change_pct": 1.62,
+      "price": 2511.91,
+      "change_pct": 1.2,
       "support": 1871.61,
       "resistance": 2666.0
     },
     "SOL": {
-      "price": 102.33,
-      "change_pct": 3.23,
+      "price": 102.31,
+      "change_pct": 2.81,
       "support": 74.38,
       "resistance": 110.6
     }
@@ -162,7 +162,7 @@
       "color": "red"
     },
     "oil": {
-      "value": "$102.33",
+      "value": "$102.49",
       "label": "WTI OIL",
       "color": "yellow"
     },
@@ -172,7 +172,7 @@
       "color": "yellow"
     },
     "silver": {
-      "value": "$63.97",
+      "value": "$63.95",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -192,13 +192,18 @@
       "label": "NEUTRAL",
       "text": "Gold down -1.5% \u2014 risk appetite",
       "type": "neutral"
+    },
+    {
+      "label": "CAUTION",
+      "text": "NVDA down -3.4% \u2014 watch AI sector",
+      "type": "caution"
     }
   ],
-  "btc_funding": 4.439e-05,
+  "btc_funding": 4.271e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 32.49,
+    "daily_inflow": 32.5,
     "daily_avg": 28.11,
     "daily_pct": 15.6,
     "weekly_inflow": 196.8,
@@ -278,7 +283,7 @@
       96.05,
       102.48,
       100.05,
-      102.33
+      102.49
     ],
     "gold": [
       4380.4,
@@ -324,7 +329,7 @@
       67.94,
       64.28,
       64.55,
-      63.97
+      63.95
     ],
     "dxy": [
       99.67,
