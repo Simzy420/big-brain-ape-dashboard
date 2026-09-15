@@ -528,6 +528,14 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 </div>
 </div>
 
+<!-- PORTFOLIO VIEW -->
+<div id="view-portfolio" class="view">
+<div class="header"><button class="back-btn" onclick="switchView('home')">‹ Back</button><h1>My <span>Portfolio</span> 💼</h1></div>
+<div id="portfolioContent">
+<div class="loading"><div class="spinner"></div>Loading portfolio...</div>
+</div>
+</div>
+
 <!-- NAV -->
 <nav class="nav">
 <button class="nav-btn active" data-view="home" onclick="switchView('home')">
@@ -544,6 +552,9 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 </button>
 <button class="nav-btn" data-view="crypto" onclick="switchView('crypto')">
 <span class="nav-emoji">🐋</span><span class="nav-label">Crypto</span>
+</button>
+<button class="nav-btn" data-view="portfolio" onclick="switchView('portfolio')">
+<span class="nav-emoji">💼</span><span class="nav-label">Portfolio</span>
 </button>
 <button class="nav-btn" data-view="pricing" onclick="switchView('pricing')">
 <span class="nav-emoji">💰</span><span class="nav-label">Pricing</span>
@@ -598,6 +609,7 @@ if(name==='trading')loadTrading();
 else if(name==='briefing')loadBriefing();
 else if(name==='snapshot')loadSnapshot();
 else if(name==='crypto')loadCrypto();
+else if(name==='portfolio')loadPortfolio();
 }
 
 // ==============================
@@ -621,6 +633,191 @@ return r.json();
 })
 .catch(function(e){throw e});
 }
+
+// ==============================
+// PORTFOLIO TRACKER
+// ==============================
+var CRYPTO_COIN_MAP={BTC:'bitcoin',ETH:'ethereum',SOL:'solana',BNB:'binancecoin',XRP:'ripple',ADA:'cardano',DOGE:'dogecoin',LINK:'chainlink',DOT:'polkadot',AVAX:'avalanche-2',LTC:'litecoin',UNI:'uniswap',AAVE:'aave',MATIC:'matic-network',ATOM:'cosmos',NEAR:'near',FTM:'fantom',ALGO:'algorand',VET:'vechain',ICP:'internet-computer',FIL:'filecoin',HBAR:'hedera-hashgraph',SAND:'the-sandbox',MANA:'decentraland',AXS:'axie-infinity',GALA:'gala',SHIB:'shiba-inu',PEPE:'pepe',WIF:'dogwifcoin',BONK:'bonk',FLOKI:'floki',JUP:'jupiter-exchange-solana',PYTH:'pyth-network',RNDR:'render-token',GRT:'the-graph',SUI:'sui',SEI:'sei-network',TIA:'celestia',INJ:'injective-protocol',ORDI:'ordinals',BCH:'bitcoin-cash',XLM:'stellar',ETHFI:'ether-fi',TON:'the-open-network',APT:'aptos',ARB:'arbitrum',OP:'optimism',CRV:'curve-dao-token',LDO:'lido-dao',WLD:'worldcoin-wld',ENA:'ethena',AR:'arweave',TAO:'bittensor',FET:'fetch-ai',RENDER:'render-token',KAITO:'kaito',VIRTUAL:'virtual-protocol',HYPE:'hyperliquid',PUMP:'pump',VVV:'vvv',MON:'mon',STABLE:'stable',BCH:'bitcoin-cash',FTT:'ftx-token',TON:'the-open-network',WLFI:'world-liberty-financial',AERO:'aerodrome-finance',ONDO:'ondo-finance',PAXG:'pax-gold',XPL:'xpl',ZEC:'zcash',LIT:'lition',XMR:'monero',IP:'story-protocol',ASTER:'aster',CC:'cc',SKY:'sky'};
+var PORTFOLIO_FREE_LIMIT=5;
+function getPortfolio(){try{return JSON.parse(localStorage.getItem('bba_portfolio')||'[]')}catch(e){return[]}}
+function savePortfolio(p){localStorage.setItem('bba_portfolio',JSON.stringify(p))}
+function getPortfolioUnlocked(){return localStorage.getItem('bba_portfolio_unlocked')==='true'}
+function setPortfolioUnlocked(v){if(v)localStorage.setItem('bba_portfolio_unlocked','true');else localStorage.removeItem('bba_portfolio_unlocked')}
+
+window.loadPortfolio=function(){
+var holdings=getPortfolio();
+var container=document.getElementById('portfolioContent');
+if(!container)return;
+
+if(holdings.length===0){
+container.innerHTML='<div style="padding:20px;text-align:center">'+
+'<div style="font-size:48px;margin-bottom:12px">💼</div>'+
+'<p style="color:var(--text2);font-size:16px;margin-bottom:20px">No holdings yet. Add your first position to start tracking your portfolio.</p>'+
+'<button onclick="window.showAddHolding()" style="background:linear-gradient(135deg,#58a6ff,#3fb950);border:none;color:#0d1117;font-size:16px;font-weight:700;padding:12px 28px;border-radius:12px;cursor:pointer">+ Add Position</button>'+
+'</div>';
+return;
+}
+
+// Show summary + holdings
+container.innerHTML='<div id="portfolioSummary" style="padding:16px"><div class="loading"><div class="spinner"></div>Fetching live prices...</div></div>'+
+'<div id="portfolioList" style="padding:0 16px"></div>'+
+'<div style="padding:16px;text-align:center">'+
+'<button onclick="window.showAddHolding()" style="background:var(--card);border:1px solid var(--border);color:var(--text);font-size:15px;font-weight:600;padding:10px 24px;border-radius:10px;cursor:pointer;margin-right:8px">+ Add Position</button>'+
+'<button onclick="window.clearPortfolioConfirm()" style="background:transparent;border:1px solid var(--border);color:var(--text2);font-size:15px;padding:10px 20px;border-radius:10px;cursor:pointer">Clear All</button>'+
+'</div>';
+
+// Fetch all prices
+var promises=holdings.map(function(h){
+var isCrypto=CRYPTO_COIN_MAP[h.symbol.toUpperCase()];
+if(isCrypto){
+return fetch('https://api.coingecko.com/api/v3/simple/price?ids='+isCrypto+'&vs_currencies=usd&include_24hr_change=true')
+.then(function(r){return r.json()})
+.then(function(d){
+var price=d[isCrypto]?d[isCrypto].usd:0;
+var change=d[isCrypto]?d[isCrypto].usd_24h_change:0;
+return {symbol:h.symbol,shares:h.shares,buyPrice:h.buyPrice,currentPrice:price,change:change};
+});
+}else{
+return fetch('https://finnhub.io/api/v1/quote?symbol='+h.symbol.toUpperCase()+'&token='+FINNHUB_KEY)
+.then(function(r){return r.json()})
+.then(function(d){
+var price=d.c||0;
+var change=d.dp||0;
+return {symbol:h.symbol,shares:h.shares,buyPrice:h.buyPrice,currentPrice:price,change:change};
+});
+}
+});
+
+Promise.all(promises).then(function(results){
+var totalValue=0,totalCost=0,totalDayChange=0;
+var html='<div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px">'+
+'<div style="font-size:14px;color:var(--text2);margin-bottom:8px">Total Portfolio Value</div>'+
+'<div style="font-size:32px;font-weight:800;color:#059B7F">$'+results.reduce(function(s,r){return s+r.currentPrice*r.shares},0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+'</div>';
+
+results.forEach(function(r){totalValue+=r.currentPrice*r.shares;totalCost+=r.buyPrice*r.shares;totalDayChange+=r.currentPrice*r.shares*(r.change/100)});
+
+var totalPL=totalValue-totalCost;
+var totalPLPct=totalCost>0?(totalPL/totalCost*100):0;
+var plColor=totalPL>=0?'#059B7F':'#f85149';
+var dayColor=totalDayChange>=0?'#059B7F':'#f85149';
+
+html+='<div style="display:flex;justify-content:space-between;margin-top:16px">'+
+'<div><div style="font-size:12px;color:var(--text2)">Total P&L</div><div style="font-size:18px;font-weight:700;color:'+plColor+'">'+(totalPL>=0?'+':'')+'$'+totalPL.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' ('+(totalPLPct>=0?'+':'')+totalPLPct.toFixed(2)+'%)</div></div>'+
+'<div><div style="font-size:12px;color:var(--text2)">Today</div><div style="font-size:18px;font-weight:700;color:'+dayColor+'">'+(totalDayChange>=0?'+':'')+'$'+totalDayChange.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+'</div></div>'+
+'</div></div>';
+
+document.getElementById('portfolioSummary').innerHTML=html;
+
+// Holdings list
+var listHtml='<div style="font-size:14px;color:var(--text2);margin-bottom:8px;font-weight:600">Holdings ('+results.length+')</div>';
+results.sort(function(a,b){return (b.currentPrice*b.shares)-(a.currentPrice*a.shares)});
+results.forEach(function(r,idx){
+var value=r.currentPrice*r.shares;
+var cost=r.buyPrice*r.shares;
+var pl=value-cost;
+var plPct=cost>0?(pl/cost*100):0;
+var c=pl>=0?'#059B7F':'#f85149';
+var dayC=r.change>=0?'#059B7F':'#f85149';
+listHtml+='<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">'+
+'<div>'+
+'<div style="font-size:16px;font-weight:700">'+r.symbol.toUpperCase()+'</div>'+
+'<div style="font-size:13px;color:var(--text2)">'+r.shares+' @ $'+r.buyPrice.toFixed(2)+' buy</div>'+
+'<div style="font-size:13px;color:'+c+'">'+(pl>=0?'+':'')+'$'+pl.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' ('+(plPct>=0?'+':'')+plPct.toFixed(1)+'%)</div>'+
+'</div>'+
+'<div style="text-align:right">'+
+'<div style="font-size:18px;font-weight:700">$'+r.currentPrice.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+'</div>'+
+'<div style="font-size:13px;color:'+dayC+'">'+(r.change>=0?'+':'')+r.change.toFixed(2)+'% today</div>'+
+'<button onclick="window.removeHolding('+idx+')" style="margin-top:6px;background:transparent;border:none;color:var(--text2);font-size:12px;cursor:pointer;text-decoration:underline">Remove</button>'+
+'</div>'+
+'</div>';
+});
+document.getElementById('portfolioList').innerHTML=listHtml;
+}).catch(function(e){
+document.getElementById('portfolioSummary').innerHTML='<div style="color:var(--text2);padding:20px">Error loading prices. Try again.</div>';
+});
+};
+
+window.showAddHolding=function(){
+var unlocked=getPortfolioUnlocked();
+var holdings=getPortfolio();
+if(!unlocked && holdings.length>=PORTFOLIO_FREE_LIMIT){
+// Show paywall
+var overlay=document.createElement('div');
+overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center';
+overlay.innerHTML='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:340px;text-align:center">'+
+'<div style="font-size:40px;margin-bottom:12px">🔒</div>'+
+'<div style="font-size:20px;font-weight:700;margin-bottom:8px">5 Free Positions Used</div>'+
+'<p style="color:var(--text2);font-size:14px;margin-bottom:20px">You\'ve used all 5 free portfolio positions. Unlock unlimited holdings for $0.25.</p>'+
+'<button onclick="this.closest(\'div[style*=fixed]\').remove();window.payPortfolioUnlock()" style="background:linear-gradient(135deg,#58a6ff,#3fb950);border:none;color:#0d1117;font-size:16px;font-weight:700;padding:12px 28px;border-radius:12px;cursor:pointer;margin-right:8px">Unlock $0.25</button>'+
+'<button onclick="this.closest(\'div[style*=fixed]\').remove()" style="background:transparent;border:1px solid var(--border);color:var(--text2);font-size:15px;padding:12px 20px;border-radius:12px;cursor:pointer">Cancel</button>'+
+'</div>';
+document.body.appendChild(overlay);
+return;
+}
+var overlay=document.createElement('div');
+overlay.id='addHoldingModal';
+overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center';
+overlay.innerHTML='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:380px;width:90%">'+
+'<div style="font-size:20px;font-weight:700;margin-bottom:16px">Add Position</div>'+
+'<label style="display:block;font-size:13px;color:var(--text2);margin-bottom:4px">Ticker (stock or crypto)</label>'+
+'<input id="holdSymbol" type="text" placeholder="AAPL, NVDA, BTC, ETH..." style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-size:16px;font-family:inherit;outline:none;margin-bottom:12px;text-transform:uppercase">'+
+'<label style="display:block;font-size:13px;color:var(--text2);margin-bottom:4px">Shares / Amount</label>'+
+'<input id="holdShares" type="number" step="any" placeholder="10" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-size:16px;font-family:inherit;outline:none;margin-bottom:12px">'+
+'<label style="display:block;font-size:13px;color:var(--text2);margin-bottom:4px">Buy Price ($)</label>'+
+'<input id="holdBuyPrice" type="number" step="any" placeholder="150.00" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-size:16px;font-family:inherit;outline:none;margin-bottom:16px">'+
+'<div style="display:flex;gap:8px">'+
+'<button onclick="window.addHolding()" style="flex:1;background:linear-gradient(135deg,#58a6ff,#3fb950);border:none;color:#0d1117;font-size:16px;font-weight:700;padding:12px;border-radius:12px;cursor:pointer">Add</button>'+
+'<button onclick="document.getElementById(\'addHoldingModal\').remove()" style="background:transparent;border:1px solid var(--border);color:var(--text2);font-size:16px;padding:12px 20px;border-radius:12px;cursor:pointer">Cancel</button>'+
+'</div>'+
+'</div>';
+document.body.appendChild(overlay);
+setTimeout(function(){document.getElementById('holdSymbol').focus()},100);
+};
+
+window.addHolding=function(){
+var symbol=document.getElementById('holdSymbol').value.trim().toUpperCase();
+var shares=parseFloat(document.getElementById('holdShares').value);
+var buyPrice=parseFloat(document.getElementById('holdBuyPrice').value);
+if(!symbol||!shares||!buyPrice||shares<=0||buyPrice<=0){
+alert('Please fill in all fields with valid values');
+return;
+}
+var p=getPortfolio();
+p.push({symbol:symbol,shares:shares,buyPrice:buyPrice,added:Date.now()});
+savePortfolio(p);
+var modal=document.getElementById('addHoldingModal');
+if(modal)modal.remove();
+window.loadPortfolio();
+};
+
+window.removeHolding=function(idx){
+var p=getPortfolio();
+p.splice(idx,1);
+savePortfolio(p);
+window.loadPortfolio();
+};
+
+window.clearPortfolioConfirm=function(){
+if(confirm('Remove all positions? This cannot be undone.')){
+savePortfolio([]);
+window.loadPortfolio();
+}
+};
+
+window.payPortfolioUnlock=function(){
+// Same payment flow as analysis — USDC to wallet
+var overlay=document.createElement('div');
+overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center';
+overlay.innerHTML='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:340px;text-align:center">'+
+'<div style="font-size:40px;margin-bottom:12px">💰</div>'+
+'<div style="font-size:20px;font-weight:700;margin-bottom:8px">Unlock Unlimited Portfolio</div>'+
+'<p style="color:var(--text2);font-size:14px;margin-bottom:16px">Send $0.25 USDC (Base) to:</p>'+
+'<div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:16px;word-break:break-all;font-size:13px;font-family:monospace">0x37a8023762c69f7150d878733fd9f635f1070fc6</div>'+
+'<p style="color:var(--text2);font-size:13px;margin-bottom:20px">Then reply "I paid" in the Telegram bot to unlock.</p>'+
+'<button onclick="this.closest(\'div[style*=fixed]\').remove()" style="background:linear-gradient(135deg,#58a6ff,#3fb950);border:none;color:#0d1117;font-size:16px;font-weight:700;padding:12px 28px;border-radius:12px;cursor:pointer">Got it</button>'+
+'</div>';
+document.body.appendChild(overlay);
+};
 
 // Fetch 3 latest news articles for a stock ticker
 function fetchStockNews(symbol){
