@@ -1,9 +1,9 @@
 {
-  "date": "September 15, 2026 16:31 UTC",
+  "date": "September 15, 2026 16:36 UTC",
   "assets": {
     "S&P 500": {
-      "price": 7585.46,
-      "change_pct": -0.45,
+      "price": 7587.46,
+      "change_pct": -0.43,
       "support": 7572.69,
       "resistance": 7790.68,
       "history": [
@@ -27,12 +27,12 @@
         7591.7,
         7656.98,
         7619.98,
-        7585.46
+        7587.46
       ]
     },
     "NASDAQ": {
-      "price": 26001.85,
-      "change_pct": -0.7,
+      "price": 26013.08,
+      "change_pct": -0.66,
       "support": 25910.82,
       "resistance": 26798.4,
       "history": [
@@ -56,12 +56,12 @@
         26081.72,
         26333.04,
         26186.41,
-        26001.85
+        26013.08
       ]
     },
     "Dow Jones": {
-      "price": 51990.89,
-      "change_pct": -0.82,
+      "price": 51995.85,
+      "change_pct": -0.81,
       "support": 51875.65,
       "resistance": 53819.65,
       "history": [
@@ -85,24 +85,24 @@
         52064.1,
         52573.29,
         52421.2,
-        51990.89
+        51995.85
       ]
     },
     "BTC": {
-      "price": 76414.6,
-      "change_pct": -2.81,
+      "price": 76379.9,
+      "change_pct": -2.87,
       "support": 62723.9,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2422.11,
-      "change_pct": -3.9,
+      "price": 2420.12,
+      "change_pct": -4.01,
       "support": 1871.61,
       "resistance": 2666.0
     },
     "SOL": {
-      "price": 99.18,
-      "change_pct": -3.13,
+      "price": 99.1,
+      "change_pct": -3.22,
       "support": 74.38,
       "resistance": 110.6
     }
@@ -160,22 +160,22 @@
       "color": "blue"
     },
     "dxy": {
-      "value": "99.7",
+      "value": "99.6",
       "label": "DXY",
       "color": "red"
     },
     "oil": {
-      "value": "$105.40",
+      "value": "$105.46",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4330",
+      "value": "$4337",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$63.79",
+      "value": "$63.97",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -183,12 +183,12 @@
   "signals": [
     {
       "label": "CAUTION",
-      "text": "S&P 500 down -0.5%",
+      "text": "S&P 500 down -0.4%",
       "type": "caution"
     },
     {
       "label": "CAUTION",
-      "text": "BTC down -2.8% \u2014 watch support",
+      "text": "BTC down -2.9% \u2014 watch support",
       "type": "caution"
     },
     {
@@ -197,20 +197,20 @@
       "type": "caution"
     }
   ],
-  "btc_funding": 9.588e-05,
+  "btc_funding": 9.271e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 34.83,
+    "daily_inflow": 34.82,
     "daily_avg": 28.45,
     "daily_pct": 22.4,
-    "weekly_inflow": 199.14,
+    "weekly_inflow": 199.12,
     "weekly_avg": 224.45,
     "weekly_pct": -11.3,
-    "monthly_inflow": 961.94,
-    "monthly_avg": 813.84,
+    "monthly_inflow": 961.92,
+    "monthly_avg": 813.83,
     "monthly_pct": 18.2,
-    "large_tx_count": 806873
+    "large_tx_count": 808642
   },
   "history": {
     "vix": [
@@ -235,7 +235,7 @@
       17.84,
       15.84,
       17.1,
-      17.73
+      17.66
     ],
     "yield_10y": [
       4.72,
@@ -281,7 +281,7 @@
       102.48,
       100.05,
       101.39,
-      105.4
+      105.43
     ],
     "gold": [
       4473.7,
@@ -304,7 +304,7 @@
       4407.3,
       4408.9,
       4351.9,
-      4330.2
+      4336.6
     ],
     "silver": [
       66.12,
@@ -327,7 +327,7 @@
       64.28,
       64.55,
       63.51,
-      63.79
+      63.96
     ],
     "dxy": [
       99.64,
@@ -350,7 +350,7 @@
       99.09,
       99.12,
       99.46,
-      99.65
+      99.64
     ],
     "sp500": [
       7745.06,
@@ -373,7 +373,7 @@
       7591.7,
       7656.98,
       7619.98,
-      7585.46
+      7587.46
     ],
     "nasdaq": [
       26644.91,
@@ -396,7 +396,7 @@
       26081.72,
       26333.04,
       26186.41,
-      26001.85
+      26013.08
     ]
   },
   "econ_events": [
