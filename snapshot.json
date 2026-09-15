@@ -1,9 +1,9 @@
 {
-  "date": "September 15, 2026 14:40 UTC",
+  "date": "September 15, 2026 14:45 UTC",
   "assets": {
     "S&P 500": {
-      "price": 7580.79,
-      "change_pct": -0.51,
+      "price": 7583.91,
+      "change_pct": -0.47,
       "support": 7580.06,
       "resistance": 7790.68,
       "history": [
@@ -27,12 +27,12 @@
         7591.7,
         7656.98,
         7619.98,
-        7580.81
+        7583.87
       ]
     },
     "NASDAQ": {
-      "price": 25998.72,
-      "change_pct": -0.72,
+      "price": 26006.39,
+      "change_pct": -0.69,
       "support": 25910.82,
       "resistance": 26798.4,
       "history": [
@@ -56,12 +56,12 @@
         26081.72,
         26333.04,
         26186.41,
-        25998.72
+        26006.39
       ]
     },
     "Dow Jones": {
-      "price": 51903.65,
-      "change_pct": -0.99,
+      "price": 51933.06,
+      "change_pct": -0.93,
       "support": 51892.95,
       "resistance": 53819.65,
       "history": [
@@ -85,24 +85,24 @@
         52064.1,
         52573.29,
         52421.2,
-        51903.65
+        51933.06
       ]
     },
     "BTC": {
-      "price": 75698.8,
-      "change_pct": -3.45,
+      "price": 75790.3,
+      "change_pct": -3.32,
       "support": 62723.9,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2410.67,
-      "change_pct": -3.54,
+      "price": 2411.92,
+      "change_pct": -3.48,
       "support": 1871.61,
       "resistance": 2666.0
     },
     "SOL": {
-      "price": 98.89,
-      "change_pct": -2.51,
+      "price": 98.76,
+      "change_pct": -2.71,
       "support": 74.38,
       "resistance": 110.6
     }
@@ -165,7 +165,7 @@
       "color": "red"
     },
     "oil": {
-      "value": "$103.83",
+      "value": "$104.26",
       "label": "WTI OIL",
       "color": "yellow"
     },
@@ -175,7 +175,7 @@
       "color": "yellow"
     },
     "silver": {
-      "value": "$63.85",
+      "value": "$63.86",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -188,7 +188,7 @@
     },
     {
       "label": "CAUTION",
-      "text": "BTC down -3.5% \u2014 watch support",
+      "text": "BTC down -3.3% \u2014 watch support",
       "type": "caution"
     },
     {
@@ -197,19 +197,19 @@
       "type": "caution"
     }
   ],
-  "btc_funding": 9.812e-05,
+  "btc_funding": 9.95e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 32.84,
-    "daily_avg": 28.16,
-    "daily_pct": 16.6,
-    "weekly_inflow": 197.15,
-    "weekly_avg": 223.99,
-    "weekly_pct": -12.0,
-    "monthly_inflow": 959.95,
-    "monthly_avg": 813.18,
-    "monthly_pct": 18.0,
+    "daily_inflow": 33.35,
+    "daily_avg": 28.24,
+    "daily_pct": 18.1,
+    "weekly_inflow": 197.66,
+    "weekly_avg": 224.11,
+    "weekly_pct": -11.8,
+    "monthly_inflow": 960.46,
+    "monthly_avg": 813.35,
+    "monthly_pct": 18.1,
     "large_tx_count": 775229
   },
   "history": {
@@ -235,7 +235,7 @@
       17.84,
       15.84,
       17.1,
-      17.46
+      17.51
     ],
     "yield_10y": [
       4.72,
@@ -281,7 +281,7 @@
       102.48,
       100.05,
       101.39,
-      103.83
+      104.26
     ],
     "gold": [
       4473.7,
@@ -304,7 +304,7 @@
       4407.3,
       4408.9,
       4351.9,
-      4323.5
+      4323.9
     ],
     "silver": [
       66.12,
@@ -327,7 +327,7 @@
       64.28,
       64.55,
       63.51,
-      63.85
+      63.86
     ],
     "dxy": [
       99.64,
@@ -350,7 +350,7 @@
       99.09,
       99.12,
       99.46,
-      99.57
+      99.58
     ],
     "sp500": [
       7745.06,
@@ -373,7 +373,7 @@
       7591.7,
       7656.98,
       7619.98,
-      7580.81
+      7583.87
     ],
     "nasdaq": [
       26644.91,
@@ -396,58 +396,18 @@
       26081.72,
       26333.04,
       26186.41,
-      25998.72
+      26006.39
     ]
   },
   "econ_events": [
     {
-      "label": "CORE RETAIL SALES M/M",
-      "date": "09-16-2026",
-      "time": "12:30pm ET",
-      "forecast": "0.5%",
-      "previous": "-0.3%",
-      "actual": null,
-      "impact": "Medium",
-      "country": "USD"
-    },
-    {
-      "label": "RETAIL SALES M/M",
-      "date": "09-16-2026",
-      "time": "12:30pm ET",
-      "forecast": "0.8%",
-      "previous": "-0.6%",
-      "actual": null,
-      "impact": "Medium",
-      "country": "USD"
-    },
-    {
-      "label": "FEDERAL FUNDS RATE",
-      "date": "09-16-2026",
-      "time": "6:00pm ET",
-      "forecast": "4.00%",
-      "previous": "3.75%",
-      "actual": null,
-      "impact": "High",
-      "country": "USD"
-    },
-    {
-      "label": "FOMC ECONOMIC PROJECTIONS",
-      "date": "09-16-2026",
-      "time": "6:00pm ET",
+      "label": "TREASURY SEC BESSENT SPEAKS",
+      "date": "09-15-2026",
+      "time": "2:00pm ET",
       "forecast": "\u2014",
       "previous": "\u2014",
       "actual": null,
-      "impact": "High",
-      "country": "USD"
-    },
-    {
-      "label": "FOMC STATEMENT",
-      "date": "09-16-2026",
-      "time": "6:00pm ET",
-      "forecast": "\u2014",
-      "previous": "\u2014",
-      "actual": null,
-      "impact": "High",
+      "impact": "Medium",
       "country": "USD"
     }
   ]
