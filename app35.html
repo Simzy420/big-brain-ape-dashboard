@@ -1479,7 +1479,7 @@ html+='</div>';
 }
 
 // === YEAR AHEAD OUTLOOK SECTION (chart + 3 boxes: Analysis, Setup, The Year Ahead) ===
-var hist2=d.history||[];
+var hist2=(d.history||[]).filter(function(h){return h&&h.c&&!isNaN(h.c)&&h.h&&!isNaN(h.h)&&h.l&&!isNaN(h.l);});
 var closes2=hist2.map(function(h){return h.c});
 var highs2=hist2.map(function(h){return h.h});
 var lows2=hist2.map(function(h){return h.l});
@@ -1505,8 +1505,8 @@ return ema;
 var ema20_2=calcEMA2(closes2,Math.min(20,closes2.length));
 var ema50_2=calcEMA2(closes2,Math.min(50,closes2.length));
 var rsiVal2=calcRSI2(closes2,14);
-var yearHigh2=d.yearHigh||Math.max.apply(null,highs2);
-var yearLow2=d.yearLow||Math.min.apply(null,lows2);
+var yearHigh2=d.yearHigh||(highs2.length>0?Math.max.apply(null,highs2):d.price||0);
+var yearLow2=d.yearLow||(lows2.length>0?Math.min.apply(null,lows2):d.price||0);
 var range2=yearHigh2-yearLow2;
 var rangePos2=range2>0?((d.price-yearLow2)/range2*100):50;
 var trendVs50_2=d.price>ema50_2?'uptrend':'range-bound';
