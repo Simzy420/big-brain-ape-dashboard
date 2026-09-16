@@ -1,5 +1,5 @@
 {
-  "date": "September 15, 2026 23:55 UTC",
+  "date": "September 16, 2026 00:00 UTC",
   "assets": {
     "S&P 500": {
       "price": 7585.73,
@@ -89,30 +89,34 @@
       ]
     },
     "BTC": {
-      "price": 75656.0,
-      "change_pct": -3.19,
-      "support": 62723.9,
+      "price": 75583.2,
+      "change_pct": -3.29,
+      "support": 63979.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2400.01,
-      "change_pct": -4.61,
-      "support": 1871.61,
+      "price": 2397.12,
+      "change_pct": -4.65,
+      "support": 1884.2,
       "resistance": 2666.0
     },
     "SOL": {
-      "price": 96.94,
-      "change_pct": -5.45,
-      "support": 74.38,
+      "price": 96.86,
+      "change_pct": -5.5,
+      "support": 75.16,
       "resistance": 110.6
     }
   },
   "risk_score": 24,
   "risk_bias": "STRONG RISK-OFF",
   "fear_greed": {
-    "value": 69,
-    "classification": "Greed",
+    "value": 51,
+    "classification": "Neutral",
     "history": [
+      {
+        "value": 51,
+        "label": "Neutral"
+      },
       {
         "value": 69,
         "label": "Greed"
@@ -135,10 +139,6 @@
       },
       {
         "value": 69,
-        "label": "Greed"
-      },
-      {
-        "value": 66,
         "label": "Greed"
       }
     ]
@@ -165,17 +165,17 @@
       "color": "red"
     },
     "oil": {
-      "value": "$105.42",
+      "value": "$105.35",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4326",
+      "value": "$4325",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$64.22",
+      "value": "$64.21",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -193,7 +193,7 @@
     },
     {
       "label": "CAUTION",
-      "text": "BTC down -3.2% \u2014 watch support",
+      "text": "BTC down -3.3% \u2014 watch support",
       "type": "caution"
     },
     {
@@ -202,18 +202,18 @@
       "type": "caution"
     }
   ],
-  "btc_funding": 4.111e-05,
+  "btc_funding": 3.951e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 39.83,
+    "daily_inflow": 39.81,
     "daily_avg": 29.16,
-    "daily_pct": 36.6,
-    "weekly_inflow": 204.14,
-    "weekly_avg": 225.62,
+    "daily_pct": 36.5,
+    "weekly_inflow": 204.11,
+    "weekly_avg": 225.61,
     "weekly_pct": -9.5,
-    "monthly_inflow": 966.94,
-    "monthly_avg": 815.49,
+    "monthly_inflow": 966.91,
+    "monthly_avg": 815.48,
     "monthly_pct": 18.6,
     "large_tx_count": 818399
   },
@@ -286,7 +286,7 @@
       102.48,
       100.05,
       101.39,
-      105.42
+      105.35
     ],
     "gold": [
       4473.7,
@@ -309,7 +309,7 @@
       4407.3,
       4408.9,
       4351.9,
-      4325.8
+      4325.2
     ],
     "silver": [
       66.12,
@@ -332,7 +332,7 @@
       64.28,
       64.55,
       63.51,
-      64.22
+      64.21
     ],
     "dxy": [
       99.64,
@@ -355,7 +355,7 @@
       99.09,
       99.12,
       99.46,
-      99.69
+      99.68
     ],
     "sp500": [
       7745.06,
@@ -406,13 +406,53 @@
   },
   "econ_events": [
     {
-      "label": "TREASURY SEC BESSENT SPEAKS",
-      "date": "09-15-2026",
-      "time": "2:00pm ET",
+      "label": "CORE RETAIL SALES M/M",
+      "date": "09-16-2026",
+      "time": "12:30pm ET",
+      "forecast": "0.6%",
+      "previous": "-0.3%",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "RETAIL SALES M/M",
+      "date": "09-16-2026",
+      "time": "12:30pm ET",
+      "forecast": "0.8%",
+      "previous": "-0.6%",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "FEDERAL FUNDS RATE",
+      "date": "09-16-2026",
+      "time": "6:00pm ET",
+      "forecast": "4.00%",
+      "previous": "3.75%",
+      "actual": null,
+      "impact": "High",
+      "country": "USD"
+    },
+    {
+      "label": "FOMC ECONOMIC PROJECTIONS",
+      "date": "09-16-2026",
+      "time": "6:00pm ET",
       "forecast": "\u2014",
       "previous": "\u2014",
       "actual": null,
-      "impact": "Medium",
+      "impact": "High",
+      "country": "USD"
+    },
+    {
+      "label": "FOMC STATEMENT",
+      "date": "09-16-2026",
+      "time": "6:00pm ET",
+      "forecast": "\u2014",
+      "previous": "\u2014",
+      "actual": null,
+      "impact": "High",
       "country": "USD"
     }
   ]
