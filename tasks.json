@@ -94,27 +94,6 @@
           "url": "https://www.alchemy.com/"
         }
       ]
-    },
-    {
-      "id": "zapier-discord-connect",
-      "priority": "high",
-      "title": "Connect Discord in Zapier",
-      "subtitle": "So Marketing can post daily alongside X",
-      "steps": [
-        "Open https://mcp.zapier.com/api/v1/connect-auth/DiscordCLIAPI?accountId=28704327",
-        "Sign in / authorize Discord for Zapier",
-        "Tell Marketing which Discord channel to post in daily"
-      ],
-      "links": [
-        {
-          "label": "Connect Discord",
-          "url": "https://mcp.zapier.com/api/v1/connect-auth/DiscordCLIAPI?accountId=28704327"
-        },
-        {
-          "label": "Zapier MCP config",
-          "url": "https://mcp.zapier.com/mcp/servers/6b06ac73-54d4-497d-b2ed-61c89c769f65/config"
-        }
-      ]
     }
   ]
 }
