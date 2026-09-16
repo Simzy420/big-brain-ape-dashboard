@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>BBA Swarm — Control Panel</title>
+<style>
+:root{
+  --bg:#07070c;--card:#12121c;--card2:#181826;--border:#26263a;
+  --text:#e8e8f0;--muted:#8a8aa8;--neon:#00d9ff;--green:#22c55e;
+  --red:#ef4444;--orange:#f59e0b;--purple:#a855f7;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;min-height:100vh;padding-bottom:88px}
+.top{position:sticky;top:0;z-index:20;background:rgba(7,7,12,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:14px 16px}
+.top h1{font-size:18px;font-weight:800;letter-spacing:-.3px}
+.top h1 span{color:var(--neon)}
+.meta{font-size:12px;color:var(--muted);margin-top:4px}
+.banner{margin:12px 16px 0;padding:10px 12px;border-radius:12px;border:1px solid #3a2a10;background:#1a1408;color:#fbbf24;font-size:13px;line-height:1.4}
+.grid{padding:14px 16px;display:flex;flex-direction:column;gap:12px;max-width:720px;margin:0 auto}
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px}
+.kpi .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.kpi .v{font-size:20px;font-weight:800;margin-top:4px}
+.kpi .s{font-size:11px;color:var(--muted);margin-top:2px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px}
+.card h2{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.agent{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.agent:last-child{border-bottom:none;padding-bottom:0}
+.dot{width:10px;height:10px;border-radius:50%;margin-top:6px;flex-shrink:0}
+.dot.paper{background:var(--orange);box-shadow:0 0 8px rgba(245,158,11,.6)}
+.dot.live-safe{background:var(--green);box-shadow:0 0 8px rgba(34,197,94,.5)}
+.dot.off{background:#555}
+.aname{font-weight:700;font-size:15px}
+.arole{font-size:12px;color:var(--muted)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;border:1px solid var(--border);background:var(--card2);color:var(--text)}
+.btn.pri{background:linear-gradient(135deg,#00d9ff,#00ff9d);color:#071014;border:none}
+.btn.danger{border-color:#5a2020;color:#fca5a5}
+.cmd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;background:#0b0b12;border:1px dashed #333;border-radius:8px;padding:8px 10px;margin-top:6px;color:#9ae6b4}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#0c0c14;border-top:1px solid var(--border);display:flex}
+.nav a{flex:1;text-align:center;padding:12px 4px 18px;font-size:11px;color:var(--muted);text-decoration:none;font-weight:700}
+.nav a.on{color:var(--neon)}
+.log{font-size:12px;color:var(--muted);max-height:180px;overflow:auto;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>🦍 Swarm <span>Control</span></h1>
+  <div class="meta" id="clock">Wed Sep 16 2026 · paper gate ON</div>
+</div>
+<div class="banner">PAPER ONLY. No live HL keys. Do not size up from cron. Champion = Round 3. R4A FAIL — do not blend.</div>
+
+<div class="grid">
+  <div class="kpis">
+    <div class="kpi"><div class="l">Champion</div><div class="v">R3</div><div class="s">hl-full net +4.33%</div></div>
+    <div class="kpi"><div class="l">Max DD</div><div class="v">12.65%</div><div class="s">shield ≤16% keep / >20% kill</div></div>
+    <div class="kpi"><div class="l">Trades / WR</div><div class="v">15 · 33%</div><div class="s">do not add trades for WR</div></div>
+    <div class="kpi"><div class="l">Cost drag</div><div class="v">54%</div><div class="s">$79.90 of gross · target &lt;40%</div></div>
+  </div>
+
+  <div class="card">
+    <h2>Agents</h2>
+    <div class="agent">
+      <div class="dot live-safe"></div>
+      <div>
+        <div class="aname">Big Brain Ape</div>
+        <div class="arole">Public analysis + Telegram hire · isolated wallet · no user funds in this panel</div>
+        <div class="btns">
+          <a class="btn pri" href="https://simzy420.github.io/big-brain-ape-dashboard/app35.html">Open App</a>
+          <a class="btn" href="https://t.me/BigBrain2Bot">Telegram</a>
+        </div>
+      </div>
+    </div>
+    <div class="agent">
+      <div class="dot paper"></div>
+      <div>
+        <div class="aname">Hermes x402</div>
+        <div class="arole">HL perps paper · HF Space paused pending BotFather + secrets · no deposit</div>
+        <div class="btns">
+          <a class="btn" href="https://github.com/Simzy420/hermes-x402-trading-bot">Repo</a>
+          <button class="btn" onclick="copyCmd('/status')">Copy /status</button>
+          <button class="btn" onclick="copyCmd('/pause')">Copy /pause</button>
+          <button class="btn danger" onclick="copyCmd('/flat')">Copy /flat</button>
+          <button class="btn danger" onclick="copyCmd('/kill')">Copy /kill</button>
+        </div>
+        <div class="cmd" id="lastCmd">Telegram cmds copy to clipboard — paste in BotFather bot when Space is up</div>
+      </div>
+    </div>
+    <div class="agent">
+      <div class="dot paper"></div>
+      <div>
+        <div class="aname">Backtest Lab</div>
+        <div class="arole">One knob at a time · next queued after isolated D: not R4A</div>
+        <div class="btns">
+          <a class="btn" href="https://github.com/Simzy420/bba-backtest-lab">Lab</a>
+          <a class="btn" href="https://github.com/Simzy420/bba-strategy-logs/tree/main/logs/days/2026-09-16">Today logs</a>
+        </div>
+      </div>
+    </div>
+    <div class="agent">
+      <div class="dot off"></div>
+      <div>
+        <div class="aname">Grok RH bot</div>
+        <div class="arole">Robinhood scan / recs · no options · earnings reminders only when due</div>
+      </div>
+    </div>
+    <div class="agent">
+      <div class="dot live-safe"></div>
+      <div>
+        <div class="aname">Task board + chat</div>
+        <div class="arole">Human-in-the-loop queue · HF chat Space</div>
+        <div class="btns">
+          <a class="btn pri" href="https://simzy420.github.io/big-brain-ape-dashboard/tasks.html">Tasks</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Standing laws</h2>
+    <div class="log">
+      • Paper only. Live keys stay out.<br>
+      • Regime filter stays until a run proves it is the leak.<br>
+      • Do not size up to beat HL costs.<br>
+      • 15 trades/year is acceptable.<br>
+      • Keep if net improves OR cost drag of gross &lt; 0.40, AND max DD ≤ 16%, AND trades ≤ 25.<br>
+      • Kill if max DD &gt; 20% or it only wins on GOLD.<br>
+      • R4A BE-delay = FAIL. Do not revive or blend.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Quick links</h2>
+    <div class="btns">
+      <a class="btn" href="https://simzy420.github.io/big-brain-ape-dashboard/">Landing</a>
+      <a class="btn" href="https://github.com/Simzy420/big-brain-ape-dashboard">Dashboard repo</a>
+      <a class="btn" href="https://github.com/Simzy420/hermes-x402-trading-bot">Hermes</a>
+    </div>
+  </div>
+</div>
+
+<nav class="nav">
+  <a class="on" href="swarm.html">Swarm</a>
+  <a href="tasks.html">Tasks</a>
+  <a href="app35.html">App</a>
+  <a href="index.html">Site</a>
+</nav>
+<script>
+function copyCmd(s){
+  navigator.clipboard.writeText(s).then(function(){
+    document.getElementById('lastCmd').textContent='Copied '+s;
+  }).catch(function(){
+    document.getElementById('lastCmd').textContent=s;
+  });
+}
+</script>
+</body>
+</html>
