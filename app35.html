@@ -884,7 +884,12 @@ headers:{
 'Content-Type':'application/json'
 },
 body:JSON.stringify({email:email,password:pass})
-}).then(function(r){return r.json()})
+}).then(function(r){
+return r.text().then(function(txt){
+console.log('Supabase response:',r.status,txt.substring(0,300));
+try{var d=JSON.parse(txt);return d}catch(e){return{error:'Parse error: '+txt.substring(0,200)}}
+});
+})
 .then(function(d){
 if(d.error||d.access_token){
 if(d.access_token){
@@ -897,17 +902,13 @@ for(var i=0;i<overlays.length;i++)overlays[i].remove();
 }else{
 alert(d.error||d.msg||'Authentication failed');
 }
-}else if(d.user){
-setStoredUser({email:email,token:d.session?d.session.access_token:'',id:d.user.id});
-updateSideMenuAuth();
-syncPortfolioFromCloud();
-var overlays=document.querySelectorAll('div[style*="z-index:10000"]');
-for(var i=0;i<overlays.length;i++)overlays[i].remove();
 }else{
-alert('Unexpected response. Please try again.');
+alert('Unexpected response from server');
 }
-}).catch(function(e){
-alert('Connection error. Please try again.');
+})
+.catch(function(err){
+console.error('Supabase fetch error:',err);
+alert('Connection error: '+err.message+'. Check your internet connection.');
 });
 }
 
