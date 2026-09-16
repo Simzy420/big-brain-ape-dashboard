@@ -4490,13 +4490,13 @@ var _fundingLoaded=false;
 var _globalData=null;
 var _globalLoaded=false;
 
-// Helper: render 24hr whale history (called by button and after whale fetch)
+// Helper: render 7-day whale history (called by button and after whale fetch)
 function renderWhaleHistory(history, expanded){
   var cont=document.getElementById('whaleHistoryContainer');
   if(!cont)return;
   var html='';
   if(history.length>0){
-    html+='<button id="whaleHistoryBtn" onclick="toggleWhaleHistory()" style="width:100%;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:15px;font-weight:600;cursor:pointer;margin-bottom:8px">'+(expanded?'Hide History':'Show 24hr Whale History')+'</button>';
+    html+='<button id="whaleHistoryBtn" onclick="toggleWhaleHistory()" style="width:100%;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:15px;font-weight:600;cursor:pointer;margin-bottom:8px">'+(expanded?'Hide History':'Show 7-Day Whale History')+'</button>';
   }
   if(expanded && history.length>0){
     html+='<div style="display:flex;flex-direction:column;gap:8px;max-height:400px;overflow-y:auto">';
@@ -4519,7 +4519,7 @@ window._whaleHistoryExpanded=false;
 window.toggleWhaleHistory=function(){
   window._whaleHistoryExpanded=!window._whaleHistoryExpanded;
   try{
-    var raw=localStorage.getItem('whaleHistory24h');
+    var raw=localStorage.getItem('whaleHistory7d');
     var history=raw?JSON.parse(raw):[];
   }catch(e){var history=[];}
   renderWhaleHistory(history, window._whaleHistoryExpanded);
@@ -4548,14 +4548,14 @@ whales.push({hash:tx.hash,btc:totalOut,time:tx.time});
 whales.sort(function(a,b){return b.btc-a.btc});
 var now=Math.floor(Date.now()/1000);
 
-// Store to localStorage (24h history)
+// Store to localStorage (7-day history)
 var existing=[];
 try{
-var raw=localStorage.getItem('whaleHistory24h');
+var raw=localStorage.getItem('whaleHistory7d');
 existing=raw?JSON.parse(raw):[];
 }catch(e){existing=[];}
-// Prune entries older than 24 hours
-existing=existing.filter(function(w){return (now-w.time)<86400;});
+// Prune entries older than 7 days
+existing=existing.filter(function(w){return (now-w.time)<604800;});
 // Append new whales (dedupe by hash)
 var existingHashes={};
 for(var i=0;i<existing.length;i++){existingHashes[existing[i].hash]=true;}
@@ -4567,7 +4567,7 @@ existingHashes[whales[i].hash]=true;
 }
 // Sort newest first
 existing.sort(function(a,b){return b.time-a.time;});
-try{localStorage.setItem('whaleHistory24h',JSON.stringify(existing));}catch(e){}
+try{localStorage.setItem('whaleHistory7d',JSON.stringify(existing));}catch(e){}
 
 // Display top 6 — fall back to stored history if no live whales
 var h='';
@@ -4614,7 +4614,7 @@ renderWhaleHistory(existing, window._whaleHistoryExpanded);
   var el=document.getElementById('whaleData');
   var now=Math.floor(Date.now()/1000);
   var existing=[];
-  try{var raw=localStorage.getItem('whaleHistory24h');existing=raw?JSON.parse(raw):[];}catch(e){existing=[];}
+  try{var raw=localStorage.getItem('whaleHistory7d');existing=raw?JSON.parse(raw):[];}catch(e){existing=[];}
   if(el){
     if(existing.length>0){
       var h='<div style="font-size:12px;color:var(--orange);padding:6px 12px;background:rgba(251,146,60,.1);border-radius:8px;margin-bottom:8px">📡 Live API unavailable — showing recent whale history</div>';
