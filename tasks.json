@@ -75,24 +75,6 @@
       ]
     },
     {
-      "id": "postiz-connect",
-      "priority": "high",
-      "title": "Sign in to Postiz and connect accounts",
-      "subtitle": "Needed so daily Big Brain Ape posts can actually go out",
-      "steps": [
-        "Open Postiz and sign in (Google, Apple, or email)",
-        "Connect X, LinkedIn, and any other accounts you want posted to",
-        "In Settings, open Public API or API Keys and reveal the key",
-        "Send that key through the secure field in the Marketing chat, not pasted as plain text here"
-      ],
-      "links": [
-        {
-          "label": "Open Postiz",
-          "url": "https://platform.postiz.com/auth/login"
-        }
-      ]
-    },
-    {
       "id": "rpc-keys-helius-alchemy",
       "priority": "low",
       "title": "Optional: Helius + Alchemy RPC keys",
@@ -110,6 +92,25 @@
         {
           "label": "Alchemy",
           "url": "https://www.alchemy.com/"
+        }
+      ]
+    },
+    {
+      "id": "buffer-free-setup",
+      "priority": "high",
+      "title": "Set up Buffer Free (X + LinkedIn)",
+      "subtitle": "Free publishing path \u2014 skip paid Postiz cloud",
+      "steps": [
+        "Open Buffer and create or sign in to a Free account",
+        "Connect your X account",
+        "Connect your LinkedIn account",
+        "Stay on the Free plan (3 channels, 10 queued posts each)",
+        "Tell Marketing when both channels are connected so daily posts can use Buffer"
+      ],
+      "links": [
+        {
+          "label": "Buffer Free / signup",
+          "url": "https://buffer.com/"
         }
       ]
     }
