@@ -1543,13 +1543,16 @@ return '$'+fmtNum(v);
 }
 // Market Cap — orange
 html+=metricCard("Market Cap",d.marketCap?fmtCapShort(d.marketCap):'—',"","#059B7F");
-// Revenue (Annual Revenue) — orange
+// Revenue (Annual Revenue) — green
 var sdPrice=d.price||0;
 if(d.revenuePerShare&&d.marketCap&&sdPrice>0){
 var shares=d.marketCap/sdPrice;
 var annRev=d.revenuePerShare*shares;
 var revStr=annRev>=1e9?'$'+(annRev/1e9).toFixed(1)+'B':'$'+(annRev/1e6).toFixed(0)+'M';
 html+=metricCard("Revenue",revStr,"Trailing 12 Mo","#059B7F");
+}else if(d.revenuePerShare){
+// Fallback: just show revenue per share
+html+=metricCard("Revenue/Share",'$'+fmtNum(d.revenuePerShare),"Trailing 12 Mo","#059B7F");
 }else{
 html+=metricCard("Revenue",'—',"Trailing 12 Mo","var(--text2)");
 }
@@ -1785,7 +1788,7 @@ nc.innerHTML=nh;
 
 // === DRAW CHARTS (Chart.js) ===
 setTimeout(function(){
-// Price target chart — REMOVED, replaced by Interested in TICKER section
+// === REDRAW earnings charts (fix for canvas not rendering) ===
 // Earnings chart
 var ec=document.getElementById('earningsChart');
 if(ec&&d.earnings&&d.earnings.length>0&&typeof Chart!=='undefined'){
@@ -1830,7 +1833,7 @@ x:{grid:{display:false},ticks:{color:'#e6edf3'}}}}
 }
 
 // Buy chart and Year Ahead chart removed — no more live charts on analysis pages
-},100);
+},300);
 }
 
 function drawPriceChart(canvas,history){
