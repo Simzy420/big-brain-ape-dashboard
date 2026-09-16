@@ -891,19 +891,25 @@ try{var d=JSON.parse(txt);return d}catch(e){return{error:'Parse error: '+txt.sub
 });
 })
 .then(function(d){
-if(d.error||d.access_token){
+console.log('Supabase auth response:',JSON.stringify(d).substring(0,500));
+if(d.error){
+alert(d.error||d.msg||'Authentication failed');
+return;
+}
 if(d.access_token){
+// Sign in success — got token
 setStoredUser({email:email,token:d.access_token,id:d.user?d.user.id:'supabase_user'});
 updateSideMenuAuth();
-// Sync portfolio from cloud
 syncPortfolioFromCloud();
 var overlays=document.querySelectorAll('div[style*="z-index:10000"]');
 for(var i=0;i<overlays.length;i++)overlays[i].remove();
+}else if(d.user){
+// Sign up success — email confirmation required
+var overlays=document.querySelectorAll('div[style*="z-index:10000"]');
+for(var i=0;i<overlays.length;i++)overlays[i].remove();
+alert('Account created! Check your email for a confirmation link. Click it, then come back and Sign In.');
 }else{
-alert(d.error||d.msg||'Authentication failed');
-}
-}else{
-alert('Unexpected response from server');
+alert('Unexpected response: '+JSON.stringify(d).substring(0,200));
 }
 })
 .catch(function(err){
