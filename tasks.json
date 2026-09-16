@@ -1,6 +1,28 @@
 {
   "tasks": [
     {
+      "id": "alchemy-enable-networks",
+      "priority": "high",
+      "title": "Enable Ethereum + Solana on Alchemy app",
+      "subtitle": "App \u201cSimzy's First App\u201d currently only has Base \u2014 needed for ETH/Solana CLI queries",
+      "steps": [
+        "Open the Alchemy networks page for your app (link below)",
+        "Enable Ethereum Mainnet",
+        "Enable Solana Mainnet if you want Helius-adjacent Solana via Alchemy too",
+        "Save, then tell Chief of Staff \u2014 they\u2019ll re-run the sample queries"
+      ],
+      "links": [
+        {
+          "label": "Alchemy app networks",
+          "url": "https://dashboard.alchemy.com/apps/n2mq2bdjtoh5ux0o/networks"
+        },
+        {
+          "label": "Alchemy dashboard",
+          "url": "https://dashboard.alchemy.com/"
+        }
+      ]
+    },
+    {
       "id": "gmail-identity-filters",
       "priority": "medium",
       "title": "Create Gmail filters for Identity labels",
