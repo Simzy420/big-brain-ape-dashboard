@@ -78,19 +78,26 @@
       "id": "bba-review-r4-test-a",
       "priority": "high",
       "title": "Review Round 4 Test A results when bots post",
+      "subtitle": "Compare Test A vs Round 3; go/no-go before Test B \u2014 no blending",
       "steps": [
-        "Open the strategy-logs day folder and the lab grok-results directory",
-        "Compare Test A against the Round 3 baselines",
-        "Decide go/no-go before Test B"
+        "Open strategy-logs day folder: logs/days/2026-09-16/backtest/ (round4_A_*.json)",
+        "Open lab grok-results/ for bot dumps",
+        "Compare vs Round 3 baselines: +4.33% return, 12.65% DD, 15 trades, 33% WR, Sharpe ~0.41, costs 54% of gross",
+        "Apply Shield: reject if DD >20% or >25 trades/year",
+        "Decide go/no-go before Test B; tell Stenographer / BackTesting room"
       ],
       "links": [
         {
-          "label": "BBA strategy logs",
-          "url": "https://github.com/Simzy420/bba-strategy-logs"
+          "label": "Today strategy-logs day",
+          "url": "https://github.com/Simzy420/bba-strategy-logs/tree/main/logs/days/2026-09-16"
         },
         {
-          "label": "BBA backtest lab",
-          "url": "https://github.com/Simzy420/bba-backtest-lab"
+          "label": "Lab grok-results",
+          "url": "https://github.com/Simzy420/bba-backtest-lab/tree/main/grok-results"
+        },
+        {
+          "label": "Tasks board",
+          "url": "https://simzy420.github.io/big-brain-ape-dashboard/tasks.html"
         }
       ]
     },
@@ -98,10 +105,22 @@
       "id": "bba-r4-boss-pick",
       "priority": "medium",
       "title": "After A\u2013D isolated runs, pick ONE Round 4 winner (no blending)",
+      "subtitle": "Shield veto first; one winner only \u2014 wait until A\u2013D are posted",
       "steps": [
-        "Review the results from isolated Tests A, B, C, and D",
-        "Apply the Shield veto: reject DD >20% or more than 25 trades/year",
-        "Pick one winner; do not blend tests"
+        "Review isolated Tests A, B, C, and D results in strategy-logs + lab grok-results",
+        "Apply Shield: reject DD >20% or >25 trades/year",
+        "Pick ONE winner; do not blend knobs",
+        "Tell Stenographer so INDEX + backtest-params.json get updated"
+      ],
+      "links": [
+        {
+          "label": "Today strategy-logs day",
+          "url": "https://github.com/Simzy420/bba-strategy-logs/tree/main/logs/days/2026-09-16"
+        },
+        {
+          "label": "BBA backtest lab",
+          "url": "https://github.com/Simzy420/bba-backtest-lab"
+        }
       ]
     }
   ]
