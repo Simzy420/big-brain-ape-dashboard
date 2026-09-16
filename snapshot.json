@@ -1,5 +1,5 @@
 {
-  "date": "September 16, 2026 09:45 UTC",
+  "date": "September 16, 2026 09:50 UTC",
   "assets": {
     "S&P 500": {
       "price": 7585.73,
@@ -89,19 +89,19 @@
       ]
     },
     "BTC": {
-      "price": 75887.1,
-      "change_pct": -1.39,
+      "price": 75899.9,
+      "change_pct": -1.44,
       "support": 63979.2,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2402.23,
-      "change_pct": -2.94,
+      "price": 2402.64,
+      "change_pct": -3.02,
       "support": 1884.2,
       "resistance": 2666.0
     },
     "SOL": {
-      "price": 97.18,
+      "price": 97.22,
       "change_pct": -3.61,
       "support": 75.16,
       "resistance": 110.6
@@ -165,17 +165,17 @@
       "color": "green"
     },
     "oil": {
-      "value": "$104.25",
+      "value": "$104.04",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4376",
+      "value": "$4377",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$65.01",
+      "value": "$65.02",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -190,22 +190,27 @@
       "label": "CAUTION",
       "text": "Yields rising \u2014 risk off",
       "type": "caution"
+    },
+    {
+      "label": "BULLISH",
+      "text": "Gold up 1.0% \u2014 safe haven bid",
+      "type": "bullish"
     }
   ],
-  "btc_funding": 1.486e-05,
+  "btc_funding": 1.624e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 39.14,
-    "daily_avg": 29.76,
-    "daily_pct": 31.5,
-    "weekly_inflow": 208.31,
-    "weekly_avg": 229.7,
+    "daily_inflow": 39.06,
+    "daily_avg": 29.75,
+    "daily_pct": 31.3,
+    "weekly_inflow": 208.24,
+    "weekly_avg": 229.69,
     "weekly_pct": -9.3,
-    "monthly_inflow": 984.45,
-    "monthly_avg": 818.03,
+    "monthly_inflow": 984.37,
+    "monthly_avg": 818.01,
     "monthly_pct": 20.3,
-    "large_tx_count": 789914
+    "large_tx_count": 784302
   },
   "history": {
     "vix": [
@@ -231,7 +236,7 @@
       15.84,
       17.1,
       17.2,
-      17.08
+      17.05
     ],
     "yield_10y": [
       4.72,
@@ -278,7 +283,7 @@
       100.05,
       101.39,
       105.83,
-      104.25
+      104.04
     ],
     "gold": [
       4473.7,
@@ -302,7 +307,7 @@
       4408.9,
       4351.9,
       4332.8,
-      4376.3
+      4376.6
     ],
     "silver": [
       66.12,
@@ -326,7 +331,7 @@
       64.55,
       63.51,
       63.24,
-      65.01
+      65.02
     ],
     "dxy": [
       99.64,
