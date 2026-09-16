@@ -75,22 +75,22 @@
       ]
     },
     {
-      "id": "rpc-keys-helius-alchemy",
+      "id": "alchemy-rpc-key",
       "priority": "low",
-      "title": "Optional: Helius + Alchemy RPC keys",
-      "subtitle": "Only before real-money trading \u2014 public RPCs fine for early tests",
+      "title": "Optional: Alchemy EVM RPC key",
+      "subtitle": "Helius is done \u2014 Alchemy only if you want ETH/Base/BNB dedicated RPC",
       "steps": [
-        "Create a free Helius account and copy a Solana RPC URL/API key",
-        "Create a free Alchemy account and copy an EVM app key (ETH/Base/BNB)",
-        "Tell Chief of Staff you\u2019re ready \u2014 they\u2019ll send secure fields (don\u2019t paste in chat)"
+        "Open Alchemy dashboard and create a free app",
+        "Copy the API key",
+        "Tell Chief of Staff you\u2019re ready \u2014 they\u2019ll send a secure field (don\u2019t paste in chat)"
       ],
       "links": [
         {
-          "label": "Helius",
-          "url": "https://www.helius.dev/"
+          "label": "Alchemy dashboard",
+          "url": "https://dashboard.alchemy.com/"
         },
         {
-          "label": "Alchemy",
+          "label": "Alchemy signup",
           "url": "https://www.alchemy.com/"
         }
       ]
