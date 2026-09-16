@@ -287,9 +287,117 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <body>
 <div class="app">
 
+<!-- SIDE MENU OVERLAY -->
+<div id="sideMenuOverlay" onclick="closeSideMenu()" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9998;display:none;opacity:0;transition:opacity .2s"></div>
+
+<!-- SIDE MENU -->
+<div id="sideMenu" style="position:fixed;top:0;left:0;width:280px;height:100%;background:var(--card);border-right:1px solid var(--border);z-index:9999;transform:translateX(-100%);transition:transform .25s ease;overflow-y:auto;padding-bottom:20px">
+<div style="padding:20px 18px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+<div style="display:flex;align-items:center;gap:10px">
+<img src="mascot-thumb.png" style="width:36px;height:36px;border-radius:8px" onerror="this.style.display='none'">
+<div>
+<div style="font-size:18px;font-weight:800;color:var(--green)">Big Brain Ape</div>
+<div style="font-size:12px;color:var(--text2)">Autonomous AI Trading</div>
+</div>
+</div>
+<button onclick="closeSideMenu()" style="background:none;border:none;color:var(--text2);font-size:22px;cursor:pointer;padding:4px 8px">✕</button>
+</div>
+
+<!-- User account section -->
+<div id="sideMenuUser" style="padding:14px 18px;border-bottom:1px solid var(--border)">
+<div id="sideMenuSignedOut" style="display:block">
+<div style="font-size:13px;color:var(--text2);margin-bottom:8px">Sign up to save your portfolio across devices</div>
+<button onclick="showSignUp()" style="width:100%;background:linear-gradient(135deg,#58a6ff,#3fb950);border:none;color:#0d1117;font-size:15px;font-weight:700;padding:10px;border-radius:10px;cursor:pointer;margin-bottom:6px">Sign Up</button>
+<button onclick="showSignIn()" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);font-size:14px;padding:10px;border-radius:10px;cursor:pointer">Sign In</button>
+</div>
+<div id="sideMenuSignedIn" style="display:none">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+<div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#58a6ff,#3fb950);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#0d1117" id="sideMenuAvatar">U</div>
+<div>
+<div style="font-size:14px;font-weight:600" id="sideMenuEmail">user@email.com</div>
+<div style="font-size:12px;color:var(--green)">✓ Synced</div>
+</div>
+</div>
+<button onclick="signOutUser()" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text2);font-size:13px;padding:8px;border-radius:8px;cursor:pointer">Sign Out</button>
+</div>
+</div>
+
+<!-- Menu items -->
+<div style="padding:8px 0">
+<div style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;padding:8px 18px 4px;font-weight:600">Navigation</div>
+<a onclick="switchView('home');closeSideMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text);text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
+<span style="font-size:18px">🔍</span><span style="font-size:15px;font-weight:500">Analyze</span>
+</a>
+<a onclick="switchView('snapshot');closeSideMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text);text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
+<span style="font-size:18px">📈</span><span style="font-size:15px;font-weight:500">Daily Snapshot</span>
+</a>
+<a onclick="switchView('briefing');closeSideMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text);text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
+<span style="font-size:18px">📝</span><span style="font-size:15px;font-weight:500">Daily Briefing</span>
+</a>
+<a onclick="switchView('trading');closeSideMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text);text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
+<span style="font-size:18px">📊</span><span style="font-size:15px;font-weight:500">Trading Desk</span>
+</a>
+<a onclick="switchView('crypto');closeSideMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text);text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
+<span style="font-size:18px">🐋</span><span style="font-size:15px;font-weight:500">Crypto Hub</span>
+</a>
+<a onclick="switchView('portfolio');closeSideMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text);text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
+<span style="font-size:18px">💼</span><span style="font-size:15px;font-weight:500">My Portfolio</span>
+</a>
+<a onclick="switchView('pricing');closeSideMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text);text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
+<span style="font-size:18px">💰</span><span style="font-size:15px;font-weight:500">Pricing Plans</span>
+</a>
+
+<div style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;padding:14px 18px 4px;font-weight:600">Quick Analysis</div>
+<a onclick="quickSearch('NVDA');closeSideMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text);text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
+<span style="font-size:18px">🟢</span><span style="font-size:15px;font-weight:500">NVIDIA (NVDA)</span>
+</a>
+<a onclick="quickSearch('AAPL');closeSideMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text);text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
+<span style="font-size:18px">🍎</span><span style="font-size:15px;font-weight:500">Apple (AAPL)</span>
+</a>
+<a onclick="quickSearch('TSLA');closeSideMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text);text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
+<span style="font-size:18px">🚗</span><span style="font-size:15px;font-weight:500">Tesla (TSLA)</span>
+</a>
+<a onclick="quickSearch('BTC');closeSideMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text);text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
+<span style="font-size:18px">₿</span><span style="font-size:15px;font-weight:500">Bitcoin (BTC)</span>
+</a>
+<a onclick="quickSearch('ETH');closeSideMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text);text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
+<span style="font-size:18px">Ξ</span><span style="font-size:15px;font-weight:500">Ethereum (ETH)</span>
+</a>
+<a onclick="quickSearch('SOL');closeSideMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text);text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
+<span style="font-size:18px">◎</span><span style="font-size:15px;font-weight:500">Solana (SOL)</span>
+</a>
+
+<div style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;padding:14px 18px 4px;font-weight:600">Markets</div>
+<a onclick="quickSearch('SPY');closeSideMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text);text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
+<span style="font-size:18px">📊</span><span style="font-size:15px;font-weight:500">S&P 500 (SPY)</span>
+</a>
+<a onclick="quickSearch('QQQ');closeSideMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text);text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
+<span style="font-size:18px">💻</span><span style="font-size:15px;font-weight:500">Nasdaq (QQQ)</span>
+</a>
+<a onclick="quickSearch('GOLD');closeSideMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text);text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
+<span style="font-size:18px">🥇</span><span style="font-size:15px;font-weight:500">Gold</span>
+</a>
+<a onclick="quickSearch('OIL');closeSideMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text);text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
+<span style="font-size:18px">🛢️</span><span style="font-size:15px;font-weight:500">Oil</span>
+</a>
+
+<div style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;padding:14px 18px 4px;font-weight:600">About</div>
+<a onclick="switchView('pricing');closeSideMenu()" style="display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text);text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
+<span style="font-size:18px">🦍</span><span style="font-size:15px;font-weight:500">About Big Brain Ape</span>
+</a>
+<a href="https://degen.virtuals.io/forums/1729" target="_blank" style="display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text);text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
+<span style="font-size:18px">📡</span><span style="font-size:15px;font-weight:500">Signals Forum</span>
+</a>
+<a href="https://x.com/Big_Brain_Ape" target="_blank" style="display:flex;align-items:center;gap:12px;padding:12px 18px;color:var(--text);text-decoration:none;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
+<span style="font-size:18px">🐦</span><span style="font-size:15px;font-weight:500">Follow on X</span>
+</a>
+</div>
+</div>
+
 <!-- HOME VIEW -->
 <div id="view-home" class="view active">
 <div class="header">
+<button onclick="openSideMenu()" style="background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;padding:0 8px 0 0;flex-shrink:0">☰</button>
 <h1>Big Brain <span>Ape</span> 🦍</h1>
 </div>
 
@@ -610,13 +718,222 @@ for(var i=0;i<btns.length;i++)btns[i].classList.remove('active');
 var btn=document.querySelector('[data-view="'+name+'"]');
 if(btn)btn.classList.add('active');
 window.scrollTo(0,0);
-// Load data for the tab being opened
 if(name==='trading')loadTrading();
 else if(name==='briefing')loadBriefing();
 else if(name==='snapshot')loadSnapshot();
 else if(name==='crypto')loadCrypto();
 else if(name==='portfolio')loadPortfolio();
 }
+
+// ==============================
+// SIDE MENU
+// ==============================
+function openSideMenu(){
+var menu=document.getElementById('sideMenu');
+var overlay=document.getElementById('sideMenuOverlay');
+if(!menu||!overlay)return;
+menu.style.transform='translateX(0)';
+overlay.style.display='block';
+setTimeout(function(){overlay.style.opacity='1'},10);
+}
+function closeSideMenu(){
+var menu=document.getElementById('sideMenu');
+var overlay=document.getElementById('sideMenuOverlay');
+if(!menu||!overlay)return;
+menu.style.transform='translateX(-100%)';
+overlay.style.opacity='0';
+setTimeout(function(){overlay.style.display='none'},200);
+}
+
+// ==============================
+// USER AUTH (Supabase-ready)
+// ==============================
+// SUPABASE: Replace these with your project credentials
+// Get them from: Supabase Dashboard → Settings → API
+var SUPABASE_URL='';  // e.g. 'https://xyz.supabase.co'
+var SUPABASE_ANON_KEY='';  // e.g. 'eyJhbGciOi...'
+
+function getStoredUser(){
+try{return JSON.parse(localStorage.getItem('bba_user')||'null')}catch(e){return null}
+}
+function setStoredUser(u){
+if(u)localStorage.setItem('bba_user',JSON.stringify(u));
+else localStorage.removeItem('bba_user');
+}
+function updateSideMenuAuth(){
+var user=getStoredUser();
+var signedOut=document.getElementById('sideMenuSignedOut');
+var signedIn=document.getElementById('sideMenuSignedIn');
+if(!signedOut||!signedIn)return;
+if(user){
+signedOut.style.display='none';
+signedIn.style.display='block';
+var emailEl=document.getElementById('sideMenuEmail');
+var avatarEl=document.getElementById('sideMenuAvatar');
+if(emailEl)emailEl.textContent=user.email||'user';
+if(avatarEl)avatarEl.textContent=(user.email||'U')[0].toUpperCase();
+}else{
+signedOut.style.display='block';
+signedIn.style.display='none';
+}
+}
+
+function showSignUp(){
+var overlay=document.createElement('div');
+overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px';
+overlay.innerHTML='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:340px;width:100%">'+
+'<div style="font-size:28px;margin-bottom:8px">🦍</div>'+
+'<div style="font-size:22px;font-weight:800;margin-bottom:4px">Create Account</div>'+
+'<div style="font-size:14px;color:var(--text2);margin-bottom:18px">Save your portfolio across devices</div>'+
+'<input id="signupEmail" type="email" placeholder="Email" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:15px;color:var(--text);margin-bottom:10px;box-sizing:border-box">'+
+'<input id="signupPass" type="password" placeholder="Password (min 6 chars)" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:15px;color:var(--text);margin-bottom:16px;box-sizing:border-box">'+
+'<button onclick="doSignUp()" style="width:100%;background:linear-gradient(135deg,#58a6ff,#3fb950);border:none;color:#0d1117;font-size:16px;font-weight:700;padding:12px;border-radius:10px;cursor:pointer;margin-bottom:8px">Sign Up</button>'+
+'<div style="text-align:center;font-size:13px;color:var(--text2)">Already have an account? <a onclick="this.closest(\'div[style*=fixed]\').remove();showSignIn()" style="color:var(--blue);cursor:pointer;text-decoration:underline">Sign In</a></div>'+
+'<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);text-align:center">'+
+'<button onclick="doGuestMode()" style="background:none;border:none;color:var(--text2);font-size:13px;cursor:pointer">Continue as guest</button>'+
+'</div>'+
+'</div>';
+document.body.appendChild(overlay);
+}
+
+function showSignIn(){
+var overlay=document.createElement('div');
+overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px';
+overlay.innerHTML='<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:340px;width:100%">'+
+'<div style="font-size:28px;margin-bottom:8px">🦍</div>'+
+'<div style="font-size:22px;font-weight:800;margin-bottom:4px">Welcome Back</div>'+
+'<div style="font-size:14px;color:var(--text2);margin-bottom:18px">Sign in to sync your portfolio</div>'+
+'<input id="signinEmail" type="email" placeholder="Email" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:15px;color:var(--text);margin-bottom:10px;box-sizing:border-box">'+
+'<input id="signinPass" type="password" placeholder="Password" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:15px;color:var(--text);margin-bottom:16px;box-sizing:border-box">'+
+'<button onclick="doSignIn()" style="width:100%;background:linear-gradient(135deg,#58a6ff,#3fb950);border:none;color:#0d1117;font-size:16px;font-weight:700;padding:12px;border-radius:10px;cursor:pointer;margin-bottom:8px">Sign In</button>'+
+'<div style="text-align:center;font-size:13px;color:var(--text2)">No account? <a onclick="this.closest(\'div[style*=fixed]\').remove();showSignUp()" style="color:var(--blue);cursor:pointer;text-decoration:underline">Sign Up</a></div>'+
+'<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);text-align:center">'+
+'<button onclick="doGuestMode()" style="background:none;border:none;color:var(--text2);font-size:13px;cursor:pointer">Continue as guest</button>'+
+'</div>'+
+'</div>';
+document.body.appendChild(overlay);
+}
+
+function doGuestMode(){
+var overlays=document.querySelectorAll('div[style*="z-index:10000"]');
+for(var i=0;i<overlays.length;i++)overlays[i].remove();
+}
+
+function doSignUp(){
+var email=document.getElementById('signupEmail').value.trim();
+var pass=document.getElementById('signupPass').value;
+if(!email||!pass){alert('Please fill in email and password');return}
+if(pass.length<6){alert('Password must be at least 6 characters');return}
+// For now, save locally. Once Supabase is connected, this will use the Supabase API.
+if(!SUPABASE_URL){
+// Local mode (no Supabase yet)
+setStoredUser({email:email,id:'local_'+btoa(email).slice(0,12),created:Date.now()});
+updateSideMenuAuth();
+var overlays=document.querySelectorAll('div[style*="z-index:10000"]');
+for(var i=0;i<overlays.length;i++)overlays[i].remove();
+alert('Account created! Your portfolio will save on this device. Connect Supabase for cloud sync across devices.');
+return;
+}
+// Supabase mode — will be implemented once keys are added
+doSupabaseAuth('signup',email,pass);
+}
+
+function doSignIn(){
+var email=document.getElementById('signinEmail').value.trim();
+var pass=document.getElementById('signinPass').value;
+if(!email||!pass){alert('Please fill in email and password');return}
+if(!SUPABASE_URL){
+// Local mode
+setStoredUser({email:email,id:'local_'+btoa(email).slice(0,12),created:Date.now()});
+updateSideMenuAuth();
+var overlays=document.querySelectorAll('div[style*="z-index:10000"]');
+for(var i=0;i<overlays.length;i++)overlays[i].remove();
+return;
+}
+doSupabaseAuth('signin',email,pass);
+}
+
+function signOutUser(){
+setStoredUser(null);
+updateSideMenuAuth();
+}
+
+// Supabase auth — called once SUPABASE_URL and SUPABASE_ANON_KEY are set
+function doSupabaseAuth(mode,email,pass){
+var endpoint=mode==='signup'?'/auth/v1/signup':'/auth/v1/token?grant_type=password';
+fetch(SUPABASE_URL+endpoint,{
+method:'POST',
+headers:{
+'apikey':SUPABASE_ANON_KEY,
+'Content-Type':'application/json'
+},
+body:JSON.stringify({email:email,password:pass})
+}).then(function(r){return r.json()})
+.then(function(d){
+if(d.error||d.access_token){
+if(d.access_token){
+setStoredUser({email:email,token:d.access_token,id:d.user?d.user.id:'supabase_user'});
+updateSideMenuAuth();
+// Sync portfolio from cloud
+syncPortfolioFromCloud();
+var overlays=document.querySelectorAll('div[style*="z-index:10000"]');
+for(var i=0;i<overlays.length;i++)overlays[i].remove();
+}else{
+alert(d.error||d.msg||'Authentication failed');
+}
+}else if(d.user){
+setStoredUser({email:email,token:d.session?d.session.access_token:'',id:d.user.id});
+updateSideMenuAuth();
+syncPortfolioFromCloud();
+var overlays=document.querySelectorAll('div[style*="z-index:10000"]');
+for(var i=0;i<overlays.length;i++)overlays[i].remove();
+}else{
+alert('Unexpected response. Please try again.');
+}
+}).catch(function(e){
+alert('Connection error. Please try again.');
+});
+}
+
+// Cloud sync functions — active once Supabase is connected
+function syncPortfolioToCloud(){
+var user=getStoredUser();
+if(!user||!user.token||!SUPABASE_URL)return;
+var portfolio=getPortfolio();
+fetch(SUPABASE_URL+'/rest/v1/portfolio?user_id=eq.'+user.id,{
+method:'POST',
+headers:{
+'apikey':SUPABASE_ANON_KEY,
+'Authorization':'Bearer '+user.token,
+'Content-Type':'application/json',
+'Prefer':'resolution=merge-duplicates'
+},
+body:JSON.stringify({user_id:user.id,data:JSON.stringify(portfolio),updated_at:new Date().toISOString()})
+}).catch(function(){});
+}
+
+function syncPortfolioFromCloud(){
+var user=getStoredUser();
+if(!user||!user.token||!SUPABASE_URL)return;
+fetch(SUPABASE_URL+'/rest/v1/portfolio?user_id=eq.'+user.id+'&select=data',{
+headers:{
+'apikey':SUPABASE_ANON_KEY,
+'Authorization':'Bearer '+user.token
+}
+}).then(function(r){return r.json()})
+.then(function(d){
+if(d&&d.length>0&&d[0].data){
+try{
+var cloudPortfolio=JSON.parse(d[0].data);
+savePortfolio(cloudPortfolio);
+loadPortfolio();
+}catch(e){}
+}
+}).catch(function(){});
+}
+
+// Initialize auth state on page load
+updateSideMenuAuth();
 
 // ==============================
 // API HELPERS
@@ -791,6 +1108,7 @@ return;
 var p=getPortfolio();
 p.push({symbol:symbol,shares:shares,buyPrice:buyPrice,added:Date.now()});
 savePortfolio(p);
+syncPortfolioToCloud();
 var modal=document.getElementById('addHoldingModal');
 if(modal)modal.remove();
 window.loadPortfolio();
@@ -800,12 +1118,14 @@ window.removeHolding=function(idx){
 var p=getPortfolio();
 p.splice(idx,1);
 savePortfolio(p);
+syncPortfolioToCloud();
 window.loadPortfolio();
 };
 
 window.clearPortfolioConfirm=function(){
 if(confirm('Remove all positions? This cannot be undone.')){
 savePortfolio([]);
+syncPortfolioToCloud();
 window.loadPortfolio();
 }
 };
