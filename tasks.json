@@ -1,27 +1,6 @@
 {
   "tasks": [
     {
-      "id": "paste-hl-backtest-engine",
-      "priority": "high",
-      "title": "Paste Round 3 backtest engine + results onto the shared board",
-      "subtitle": "Trader/Researcher are blocked without hl_backtest.py + results JSON",
-      "steps": [
-        "Copy /workspace/hl_backtest.py and /workspace/hl_backtest_results.json (from BBA or wherever they live)",
-        "Either: drop them in this Grok Bot chat, OR commit to https://github.com/Simzy420/bba-strategy-logs under engines/ and logs/days/2026-09-16/",
-        "Tell Chief of Staff when done so Round 4 isolated tests can run"
-      ],
-      "links": [
-        {
-          "label": "Strategy logs repo",
-          "url": "https://github.com/Simzy420/bba-strategy-logs"
-        },
-        {
-          "label": "Round 4 alignment note",
-          "url": "https://github.com/Simzy420/bba-strategy-logs/blob/main/logs/days/2026-09-16/backtest/round4_alignment_note.md"
-        }
-      ]
-    },
-    {
       "id": "gmail-identity-filters",
       "priority": "medium",
       "title": "Create Gmail filters for Identity labels",
