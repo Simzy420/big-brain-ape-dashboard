@@ -73,6 +73,36 @@
           "url": "https://virtualsprotocol.typeform.com/to/BwtdGEAL"
         }
       ]
+    },
+    {
+      "id": "bba-review-r4-test-a",
+      "priority": "high",
+      "title": "Review Round 4 Test A results when bots post",
+      "steps": [
+        "Open the strategy-logs day folder and the lab grok-results directory",
+        "Compare Test A against the Round 3 baselines",
+        "Decide go/no-go before Test B"
+      ],
+      "links": [
+        {
+          "label": "BBA strategy logs",
+          "url": "https://github.com/Simzy420/bba-strategy-logs"
+        },
+        {
+          "label": "BBA backtest lab",
+          "url": "https://github.com/Simzy420/bba-backtest-lab"
+        }
+      ]
+    },
+    {
+      "id": "bba-r4-boss-pick",
+      "priority": "medium",
+      "title": "After A\u2013D isolated runs, pick ONE Round 4 winner (no blending)",
+      "steps": [
+        "Review the results from isolated Tests A, B, C, and D",
+        "Apply the Shield veto: reject DD >20% or more than 25 trades/year",
+        "Pick one winner; do not blend tests"
+      ]
     }
   ]
 }
