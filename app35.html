@@ -531,6 +531,23 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <div id="athContainer" style="display:flex;flex-direction:column;gap:8px"><div class="spinner" style="width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto"></div></div>
 </div>
 
+<!-- STOCK GAINERS & LOSERS -->
+<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin:16px">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:#10b981"></div><span style="font-size:22px;font-weight:700">Top 10 Stock Gainers Today 📈</span></div>
+<div style="height:280px;position:relative"><canvas id="stockGainersChart"></canvas></div>
+</div>
+
+<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin:16px">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:#ef4444"></div><span style="font-size:22px;font-weight:700">Top 10 Stock Losers Today 📉</span></div>
+<div style="height:280px;position:relative"><canvas id="stockLosersChart"></canvas></div>
+</div>
+
+<!-- TRENDING TICKERS -->
+<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin:16px">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div style="width:8px;height:8px;border-radius:50%;background:#ec4899"></div><span style="font-size:22px;font-weight:700">Trending Tickers 🔥</span></div>
+<div id="trendingStocksContainer" style="display:flex;flex-direction:column;gap:8px"><div class="spinner" style="width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto"></div></div>
+</div>
+
 </div>
 <div id="view-analysis" class="view">
 <div style="position:relative;padding:10px 16px"><button class="back-btn" style="position:static;transform:none" onclick="switchView('home')">‹ Back</button></div>
@@ -3156,6 +3173,108 @@ checkStock(watchlist[idx]).then(function(){idx++;setTimeout(nextStock,350)});
 nextStock();
 };
 
+// ==============================
+// STOCK GAINERS & LOSERS + TRENDING
+// ==============================
+window.loadStockGainersLosers=function(){
+var FMP_KEY='FYPPeClubVq4A3KcyNkDH5S1g2Rw1SCL';
+// Fetch top gainers and losers from FMP
+fetch('https://financialmodelingprep.com/stable/gainers?apikey='+FMP_KEY)
+.then(function(r){return r.json()})
+.then(function(data){
+if(!data||!data.length)return;
+var gainers=data.slice(0,10);
+var gLabels=[],gData=[];
+for(var i=0;i<gainers.length;i++){
+gLabels.push(gainers[i].symbol||gainers[i].ticker||'?');
+gData.push(parseFloat(gainers[i].changePercentage||gainers[i].changesPercentage||0));
+}
+var gc=document.getElementById('stockGainersChart');
+if(gc&&typeof Chart!=='undefined'){
+new Chart(gc,{
+type:'bar',
+data:{labels:gLabels,datasets:[{
+label:'% Change',data:gData,
+backgroundColor:gData.map(function(v){return v>=0?'#3fb950':'#f85149'}),
+borderRadius:6
+}]},
+options:{responsive:true,maintainAspectRatio:false,
+plugins:{legend:{display:false},
+tooltip:{callbacks:{label:function(ctx){return ctx.parsed.y.toFixed(2)+'%'}}}},
+scales:{y:{grid:{color:'rgba(48,54,61,0.6)'},ticks:{color:'#8b949e',callback:function(v){return v+'%'}}},
+x:{grid:{display:false},ticks:{color:'#e6edf3',maxRotation:45}}}}
+});
+}
+})
+.catch(function(){});
+
+fetch('https://financialmodelingprep.com/stable/losers?apikey='+FMP_KEY)
+.then(function(r){return r.json()})
+.then(function(data){
+if(!data||!data.length)return;
+var losers=data.slice(0,10);
+var lLabels=[],lData=[];
+for(var i=0;i<losers.length;i++){
+lLabels.push(losers[i].symbol||losers[i].ticker||'?');
+lData.push(parseFloat(losers[i].changePercentage||losers[i].changesPercentage||0));
+}
+var lc=document.getElementById('stockLosersChart');
+if(lc&&typeof Chart!=='undefined'){
+new Chart(lc,{
+type:'bar',
+data:{labels:lLabels,datasets:[{
+label:'% Change',data:lData,
+backgroundColor:lData.map(function(v){return v>=0?'#3fb950':'#f85149'}),
+borderRadius:6
+}]},
+options:{responsive:true,maintainAspectRatio:false,
+plugins:{legend:{display:false},
+tooltip:{callbacks:{label:function(ctx){return ctx.parsed.y.toFixed(2)+'%'}}}},
+scales:{y:{grid:{color:'rgba(48,54,61,0.6)'},ticks:{color:'#8b949e',callback:function(v){return v+'%'}}},
+x:{grid:{display:false},ticks:{color:'#e6edf3',maxRotation:45}}}}
+});
+}
+})
+.catch(function(){});
+};
+
+window.loadTrendingStocks=function(){
+var FMP_KEY='FYPPeClubVq4A3KcyNkDH5S1g2Rw1SCL';
+var el=document.getElementById('trendingStocksContainer');
+if(!el)return;
+// Use FMP's most active stocks as trending
+fetch('https://financialmodelingprep.com/stable/actives?apikey='+FMP_KEY)
+.then(function(r){return r.json()})
+.then(function(data){
+if(!data||!data.length){
+el.innerHTML='<div style="color:var(--text2);text-align:center;padding:14px">No trending data available</div>';
+return;
+}
+var trending=data.slice(0,10);
+var html='';
+for(var i=0;i<trending.length;i++){
+var t=trending[i];
+var sym=t.symbol||t.ticker||'?';
+var chg=parseFloat(t.changePercentage||t.changesPercentage||0);
+var price=parseFloat(t.price||0);
+var chgColor=chg>=0?'var(--green)':'var(--red)';
+var chgSign=chg>=0?'+':'';
+var chgStr=chgSign+chg.toFixed(2)+'%';
+html+='<div onclick="quickSearch(\''+sym+'\')" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor=\'var(--blue)\'" onmouseout="this.style.borderColor=\'var(--border)\'">';
+html+='<div style="display:flex;align-items:center;gap:10px">';
+html+='<div style="width:28px;height:28px;border-radius:8px;background:var(--card-light,#1e242e);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2)">'+(i+1)+'</div>';
+html+='<div><div style="font-size:16px;font-weight:700">'+sym+'</div><div style="font-size:13px;color:var(--text2)">$'+price.toFixed(2)+'</div></div>';
+html+='</div>';
+html+='<div style="font-size:16px;font-weight:700;color:'+chgColor+'">'+chgStr+'</div>';
+html+='</div>';
+}
+el.innerHTML=html;
+})
+.catch(function(){
+el.innerHTML='<div style="color:var(--text2);text-align:center;padding:14px">Failed to load trending data</div>';
+});
+};
+
 function findItem(arr,sym){
 if(!arr)return null;
 for(var i=0;i<arr.length;i++){
@@ -4300,6 +4419,8 @@ document.getElementById('briefingDate').textContent=formatDate(new Date());
 loadTickerTapes();
 loadHomeData();
 loadNewATHs();
+loadStockGainersLosers();
+loadTrendingStocks();
 
 // ==============================
 // CRYPTO HUB
