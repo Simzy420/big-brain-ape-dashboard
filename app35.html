@@ -898,16 +898,20 @@ return;
 }
 if(d.access_token){
 // Sign in success — got token
-setStoredUser({email:email,token:d.access_token,id:d.user?d.user.id:'supabase_user'});
+setStoredUser({email:email,token:d.access_token,id:d.user?d.user.id:(d.user_id||'supabase_user')});
 updateSideMenuAuth();
 syncPortfolioFromCloud();
 var overlays=document.querySelectorAll('div[style*="z-index:10000"]');
 for(var i=0;i<overlays.length;i++)overlays[i].remove();
-}else if(d.user){
-// Sign up success — email confirmation required
+}else if(d.id||d.user||(d.code&&d.code==='422')){
+// Sign up success — either user object returned or email confirmation needed
 var overlays=document.querySelectorAll('div[style*="z-index:10000"]');
 for(var i=0;i<overlays.length;i++)overlays[i].remove();
-alert('Account created! Check your email for a confirmation link. Click it, then come back and Sign In.');
+if(d.confirmation_sent_at||!d.access_token){
+alert('Account created! Check your email for a confirmation link. Click it, then come back and tap Sign In.');
+}else{
+alert('Account created! Please Sign In now.');
+}
 }else{
 alert('Unexpected response: '+JSON.stringify(d).substring(0,200));
 }
