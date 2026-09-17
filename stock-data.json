@@ -1,6 +1,6 @@
 {
-  "timestamp": 1789682249,
-  "generatedAt": "2026-09-17 21:57 UTC",
+  "timestamp": 1789683090,
+  "generatedAt": "2026-09-17 22:11 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -11,15 +11,6 @@
       "high": 219.905,
       "low": 217.145,
       "prevClose": 213.9,
-      "name": "NVIDIA Corp",
-      "companyName": "NVIDIA Corp",
-      "exchange": "NASDAQ NMS - GLOBAL MARKET",
-      "sector": "Semiconductors",
-      "industry": "Semiconductors",
-      "marketCap": 5154989955512.188,
-      "country": "US",
-      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/942959144056.png",
-      "ipo": "1999-01-22",
       "strongBuy": 24,
       "buy": 41,
       "hold": 3,
@@ -8639,7 +8630,29 @@
           "revenueActual": 12535000000.0
         }
       ],
-      "upcomingEarnings": [],
+      "upcomingEarnings": [
+        {
+          "date": "2027-04-26",
+          "quarter": 1,
+          "epsEstimate": 0.9203,
+          "revenueEstimate": 12487224940,
+          "hour": ""
+        },
+        {
+          "date": "2027-02-08",
+          "quarter": 4,
+          "epsEstimate": 0.6135,
+          "revenueEstimate": 11326867914,
+          "hour": "amc"
+        },
+        {
+          "date": "2026-10-19",
+          "quarter": 3,
+          "epsEstimate": 0.9049,
+          "revenueEstimate": 13280611126,
+          "hour": "bmo"
+        }
+      ],
       "pe": 0,
       "eps": 3.039,
       "epsTTM": 3.3194,
@@ -17286,29 +17299,7 @@
           "revenueActual": 177402000000.0
         }
       ],
-      "upcomingEarnings": [
-        {
-          "date": "2027-05-19",
-          "quarter": 1,
-          "epsEstimate": 0.7451,
-          "revenueEstimate": 187332230499,
-          "hour": ""
-        },
-        {
-          "date": "2027-02-18",
-          "quarter": 4,
-          "epsEstimate": 0.7941,
-          "revenueEstimate": 202349124316,
-          "hour": "amc"
-        },
-        {
-          "date": "2026-11-19",
-          "quarter": 3,
-          "epsEstimate": 0.6438,
-          "revenueEstimate": 189188688542,
-          "hour": ""
-        }
-      ],
+      "upcomingEarnings": [],
       "pe": 0,
       "eps": 2.7291,
       "epsTTM": 2.76,
@@ -17936,6 +17927,40 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/UNH.png",
       "ipo": "1984-10-17",
+      "earnings": [
+        {
+          "period": "2026-06-30",
+          "quarter": 2,
+          "estimate": 4.9533,
+          "actual": 6.38,
+          "surprise": 1.4267,
+          "surprisePct": 28.803
+        },
+        {
+          "period": "2026-03-31",
+          "quarter": 1,
+          "estimate": 6.6406,
+          "actual": 7.23,
+          "surprise": 0.5894,
+          "surprisePct": 8.8757
+        },
+        {
+          "period": "2025-12-31",
+          "quarter": 4,
+          "estimate": 2.1222,
+          "actual": 2.11,
+          "surprise": -0.0122,
+          "surprisePct": -0.5749
+        },
+        {
+          "period": "2025-09-30",
+          "quarter": 3,
+          "estimate": 2.8218,
+          "actual": 2.92,
+          "surprise": 0.0982,
+          "surprisePct": 3.48
+        }
+      ],
       "earningsHistory": [
         {
           "quarter": 2,
@@ -17998,7 +18023,29 @@
           "revenueActual": 111616000000.0
         }
       ],
-      "upcomingEarnings": [],
+      "upcomingEarnings": [
+        {
+          "date": "2027-04-19",
+          "quarter": 1,
+          "epsEstimate": 8.2493,
+          "revenueEstimate": 113519492450,
+          "hour": ""
+        },
+        {
+          "date": "2027-01-25",
+          "quarter": 4,
+          "epsEstimate": 2.14,
+          "revenueEstimate": 112286643950,
+          "hour": "amc"
+        },
+        {
+          "date": "2026-10-09",
+          "quarter": 3,
+          "epsEstimate": 4.1695,
+          "revenueEstimate": 112517286035,
+          "hour": "bmo"
+        }
+      ],
       "pe": 0,
       "eps": 13.2338,
       "epsTTM": 15.551,
