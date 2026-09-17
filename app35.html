@@ -845,8 +845,7 @@ if(!SUPABASE_URL){
 // Local mode (no Supabase yet)
 setStoredUser({email:email,id:'local_'+btoa(email).slice(0,12),created:Date.now()});
 updateSideMenuAuth();
-var overlays=document.querySelectorAll('div[style*="z-index:10000"]');
-for(var i=0;i<overlays.length;i++)overlays[i].remove();
+closeAuthOverlays();
 alert('Account created! Your portfolio will save on this device. Connect Supabase for cloud sync across devices.');
 return;
 }
@@ -862,11 +861,21 @@ if(!SUPABASE_URL){
 // Local mode
 setStoredUser({email:email,id:'local_'+btoa(email).slice(0,12),created:Date.now()});
 updateSideMenuAuth();
-var overlays=document.querySelectorAll('div[style*="z-index:10000"]');
-for(var i=0;i<overlays.length;i++)overlays[i].remove();
+closeAuthOverlays();
 return;
 }
 doSupabaseAuth('signin',email,pass);
+}
+
+// Robust overlay closer — handles browser style serialization differences
+function closeAuthOverlays(){
+var els=document.querySelectorAll('div[style*="z-index"] , div[style*="zIndex"]');
+for(var i=0;i<els.length;i++){
+var z=els[i].style.zIndex;
+if(z==='10000'||z==='10001'||z==='9999'){
+els[i].remove();
+}
+}
 }
 
 function signOutUser(){
@@ -901,12 +910,10 @@ if(d.access_token){
 setStoredUser({email:email,token:d.access_token,id:d.user?d.user.id:(d.user_id||'supabase_user')});
 updateSideMenuAuth();
 syncPortfolioFromCloud();
-var overlays=document.querySelectorAll('div[style*="z-index:10000"]');
-for(var i=0;i<overlays.length;i++)overlays[i].remove();
+closeAuthOverlays();
 }else if(d.id||d.user||(d.code&&d.code==='422')){
 // Sign up success — either user object returned or email confirmation needed
-var overlays=document.querySelectorAll('div[style*="z-index:10000"]');
-for(var i=0;i<overlays.length;i++)overlays[i].remove();
+closeAuthOverlays();
 if(d.confirmation_sent_at||!d.access_token){
 alert('Account created! Check your email for a confirmation link. Click it, then come back and tap Sign In.');
 }else{
