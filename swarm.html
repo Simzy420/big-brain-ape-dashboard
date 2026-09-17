@@ -30,90 +30,63 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .dot{width:10px;height:10px;border-radius:50%;margin-top:6px;flex-shrink:0}
 .dot.paper{background:var(--orange);box-shadow:0 0 8px rgba(245,158,11,.6)}
 .dot.live-safe{background:var(--green);box-shadow:0 0 8px rgba(34,197,94,.5)}
-.dot.off{background:#555}
+.dot.off,.dot.booting{background:#555}
+.dot.paused{background:var(--red);box-shadow:0 0 8px rgba(239,68,68,.45)}
 .aname{font-weight:700;font-size:15px}
 .arole{font-size:12px;color:var(--muted)}
 .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;border:1px solid var(--border);background:var(--card2);color:var(--text)}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;border:1px solid var(--border);background:var(--card2);color:var(--text);cursor:pointer}
 .btn.pri{background:linear-gradient(135deg,#00d9ff,#00ff9d);color:#071014;border:none}
 .btn.danger{border-color:#5a2020;color:#fca5a5}
-.cmd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;background:#0b0b12;border:1px dashed #333;border-radius:8px;padding:8px 10px;margin-top:6px;color:#9ae6b4}
+.cmd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;background:#0b0b12;border:1px dashed #333;border-radius:8px;padding:8px 10px;margin-top:6px;color:#9ae6b4;white-space:pre-wrap}
 .nav{position:fixed;bottom:0;left:0;right:0;background:#0c0c14;border-top:1px solid var(--border);display:flex}
 .nav a{flex:1;text-align:center;padding:12px 4px 18px;font-size:11px;color:var(--muted);text-decoration:none;font-weight:700}
 .nav a.on{color:var(--neon)}
 .log{font-size:12px;color:var(--muted);max-height:180px;overflow:auto;line-height:1.5}
+input{width:100%;background:#0b0b12;border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 10px;font-size:13px;margin-top:6px}
+label{font-size:11px;color:var(--muted);display:block;margin-top:8px}
 </style>
 </head>
 <body>
 <div class="top">
-  <h1>🦍 Swarm <span>Control</span></h1>
-  <div class="meta" id="clock">Wed Sep 16 2026 · paper gate ON</div>
+  <h1>Swarm <span>Control</span></h1>
+  <div class="meta" id="clock">connecting…</div>
 </div>
-<div class="banner">PAPER ONLY. No live HL keys. Do not size up from cron. Champion = Round 3. R4A FAIL — do not blend.</div>
+<div class="banner" id="banner">PAPER ONLY. No live HL keys. Do not size up from cron. Champion = Round 3. R4A FAIL — do not blend.</div>
 
 <div class="grid">
   <div class="kpis">
-    <div class="kpi"><div class="l">Champion</div><div class="v">R3</div><div class="s">hl-full net +4.33%</div></div>
-    <div class="kpi"><div class="l">Max DD</div><div class="v">12.65%</div><div class="s">shield ≤16% keep / >20% kill</div></div>
-    <div class="kpi"><div class="l">Trades / WR</div><div class="v">15 · 33%</div><div class="s">do not add trades for WR</div></div>
-    <div class="kpi"><div class="l">Cost drag</div><div class="v">54%</div><div class="s">$79.90 of gross · target &lt;40%</div></div>
+    <div class="kpi"><div class="l">Champion</div><div class="v" id="kChamp">R3</div><div class="s" id="kNet">hl-full net +4.33%</div></div>
+    <div class="kpi"><div class="l">Max DD</div><div class="v" id="kDd">12.65%</div><div class="s">shield ≤16% keep / >20% kill</div></div>
+    <div class="kpi"><div class="l">Trades / WR</div><div class="v" id="kTr">15 · 33%</div><div class="s">do not add trades for WR</div></div>
+    <div class="kpi"><div class="l">API</div><div class="v" id="kApi">OFF</div><div class="s" id="kApiS">set URL + token below</div></div>
   </div>
 
   <div class="card">
     <h2>Agents</h2>
-    <div class="agent">
-      <div class="dot live-safe"></div>
-      <div>
-        <div class="aname">Big Brain Ape</div>
-        <div class="arole">Public analysis + Telegram hire · isolated wallet · no user funds in this panel</div>
-        <div class="btns">
-          <a class="btn pri" href="https://simzy420.github.io/big-brain-ape-dashboard/app35.html">Open App</a>
-          <a class="btn" href="https://t.me/BigBrain2Bot">Telegram</a>
-        </div>
-      </div>
+    <div id="agents"></div>
+  </div>
+
+  <div class="card">
+    <h2>Hermes commands (hits the API)</h2>
+    <div class="btns">
+      <button class="btn" onclick="sendCmd('status')">status</button>
+      <button class="btn" onclick="sendCmd('pause')">pause</button>
+      <button class="btn" onclick="sendCmd('resume')">resume</button>
+      <button class="btn danger" onclick="sendCmd('flat')">flat</button>
+      <button class="btn danger" onclick="sendCmd('kill')">kill</button>
     </div>
-    <div class="agent">
-      <div class="dot paper"></div>
-      <div>
-        <div class="aname">Hermes x402</div>
-        <div class="arole">HL perps paper · HF Space paused pending BotFather + secrets · no deposit</div>
-        <div class="btns">
-          <a class="btn" href="https://github.com/Simzy420/hermes-x402-trading-bot">Repo</a>
-          <button class="btn" onclick="copyCmd('/status')">Copy /status</button>
-          <button class="btn" onclick="copyCmd('/pause')">Copy /pause</button>
-          <button class="btn danger" onclick="copyCmd('/flat')">Copy /flat</button>
-          <button class="btn danger" onclick="copyCmd('/kill')">Copy /kill</button>
-        </div>
-        <div class="cmd" id="lastCmd">Telegram cmds copy to clipboard — paste in BotFather bot when Space is up</div>
-      </div>
-    </div>
-    <div class="agent">
-      <div class="dot paper"></div>
-      <div>
-        <div class="aname">Backtest Lab</div>
-        <div class="arole">One knob at a time · next queued after isolated D: not R4A</div>
-        <div class="btns">
-          <a class="btn" href="https://github.com/Simzy420/bba-backtest-lab">Lab</a>
-          <a class="btn" href="https://github.com/Simzy420/bba-strategy-logs/tree/main/logs/days/2026-09-16">Today logs</a>
-        </div>
-      </div>
-    </div>
-    <div class="agent">
-      <div class="dot off"></div>
-      <div>
-        <div class="aname">Grok RH bot</div>
-        <div class="arole">Robinhood scan / recs · no options · earnings reminders only when due</div>
-      </div>
-    </div>
-    <div class="agent">
-      <div class="dot live-safe"></div>
-      <div>
-        <div class="aname">Task board + chat</div>
-        <div class="arole">Human-in-the-loop queue · HF chat Space</div>
-        <div class="btns">
-          <a class="btn pri" href="https://simzy420.github.io/big-brain-ape-dashboard/tasks.html">Tasks</a>
-        </div>
-      </div>
+    <div class="cmd" id="lastCmd">No command yet.</div>
+  </div>
+
+  <div class="card">
+    <h2>API hookup (saved on this phone only)</h2>
+    <label>CONTROL_API_URL</label>
+    <input id="apiUrl" placeholder="https://YOUR-SPACE.hf.space or http://127.0.0.1:8787" />
+    <label>CONTROL_TOKEN</label>
+    <input id="apiTok" type="password" placeholder="same value as Space secret CONTROL_TOKEN" />
+    <div class="btns" style="margin-top:10px">
+      <button class="btn pri" onclick="saveHook()">Save + ping</button>
     </div>
   </div>
 
@@ -129,15 +102,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
       • R4A BE-delay = FAIL. Do not revive or blend.
     </div>
   </div>
-
-  <div class="card">
-    <h2>Quick links</h2>
-    <div class="btns">
-      <a class="btn" href="https://simzy420.github.io/big-brain-ape-dashboard/">Landing</a>
-      <a class="btn" href="https://github.com/Simzy420/big-brain-ape-dashboard">Dashboard repo</a>
-      <a class="btn" href="https://github.com/Simzy420/hermes-x402-trading-bot">Hermes</a>
-    </div>
-  </div>
 </div>
 
 <nav class="nav">
@@ -147,13 +111,100 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
   <a href="index.html">Site</a>
 </nav>
 <script>
-function copyCmd(s){
-  navigator.clipboard.writeText(s).then(function(){
-    document.getElementById('lastCmd').textContent='Copied '+s;
-  }).catch(function(){
-    document.getElementById('lastCmd').textContent=s;
+const $ = (id) => document.getElementById(id);
+function hook() {
+  return {
+    url: (localStorage.getItem('CONTROL_API_URL') || '').replace(/\/$/, ''),
+    token: localStorage.getItem('CONTROL_TOKEN') || ''
+  };
+}
+$('apiUrl').value = localStorage.getItem('CONTROL_API_URL') || '';
+$('apiTok').value = localStorage.getItem('CONTROL_TOKEN') || '';
+
+function saveHook() {
+  localStorage.setItem('CONTROL_API_URL', $('apiUrl').value.trim());
+  localStorage.setItem('CONTROL_TOKEN', $('apiTok').value.trim());
+  $('lastCmd').textContent = 'Saved. Pinging…';
+  refresh();
+}
+
+async function api(path, opt) {
+  const h = hook();
+  if (!h.url || !h.token) throw new Error('set URL + token');
+  const res = await fetch(h.url + path, Object.assign({
+    headers: {
+      'Authorization': 'Bearer ' + h.token,
+      'X-Control-Token': h.token,
+      'Content-Type': 'application/json'
+    }
+  }, opt || {}));
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.error || res.status);
+  return json;
+}
+
+function renderAgents(list) {
+  const box = $('agents');
+  box.innerHTML = '';
+  (list || []).forEach((a) => {
+    const div = document.createElement('div');
+    div.className = 'agent';
+    div.innerHTML = '<div class="dot ' + (a.state || 'off') + '"></div><div><div class="aname">' +
+      (a.name || a.id) + '</div><div class="arole">' + (a.note || a.state) + '</div></div>';
+    box.appendChild(div);
   });
 }
+
+async function refresh() {
+  const h = hook();
+  if (!h.url || !h.token) {
+    $('kApi').textContent = 'OFF';
+    $('kApiS').textContent = 'API not configured';
+    $('clock').textContent = new Date().toUTCString() + ' · paper gate ON · api offline';
+    renderAgents([
+      { name: 'Big Brain Ape', state: 'live-safe', note: 'Public analysis + Telegram hire' },
+      { name: 'Hermes x402', state: 'paper', note: 'API offline — Space not hooked' },
+      { name: 'Backtest Lab', state: 'paper', note: 'R4A FAIL — do not blend' },
+      { name: 'Grok RH bot', state: 'off', note: 'scans / recs only' },
+      { name: 'Task board', state: 'live-safe', note: 'human-in-the-loop' }
+    ]);
+    return;
+  }
+  try {
+    const s = await api('/v1/status');
+    $('kApi').textContent = 'ON';
+    $('kApiS').textContent = s.hermes.mode + (s.hermes.paused ? ' · paused' : ' · running');
+    $('clock').textContent = s.ts + ' · mode=' + s.hermes.mode + ' · eq=' + s.hermes.equity;
+    if (s.champion) {
+      $('kChamp').textContent = s.champion.id;
+      $('kNet').textContent = 'hl-full net +' + s.champion.netPct + '%';
+      $('kDd').textContent = s.champion.maxDdPct + '%';
+      $('kTr').textContent = s.champion.trades + ' · ' + s.champion.winRatePct + '%';
+    }
+    renderAgents(s.agents);
+    $('banner').textContent = s.paperGate
+      ? 'PAPER GATE ON. Commands hit the running agent. Live keys stay out.'
+      : 'WARNING: paperGate false — check LIVE_CONFIRM.';
+  } catch (e) {
+    $('kApi').textContent = 'ERR';
+    $('kApiS').textContent = String(e.message || e);
+    $('clock').textContent = new Date().toUTCString() + ' · api error';
+  }
+}
+
+async function sendCmd(cmd) {
+  $('lastCmd').textContent = 'sending ' + cmd + '…';
+  try {
+    const r = await api('/v1/command', { method: 'POST', body: JSON.stringify({ cmd: cmd }) });
+    $('lastCmd').textContent = r.result || JSON.stringify(r);
+    await refresh();
+  } catch (e) {
+    $('lastCmd').textContent = 'FAIL ' + cmd + ': ' + (e.message || e);
+  }
+}
+
+refresh();
+setInterval(refresh, 15000);
 </script>
 </body>
 </html>
