@@ -1,9 +1,9 @@
 {
-  "date": "September 18, 2026 14:55 UTC",
+  "date": "September 18, 2026 15:00 UTC",
   "assets": {
     "S&P 500": {
-      "price": 7628.57,
-      "change_pct": -0.12,
+      "price": 7630.18,
+      "change_pct": -0.1,
       "support": 7507.77,
       "resistance": 7771.48,
       "history": [
@@ -29,12 +29,12 @@
         7585.73,
         7551.81,
         7637.76,
-        7628.6
+        7630.18
       ]
     },
     "NASDAQ": {
-      "price": 26423.29,
-      "change_pct": 0.02,
+      "price": 26422.25,
+      "change_pct": 0.01,
       "support": 25802.96,
       "resistance": 26700.68,
       "history": [
@@ -60,12 +60,12 @@
         25981.57,
         25978.43,
         26418.3,
-        26423.29
+        26422.25
       ]
     },
     "Dow Jones": {
-      "price": 51577.63,
-      "change_pct": -0.39,
+      "price": 51592.11,
+      "change_pct": -0.36,
       "support": 51186.67,
       "resistance": 53819.65,
       "history": [
@@ -91,24 +91,24 @@
         52093.11,
         51461.9,
         51778.04,
-        51576.19
+        51592.11
       ]
     },
     "BTC": {
-      "price": 80869.9,
-      "change_pct": 5.55,
+      "price": 80895.1,
+      "change_pct": 5.79,
       "support": 68882.1,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2579.26,
-      "change_pct": 4.67,
+      "price": 2581.87,
+      "change_pct": 4.93,
       "support": 2222.0,
       "resistance": 2666.0
     },
     "SOL": {
-      "price": 110.59,
-      "change_pct": 9.15,
+      "price": 110.71,
+      "change_pct": 9.58,
       "support": 83.97,
       "resistance": 110.99
     }
@@ -156,7 +156,7 @@
   "whale_flow": "NEUTRAL",
   "metrics": {
     "vix": {
-      "value": "15.4",
+      "value": "15.5",
       "label": "VIX",
       "color": "green"
     },
@@ -171,17 +171,17 @@
       "color": "red"
     },
     "oil": {
-      "value": "$97.70",
+      "value": "$97.10",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4391",
+      "value": "$4393",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$66.78",
+      "value": "$66.83",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -194,7 +194,7 @@
     },
     {
       "label": "BULLISH",
-      "text": "BTC up 5.5% \u2014 momentum",
+      "text": "BTC up 5.8% \u2014 momentum",
       "type": "bullish"
     },
     {
@@ -203,20 +203,20 @@
       "type": "caution"
     }
   ],
-  "btc_funding": 7.231e-05,
+  "btc_funding": 7.132e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 36.63,
-    "daily_avg": 27.79,
-    "daily_pct": 31.8,
-    "weekly_inflow": 194.55,
-    "weekly_avg": 227.31,
-    "weekly_pct": -14.4,
-    "monthly_inflow": 974.18,
-    "monthly_avg": 817.39,
+    "daily_inflow": 36.96,
+    "daily_avg": 27.84,
+    "daily_pct": 32.8,
+    "weekly_inflow": 194.88,
+    "weekly_avg": 227.39,
+    "weekly_pct": -14.3,
+    "monthly_inflow": 974.52,
+    "monthly_avg": 817.5,
     "monthly_pct": 19.2,
-    "large_tx_count": 646528
+    "large_tx_count": 650590
   },
   "history": {
     "vix": [
@@ -243,7 +243,7 @@
       17.2,
       17.71,
       15.44,
-      15.37
+      15.47
     ],
     "yield_10y": [
       4.71,
@@ -293,7 +293,7 @@
       105.83,
       102.43,
       101.91,
-      97.7
+      97.1
     ],
     "gold": [
       4420.6,
@@ -318,7 +318,7 @@
       4332.8,
       4387.5,
       4399.7,
-      4390.9
+      4393.4
     ],
     "silver": [
       63.94,
@@ -343,7 +343,7 @@
       63.24,
       64.29,
       65.47,
-      66.78
+      66.83
     ],
     "dxy": [
       99.65,
@@ -368,7 +368,7 @@
       99.65,
       100.31,
       100.22,
-      100.48
+      100.47
     ],
     "sp500": [
       7691.76,
@@ -393,7 +393,7 @@
       7585.73,
       7551.81,
       7637.76,
-      7628.6
+      7630.18
     ],
     "nasdaq": [
       26289.71,
@@ -418,7 +418,7 @@
       25981.57,
       25978.43,
       26418.3,
-      26423.29
+      26422.25
     ]
   },
   "econ_events": [
