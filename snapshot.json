@@ -1,5 +1,5 @@
 {
-  "date": "September 18, 2026 08:55 UTC",
+  "date": "September 18, 2026 09:00 UTC",
   "assets": {
     "S&P 500": {
       "price": 7637.76,
@@ -92,25 +92,25 @@
       ]
     },
     "BTC": {
-      "price": 78070.9,
-      "change_pct": 2.0,
+      "price": 78234.6,
+      "change_pct": 2.21,
       "support": 68882.1,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2500.22,
-      "change_pct": 2.25,
+      "price": 2505.26,
+      "change_pct": 2.49,
       "support": 2222.0,
       "resistance": 2666.0
     },
     "SOL": {
-      "price": 106.12,
-      "change_pct": 5.84,
+      "price": 106.18,
+      "change_pct": 5.88,
       "support": 83.97,
       "resistance": 110.6
     }
   },
-  "risk_score": 63,
+  "risk_score": 68,
   "risk_bias": "RISK-ON",
   "fear_greed": {
     "value": 56,
@@ -153,7 +153,7 @@
   "whale_flow": "NEUTRAL",
   "metrics": {
     "vix": {
-      "value": "15.3",
+      "value": "15.2",
       "label": "VIX",
       "color": "green"
     },
@@ -168,12 +168,12 @@
       "color": "red"
     },
     "oil": {
-      "value": "$95.61",
+      "value": "$95.60",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4427",
+      "value": "$4429",
       "label": "GOLD",
       "color": "yellow"
     },
@@ -191,6 +191,11 @@
     },
     {
       "label": "BULLISH",
+      "text": "BTC up 2.2% \u2014 momentum",
+      "type": "bullish"
+    },
+    {
+      "label": "BULLISH",
       "text": "Yields falling \u2014 risk on",
       "type": "bullish"
     },
@@ -200,20 +205,20 @@
       "type": "bullish"
     }
   ],
-  "btc_funding": 7.322e-05,
+  "btc_funding": 7.341e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 28.62,
-    "daily_avg": 26.65,
-    "daily_pct": 7.4,
-    "weekly_inflow": 186.54,
-    "weekly_avg": 225.44,
-    "weekly_pct": -17.3,
-    "monthly_inflow": 966.17,
-    "monthly_avg": 814.75,
+    "daily_inflow": 28.76,
+    "daily_avg": 26.67,
+    "daily_pct": 7.9,
+    "weekly_inflow": 186.68,
+    "weekly_avg": 225.47,
+    "weekly_pct": -17.2,
+    "monthly_inflow": 966.32,
+    "monthly_avg": 814.8,
     "monthly_pct": 18.6,
-    "large_tx_count": 673362
+    "large_tx_count": 676115
   },
   "history": {
     "vix": [
@@ -240,7 +245,7 @@
       17.2,
       17.71,
       15.44,
-      15.26
+      15.22
     ],
     "yield_10y": [
       4.72,
@@ -315,7 +320,7 @@
       4332.8,
       4387.5,
       4399.7,
-      4427.4
+      4428.7
     ],
     "silver": [
       63.94,
