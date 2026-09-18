@@ -1,6 +1,6 @@
 {
-  "timestamp": 1789767731,
-  "generatedAt": "2026-09-18 21:42 UTC",
+  "timestamp": 1789768571,
+  "generatedAt": "2026-09-18 21:56 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -8587,6 +8587,80 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/KO.png",
       "ipo": "1950-01-26",
+      "strongBuy": 8,
+      "buy": 19,
+      "hold": 8,
+      "sell": 0,
+      "strongSell": 0,
+      "consensus": "Strong Buy",
+      "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 8,
+          "b": 19,
+          "h": 8,
+          "s": 0,
+          "ss": 0
+        },
+        {
+          "period": "2026-08-01",
+          "sb": 8,
+          "b": 19,
+          "h": 8,
+          "s": 0,
+          "ss": 0
+        },
+        {
+          "period": "2026-07-01",
+          "sb": 9,
+          "b": 20,
+          "h": 6,
+          "s": 0,
+          "ss": 0
+        },
+        {
+          "period": "2026-06-01",
+          "sb": 8,
+          "b": 20,
+          "h": 6,
+          "s": 0,
+          "ss": 0
+        }
+      ],
+      "earnings": [
+        {
+          "period": "2026-06-30",
+          "quarter": 2,
+          "estimate": 0.9603,
+          "actual": 0.97,
+          "surprise": 0.0097,
+          "surprisePct": 1.0101
+        },
+        {
+          "period": "2026-03-31",
+          "quarter": 1,
+          "estimate": 0.8358,
+          "actual": 0.86,
+          "surprise": 0.0242,
+          "surprisePct": 2.8954
+        },
+        {
+          "period": "2025-12-31",
+          "quarter": 4,
+          "estimate": 0.5803,
+          "actual": 0.58,
+          "surprise": -0.0003,
+          "surprisePct": -0.0517
+        },
+        {
+          "period": "2025-09-30",
+          "quarter": 3,
+          "estimate": 0.8011,
+          "actual": 0.82,
+          "surprise": 0.0189,
+          "surprisePct": 2.3593
+        }
+      ],
       "earningsHistory": [
         {
           "quarter": 2,
@@ -13426,10 +13500,10 @@
       "netMargin": 7.02,
       "dividendYield": 0,
       "volume": 7335030,
-      "targetAvg": 186.18991,
-      "targetHigh": 238.9646,
-      "targetLow": 95.500046,
-      "targetMedian": 189.05896,
+      "targetAvg": 185.94803,
+      "targetHigh": 238.65416,
+      "targetLow": 95.375984,
+      "targetMedian": 188.81335,
       "history": [
         {
           "date": "2026-08-07",
@@ -17172,80 +17246,6 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/WMT.png",
       "ipo": "1972-08-25",
-      "strongBuy": 12,
-      "buy": 30,
-      "hold": 6,
-      "sell": 0,
-      "strongSell": 0,
-      "consensus": "Strong Buy",
-      "recTrend": [
-        {
-          "period": "2026-09-01",
-          "sb": 12,
-          "b": 30,
-          "h": 6,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-08-01",
-          "sb": 14,
-          "b": 29,
-          "h": 5,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-07-01",
-          "sb": 14,
-          "b": 29,
-          "h": 5,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-06-01",
-          "sb": 14,
-          "b": 29,
-          "h": 5,
-          "s": 0,
-          "ss": 0
-        }
-      ],
-      "earnings": [
-        {
-          "period": "2026-09-30",
-          "quarter": 2,
-          "estimate": 0.7487,
-          "actual": 0.81,
-          "surprise": 0.0613,
-          "surprisePct": 8.1875
-        },
-        {
-          "period": "2026-06-30",
-          "quarter": 1,
-          "estimate": 0.6638,
-          "actual": 0.66,
-          "surprise": -0.0038,
-          "surprisePct": -0.5725
-        },
-        {
-          "period": "2026-03-31",
-          "quarter": 4,
-          "estimate": 0.7334,
-          "actual": 0.74,
-          "surprise": 0.0066,
-          "surprisePct": 0.8999
-        },
-        {
-          "period": "2025-12-31",
-          "quarter": 3,
-          "estimate": 0.6068,
-          "actual": 0.62,
-          "surprise": 0.0132,
-          "surprisePct": 2.1753
-        }
-      ],
       "earningsHistory": [
         {
           "quarter": 2,
@@ -17653,7 +17653,15 @@
           "revenueActual": 45277000000.0
         }
       ],
-      "upcomingEarnings": [],
+      "upcomingEarnings": [
+        {
+          "date": "2026-11-17",
+          "quarter": 3,
+          "epsEstimate": 3.956,
+          "revenueEstimate": 44084158321,
+          "hour": ""
+        }
+      ],
       "pe": 0,
       "eps": 14.2271,
       "epsTTM": 14.282599999999999,
@@ -23334,10 +23342,10 @@
       "netMargin": -4.17,
       "dividendYield": 0,
       "volume": 45267420,
-      "targetAvg": 6.4072905,
-      "targetHigh": 10.1282835,
-      "targetLow": 4.0198555,
-      "targetMedian": 6.0296335,
+      "targetAvg": 6.398967,
+      "targetHigh": 10.115126,
+      "targetLow": 4.014633,
+      "targetMedian": 6.0218005,
       "history": [
         {
           "date": "2026-08-07",
