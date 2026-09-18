@@ -1,6 +1,6 @@
 {
-  "timestamp": 1789692332,
-  "generatedAt": "2026-09-18 00:45 UTC",
+  "timestamp": 1789693173,
+  "generatedAt": "2026-09-18 00:59 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -16596,7 +16596,29 @@
           "revenueActual": 44375000000.0
         }
       ],
-      "upcomingEarnings": [],
+      "upcomingEarnings": [
+        {
+          "date": "2027-04-29",
+          "quarter": 1,
+          "epsEstimate": 3.4055,
+          "revenueEstimate": 53317695980,
+          "hour": ""
+        },
+        {
+          "date": "2027-01-28",
+          "quarter": 4,
+          "epsEstimate": 4.0815,
+          "revenueEstimate": 55871472395,
+          "hour": "amc"
+        },
+        {
+          "date": "2026-10-29",
+          "quarter": 3,
+          "epsEstimate": 4.7463,
+          "revenueEstimate": 58068315012,
+          "hour": "bmo"
+        }
+      ],
       "pe": 0,
       "eps": 6.6266,
       "epsTTM": 10.4285,
@@ -16879,6 +16901,80 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/BA.png",
       "ipo": "1934-09-05",
+      "strongBuy": 14,
+      "buy": 18,
+      "hold": 5,
+      "sell": 0,
+      "strongSell": 0,
+      "consensus": "Strong Buy",
+      "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 14,
+          "b": 18,
+          "h": 5,
+          "s": 0,
+          "ss": 0
+        },
+        {
+          "period": "2026-08-01",
+          "sb": 13,
+          "b": 18,
+          "h": 6,
+          "s": 0,
+          "ss": 0
+        },
+        {
+          "period": "2026-07-01",
+          "sb": 13,
+          "b": 18,
+          "h": 6,
+          "s": 0,
+          "ss": 0
+        },
+        {
+          "period": "2026-06-01",
+          "sb": 13,
+          "b": 18,
+          "h": 6,
+          "s": 0,
+          "ss": 0
+        }
+      ],
+      "earnings": [
+        {
+          "period": "2026-06-30",
+          "quarter": 2,
+          "estimate": -0.3139,
+          "actual": -0.76,
+          "surprise": -0.4461,
+          "surprisePct": -142.1153
+        },
+        {
+          "period": "2026-03-31",
+          "quarter": 1,
+          "estimate": -0.8587,
+          "actual": -0.2,
+          "surprise": 0.6587,
+          "surprisePct": 76.709
+        },
+        {
+          "period": "2025-12-31",
+          "quarter": 4,
+          "estimate": -0.4013,
+          "actual": -1.12,
+          "surprise": -0.7187,
+          "surprisePct": -179.0929
+        },
+        {
+          "period": "2025-09-30",
+          "quarter": 3,
+          "estimate": -4.73,
+          "actual": -7.47,
+          "surprise": -2.74,
+          "surprisePct": -57.9281
+        }
+      ],
       "earningsHistory": [
         {
           "quarter": 1,
