@@ -1,5 +1,5 @@
 {
-  "date": "September 18, 2026 08:25 UTC",
+  "date": "September 18, 2026 08:30 UTC",
   "assets": {
     "S&P 500": {
       "price": 7637.76,
@@ -92,25 +92,25 @@
       ]
     },
     "BTC": {
-      "price": 77990.5,
-      "change_pct": 2.01,
+      "price": 77901.9,
+      "change_pct": 1.94,
       "support": 68882.1,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2501.8,
-      "change_pct": 2.52,
+      "price": 2495.0,
+      "change_pct": 2.33,
       "support": 2222.0,
       "resistance": 2666.0
     },
     "SOL": {
-      "price": 106.2,
-      "change_pct": 6.11,
+      "price": 105.85,
+      "change_pct": 5.86,
       "support": 83.97,
       "resistance": 110.6
     }
   },
-  "risk_score": 68,
+  "risk_score": 63,
   "risk_bias": "RISK-ON",
   "fear_greed": {
     "value": 56,
@@ -168,7 +168,7 @@
       "color": "red"
     },
     "oil": {
-      "value": "$95.43",
+      "value": "$95.31",
       "label": "WTI OIL",
       "color": "yellow"
     },
@@ -178,7 +178,7 @@
       "color": "yellow"
     },
     "silver": {
-      "value": "$67.54",
+      "value": "$67.64",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -187,11 +187,6 @@
     {
       "label": "BULLISH",
       "text": "S&P 500 up 1.1%",
-      "type": "bullish"
-    },
-    {
-      "label": "BULLISH",
-      "text": "BTC up 2.0% \u2014 momentum",
       "type": "bullish"
     },
     {
@@ -205,20 +200,20 @@
       "type": "bullish"
     }
   ],
-  "btc_funding": 7.54e-05,
+  "btc_funding": 7.476e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 28.23,
-    "daily_avg": 26.59,
-    "daily_pct": 6.2,
-    "weekly_inflow": 186.15,
-    "weekly_avg": 225.35,
+    "daily_inflow": 28.35,
+    "daily_avg": 26.61,
+    "daily_pct": 6.6,
+    "weekly_inflow": 186.27,
+    "weekly_avg": 225.38,
     "weekly_pct": -17.4,
-    "monthly_inflow": 965.79,
-    "monthly_avg": 814.62,
+    "monthly_inflow": 965.91,
+    "monthly_avg": 814.66,
     "monthly_pct": 18.6,
-    "large_tx_count": 671648
+    "large_tx_count": 676302
   },
   "history": {
     "vix": [
@@ -245,7 +240,7 @@
       17.2,
       17.71,
       15.44,
-      15.2
+      15.23
     ],
     "yield_10y": [
       4.72,
@@ -295,7 +290,7 @@
       105.83,
       102.43,
       101.91,
-      95.43
+      95.31
     ],
     "gold": [
       4420.6,
@@ -320,7 +315,7 @@
       4332.8,
       4387.5,
       4399.7,
-      4431.5
+      4432.4
     ],
     "silver": [
       63.94,
@@ -345,7 +340,7 @@
       63.24,
       64.29,
       65.47,
-      67.54
+      67.64
     ],
     "dxy": [
       99.65,
@@ -370,7 +365,7 @@
       99.65,
       100.31,
       100.22,
-      100.3
+      100.31
     ],
     "sp500": [
       7691.76,
