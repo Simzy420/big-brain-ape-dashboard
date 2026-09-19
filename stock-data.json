@@ -1,6 +1,6 @@
 {
-  "timestamp": 1789792098,
-  "generatedAt": "2026-09-19 04:28 UTC",
+  "timestamp": 1789792938,
+  "generatedAt": "2026-09-19 04:42 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -8304,7 +8304,29 @@
           "revenueActual": 23650000000.0
         }
       ],
-      "upcomingEarnings": [],
+      "upcomingEarnings": [
+        {
+          "date": "2027-05-04",
+          "quarter": 2,
+          "epsEstimate": 1.8333,
+          "revenueEstimate": 27266423085,
+          "hour": ""
+        },
+        {
+          "date": "2027-02-01",
+          "quarter": 1,
+          "epsEstimate": 1.9184,
+          "revenueEstimate": 27818819021,
+          "hour": ""
+        },
+        {
+          "date": "2026-11-11",
+          "quarter": 4,
+          "epsEstimate": 1.6857,
+          "revenueEstimate": 25390695191,
+          "hour": "amc"
+        }
+      ],
       "pe": 0,
       "eps": 6.8493,
       "epsTTM": 4.8475,
@@ -16941,29 +16963,7 @@
           "revenueActual": 19496000000.0
         }
       ],
-      "upcomingEarnings": [
-        {
-          "date": "2027-04-20",
-          "quarter": 1,
-          "epsEstimate": 0.5747,
-          "revenueEstimate": 27743203779,
-          "hour": ""
-        },
-        {
-          "date": "2027-01-25",
-          "quarter": 4,
-          "epsEstimate": 0.0362,
-          "revenueEstimate": 27119131877,
-          "hour": "amc"
-        },
-        {
-          "date": "2026-10-27",
-          "quarter": 3,
-          "epsEstimate": -0.1525,
-          "revenueEstimate": 25679157990,
-          "hour": "bmo"
-        }
-      ],
+      "upcomingEarnings": [],
       "pe": 0,
       "eps": 2.9319,
       "epsTTM": 2.9605999999999986,
@@ -17246,40 +17246,6 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/WMT.png",
       "ipo": "1972-08-25",
-      "earnings": [
-        {
-          "period": "2026-09-30",
-          "quarter": 2,
-          "estimate": 0.7487,
-          "actual": 0.81,
-          "surprise": 0.0613,
-          "surprisePct": 8.1875
-        },
-        {
-          "period": "2026-06-30",
-          "quarter": 1,
-          "estimate": 0.6638,
-          "actual": 0.66,
-          "surprise": -0.0038,
-          "surprisePct": -0.5725
-        },
-        {
-          "period": "2026-03-31",
-          "quarter": 4,
-          "estimate": 0.7334,
-          "actual": 0.74,
-          "surprise": 0.0066,
-          "surprisePct": 0.8999
-        },
-        {
-          "period": "2025-12-31",
-          "quarter": 3,
-          "estimate": 0.6068,
-          "actual": 0.62,
-          "surprise": 0.0132,
-          "surprisePct": 2.1753
-        }
-      ],
       "earningsHistory": [
         {
           "quarter": 2,
