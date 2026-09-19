@@ -1,5 +1,5 @@
 {
-  "date": "September 18, 2026 23:55 UTC",
+  "date": "September 19, 2026 00:00 UTC",
   "assets": {
     "S&P 500": {
       "price": 7650.5,
@@ -92,30 +92,34 @@
       ]
     },
     "BTC": {
-      "price": 80875.8,
-      "change_pct": 5.83,
-      "support": 68882.1,
+      "price": 80881.8,
+      "change_pct": 5.89,
+      "support": 72992.4,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2610.64,
-      "change_pct": 6.65,
-      "support": 2222.0,
+      "price": 2611.95,
+      "change_pct": 6.77,
+      "support": 2323.83,
       "resistance": 2666.0
     },
     "SOL": {
-      "price": 112.73,
-      "change_pct": 10.91,
-      "support": 83.97,
+      "price": 112.78,
+      "change_pct": 11.03,
+      "support": 87.0,
       "resistance": 114.32
     }
   },
-  "risk_score": 60,
+  "risk_score": 55,
   "risk_bias": "RISK-ON",
   "fear_greed": {
-    "value": 56,
+    "value": 71,
     "classification": "Greed",
     "history": [
+      {
+        "value": 71,
+        "label": "Greed"
+      },
       {
         "value": 56,
         "label": "Greed"
@@ -138,10 +142,6 @@
       },
       {
         "value": 61,
-        "label": "Greed"
-      },
-      {
-        "value": 63,
         "label": "Greed"
       }
     ]
@@ -190,35 +190,35 @@
       "type": "bullish"
     },
     {
+      "label": "CAUTION",
+      "text": "Greed elevated (71)",
+      "type": "caution"
+    },
+    {
       "label": "BULLISH",
-      "text": "BTC up 5.8% \u2014 momentum",
+      "text": "BTC up 5.9% \u2014 momentum",
       "type": "bullish"
     },
     {
       "label": "CAUTION",
       "text": "Yields rising \u2014 risk off",
       "type": "caution"
-    },
-    {
-      "label": "BULLISH",
-      "text": "NVDA up 1.3% \u2014 AI demand momentum",
-      "type": "bullish"
     }
   ],
-  "btc_funding": 6.405e-05,
+  "btc_funding": 6.643e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 44.73,
-    "daily_avg": 28.95,
-    "daily_pct": 54.5,
-    "weekly_inflow": 202.65,
-    "weekly_avg": 229.2,
+    "daily_inflow": 44.81,
+    "daily_avg": 28.96,
+    "daily_pct": 54.7,
+    "weekly_inflow": 202.73,
+    "weekly_avg": 229.22,
     "weekly_pct": -11.6,
-    "monthly_inflow": 982.28,
-    "monthly_avg": 820.06,
+    "monthly_inflow": 982.36,
+    "monthly_avg": 820.09,
     "monthly_pct": 19.8,
-    "large_tx_count": 700089
+    "large_tx_count": 712987
   },
   "history": {
     "vix": [
