@@ -1,6 +1,6 @@
 {
-  "timestamp": 1789802149,
-  "generatedAt": "2026-09-19 07:15 UTC",
+  "timestamp": 1789802989,
+  "generatedAt": "2026-09-19 07:29 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -2331,6 +2331,29 @@
           "revenueActual": 47516000000.0
         }
       ],
+      "upcomingEarnings": [
+        {
+          "date": "2027-04-27",
+          "quarter": 1,
+          "epsEstimate": 7.8597,
+          "revenueEstimate": 68990507621,
+          "hour": ""
+        },
+        {
+          "date": "2027-01-26",
+          "quarter": 4,
+          "epsEstimate": 8.4023,
+          "revenueEstimate": 75088947830,
+          "hour": "amc"
+        },
+        {
+          "date": "2026-10-27",
+          "quarter": 3,
+          "epsEstimate": 6.6602,
+          "revenueEstimate": 64526032014,
+          "hour": "amc"
+        }
+      ],
       "pe": 0,
       "eps": 23.488,
       "epsTTM": 26.558100000000003,
@@ -2604,6 +2627,15 @@
       "high": 255.43,
       "low": 251.88,
       "prevClose": 251.19,
+      "name": "Amazon.com Inc",
+      "companyName": "Amazon.com Inc",
+      "exchange": "NASDAQ NMS - GLOBAL MARKET",
+      "sector": "Retail",
+      "industry": "Retail",
+      "marketCap": 2736595866500.0596,
+      "country": "US",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/AMZN.png",
+      "ipo": "1997-05-15",
       "strongBuy": 20,
       "buy": 49,
       "hold": 5,
@@ -2642,6 +2674,40 @@
           "h": 5,
           "s": 0,
           "ss": 0
+        }
+      ],
+      "earnings": [
+        {
+          "period": "2026-06-30",
+          "quarter": 2,
+          "estimate": 1.8563,
+          "actual": 1.97,
+          "surprise": 0.1137,
+          "surprisePct": 6.1251
+        },
+        {
+          "period": "2026-03-31",
+          "quarter": 1,
+          "estimate": 1.6679,
+          "actual": 1.61,
+          "surprise": -0.0579,
+          "surprisePct": -3.4714
+        },
+        {
+          "period": "2025-12-31",
+          "quarter": 4,
+          "estimate": 1.6703,
+          "actual": 1.61,
+          "surprise": -0.0603,
+          "surprisePct": -3.6101
+        },
+        {
+          "period": "2025-09-30",
+          "quarter": 3,
+          "estimate": 1.605,
+          "actual": 1.95,
+          "surprise": 0.345,
+          "surprisePct": 21.4953
         }
       ],
       "earningsHistory": [
@@ -6195,7 +6261,7 @@
           "o": 537.02,
           "h": 538.33,
           "l": 536.2,
-          "c": 537.3,
+          "c": 537.31,
           "v": 3408900
         },
         {
