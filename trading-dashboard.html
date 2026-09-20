@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Big Brain Ape — Trading Dashboard</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0f;--card:#13131f;--card2:#1a1a2e;--border:#1f1f35;
+  --text:#e5e7eb;--text2:#6b7280;
+  --green:#00ff9d;--red:#ff3b3b;--blue:#00d9ff;--orange:#f0883e;--purple:#8b5cf6;
+}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:17px;line-height:1.5;-webkit-tap-highlight-color:transparent;overflow-x:hidden}
+.container{max-width:500px;margin:0 auto;padding:16px 16px 80px}
+/* Header */
+.header{text-align:center;padding:20px 0 24px}
+.header h1{font-size:28px;font-weight:800;letter-spacing:-0.5px}
+.header h1 span{color:var(--blue)}
+.header .subtitle{color:var(--text2);font-size:14px;margin-top:4px}
+.header .live{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--green);font-weight:600;margin-top:8px}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+/* Account Summary */
+.account-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
+.account-value{font-size:42px;font-weight:800;letter-spacing:-1px;text-align:center}
+.account-value .dollar{color:var(--text2);font-size:28px;font-weight:600}
+.account-label{text-align:center;color:var(--text2);font-size:14px;margin-top:4px;text-transform:uppercase;letter-spacing:1px}
+.account-stats{display:flex;justify-content:space-between;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+.stat{text-align:center;flex:1}
+.stat-label{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;font-weight:600}
+.stat-value{font-size:18px;font-weight:700;margin-top:4px}
+.stat-value.green{color:var(--green)}
+.stat-value.red{color:var(--red)}
+.stat-value.blue{color:var(--blue)}
+/* P&L Bar */
+.pnl-bar{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:16px}
+.pnl-bar .label{font-size:14px;color:var(--text2);font-weight:600}
+.pnl-bar .value{font-size:22px;font-weight:800}
+.pnl-bar .value.green{color:var(--green)}
+.pnl-bar .value.red{color:var(--red)}
+/* Positions */
+.section-title{font-size:16px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.section-title .count{background:var(--border);color:var(--text2);font-size:12px;padding:2px 8px;border-radius:20px;font-weight:600}
+.position-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;transition:border-color 0.2s}
+.position-card:active{border-color:var(--blue)}
+.position-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.position-symbol{display:flex;align-items:center;gap:10px}
+.position-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700}
+.position-icon.gold{background:rgba(240,168,40,0.15);color:var(--orange)}
+.position-icon.short{background:rgba(255,59,59,0.15);color:var(--red)}
+.position-icon.long{background:rgba(0,255,157,0.15);color:var(--green)}
+.position-name{font-size:18px;font-weight:700}
+.position-side{font-size:12px;font-weight:700;padding:2px 8px;border-radius:6px;margin-top:2px;display:inline-block}
+.position-side.long{background:rgba(0,255,157,0.15);color:var(--green)}
+.position-side.short{background:rgba(255,59,59,0.15);color:var(--red)}
+.position-pnl{text-align:right}
+.position-pnl-value{font-size:20px;font-weight:800}
+.position-pnl-value.green{color:var(--green)}
+.position-pnl-value.red{color:var(--red)}
+.position-pnl-pct{font-size:13px;color:var(--text2);margin-top:2px}
+.position-details{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-top:12px;border-top:1px solid var(--border)}
+.detail-label{font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px}
+.detail-value{font-size:16px;font-weight:600;margin-top:2px}
+/* Allocation */
+.alloc-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px}
+.alloc-bar{display:flex;height:24px;border-radius:8px;overflow:hidden;margin-top:12px}
+.alloc-slice{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;transition:flex 0.3s}
+.alloc-legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
+.alloc-item{display:flex;align-items:center;gap:6px;font-size:13px}
+.alloc-dot{width:10px;height:10px;border-radius:3px}
+/* Macro */
+.macro-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px}
+.macro-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px}
+.macro-item{text-align:center;background:var(--card2);border-radius:10px;padding:12px 6px}
+.macro-label{font-size:11px;color:var(--text2);font-weight:600;text-transform:uppercase}
+.macro-value{font-size:16px;font-weight:700;margin-top:4px}
+.macro-value.green{color:var(--green)}.macro-value.red{color:var(--red)}.macro-value.blue{color:var(--blue)}.macro-value.orange{color:var(--orange)}
+/* Signals */
+.signal-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px}
+.signal-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0}
+.signal-item:not(:last-child){border-bottom:1px solid var(--border)}
+.signal-badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;white-space:nowrap}
+.signal-badge.bullish{background:rgba(0,255,157,0.15);color:var(--green)}
+.signal-badge.caution{background:rgba(240,136,62,0.15);color:var(--orange)}
+.signal-badge.bearish{background:rgba(255,59,59,0.15);color:var(--red)}
+.signal-text{font-size:14px;line-height:1.4}
+/* Refresh */
+.refresh-btn{position:fixed;bottom:24px;right:24px;width:52px;height:52px;border-radius:50%;background:var(--blue);border:none;color:#fff;font-size:24px;cursor:pointer;box-shadow:0 4px 20px rgba(0,217,255,0.4);z-index:100;transition:transform 0.2s}
+.refresh-btn:active{transform:scale(0.9)}
+.refresh-btn.spinning{animation:spin 1s linear infinite}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+/* Footer */
+.footer{text-align:center;color:var(--text2);font-size:12px;padding:20px 0}
+.footer a{color:var(--blue);text-decoration:none}
+/* Loading */
+.loading{display:flex;justify-content:center;align-items:center;height:200px;flex-direction:column;gap:12px}
+.loading-spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin 1s linear infinite}
+.loading-text{color:var(--text2);font-size:14px}
+/* Updated time */
+.updated{font-size:12px;color:var(--text2);text-align:center;margin-top:8px}
+/* Section divider */
+.divider{height:1px;background:var(--border);margin:20px 0}
+</style>
+</head>
+<body>
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <h1>Big Brain <span>Ape</span></h1>
+    <div class="subtitle">Autonomous Trading Dashboard</div>
+    <div class="live"><span class="live-dot"></span> LIVE — Druckenmiller Strategy</div>
+  </div>
+
+  <!-- Account Summary -->
+  <div class="account-card">
+    <div class="account-value"><span class="dollar">$</span><span id="accountValue">0.00</span></div>
+    <div class="account-label">Account Value</div>
+    <div class="account-stats">
+      <div class="stat">
+        <div class="stat-label">Withdrawable</div>
+        <div class="stat-value blue" id="withdrawable">$0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Total P&L</div>
+        <div class="stat-value green" id="totalPnl">$0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Margin Used</div>
+        <div class="stat-value" id="marginUsed">$0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Positions -->
+  <div class="section-title">Open Positions <span class="count" id="positionCount">0</span></div>
+  <div id="positions"><div class="loading"><div class="loading-spinner"></div><div class="loading-text">Loading positions...</div></div></div>
+
+  <!-- Allocation -->
+  <div class="alloc-card">
+    <div class="section-title" style="margin-bottom:0">Portfolio Allocation</div>
+    <div class="alloc-bar" id="allocBar"></div>
+    <div class="alloc-legend" id="allocLegend"></div>
+  </div>
+
+  <!-- Macro Snapshot -->
+  <div class="macro-card">
+    <div class="section-title" style="margin-bottom:0">Macro Snapshot</div>
+    <div class="macro-grid" id="macroGrid"></div>
+  </div>
+
+  <!-- Signals -->
+  <div class="signal-card">
+    <div class="section-title" style="margin-bottom:4px">Market Signals</div>
+    <div id="signals"></div>
+  </div>
+
+  <!-- Updated -->
+  <div class="updated" id="updatedAt">Loading...</div>
+  <div class="footer">
+    <p>Powered by <a href="https://t.me/BigBrain2Bot">Big Brain Ape</a> · Druckenmiller Macro Strategy</p>
+    <p style="margin-top:4px">Wallet: 0x37a8...0fc6</p>
+  </div>
+</div>
+
+<button class="refresh-btn" id="refreshBtn" onclick="refresh()">↻</button>
+
+<script>
+// Data URLs (GitHub Pages - updated every 5 min by cron)
+const POSITIONS_URL = 'https://simzy420.github.io/big-brain-ape-dashboard/data/positions.json';
+const SNAPSHOT_URL = 'https://simzy420.github.io/big-brain-ape-dashboard/data/snapshot.json';
+
+// Fallback to local data if GitHub not available
+const POSITIONS_LOCAL = 'data/positions.json';
+const SNAPSHOT_LOCAL = 'data/snapshot.json';
+
+// Color map
+const COLORS = {
+  GOLD: '#f0883e', SP500: '#00d9ff', BTC: '#f7931a', ETH: '#627eea',
+  Cash: '#6b7280', Available: '#6b7280', BRENT: '#2d5f2d'
+};
+
+async function fetchJSON(url) {
+  try {
+    const resp = await fetch(url + '?t=' + Date.now());
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    return await resp.json();
+  } catch(e) {
+    console.log('Fetch failed for ' + url + ': ' + e.message);
+    return null;
+  }
+}
+
+function fmtMoney(n) {
+  if (!n) return '$0';
+  if (Math.abs(n) >= 1000) return '$' + (n/1000).toFixed(1) + 'K';
+  return '$' + n.toFixed(2);
+}
+
+function fmtMoneyFull(n) {
+  if (!n) return '$0.00';
+  return '$' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+function fmtPct(n) {
+  if (!n) return '0%';
+  return (n > 0 ? '+' : '') + n.toFixed(1) + '%';
+}
+
+async function loadData() {
+  let positions = await fetchJSON(POSITIONS_URL);
+  if (!positions) positions = await fetchJSON(POSITIONS_LOCAL);
+  
+  let snapshot = await fetchJSON(SNAPSHOT_URL);
+  if (!snapshot) snapshot = await fetchJSON(SNAPSHOT_LOCAL);
+
+  if (positions) renderPositions(positions);
+  if (snapshot) renderMacro(snapshot);
+  if (positions && snapshot) renderAllocation(positions, snapshot);
+  
+  if (positions) {
+    document.getElementById('updatedAt').textContent = 'Last updated: ' + positions.generatedAt;
+  }
+}
+
+function renderPositions(data) {
+  // Account summary
+  document.getElementById('accountValue').textContent = data.accountValue.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+  document.getElementById('withdrawable').textContent = fmtMoney(data.withdrawable);
+  
+  const pnl = data.totalUnrealizedPnl;
+  const pnlEl = document.getElementById('totalPnl');
+  pnlEl.textContent = (pnl >= 0 ? '+' : '') + fmtMoney(pnl);
+  pnlEl.className = 'stat-value ' + (pnl >= 0 ? 'green' : 'red');
+  
+  document.getElementById('marginUsed').textContent = fmtMoney(data.totalMarginUsed);
+  
+  // Positions
+  const container = document.getElementById('positions');
+  document.getElementById('positionCount').textContent = data.positions.length;
+  
+  container.innerHTML = data.positions.map(p => {
+    const pnlClass = p.unrealizedPnl >= 0 ? 'green' : 'red';
+    const sideClass = p.side.toLowerCase();
+    const iconClass = p.side === 'LONG' ? (p.symbol === 'GOLD' ? 'gold' : 'long') : 'short';
+    const iconText = p.symbol === 'GOLD' ? 'Au' : (p.symbol === 'SP500' ? 'SP' : p.symbol.substring(0,2));
+    
+    return `
+    <div class="position-card">
+      <div class="position-header">
+        <div class="position-symbol">
+          <div class="position-icon ${iconClass}">${iconText}</div>
+          <div>
+            <div class="position-name">${p.symbol}</div>
+            <div class="position-side ${sideClass}">${p.side} · ${p.leverage}x · ${p.marginType}</div>
+          </div>
+        </div>
+        <div class="position-pnl">
+          <div class="position-pnl-value ${pnlClass}">${p.unrealizedPnl >= 0 ? '+' : ''}$${p.unrealizedPnl.toFixed(2)}</div>
+          <div class="position-pnl-pct">${fmtPct(p.pnlPercent)}</div>
+        </div>
+      </div>
+      <div class="position-details">
+        <div>
+          <div class="detail-label">Size</div>
+          <div class="detail-value">${p.size}</div>
+        </div>
+        <div>
+          <div class="detail-label">Entry Price</div>
+          <div class="detail-value">$${p.entryPrice.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</div>
+        </div>
+        <div>
+          <div class="detail-label">Current Price</div>
+          <div class="detail-value">$${p.currentPrice.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</div>
+        </div>
+        <div>
+          <div class="detail-label">Position Value</div>
+          <div class="detail-value">$${p.positionValue.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderAllocation(positions, snapshot) {
+  const bar = document.getElementById('allocBar');
+  const legend = document.getElementById('allocLegend');
+  
+  const slices = positions.pieValueSlices || [];
+  const total = slices.reduce((sum, s) => sum + s.value, 0);
+  
+  bar.innerHTML = slices.map(s => {
+    const pct = (s.value / total * 100);
+    const color = COLORS[s.label] || '#8b5cf6';
+    return `<div class="alloc-slice" style="flex:${pct};background:${color}">${pct > 15 ? pct.toFixed(0)+'%' : ''}</div>`;
+  }).join('');
+  
+  legend.innerHTML = slices.map(s => {
+    const color = COLORS[s.label] || '#8b5cf6';
+    return `<div class="alloc-item"><span class="alloc-dot" style="background:${color}"></span>${s.label} ${fmtMoney(s.value)}</div>`;
+  }).join('');
+}
+
+function renderMacro(snapshot) {
+  const grid = document.getElementById('macroGrid');
+  const metrics = snapshot.metrics || {};
+  
+  const items = [
+    {label:'VIX', value: metrics.vix?.value, color: metrics.vix?.color},
+    {label:'10Y YIELD', value: metrics.yield_10y?.value, color: metrics.yield_10y?.color},
+    {label:'DXY', value: metrics.dxy?.value, color: metrics.dxy?.color},
+    {label:'GOLD', value: metrics.gold?.value, color: metrics.gold?.color},
+    {label:'OIL', value: metrics.oil?.value, color: metrics.oil?.color},
+    {label:'SILVER', value: metrics.silver?.value, color: metrics.silver?.color},
+  ];
+  
+  grid.innerHTML = items.map(m => `
+    <div class="macro-item">
+      <div class="macro-label">${m.label}</div>
+      <div class="macro-value ${m.color || ''}">${m.value || '—'}</div>
+    </div>
+  `).join('');
+  
+  // Signals
+  const sigContainer = document.getElementById('signals');
+  const signals = snapshot.signals || [];
+  sigContainer.innerHTML = signals.map(s => `
+    <div class="signal-item">
+      <span class="signal-badge ${s.type}">${s.label}</span>
+      <span class="signal-text">${s.text}</span>
+    </div>
+  `).join('') || '<div class="signal-text" style="color:var(--text2);padding:8px 0">No active signals</div>';
+}
+
+async function refresh() {
+  const btn = document.getElementById('refreshBtn');
+  btn.classList.add('spinning');
+  await loadData();
+  setTimeout(() => btn.classList.remove('spinning'), 1000);
+}
+
+// Initial load
+loadData();
+
+// Auto-refresh every 60 seconds
+setInterval(loadData, 60000);
+</script>
+</body>
+</html>
