@@ -1,46 +1,61 @@
 {
-  "scanned_at": "2026-09-20T04:45:07.966088Z",
+  "scanned_at": "2026-09-20T08:19:50.604957Z",
   "watchlist_size": 10,
   "picks": [
     {
-      "symbol": "SPY",
-      "error": "object of type 'NoneType' has no len()"
-    },
-    {
-      "symbol": "QQQ",
-      "error": "object of type 'NoneType' has no len()"
-    },
-    {
       "symbol": "AAPL",
-      "error": "object of type 'NoneType' has no len()"
-    },
-    {
-      "symbol": "MSFT",
-      "error": "object of type 'NoneType' has no len()"
+      "setups": [
+        "momentum"
+      ],
+      "last_close": 336.13,
+      "recent_high": 338.34,
+      "recent_low": 307.01,
+      "volume": 86433100,
+      "avg_volume": 52917426
     },
     {
       "symbol": "NVDA",
-      "error": "object of type 'NoneType' has no len()"
+      "setups": [
+        "momentum"
+      ],
+      "last_close": 222.27,
+      "recent_high": 234.5,
+      "recent_low": 207.02,
+      "volume": 189683500,
+      "avg_volume": 128314024
     },
     {
       "symbol": "TSLA",
-      "error": "object of type 'NoneType' has no len()"
-    },
-    {
-      "symbol": "AMZN",
-      "error": "object of type 'NoneType' has no len()"
+      "setups": [
+        "momentum"
+      ],
+      "last_close": 364.27,
+      "recent_high": 384.04,
+      "recent_low": 342.53,
+      "volume": 51819200,
+      "avg_volume": 39614103
     },
     {
       "symbol": "META",
-      "error": "object of type 'NoneType' has no len()"
-    },
-    {
-      "symbol": "GOOGL",
-      "error": "object of type 'NoneType' has no len()"
+      "setups": [
+        "momentum"
+      ],
+      "last_close": 665.75,
+      "recent_high": 685.31,
+      "recent_low": 543.23,
+      "volume": 27548000,
+      "avg_volume": 18162719
     },
     {
       "symbol": "AMD",
-      "error": "object of type 'NoneType' has no len()"
+      "setups": [
+        "resistance_breakout"
+      ],
+      "last_close": 559.82,
+      "recent_high": 551.42,
+      "recent_low": 440.5,
+      "volume": 31785700,
+      "avg_volume": 24840142
     }
   ]
 }
