@@ -103,6 +103,33 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .updated{font-size:12px;color:var(--text2);text-align:center;margin-top:8px}
 /* Section divider */
 .divider{height:1px;background:var(--border);margin:20px 0}
+/* Bot Tracker */
+.bot-tile{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px}
+.bot-tile-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.bot-name{font-size:16px;font-weight:700}
+.bot-status{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;cursor:pointer;user-select:none}
+.bot-status.live{background:rgba(0,255,157,0.15);color:var(--green)}
+.bot-status.paused{background:rgba(245,158,11,0.15);color:var(--orange)}
+.bot-status.off{background:rgba(107,114,128,0.15);color:var(--text2)}
+.bot-tile-row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.bot-pnl{font-size:15px;font-weight:700;flex:1}
+.bot-pnl.green{color:var(--green)}.bot-pnl.red{color:var(--red)}
+.bot-notes{font-size:13px;color:var(--text2);flex:2}
+.bot-edit{font-size:12px;color:var(--blue);cursor:pointer;padding:4px 8px;background:rgba(0,217,255,0.1);border-radius:6px}
+.bot-add-btn{display:block;width:100%;padding:12px;background:transparent;border:1px dashed var(--border);border-radius:12px;color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;margin-top:4px}
+.bot-add-btn:active{border-color:var(--blue);color:var(--blue)}
+/* Stock Picks */
+.pick-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:8px}
+.pick-header{display:flex;justify-content:space-between;align-items:center}
+.pick-symbol{font-size:18px;font-weight:800}
+.pick-setups{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.pick-setup{font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;background:var(--card2);color:var(--text)}
+.pick-setup.support_bounce{color:var(--green);border:1px solid rgba(0,255,157,0.2)}
+.pick-setup.resistance_breakout{color:var(--blue);border:1px solid rgba(0,217,255,0.2)}
+.pick-setup.momentum{color:var(--orange);border:1px solid rgba(240,136,62,0.2)}
+.pick-price{font-size:15px;font-weight:600;margin-top:6px;color:var(--text2)}
+.pick-error{font-size:13px;color:var(--red)}
+.pick-scanned{font-size:12px;color:var(--text2);text-align:center;margin-top:8px}
 </style>
 </head>
 <body>
@@ -157,6 +184,17 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
     <div id="signals"></div>
   </div>
 
+  <!-- Other Bots Tracker -->
+  <div class="divider"></div>
+  <div class="section-title">Other Bots <span class="count" id="botCount">0</span></div>
+  <div id="botTracker"></div>
+  <button class="bot-add-btn" onclick="addBot()">+ Add Bot</button>
+
+  <!-- Hourly Stock Picks -->
+  <div class="divider"></div>
+  <div class="section-title">Hourly Stock Picks <span class="count" id="pickCount">0</span></div>
+  <div id="stockPicks"><div class="loading"><div class="loading-spinner" style="width:24px;height:24px"></div><div class="loading-text">Loading picks...</div></div></div>
+
   <!-- Updated -->
   <div class="updated" id="updatedAt">Loading...</div>
   <div class="footer">
@@ -171,6 +209,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 // Data URLs (GitHub Pages - updated every 5 min by cron)
 const POSITIONS_URL = 'https://simzy420.github.io/big-brain-ape-dashboard/data/positions.json';
 const SNAPSHOT_URL = 'https://simzy420.github.io/big-brain-ape-dashboard/data/snapshot.json';
+const STOCK_PICKS_URL = 'https://simzy420.github.io/big-brain-ape-dashboard/data/stock-picks.json';
 
 // Fallback to local data if GitHub not available
 const POSITIONS_LOCAL = 'data/positions.json';
@@ -216,9 +255,14 @@ async function loadData() {
   let snapshot = await fetchJSON(SNAPSHOT_URL);
   if (!snapshot) snapshot = await fetchJSON(SNAPSHOT_LOCAL);
 
+  let picks = await fetchJSON(STOCK_PICKS_URL);
+
   if (positions) renderPositions(positions);
   if (snapshot) renderMacro(snapshot);
   if (positions && snapshot) renderAllocation(positions, snapshot);
+  if (picks) renderStockPicks(picks);
+  
+  loadBots();
   
   if (positions) {
     document.getElementById('updatedAt').textContent = 'Last updated: ' + positions.generatedAt;
@@ -339,6 +383,121 @@ async function refresh() {
   btn.classList.add('spinning');
   await loadData();
   setTimeout(() => btn.classList.remove('spinning'), 1000);
+}
+
+// ===== Bot Tracker =====
+const BOT_STORAGE_KEY = 'bba_bot_tracker';
+const DEFAULT_BOTS = [
+  {name:'Claude Code', status:'live', pnl:'+$340', notes:'Coding agent, repo management'},
+  {name:'Codex CLI', status:'paused', pnl:'$0', notes:'OpenAI coding, standby'},
+  {name:'Grok Build', status:'live', pnl:'+$120', notes:'xAI coding + image gen'},
+  {name:'Scout', status:'off', pnl:'$0', notes:'Research bot, offline'},
+  {name:'Backtest Lab', status:'live', pnl:'+$43', notes:'R3 complete, +4.33% return'},
+];
+
+function loadBots() {
+  let bots = JSON.parse(localStorage.getItem(BOT_STORAGE_KEY) || 'null');
+  if (!bots) {
+    bots = DEFAULT_BOTS;
+    saveBots(bots);
+  }
+  renderBots(bots);
+}
+
+function saveBots(bots) {
+  localStorage.setItem(BOT_STORAGE_KEY, JSON.stringify(bots));
+}
+
+function renderBots(bots) {
+  const container = document.getElementById('botTracker');
+  document.getElementById('botCount').textContent = bots.length;
+  
+  container.innerHTML = bots.map((bot, i) => {
+    const pnlClass = bot.pnl.startsWith('+') ? 'green' : (bot.pnl.startsWith('-') ? 'red' : '');
+    return `
+    <div class="bot-tile">
+      <div class="bot-tile-header">
+        <div class="bot-name">${bot.name}</div>
+        <div class="bot-status ${bot.status}" onclick="cycleStatus(${i})">${bot.status.toUpperCase()}</div>
+      </div>
+      <div class="bot-tile-row">
+        <div class="bot-pnl ${pnlClass}">${bot.pnl}</div>
+        <div class="bot-notes">${bot.notes}</div>
+        <div class="bot-edit" onclick="editBot(${i})">Edit</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function cycleStatus(i) {
+  let bots = JSON.parse(localStorage.getItem(BOT_STORAGE_KEY) || '[]');
+  const statuses = ['live', 'paused', 'off'];
+  const cur = statuses.indexOf(bots[i].status);
+  bots[i].status = statuses[(cur + 1) % 3];
+  saveBots(bots);
+  renderBots(bots);
+}
+
+function editBot(i) {
+  let bots = JSON.parse(localStorage.getItem(BOT_STORAGE_KEY) || '[]');
+  const name = prompt('Bot name:', bots[i].name);
+  if (name === null) return;
+  const pnl = prompt('PnL (e.g. +$100 or -$50):', bots[i].pnl);
+  if (pnl === null) return;
+  const notes = prompt('Notes:', bots[i].notes);
+  if (notes === null) return;
+  bots[i].name = name;
+  bots[i].pnl = pnl;
+  bots[i].notes = notes;
+  saveBots(bots);
+  renderBots(bots);
+}
+
+function addBot() {
+  const name = prompt('Bot name:');
+  if (!name) return;
+  const pnl = prompt('PnL (e.g. +$100):', '$0');
+  const notes = prompt('Notes:', '');
+  let bots = JSON.parse(localStorage.getItem(BOT_STORAGE_KEY) || '[]');
+  bots.push({name, status:'live', pnl: pnl || '$0', notes: notes || ''});
+  saveBots(bots);
+  renderBots(bots);
+}
+
+// ===== Stock Picks =====
+function renderStockPicks(data) {
+  const container = document.getElementById('stockPicks');
+  const picks = data.picks || [];
+  
+  const validPicks = picks.filter(p => !p.error);
+  const errorPicks = picks.filter(p => p.error);
+  
+  document.getElementById('pickCount').textContent = validPicks.length;
+  
+  if (validPicks.length === 0 && errorPicks.length === 0) {
+    container.innerHTML = '<div class="loading-text" style="padding:16px;text-align:center">No stock picks yet</div>';
+    return;
+  }
+  
+  let html = validPicks.map(p => {
+    const setups = (p.setups || []).map(s => `<span class="pick-setup ${s}">${s.replace(/_/g,' ')}</span>`).join('');
+    return `
+    <div class="pick-card">
+      <div class="pick-header">
+        <div class="pick-symbol">${p.symbol}</div>
+        <div class="pick-price">$${p.last_close || '—'}</div>
+      </div>
+      ${setups ? `<div class="pick-setups">${setups}</div>` : ''}
+    </div>`;
+  }).join('');
+  
+  if (errorPicks.length > 0 && validPicks.length === 0) {
+    html = `<div class="pick-card"><div class="pick-error">Scanner error on ${errorPicks.length} symbols — Alpaca API issue. Will auto-fix on next scan.</div></div>`;
+  }
+  
+  html += `<div class="pick-scanned">Scanned: ${data.scanned_at ? new Date(data.scanned_at).toLocaleString() : 'unknown'}</div>`;
+  
+  container.innerHTML = html;
 }
 
 // Initial load
