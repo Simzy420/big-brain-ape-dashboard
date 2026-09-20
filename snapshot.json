@@ -1,5 +1,5 @@
 {
-  "date": "September 20, 2026 04:40 UTC",
+  "date": "September 20, 2026 04:45 UTC",
   "assets": {
     "S&P 500": {
       "price": 7650.5,
@@ -92,20 +92,20 @@
       ]
     },
     "BTC": {
-      "price": 80448.8,
-      "change_pct": -0.55,
+      "price": 80358.5,
+      "change_pct": -0.71,
       "support": 74909.4,
       "resistance": 82282.8
     },
     "ETH": {
-      "price": 2584.58,
-      "change_pct": -1.07,
+      "price": 2580.62,
+      "change_pct": -1.25,
       "support": 2355.12,
       "resistance": 2669.0
     },
     "SOL": {
-      "price": 109.09,
-      "change_pct": -2.81,
+      "price": 108.89,
+      "change_pct": -3.07,
       "support": 87.0,
       "resistance": 114.32
     }
@@ -209,14 +209,14 @@
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 24.64,
-    "daily_avg": 31.43,
-    "daily_pct": -21.6,
-    "weekly_inflow": 220.02,
-    "weekly_avg": 211.16,
+    "daily_inflow": 24.59,
+    "daily_avg": 31.42,
+    "daily_pct": -21.7,
+    "weekly_inflow": 219.97,
+    "weekly_avg": 211.15,
     "weekly_pct": 4.2,
-    "monthly_inflow": 904.97,
-    "monthly_avg": 824.33,
+    "monthly_inflow": 904.92,
+    "monthly_avg": 824.31,
     "monthly_pct": 9.8,
     "large_tx_count": 618262
   },
@@ -415,53 +415,33 @@
   },
   "econ_events": [
     {
-      "label": "TREASURY SEC BESSENT SPEAKS",
-      "date": "09-15-2026",
+      "label": "UNEMPLOYMENT CLAIMS",
+      "date": "09-24-2026",
+      "time": "12:30pm ET",
+      "forecast": "201K",
+      "previous": "196K",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "REVISED UOM CONSUMER SENTIMENT",
+      "date": "09-25-2026",
+      "time": "2:00pm ET",
+      "forecast": "47.5",
+      "previous": "47.8",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "REVISED UOM INFLATION EXPECTATIONS",
+      "date": "09-25-2026",
       "time": "2:00pm ET",
       "forecast": "\u2014",
-      "previous": "\u2014",
+      "previous": "4.6%",
       "actual": null,
       "impact": "Medium",
-      "country": "USD"
-    },
-    {
-      "label": "CORE RETAIL SALES M/M",
-      "date": "09-16-2026",
-      "time": "12:30pm ET",
-      "forecast": "0.6%",
-      "previous": "-0.3%",
-      "actual": null,
-      "impact": "Medium",
-      "country": "USD"
-    },
-    {
-      "label": "RETAIL SALES M/M",
-      "date": "09-16-2026",
-      "time": "12:30pm ET",
-      "forecast": "0.8%",
-      "previous": "-0.6%",
-      "actual": null,
-      "impact": "Medium",
-      "country": "USD"
-    },
-    {
-      "label": "FEDERAL FUNDS RATE",
-      "date": "09-16-2026",
-      "time": "6:00pm ET",
-      "forecast": "4.00%",
-      "previous": "3.75%",
-      "actual": null,
-      "impact": "High",
-      "country": "USD"
-    },
-    {
-      "label": "FOMC ECONOMIC PROJECTIONS",
-      "date": "09-16-2026",
-      "time": "6:00pm ET",
-      "forecast": "\u2014",
-      "previous": "\u2014",
-      "actual": null,
-      "impact": "High",
       "country": "USD"
     }
   ]
