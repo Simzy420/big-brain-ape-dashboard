@@ -1,0 +1,70 @@
+{
+  "timestamp": 1789887025,
+  "generatedAt": "2026-09-20 06:50 UTC",
+  "accountValue": 1510.15,
+  "withdrawable": 557.53,
+  "portfolioValue": 1510.15,
+  "totalUnrealizedPnl": 47.5,
+  "totalMarginUsed": 905.12,
+  "availableCash": 557.53,
+  "positions": [
+    {
+      "symbol": "GOLD",
+      "rawToken": "xyz:GOLD",
+      "side": "LONG",
+      "size": 0.516,
+      "entryPrice": 4280.23,
+      "currentPrice": 4370.7,
+      "unrealizedPnl": 46.68,
+      "pnlPercent": 6.3,
+      "marginUsed": 751.76,
+      "leverage": 3,
+      "marginType": "cross",
+      "positionValue": 2255.28,
+      "tvSymbol": "TVC:GOLD"
+    },
+    {
+      "symbol": "SP500",
+      "rawToken": "xyz:SP500",
+      "side": "SHORT",
+      "size": 0.06,
+      "entryPrice": 7647.42,
+      "currentPrice": 7633.7,
+      "unrealizedPnl": 0.82,
+      "pnlPercent": 0.5,
+      "marginUsed": 153.35,
+      "leverage": 3,
+      "marginType": "isolated",
+      "positionValue": 458.02,
+      "tvSymbol": "SP:SPX"
+    }
+  ],
+  "pieValueSlices": [
+    {
+      "label": "GOLD",
+      "value": 2255.28
+    },
+    {
+      "label": "SP500",
+      "value": 458.02
+    },
+    {
+      "label": "Cash",
+      "value": 557.53
+    }
+  ],
+  "pieMarginSlices": [
+    {
+      "label": "GOLD",
+      "value": 751.76
+    },
+    {
+      "label": "SP500",
+      "value": 153.35
+    },
+    {
+      "label": "Available",
+      "value": 557.53
+    }
+  ]
+}
