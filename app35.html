@@ -134,6 +134,35 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .account-row .label{color:var(--text2);font-size: 17px}
 .account-row .val{font-weight:600;font-size: 17px}
 
+/* BOT TRACKER */
+.bot-tile{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:8px}
+.bot-tile-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.bot-name{font-size:16px;font-weight:700}
+.bot-status{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;cursor:pointer;user-select:none}
+.bot-status.live{background:rgba(63,185,80,0.15);color:var(--green)}
+.bot-status.paused{background:rgba(208,153,34,0.15);color:var(--yellow)}
+.bot-status.off{background:rgba(139,148,158,0.15);color:var(--text2)}
+.bot-tile-row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.bot-pnl{font-size:15px;font-weight:700;flex:1}
+.bot-pnl.green{color:var(--green)}.bot-pnl.red{color:var(--red)}
+.bot-notes{font-size:13px;color:var(--text2);flex:2}
+.bot-edit{font-size:12px;color:var(--blue);cursor:pointer;padding:4px 8px;background:rgba(88,166,255,0.1);border-radius:6px}
+.bot-add-btn{display:block;width:100%;padding:12px;background:transparent;border:1px dashed var(--border);border-radius:12px;color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;margin-top:4px}
+.bot-add-btn:active{border-color:var(--blue);color:var(--blue)}
+
+/* STOCK PICKS */
+.pick-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:8px}
+.pick-header{display:flex;justify-content:space-between;align-items:center}
+.pick-symbol{font-size:18px;font-weight:800}
+.pick-setups{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.pick-setup{font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;background:var(--bg);border:1px solid var(--border)}
+.pick-setup.support_bounce{color:var(--green);border-color:rgba(63,185,80,0.3)}
+.pick-setup.resistance_breakout{color:var(--blue);border-color:rgba(88,166,255,0.3)}
+.pick-setup.momentum{color:var(--orange);border-color:rgba(240,136,62,0.3)}
+.pick-price{font-size:15px;font-weight:600;margin-top:6px;color:var(--text2)}
+.pick-error{font-size:13px;color:var(--red)}
+.pick-scanned{font-size:12px;color:var(--text2);text-align:center;margin-top:8px}
+
 /* PRICING */
 .price-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:12px;text-align:center}
 .price-card h3{font-size: 22px;margin-bottom:8px}
@@ -565,6 +594,8 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <div id="view-trading" class="view">
 <div class="header"><button class="back-btn" onclick="switchView('home')">‹ Back</button><h1>Trading <span>Desk</span> 🦍</h1></div>
 <div id="tradingContent"><div class="loading"><div class="spinner"></div>Loading positions...</div></div>
+<div id="botTracker"></div>
+<div id="stockPicks"><div class="loading"><div class="spinner" style="width:24px;height:24px"></div>Loading picks...</div></div>
 </div>
 
 <!-- SNAPSHOT VIEW -->
@@ -713,6 +744,15 @@ var NEWS_URL="news.json";
 var TRADING_POSTS_URL="trading-posts.json";
 var ANALYST_RATINGS_URL="analyst-ratings.json";
 var SNAPSHOT_IMAGE_URL="daily-snapshot.png";
+var STOCK_PICKS_URL="data/stock-picks.json";
+var BOT_STORAGE_KEY='bba_bot_tracker';
+var DEFAULT_BOTS=[
+{name:'Claude Code',status:'live',pnl:'+$340',notes:'Coding agent, repo management'},
+{name:'Codex CLI',status:'paused',pnl:'$0',notes:'OpenAI coding, standby'},
+{name:'Grok Build',status:'live',pnl:'+$120',notes:'xAI coding + image gen'},
+{name:'Scout',status:'off',pnl:'$0',notes:'Research bot, offline'},
+{name:'Backtest Lab',status:'live',pnl:'+$43',notes:'R3 complete, +4.33% return'}
+];
 
 var CRYPTO_MAP={BTC:"bitcoin",ETH:"ethereum",SOL:"solana",BNB:"binancecoin",XRP:"ripple",DOGE:"dogecoin",ADA:"cardano",AVAX:"avalanche-2",DOT:"polkadot",LINK:"chainlink"};
 var CRYPTO_REVERSE={};for(var k in CRYPTO_MAP)CRYPTO_REVERSE[CRYPTO_MAP[k]]=k;
@@ -735,7 +775,7 @@ for(var i=0;i<btns.length;i++)btns[i].classList.remove('active');
 var btn=document.querySelector('[data-view="'+name+'"]');
 if(btn)btn.classList.add('active');
 window.scrollTo(0,0);
-if(name==='trading')loadTrading();
+if(name==='trading'){loadTrading();loadBots();loadStockPicks();}
 else if(name==='briefing')loadBriefing();
 else if(name==='snapshot')loadSnapshot();
 else if(name==='crypto')loadCrypto();
@@ -4023,6 +4063,86 @@ out.innerHTML=html;
 })
 .catch(function(){
 out.innerHTML='<div class="briefing-card"><h3>Trading Desk</h3><p>Unable to load positions. Please try again later.</p></div>';
+});
+}
+
+// ===== BOT TRACKER =====
+function loadBots(){
+var bots=JSON.parse(localStorage.getItem(BOT_STORAGE_KEY)||'null');
+if(!bots){bots=DEFAULT_BOTS;saveBots(bots);}
+renderBots(bots);
+}
+function saveBots(bots){localStorage.setItem(BOT_STORAGE_KEY,JSON.stringify(bots));}
+function renderBots(bots){
+var html='<div class="section-title">Other Bots <span style="background:var(--border);color:var(--text2);font-size:12px;padding:2px 8px;border-radius:20px;font-weight:600">'+bots.length+'</span></div>';
+for(var i=0;i<bots.length;i++){
+var b=bots[i];
+var pnlClass=b.pnl.indexOf('+')===0?'green':(b.pnl.indexOf('-')===0?'red':'');
+html+='<div class="bot-tile">';
+html+='<div class="bot-tile-header"><div class="bot-name">'+b.name+'</div><div class="bot-status '+b.status+'" onclick="cycleStatus('+i+')">'+b.status.toUpperCase()+'</div></div>';
+html+='<div class="bot-tile-row"><div class="bot-pnl '+pnlClass+'">'+b.pnl+'</div><div class="bot-notes">'+b.notes+'</div><div class="bot-edit" onclick="editBot('+i+')">Edit</div></div>';
+html+='</div>';
+}
+html+='<button class="bot-add-btn" onclick="addBot()">+ Add Bot</button>';
+var container=document.getElementById('botTracker');
+if(container)container.innerHTML=html;
+}
+function cycleStatus(i){
+var bots=JSON.parse(localStorage.getItem(BOT_STORAGE_KEY)||'[]');
+var statuses=['live','paused','off'];
+var cur=statuses.indexOf(bots[i].status);
+bots[i].status=statuses[(cur+1)%3];
+saveBots(bots);renderBots(bots);
+}
+function editBot(i){
+var bots=JSON.parse(localStorage.getItem(BOT_STORAGE_KEY)||'[]');
+var name=prompt('Bot name:',bots[i].name);if(name===null)return;
+var pnl=prompt('PnL:',bots[i].pnl);if(pnl===null)return;
+var notes=prompt('Notes:',bots[i].notes);if(notes===null)return;
+bots[i].name=name;bots[i].pnl=pnl;bots[i].notes=notes;
+saveBots(bots);renderBots(bots);
+}
+function addBot(){
+var name=prompt('Bot name:');if(!name)return;
+var pnl=prompt('PnL:','$0');
+var notes=prompt('Notes:','');
+var bots=JSON.parse(localStorage.getItem(BOT_STORAGE_KEY)||'[]');
+bots.push({name:name,status:'live',pnl:pnl||'$0',notes:notes||''});
+saveBots(bots);renderBots(bots);
+}
+
+// ===== STOCK PICKS =====
+function loadStockPicks(){
+var container=document.getElementById('stockPicks');
+if(!container)return;
+sameDomainGet(STOCK_PICKS_URL).then(function(data){
+var picks=data.picks||[];
+var validPicks=picks.filter(function(p){return !p.error&&p.setups;});
+var errorPicks=picks.filter(function(p){return p.error;});
+var html='';
+if(validPicks.length===0&&errorPicks.length===0){
+html='<div class="briefing-card"><p>No stock picks yet. Scanner runs during market hours (Mon-Fri 7:30 AM MT).</p></div>';
+container.innerHTML=html;return;
+}
+html+='<div class="section-title">Hourly Stock Picks <span style="background:var(--border);color:var(--text2);font-size:12px;padding:2px 8px;border-radius:20px;font-weight:600">'+validPicks.length+'</span></div>';
+for(var i=0;i<validPicks.length;i++){
+var p=validPicks[i];
+var setupsHtml='';
+for(var j=0;j<p.setups.length;j++){
+var s=p.setups[j];
+setupsHtml+='<span class="pick-setup '+s+'">'+s.replace(/_/g,' ')+'</span>';
+}
+html+='<div class="pick-card"><div class="pick-header"><div class="pick-symbol">'+p.symbol+'</div><div class="pick-price">$'+p.last_close+'</div></div>';
+if(setupsHtml)html+='<div class="pick-setups">'+setupsHtml+'</div>';
+html+='</div>';
+}
+if(errorPicks.length>0&&validPicks.length===0){
+html+='<div class="pick-card"><div class="pick-error">Scanner error on '+errorPicks.length+' symbols. Will retry next hour.</div></div>';
+}
+html+='<div class="pick-scanned">Scanned: '+(data.scanned_at?new Date(data.scanned_at).toLocaleString():'unknown')+'</div>';
+container.innerHTML=html;
+}).catch(function(){
+container.innerHTML='<div class="briefing-card"><p>Unable to load stock picks.</p></div>';
 });
 }
 
