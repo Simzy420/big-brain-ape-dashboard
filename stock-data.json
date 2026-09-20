@@ -1,6 +1,6 @@
 {
-  "timestamp": 1789886415,
-  "generatedAt": "2026-09-20 06:40 UTC",
+  "timestamp": 1789887255,
+  "generatedAt": "2026-09-20 06:54 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -8242,46 +8242,6 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/DIS.png",
       "ipo": "1957-11-12",
-      "strongBuy": 11,
-      "buy": 23,
-      "hold": 3,
-      "sell": 1,
-      "strongSell": 0,
-      "consensus": "Strong Buy",
-      "recTrend": [
-        {
-          "period": "2026-09-01",
-          "sb": 11,
-          "b": 23,
-          "h": 3,
-          "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-08-01",
-          "sb": 11,
-          "b": 22,
-          "h": 3,
-          "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-07-01",
-          "sb": 11,
-          "b": 21,
-          "h": 3,
-          "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-06-01",
-          "sb": 11,
-          "b": 21,
-          "h": 3,
-          "s": 1,
-          "ss": 0
-        }
-      ],
       "earnings": [
         {
           "period": "2026-06-30",
@@ -16036,6 +15996,80 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/960001797516.png",
       "ipo": "2026-07-02",
+      "strongBuy": 5,
+      "buy": 9,
+      "hold": 16,
+      "sell": 0,
+      "strongSell": 0,
+      "consensus": "Hold",
+      "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 5,
+          "b": 9,
+          "h": 16,
+          "s": 0,
+          "ss": 0
+        },
+        {
+          "period": "2026-08-01",
+          "sb": 6,
+          "b": 9,
+          "h": 14,
+          "s": 1,
+          "ss": 0
+        },
+        {
+          "period": "2026-07-01",
+          "sb": 7,
+          "b": 9,
+          "h": 13,
+          "s": 1,
+          "ss": 0
+        },
+        {
+          "period": "2026-07-01",
+          "sb": 7,
+          "b": 9,
+          "h": 13,
+          "s": 1,
+          "ss": 0
+        }
+      ],
+      "earnings": [
+        {
+          "period": "2026-06-30",
+          "quarter": 2,
+          "estimate": 3.5866,
+          "actual": 3.52,
+          "surprise": -0.0666,
+          "surprisePct": -1.8569
+        },
+        {
+          "period": "2026-03-31",
+          "quarter": 1,
+          "estimate": 1.015,
+          "actual": 1.16,
+          "surprise": 0.145,
+          "surprisePct": 14.2857
+        },
+        {
+          "period": "2025-12-31",
+          "quarter": 4,
+          "estimate": 1.7016,
+          "actual": 1.71,
+          "surprise": 0.0084,
+          "surprisePct": 0.4937
+        },
+        {
+          "period": "2025-09-30",
+          "quarter": 3,
+          "estimate": 1.8352,
+          "actual": 1.88,
+          "surprise": 0.0448,
+          "surprisePct": 2.4412
+        }
+      ],
       "earningsHistory": [
         {
           "quarter": 2,
@@ -24797,7 +24831,29 @@
           "revenueActual": 406000.0
         }
       ],
-      "upcomingEarnings": [],
+      "upcomingEarnings": [
+        {
+          "date": "2027-05-12",
+          "quarter": 1,
+          "epsEstimate": -0.3366,
+          "revenueEstimate": 37230000,
+          "hour": ""
+        },
+        {
+          "date": "2027-03-29",
+          "quarter": 4,
+          "epsEstimate": -0.5661,
+          "revenueEstimate": 4202400,
+          "hour": "amc"
+        },
+        {
+          "date": "2026-11-11",
+          "quarter": 3,
+          "epsEstimate": -0.4777,
+          "revenueEstimate": 339996,
+          "hour": ""
+        }
+      ],
       "pe": 0,
       "eps": -5.4429,
       "epsTTM": -3.3804,
