@@ -1,6 +1,6 @@
 {
-  "timestamp": 1789953334,
-  "generatedAt": "2026-09-21 01:15 UTC",
+  "timestamp": 1789954174,
+  "generatedAt": "2026-09-21 01:29 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -6261,7 +6261,7 @@
           "o": 537.02,
           "h": 538.33,
           "l": 536.2,
-          "c": 537.3,
+          "c": 537.31,
           "v": 3408900
         },
         {
@@ -13596,10 +13596,10 @@
       "netMargin": 7.02,
       "dividendYield": 0,
       "volume": 7984660,
-      "targetAvg": 185.94803,
-      "targetHigh": 238.65416,
-      "targetLow": 95.375984,
-      "targetMedian": 188.81335,
+      "targetAvg": 185.98135,
+      "targetHigh": 238.69693,
+      "targetLow": 95.393074,
+      "targetMedian": 188.84718,
       "history": [
         {
           "date": "2026-08-07",
@@ -16460,6 +16460,80 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/CVX.png",
       "ipo": "1921-06-24",
+      "strongBuy": 7,
+      "buy": 18,
+      "hold": 4,
+      "sell": 1,
+      "strongSell": 0,
+      "consensus": "Strong Buy",
+      "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 7,
+          "b": 18,
+          "h": 4,
+          "s": 1,
+          "ss": 0
+        },
+        {
+          "period": "2026-08-01",
+          "sb": 8,
+          "b": 18,
+          "h": 4,
+          "s": 1,
+          "ss": 0
+        },
+        {
+          "period": "2026-07-01",
+          "sb": 7,
+          "b": 16,
+          "h": 6,
+          "s": 1,
+          "ss": 0
+        },
+        {
+          "period": "2026-06-01",
+          "sb": 7,
+          "b": 16,
+          "h": 7,
+          "s": 1,
+          "ss": 0
+        }
+      ],
+      "earnings": [
+        {
+          "period": "2026-06-30",
+          "quarter": 2,
+          "estimate": 5.615,
+          "actual": 6.06,
+          "surprise": 0.445,
+          "surprisePct": 7.9252
+        },
+        {
+          "period": "2026-03-31",
+          "quarter": 1,
+          "estimate": 0.9623,
+          "actual": 1.41,
+          "surprise": 0.4477,
+          "surprisePct": 46.524
+        },
+        {
+          "period": "2025-12-31",
+          "quarter": 4,
+          "estimate": 1.4628,
+          "actual": 1.52,
+          "surprise": 0.0572,
+          "surprisePct": 3.9103
+        },
+        {
+          "period": "2025-09-30",
+          "quarter": 3,
+          "estimate": 1.6984,
+          "actual": 1.85,
+          "surprise": 0.1516,
+          "surprisePct": 8.926
+        }
+      ],
       "earningsHistory": [
         {
           "quarter": 2,
@@ -16522,7 +16596,29 @@
           "revenueActual": 44375000000.0
         }
       ],
-      "upcomingEarnings": [],
+      "upcomingEarnings": [
+        {
+          "date": "2027-04-29",
+          "quarter": 1,
+          "epsEstimate": 3.4055,
+          "revenueEstimate": 53317695980,
+          "hour": ""
+        },
+        {
+          "date": "2027-01-28",
+          "quarter": 4,
+          "epsEstimate": 4.0815,
+          "revenueEstimate": 55871472395,
+          "hour": "amc"
+        },
+        {
+          "date": "2026-10-29",
+          "quarter": 3,
+          "epsEstimate": 4.7463,
+          "revenueEstimate": 58068315012,
+          "hour": "bmo"
+        }
+      ],
       "pe": 0,
       "eps": 6.6266,
       "epsTTM": 10.4285,
@@ -23512,10 +23608,10 @@
       "netMargin": -4.17,
       "dividendYield": 0,
       "volume": 36529720,
-      "targetAvg": 6.398967,
-      "targetHigh": 10.115126,
-      "targetLow": 4.014633,
-      "targetMedian": 6.0218005,
+      "targetAvg": 6.3996363,
+      "targetHigh": 10.116183,
+      "targetLow": 4.0150533,
+      "targetMedian": 6.0224304,
       "history": [
         {
           "date": "2026-08-07",
@@ -24775,29 +24871,7 @@
           "revenueActual": 406000.0
         }
       ],
-      "upcomingEarnings": [
-        {
-          "date": "2027-05-12",
-          "quarter": 1,
-          "epsEstimate": -0.3366,
-          "revenueEstimate": 37230000,
-          "hour": ""
-        },
-        {
-          "date": "2027-03-29",
-          "quarter": 4,
-          "epsEstimate": -0.5661,
-          "revenueEstimate": 4202400,
-          "hour": "amc"
-        },
-        {
-          "date": "2026-11-11",
-          "quarter": 3,
-          "epsEstimate": -0.4777,
-          "revenueEstimate": 339996,
-          "hour": ""
-        }
-      ],
+      "upcomingEarnings": [],
       "pe": 0,
       "eps": -5.4429,
       "epsTTM": -3.3804,
