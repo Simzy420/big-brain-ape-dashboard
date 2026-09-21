@@ -1,6 +1,6 @@
 {
-  "timestamp": 1789957536,
-  "generatedAt": "2026-09-21 02:25 UTC",
+  "timestamp": 1789958376,
+  "generatedAt": "2026-09-21 02:39 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -13596,10 +13596,10 @@
       "netMargin": 7.02,
       "dividendYield": 0,
       "volume": 7984660,
-      "targetAvg": 186.0008,
-      "targetHigh": 238.7219,
-      "targetLow": 95.40305,
-      "targetMedian": 188.86694,
+      "targetAvg": 185.99802,
+      "targetHigh": 238.71832,
+      "targetLow": 95.40163,
+      "targetMedian": 188.8641,
       "history": [
         {
           "date": "2026-08-07",
@@ -15204,6 +15204,40 @@
           "ss": 1
         }
       ],
+      "earnings": [
+        {
+          "period": "2026-06-30",
+          "quarter": 2,
+          "estimate": -1.2303,
+          "actual": -1.03,
+          "surprise": 0.2003,
+          "surprisePct": 16.2806
+        },
+        {
+          "period": "2026-03-31",
+          "quarter": 1,
+          "estimate": -0.9157,
+          "actual": -1.12,
+          "surprise": -0.2043,
+          "surprisePct": -22.3108
+        },
+        {
+          "period": "2025-12-31",
+          "quarter": 4,
+          "estimate": -0.5036,
+          "actual": -0.56,
+          "surprise": -0.0564,
+          "surprisePct": -11.1994
+        },
+        {
+          "period": "2025-09-30",
+          "quarter": 3,
+          "estimate": -0.376,
+          "actual": -0.08,
+          "surprise": 0.296,
+          "surprisePct": 78.7234
+        }
+      ],
       "earningsHistory": [
         {
           "quarter": 2,
@@ -15256,7 +15290,29 @@
           "revenueActual": 1212000000.0
         }
       ],
-      "upcomingEarnings": [],
+      "upcomingEarnings": [
+        {
+          "date": "2027-05-05",
+          "quarter": 1,
+          "epsEstimate": -0.6708,
+          "revenueEstimate": 5365856074,
+          "hour": ""
+        },
+        {
+          "date": "2027-02-26",
+          "quarter": 4,
+          "epsEstimate": -0.5114,
+          "revenueEstimate": 4791927533,
+          "hour": ""
+        },
+        {
+          "date": "2026-11-11",
+          "quarter": 3,
+          "epsEstimate": -1.1859,
+          "revenueEstimate": 3577825807,
+          "hour": ""
+        }
+      ],
       "pe": 0,
       "eps": -2.6828,
       "epsTTM": -3.8000000000000003,
@@ -15539,6 +15595,80 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/CAT.png",
       "ipo": "1929-12-02",
+      "strongBuy": 7,
+      "buy": 11,
+      "hold": 15,
+      "sell": 1,
+      "strongSell": 0,
+      "consensus": "Hold",
+      "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 7,
+          "b": 11,
+          "h": 15,
+          "s": 1,
+          "ss": 0
+        },
+        {
+          "period": "2026-08-01",
+          "sb": 7,
+          "b": 11,
+          "h": 15,
+          "s": 1,
+          "ss": 0
+        },
+        {
+          "period": "2026-07-01",
+          "sb": 8,
+          "b": 11,
+          "h": 14,
+          "s": 1,
+          "ss": 0
+        },
+        {
+          "period": "2026-06-01",
+          "sb": 8,
+          "b": 11,
+          "h": 14,
+          "s": 1,
+          "ss": 0
+        }
+      ],
+      "earnings": [
+        {
+          "period": "2026-06-30",
+          "quarter": 2,
+          "estimate": 6.2595,
+          "actual": 8.17,
+          "surprise": 1.9105,
+          "surprisePct": 30.5216
+        },
+        {
+          "period": "2026-03-31",
+          "quarter": 1,
+          "estimate": 4.6619,
+          "actual": 5.54,
+          "surprise": 0.8781,
+          "surprisePct": 18.8357
+        },
+        {
+          "period": "2025-12-31",
+          "quarter": 4,
+          "estimate": 4.7223,
+          "actual": 5.16,
+          "surprise": 0.4377,
+          "surprisePct": 9.2688
+        },
+        {
+          "period": "2025-09-30",
+          "quarter": 3,
+          "estimate": 4.5687,
+          "actual": 4.95,
+          "surprise": 0.3813,
+          "surprisePct": 8.3459
+        }
+      ],
       "earningsHistory": [
         {
           "quarter": 2,
@@ -15601,7 +15731,29 @@
           "revenueActual": 16569000000.0
         }
       ],
-      "upcomingEarnings": [],
+      "upcomingEarnings": [
+        {
+          "date": "2027-04-28",
+          "quarter": 1,
+          "epsEstimate": 6.5448,
+          "revenueEstimate": 19382819100,
+          "hour": ""
+        },
+        {
+          "date": "2027-01-27",
+          "quarter": 4,
+          "epsEstimate": 7.0078,
+          "revenueEstimate": 21332821443,
+          "hour": "bmo"
+        },
+        {
+          "date": "2026-10-27",
+          "quarter": 3,
+          "epsEstimate": 7.0277,
+          "revenueEstimate": 20690873988,
+          "hour": "bmo"
+        }
+      ],
       "pe": 0,
       "eps": 18.8101,
       "epsTTM": 23.247700000000002,
@@ -23456,10 +23608,10 @@
       "netMargin": -4.17,
       "dividendYield": 0,
       "volume": 36529720,
-      "targetAvg": 6.400783,
-      "targetHigh": 10.117996,
-      "targetLow": 4.015773,
-      "targetMedian": 6.0235095,
+      "targetAvg": 6.400687,
+      "targetHigh": 10.117845,
+      "targetLow": 4.0157127,
+      "targetMedian": 6.0234194,
       "history": [
         {
           "date": "2026-08-07",
@@ -24719,29 +24871,7 @@
           "revenueActual": 406000.0
         }
       ],
-      "upcomingEarnings": [
-        {
-          "date": "2027-05-12",
-          "quarter": 1,
-          "epsEstimate": -0.3366,
-          "revenueEstimate": 37230000,
-          "hour": ""
-        },
-        {
-          "date": "2027-03-29",
-          "quarter": 4,
-          "epsEstimate": -0.5661,
-          "revenueEstimate": 4202400,
-          "hour": "amc"
-        },
-        {
-          "date": "2026-11-11",
-          "quarter": 3,
-          "epsEstimate": -0.4777,
-          "revenueEstimate": 339996,
-          "hour": ""
-        }
-      ],
+      "upcomingEarnings": [],
       "pe": 0,
       "eps": -5.4429,
       "epsTTM": -3.3804,
