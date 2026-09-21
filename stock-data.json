@@ -1,6 +1,6 @@
 {
-  "timestamp": 1789970859,
-  "generatedAt": "2026-09-21 06:07 UTC",
+  "timestamp": 1789971940,
+  "generatedAt": "2026-09-21 06:25 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -893,6 +893,15 @@
       "high": 370.9,
       "low": 360.751,
       "prevClose": 366.2,
+      "name": "Tesla Inc",
+      "companyName": "Tesla Inc",
+      "exchange": "NASDAQ NMS - GLOBAL MARKET",
+      "sector": "Automobiles",
+      "industry": "Automobiles",
+      "marketCap": 1438701754913.5813,
+      "country": "US",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/TSLA.png",
+      "ipo": "2010-06-29",
       "strongBuy": 10,
       "buy": 20,
       "hold": 25,
@@ -2618,15 +2627,6 @@
       "high": 255.43,
       "low": 251.88,
       "prevClose": 251.19,
-      "name": "Amazon.com Inc",
-      "companyName": "Amazon.com Inc",
-      "exchange": "NASDAQ NMS - GLOBAL MARKET",
-      "sector": "Retail",
-      "industry": "Retail",
-      "marketCap": 2736595866500.0596,
-      "country": "US",
-      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/AMZN.png",
-      "ipo": "1997-05-15",
       "strongBuy": 20,
       "buy": 49,
       "hold": 5,
@@ -3059,15 +3059,6 @@
       "high": 559.91,
       "low": 541.53,
       "prevClose": 545.09,
-      "name": "Advanced Micro Devices Inc",
-      "companyName": "Advanced Micro Devices Inc",
-      "exchange": "NASDAQ NMS - GLOBAL MARKET",
-      "sector": "Semiconductors",
-      "industry": "Semiconductors",
-      "marketCap": 913892185858.0952,
-      "country": "US",
-      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/AMD.png",
-      "ipo": "1979-10-15",
       "strongBuy": 17,
       "buy": 32,
       "hold": 10,
@@ -5669,27 +5660,15 @@
       "low": 757.971,
       "prevClose": 762.6,
       "upcomingEarnings": [],
-      "pe": 0,
-      "eps": 0,
-      "epsTTM": 0,
-      "revenuePerShare": 0,
-      "revenueGrowthYoY": 0,
-      "earningsNonGaap": 0,
-      "nonGaapEPS": 0,
-      "roe": 0,
-      "beta": 1.0172414,
-      "yearHigh": 779.37,
-      "yearLow": 629.28,
-      "priceAvg50": 0,
-      "priceAvg200": 0,
-      "grossMargin": 0,
-      "netMargin": 0,
-      "dividendYield": 0,
-      "volume": 46431880,
+      "yearHigh": 762,
+      "yearLow": 757.971,
+      "priceAvg50": 761.69,
+      "priceAvg200": 761.69,
       "targetAvg": 0,
       "targetHigh": 0,
       "targetLow": 0,
       "targetMedian": 0,
+      "beta": 0,
       "history": [
         {
           "date": "2026-08-07",
@@ -5942,6 +5921,7 @@
       "high": 721.73,
       "low": 715.08,
       "prevClose": 716.92,
+      "upcomingEarnings": [],
       "pe": 0,
       "eps": 0,
       "epsTTM": 0,
@@ -6203,6 +6183,280 @@
           "l": 715.08,
           "c": 721.45,
           "v": 48277100
+        }
+      ]
+    },
+    "DIA": {
+      "symbol": "DIA",
+      "price": 515.88,
+      "change": -2.47,
+      "changePercentage": -0.4765,
+      "open": 516.52,
+      "high": 517.08,
+      "low": 514.15,
+      "prevClose": 518.35,
+      "upcomingEarnings": [],
+      "pe": 0,
+      "eps": 0,
+      "epsTTM": 0,
+      "revenuePerShare": 0,
+      "revenueGrowthYoY": 0,
+      "earningsNonGaap": 0,
+      "nonGaapEPS": 0,
+      "roe": 0,
+      "beta": 0.8738106,
+      "yearHigh": 546.75,
+      "yearLow": 450.44,
+      "priceAvg50": 0,
+      "priceAvg200": 0,
+      "grossMargin": 0,
+      "netMargin": 0,
+      "dividendYield": 0,
+      "volume": 3645240,
+      "targetAvg": 0,
+      "targetHigh": 0,
+      "targetLow": 0,
+      "targetMedian": 0,
+      "history": [
+        {
+          "date": "2026-08-07",
+          "o": 537.03,
+          "h": 538.53,
+          "l": 535.75,
+          "c": 537.93,
+          "v": 2230100
+        },
+        {
+          "date": "2026-08-10",
+          "o": 537.02,
+          "h": 538.33,
+          "l": 536.2,
+          "c": 537.31,
+          "v": 3408900
+        },
+        {
+          "date": "2026-08-11",
+          "o": 538.22,
+          "h": 540.03,
+          "l": 535.23,
+          "c": 535.6,
+          "v": 2826800
+        },
+        {
+          "date": "2026-08-12",
+          "o": 537.32,
+          "h": 537.5,
+          "l": 535.18,
+          "c": 535.47,
+          "v": 3167600
+        },
+        {
+          "date": "2026-08-13",
+          "o": 537.02,
+          "h": 538.28,
+          "l": 534.02,
+          "c": 536.23,
+          "v": 2033100
+        },
+        {
+          "date": "2026-08-14",
+          "o": 535.73,
+          "h": 536.6,
+          "l": 534.52,
+          "c": 535.12,
+          "v": 2089100
+        },
+        {
+          "date": "2026-08-17",
+          "o": 532.83,
+          "h": 534.3,
+          "l": 531.82,
+          "c": 532.52,
+          "v": 2668100
+        },
+        {
+          "date": "2026-08-18",
+          "o": 531.71,
+          "h": 532.59,
+          "l": 530.36,
+          "c": 531.24,
+          "v": 3825700
+        },
+        {
+          "date": "2026-08-19",
+          "o": 533.66,
+          "h": 535.0,
+          "l": 531.91,
+          "c": 532.6,
+          "v": 3062700
+        },
+        {
+          "date": "2026-08-20",
+          "o": 528.69,
+          "h": 530.12,
+          "l": 525.55,
+          "c": 525.86,
+          "v": 2868500
+        },
+        {
+          "date": "2026-08-21",
+          "o": 528.81,
+          "h": 531.68,
+          "l": 528.21,
+          "c": 531.0,
+          "v": 3034400
+        },
+        {
+          "date": "2026-08-24",
+          "o": 530.61,
+          "h": 533.25,
+          "l": 530.61,
+          "c": 532.42,
+          "v": 4587500
+        },
+        {
+          "date": "2026-08-25",
+          "o": 535.14,
+          "h": 535.29,
+          "l": 531.96,
+          "c": 534.01,
+          "v": 2443900
+        },
+        {
+          "date": "2026-08-26",
+          "o": 534.11,
+          "h": 534.72,
+          "l": 532.08,
+          "c": 533.0,
+          "v": 1761300
+        },
+        {
+          "date": "2026-08-27",
+          "o": 532.33,
+          "h": 535.4,
+          "l": 531.69,
+          "c": 533.99,
+          "v": 2500300
+        },
+        {
+          "date": "2026-08-28",
+          "o": 535.3,
+          "h": 536.49,
+          "l": 533.17,
+          "c": 533.83,
+          "v": 2655400
+        },
+        {
+          "date": "2026-08-31",
+          "o": 532.33,
+          "h": 532.33,
+          "l": 529.56,
+          "c": 530.35,
+          "v": 1744800
+        },
+        {
+          "date": "2026-09-01",
+          "o": 527.45,
+          "h": 530.43,
+          "l": 525.63,
+          "c": 526.54,
+          "v": 3189300
+        },
+        {
+          "date": "2026-09-02",
+          "o": 528.29,
+          "h": 530.95,
+          "l": 528.02,
+          "c": 529.4,
+          "v": 3114500
+        },
+        {
+          "date": "2026-09-03",
+          "o": 532.81,
+          "h": 536.38,
+          "l": 531.71,
+          "c": 535.7,
+          "v": 4806300
+        },
+        {
+          "date": "2026-09-04",
+          "o": 533.9,
+          "h": 535.14,
+          "l": 531.7,
+          "c": 532.85,
+          "v": 2321500
+        },
+        {
+          "date": "2026-09-08",
+          "o": 529.0,
+          "h": 529.17,
+          "l": 526.14,
+          "c": 526.82,
+          "v": 3643200
+        },
+        {
+          "date": "2026-09-09",
+          "o": 524.43,
+          "h": 524.53,
+          "l": 522.05,
+          "c": 522.86,
+          "v": 3782000
+        },
+        {
+          "date": "2026-09-10",
+          "o": 521.09,
+          "h": 521.82,
+          "l": 518.6,
+          "c": 519.55,
+          "v": 4748300
+        },
+        {
+          "date": "2026-09-11",
+          "o": 524.16,
+          "h": 526.15,
+          "l": 523.08,
+          "c": 524.58,
+          "v": 3435700
+        },
+        {
+          "date": "2026-09-14",
+          "o": 523.33,
+          "h": 525.58,
+          "l": 521.9,
+          "c": 523.28,
+          "v": 2698100
+        },
+        {
+          "date": "2026-09-15",
+          "o": 521.98,
+          "h": 522.44,
+          "l": 518.02,
+          "c": 520.03,
+          "v": 3226000
+        },
+        {
+          "date": "2026-09-16",
+          "o": 520.7,
+          "h": 521.1,
+          "l": 511.11,
+          "c": 514.04,
+          "v": 5678700
+        },
+        {
+          "date": "2026-09-17",
+          "o": 519.29,
+          "h": 519.47,
+          "l": 515.36,
+          "c": 517.16,
+          "v": 4204900
+        },
+        {
+          "date": "2026-09-18",
+          "o": 516.52,
+          "h": 517.08,
+          "l": 514.15,
+          "c": 515.88,
+          "v": 2679700
         }
       ]
     },
@@ -10248,15 +10502,27 @@
           "hour": ""
         }
       ],
-      "yearHigh": 1157.6,
-      "yearLow": 1140.27,
-      "priceAvg50": 1152.93,
-      "priceAvg200": 1152.93,
+      "pe": 0,
+      "eps": 22.9512,
+      "epsTTM": 29.7962,
+      "revenuePerShare": 89.1415,
+      "revenueGrowthYoY": 49.58,
+      "earningsNonGaap": 29.7962,
+      "nonGaapEPS": 29.7962,
+      "roe": 92.58,
+      "beta": 0.4301635,
+      "yearHigh": 1292.65,
+      "yearLow": 712.05,
+      "priceAvg50": 0,
+      "priceAvg200": 0,
+      "grossMargin": 83.4,
+      "netMargin": 33.53,
+      "dividendYield": 0,
+      "volume": 2244740,
       "targetAvg": 1325.3855,
       "targetHigh": 1600.0,
       "targetLow": 930.0,
       "targetMedian": 1385.0,
-      "beta": 0.502,
       "history": [
         {
           "date": "2026-08-07",
@@ -11861,6 +12127,40 @@
           "ss": 0
         }
       ],
+      "earnings": [
+        {
+          "period": "2026-09-30",
+          "quarter": 1,
+          "estimate": 1.7738,
+          "actual": 1.92,
+          "surprise": 0.1462,
+          "surprisePct": 8.2422
+        },
+        {
+          "period": "2026-06-30",
+          "quarter": 4,
+          "estimate": 2.0018,
+          "actual": 2.03,
+          "surprise": 0.0282,
+          "surprisePct": 1.4087
+        },
+        {
+          "period": "2026-03-31",
+          "quarter": 3,
+          "estimate": 1.7365,
+          "actual": 1.79,
+          "surprise": 0.0535,
+          "surprisePct": 3.0809
+        },
+        {
+          "period": "2025-12-31",
+          "quarter": 2,
+          "estimate": 1.6711,
+          "actual": 2.26,
+          "surprise": 0.5889,
+          "surprisePct": 35.2403
+        }
+      ],
       "earningsHistory": [
         {
           "quarter": 2,
@@ -12352,29 +12652,6 @@
           "epsSurprise": 0.16000000000000014,
           "epsSurprisePct": 6.79,
           "revenueActual": 933791869000.0
-        }
-      ],
-      "upcomingEarnings": [
-        {
-          "date": "2027-04-14",
-          "quarter": 1,
-          "epsEstimate": 32.249,
-          "revenueEstimate": 1652650357684,
-          "hour": ""
-        },
-        {
-          "date": "2027-01-13",
-          "quarter": 4,
-          "epsEstimate": 31.7014,
-          "revenueEstimate": 1620700187733,
-          "hour": "bmo"
-        },
-        {
-          "date": "2026-10-14",
-          "quarter": 3,
-          "epsEstimate": 28.9619,
-          "revenueEstimate": 1479386868558,
-          "hour": "amc"
         }
       ],
       "pe": 0,
@@ -13266,10 +13543,10 @@
       "netMargin": 7.02,
       "dividendYield": 0,
       "volume": 7984660,
-      "targetAvg": 186.00635,
-      "targetHigh": 238.72902,
-      "targetLow": 95.4059,
-      "targetMedian": 188.87257,
+      "targetAvg": 186.01192,
+      "targetHigh": 238.73616,
+      "targetLow": 95.40875,
+      "targetMedian": 188.87822,
       "history": [
         {
           "date": "2026-08-07",
@@ -14834,6 +15111,46 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/950683281286.png",
       "ipo": "2025-03-28",
+      "strongBuy": 10,
+      "buy": 22,
+      "hold": 12,
+      "sell": 1,
+      "strongSell": 1,
+      "consensus": "Buy",
+      "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 10,
+          "b": 22,
+          "h": 12,
+          "s": 1,
+          "ss": 1
+        },
+        {
+          "period": "2026-08-01",
+          "sb": 10,
+          "b": 21,
+          "h": 12,
+          "s": 1,
+          "ss": 1
+        },
+        {
+          "period": "2026-07-01",
+          "sb": 10,
+          "b": 19,
+          "h": 13,
+          "s": 1,
+          "ss": 1
+        },
+        {
+          "period": "2026-06-01",
+          "sb": 10,
+          "b": 17,
+          "h": 13,
+          "s": 1,
+          "ss": 1
+        }
+      ],
       "earnings": [
         {
           "period": "2026-06-30",
@@ -15808,15 +16125,27 @@
           "hour": ""
         }
       ],
-      "yearHigh": 163.54,
-      "yearLow": 161.31,
-      "priceAvg50": 163.54,
-      "priceAvg200": 163.54,
+      "pe": 0,
+      "eps": 6.7001,
+      "epsTTM": 7.7716,
+      "revenuePerShare": 86.5022,
+      "revenueGrowthYoY": 9.62,
+      "earningsNonGaap": 7.7716,
+      "nonGaapEPS": 7.7716,
+      "roe": 12.68,
+      "beta": 0.18617925,
+      "yearHigh": 176.41,
+      "yearLow": 110.39,
+      "priceAvg50": 0,
+      "priceAvg200": 0,
+      "grossMargin": 28.84,
+      "netMargin": 9.07,
+      "dividendYield": 0,
+      "volume": 15829460,
       "targetAvg": 170.90909,
       "targetHigh": 200.0,
       "targetLow": 142.0,
       "targetMedian": 170.0,
-      "beta": 0.175,
       "history": [
         {
           "date": "2026-08-07",
@@ -16948,46 +17277,6 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/WMT.png",
       "ipo": "1972-08-25",
-      "strongBuy": 12,
-      "buy": 30,
-      "hold": 6,
-      "sell": 0,
-      "strongSell": 0,
-      "consensus": "Strong Buy",
-      "recTrend": [
-        {
-          "period": "2026-09-01",
-          "sb": 12,
-          "b": 30,
-          "h": 6,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-08-01",
-          "sb": 14,
-          "b": 29,
-          "h": 5,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-07-01",
-          "sb": 14,
-          "b": 29,
-          "h": 5,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-06-01",
-          "sb": 14,
-          "b": 29,
-          "h": 5,
-          "s": 0,
-          "ss": 0
-        }
-      ],
       "earnings": [
         {
           "period": "2026-09-30",
@@ -22595,6 +22884,46 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/LYFT.png",
       "ipo": "2019-03-29",
+      "strongBuy": 6,
+      "buy": 17,
+      "hold": 31,
+      "sell": 1,
+      "strongSell": 1,
+      "consensus": "Sell",
+      "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 6,
+          "b": 17,
+          "h": 31,
+          "s": 1,
+          "ss": 1
+        },
+        {
+          "period": "2026-08-01",
+          "sb": 6,
+          "b": 16,
+          "h": 32,
+          "s": 1,
+          "ss": 1
+        },
+        {
+          "period": "2026-07-01",
+          "sb": 6,
+          "b": 16,
+          "h": 32,
+          "s": 1,
+          "ss": 1
+        },
+        {
+          "period": "2026-06-01",
+          "sb": 6,
+          "b": 14,
+          "h": 33,
+          "s": 1,
+          "ss": 1
+        }
+      ],
       "earnings": [
         {
           "period": "2026-06-30",
@@ -23162,10 +23491,10 @@
       "netMargin": -4.17,
       "dividendYield": 0,
       "volume": 36529720,
-      "targetAvg": 6.4010696,
-      "targetHigh": 10.118449,
-      "targetLow": 4.0159526,
-      "targetMedian": 6.0237794,
+      "targetAvg": 6.4011655,
+      "targetHigh": 10.118601,
+      "targetLow": 4.0160127,
+      "targetMedian": 6.0238695,
       "history": [
         {
           "date": "2026-08-07",
@@ -23576,15 +23905,27 @@
           "hour": "bmo"
         }
       ],
-      "yearHigh": 2.17,
-      "yearLow": 2.0201,
-      "priceAvg50": 2.09,
-      "priceAvg200": 2.09,
+      "pe": 0,
+      "eps": -1.4229,
+      "epsTTM": -1.2492,
+      "revenuePerShare": 0.5348,
+      "revenueGrowthYoY": 10.59,
+      "earningsNonGaap": -1.2492,
+      "nonGaapEPS": -1.2492,
+      "roe": -176.19,
+      "beta": 2.0900416,
+      "yearHigh": 4.58,
+      "yearLow": 1.7,
+      "priceAvg50": 0,
+      "priceAvg200": 0,
+      "grossMargin": -18.55,
+      "netMargin": -220.59,
+      "dividendYield": 0,
+      "volume": 50961940,
       "targetAvg": 3.55312,
       "targetHigh": 7.0,
       "targetLow": 0.75,
       "targetMedian": 3.5,
-      "beta": 2.222,
       "history": [
         {
           "date": "2026-08-07",
