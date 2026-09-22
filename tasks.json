@@ -1,6 +1,34 @@
 {
   "tasks": [
     {
+      "id": "cc-webhook-url-desktop",
+      "priority": "high",
+      "title": "Copy Command Center chat webhook URL (desktop)",
+      "subtitle": "Phone can\u2019t open \u201cWhen a webhook fires\u201d \u2014 do this on Mac/PC for instant chat wake",
+      "steps": [
+        "On a computer, open the Grok Bot app (not Google/Safari search \u2014 grokbot:// links are in-app only)",
+        "Open Chief of Staff chat \u2192 click the name in the header \u2192 Routines \u2192 Command Center chat",
+        "Click When a webhook fires",
+        "Copy Webhook URL \u2014 must start with https:// and must NOT be huggingface.co, github.io, or grokbot://",
+        "Tell Chief of Staff you have it (or paste into the secure field when asked) so it can be set as GROK_WEBHOOK_URL on the Space",
+        "Until then: hard-refresh https://simzy420.github.io/command-center/ and use Chat \u2192 Chief of Staff (replies via 5-minute poll backup)"
+      ],
+      "links": [
+        {
+          "label": "Command Center (phone)",
+          "url": "https://simzy420.github.io/command-center/"
+        },
+        {
+          "label": "HF chat bridge Space settings",
+          "url": "https://huggingface.co/spaces/Simzy/command-center-chat/settings"
+        },
+        {
+          "label": "Tasks dashboard",
+          "url": "https://simzy420.github.io/big-brain-ape-dashboard/tasks.html"
+        }
+      ]
+    },
+    {
       "id": "gmail-identity-filters",
       "priority": "medium",
       "title": "Create Gmail filters for Identity labels",
