@@ -1,6 +1,6 @@
 {
-  "timestamp": 1790111308,
-  "generatedAt": "2026-09-22 21:08 UTC",
+  "timestamp": 1790112149,
+  "generatedAt": "2026-09-22 21:22 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -435,7 +435,7 @@
         },
         {
           "date": "2026-09-22",
-          "o": 226.85,
+          "o": 226.91,
           "h": 229.98,
           "l": 226.5,
           "c": 228.87,
@@ -1748,7 +1748,7 @@
         },
         {
           "date": "2026-09-22",
-          "o": 507.32,
+          "o": 507.52,
           "h": 508.5,
           "l": 493.65,
           "c": 498.0,
@@ -2610,7 +2610,7 @@
         },
         {
           "date": "2026-09-22",
-          "o": 731.4,
+          "o": 731.47,
           "h": 757.27,
           "l": 730.0,
           "c": 736.59,
@@ -3933,7 +3933,7 @@
         },
         {
           "date": "2026-09-22",
-          "o": 73.69,
+          "o": 73.75,
           "h": 73.76,
           "l": 71.58,
           "c": 72.16,
@@ -4374,7 +4374,7 @@
         },
         {
           "date": "2026-09-22",
-          "o": 185.12,
+          "o": 185.09,
           "h": 185.54,
           "l": 182.03,
           "c": 184.99,
@@ -5660,7 +5660,7 @@
         },
         {
           "date": "2026-09-22",
-          "o": 167.54,
+          "o": 167.49,
           "h": 171.17,
           "l": 167.25,
           "c": 167.33,
@@ -6208,7 +6208,7 @@
         },
         {
           "date": "2026-09-22",
-          "o": 740.98,
+          "o": 741.01,
           "h": 748.35,
           "l": 741.0,
           "c": 747.46,
@@ -8242,6 +8242,40 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/DIS.png",
       "ipo": "1957-11-12",
+      "earnings": [
+        {
+          "period": "2026-06-30",
+          "quarter": 3,
+          "estimate": 1.8763,
+          "actual": 2.06,
+          "surprise": 0.1837,
+          "surprisePct": 9.7905
+        },
+        {
+          "period": "2026-03-31",
+          "quarter": 2,
+          "estimate": 1.5042,
+          "actual": 1.57,
+          "surprise": 0.0658,
+          "surprisePct": 4.3744
+        },
+        {
+          "period": "2025-12-31",
+          "quarter": 1,
+          "estimate": 1.5862,
+          "actual": 1.63,
+          "surprise": 0.0438,
+          "surprisePct": 2.7613
+        },
+        {
+          "period": "2025-09-30",
+          "quarter": 4,
+          "estimate": 1.0556,
+          "actual": 1.11,
+          "surprise": 0.0544,
+          "surprisePct": 5.1535
+        }
+      ],
       "earningsHistory": [
         {
           "quarter": 2,
@@ -8304,7 +8338,29 @@
           "revenueActual": 23650000000.0
         }
       ],
-      "upcomingEarnings": [],
+      "upcomingEarnings": [
+        {
+          "date": "2027-05-04",
+          "quarter": 2,
+          "epsEstimate": 1.8333,
+          "revenueEstimate": 27266423085,
+          "hour": ""
+        },
+        {
+          "date": "2027-02-01",
+          "quarter": 1,
+          "epsEstimate": 1.9184,
+          "revenueEstimate": 27818819021,
+          "hour": ""
+        },
+        {
+          "date": "2026-11-11",
+          "quarter": 4,
+          "epsEstimate": 1.6857,
+          "revenueEstimate": 25390695191,
+          "hour": "amc"
+        }
+      ],
       "pe": 0,
       "eps": 6.8493,
       "epsTTM": 4.8475,
@@ -8587,6 +8643,80 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/KO.png",
       "ipo": "1950-01-26",
+      "strongBuy": 8,
+      "buy": 19,
+      "hold": 8,
+      "sell": 0,
+      "strongSell": 0,
+      "consensus": "Strong Buy",
+      "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 8,
+          "b": 19,
+          "h": 8,
+          "s": 0,
+          "ss": 0
+        },
+        {
+          "period": "2026-08-01",
+          "sb": 8,
+          "b": 19,
+          "h": 8,
+          "s": 0,
+          "ss": 0
+        },
+        {
+          "period": "2026-07-01",
+          "sb": 9,
+          "b": 20,
+          "h": 6,
+          "s": 0,
+          "ss": 0
+        },
+        {
+          "period": "2026-06-01",
+          "sb": 8,
+          "b": 20,
+          "h": 6,
+          "s": 0,
+          "ss": 0
+        }
+      ],
+      "earnings": [
+        {
+          "period": "2026-06-30",
+          "quarter": 2,
+          "estimate": 0.9603,
+          "actual": 0.97,
+          "surprise": 0.0097,
+          "surprisePct": 1.0101
+        },
+        {
+          "period": "2026-03-31",
+          "quarter": 1,
+          "estimate": 0.8358,
+          "actual": 0.86,
+          "surprise": 0.0242,
+          "surprisePct": 2.8954
+        },
+        {
+          "period": "2025-12-31",
+          "quarter": 4,
+          "estimate": 0.5803,
+          "actual": 0.58,
+          "surprise": -0.0003,
+          "surprisePct": -0.0517
+        },
+        {
+          "period": "2025-09-30",
+          "quarter": 3,
+          "estimate": 0.8011,
+          "actual": 0.82,
+          "surprise": 0.0189,
+          "surprisePct": 2.3593
+        }
+      ],
       "earningsHistory": [
         {
           "quarter": 2,
@@ -14106,7 +14236,7 @@
         },
         {
           "date": "2026-09-22",
-          "o": 1032.85,
+          "o": 1033.28,
           "h": 1097.25,
           "l": 1030.02,
           "c": 1096.16,
@@ -14537,7 +14667,7 @@
         },
         {
           "date": "2026-09-22",
-          "o": 1757.51,
+          "o": 1758.55,
           "h": 1909.48,
           "l": 1758.14,
           "c": 1887.04,
@@ -16771,40 +16901,6 @@
           "ss": 0
         }
       ],
-      "earnings": [
-        {
-          "period": "2026-06-30",
-          "quarter": 2,
-          "estimate": -0.3139,
-          "actual": -0.76,
-          "surprise": -0.4461,
-          "surprisePct": -142.1153
-        },
-        {
-          "period": "2026-03-31",
-          "quarter": 1,
-          "estimate": -0.8587,
-          "actual": -0.2,
-          "surprise": 0.6587,
-          "surprisePct": 76.709
-        },
-        {
-          "period": "2025-12-31",
-          "quarter": 4,
-          "estimate": -0.4013,
-          "actual": -1.12,
-          "surprise": -0.7187,
-          "surprisePct": -179.0929
-        },
-        {
-          "period": "2025-09-30",
-          "quarter": 3,
-          "estimate": -4.73,
-          "actual": -7.47,
-          "surprise": -2.74,
-          "surprisePct": -57.9281
-        }
-      ],
       "earningsHistory": [
         {
           "quarter": 1,
@@ -16867,29 +16963,7 @@
           "revenueActual": 19496000000.0
         }
       ],
-      "upcomingEarnings": [
-        {
-          "date": "2027-04-20",
-          "quarter": 1,
-          "epsEstimate": 0.5747,
-          "revenueEstimate": 27743203779,
-          "hour": ""
-        },
-        {
-          "date": "2027-01-25",
-          "quarter": 4,
-          "epsEstimate": 0.0362,
-          "revenueEstimate": 27119131877,
-          "hour": "amc"
-        },
-        {
-          "date": "2026-10-27",
-          "quarter": 3,
-          "epsEstimate": -0.1525,
-          "revenueEstimate": 25679157990,
-          "hour": "bmo"
-        }
-      ],
+      "upcomingEarnings": [],
       "pe": 0,
       "eps": 2.9319,
       "epsTTM": 2.9605999999999986,
@@ -17172,80 +17246,6 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/WMT.png",
       "ipo": "1972-08-25",
-      "strongBuy": 12,
-      "buy": 30,
-      "hold": 6,
-      "sell": 0,
-      "strongSell": 0,
-      "consensus": "Strong Buy",
-      "recTrend": [
-        {
-          "period": "2026-09-01",
-          "sb": 12,
-          "b": 30,
-          "h": 6,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-08-01",
-          "sb": 14,
-          "b": 29,
-          "h": 5,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-07-01",
-          "sb": 14,
-          "b": 29,
-          "h": 5,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-06-01",
-          "sb": 14,
-          "b": 29,
-          "h": 5,
-          "s": 0,
-          "ss": 0
-        }
-      ],
-      "earnings": [
-        {
-          "period": "2026-09-30",
-          "quarter": 2,
-          "estimate": 0.7487,
-          "actual": 0.81,
-          "surprise": 0.0613,
-          "surprisePct": 8.1875
-        },
-        {
-          "period": "2026-06-30",
-          "quarter": 1,
-          "estimate": 0.6638,
-          "actual": 0.66,
-          "surprise": -0.0038,
-          "surprisePct": -0.5725
-        },
-        {
-          "period": "2026-03-31",
-          "quarter": 4,
-          "estimate": 0.7334,
-          "actual": 0.74,
-          "surprise": 0.0066,
-          "surprisePct": 0.8999
-        },
-        {
-          "period": "2025-12-31",
-          "quarter": 3,
-          "estimate": 0.6068,
-          "actual": 0.62,
-          "surprise": 0.0132,
-          "surprisePct": 2.1753
-        }
-      ],
       "earningsHistory": [
         {
           "quarter": 2,
@@ -19748,7 +19748,7 @@
         },
         {
           "date": "2026-09-22",
-          "o": 144.55,
+          "o": 144.28,
           "h": 150.18,
           "l": 144.25,
           "c": 147.74,
@@ -24108,7 +24108,7 @@
         },
         {
           "date": "2026-09-22",
-          "o": 2.1,
+          "o": 2.12,
           "h": 2.13,
           "l": 2.07,
           "c": 2.11,
@@ -25254,7 +25254,7 @@
         },
         {
           "date": "2026-09-22",
-          "o": 81.89,
+          "o": 81.9,
           "h": 81.93,
           "l": 81.54,
           "c": 81.75,
