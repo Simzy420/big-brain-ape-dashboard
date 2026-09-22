@@ -1,5 +1,5 @@
 {
-  "date": "September 22, 2026 01:50 UTC",
+  "date": "September 22, 2026 01:55 UTC",
   "assets": {
     "S&P 500": {
       "price": 7764.7,
@@ -86,26 +86,26 @@
       ]
     },
     "BTC": {
-      "price": 85530.8,
-      "change_pct": 5.28,
+      "price": 85638.7,
+      "change_pct": 5.86,
       "support": 74909.4,
       "resistance": 87385.1
     },
     "ETH": {
-      "price": 2743.72,
-      "change_pct": 2.66,
+      "price": 2748.89,
+      "change_pct": 3.67,
       "support": 2355.12,
       "resistance": 2806.76
     },
     "SOL": {
-      "price": 117.37,
-      "change_pct": 5.06,
+      "price": 117.6,
+      "change_pct": 5.96,
       "support": 93.22,
       "resistance": 119.99
     }
   },
-  "risk_score": 73,
-  "risk_bias": "STRONG RISK-ON",
+  "risk_score": 65,
+  "risk_bias": "RISK-ON",
   "fear_greed": {
     "value": 78,
     "classification": "Extreme Greed",
@@ -157,22 +157,22 @@
       "color": "blue"
     },
     "dxy": {
-      "value": "100.4",
+      "value": "100.5",
       "label": "DXY",
       "color": "red"
     },
     "oil": {
-      "value": "$92.92",
+      "value": "$92.91",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4393",
+      "value": "$4388",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$66.88",
+      "value": "$66.79",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -189,40 +189,40 @@
       "type": "caution"
     },
     {
+      "label": "CAUTION",
+      "text": "Dollar strengthening \u2014 headwind",
+      "type": "caution"
+    },
+    {
       "label": "BULLISH",
       "text": "S&P 500 up 1.5%",
       "type": "bullish"
     },
     {
       "label": "BULLISH",
-      "text": "BTC up 5.3% \u2014 momentum",
+      "text": "BTC up 5.9% \u2014 momentum",
       "type": "bullish"
     },
     {
       "label": "BULLISH",
       "text": "Yields falling \u2014 risk on",
       "type": "bullish"
-    },
-    {
-      "label": "BULLISH",
-      "text": "NVDA up 2.3% \u2014 AI demand momentum",
-      "type": "bullish"
     }
   ],
-  "btc_funding": 8.53e-05,
+  "btc_funding": 8.593e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 60.51,
+    "daily_inflow": 60.49,
     "daily_avg": 38.39,
     "daily_pct": 57.6,
-    "weekly_inflow": 268.75,
+    "weekly_inflow": 268.74,
     "weekly_avg": 223.89,
     "weekly_pct": 20.0,
-    "monthly_inflow": 959.55,
+    "monthly_inflow": 959.53,
     "monthly_avg": 844.98,
     "monthly_pct": 13.6,
-    "large_tx_count": 651921
+    "large_tx_count": 656866
   },
   "history": {
     "vix": [
@@ -293,7 +293,7 @@
       102.43,
       101.91,
       100.3,
-      92.92
+      92.91
     ],
     "gold": [
       4680.6,
@@ -316,7 +316,7 @@
       4387.5,
       4399.7,
       4424.9,
-      4393.2
+      4387.5
     ],
     "silver": [
       69.47,
@@ -339,7 +339,7 @@
       64.29,
       65.47,
       66.56,
-      66.88
+      66.79
     ],
     "dxy": [
       98.8,
@@ -362,7 +362,7 @@
       100.31,
       100.22,
       100.22,
-      100.42
+      100.45
     ],
     "sp500": [
       7652.86,
