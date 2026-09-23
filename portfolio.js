@@ -15,7 +15,7 @@
     status: "all",
     platform: "all",
     starredOnly: false,
-    filtersOpen: true,
+    filtersOpen: window.matchMedia("(min-width: 840px)").matches,
     sheetOpen: false
   };
 
