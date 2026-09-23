@@ -1,9 +1,9 @@
 {
-  "date": "September 23, 2026 18:10 UTC",
+  "date": "September 23, 2026 18:15 UTC",
   "assets": {
     "S&P 500": {
-      "price": 7714.49,
-      "change_pct": -0.65,
+      "price": 7714.87,
+      "change_pct": -0.64,
       "support": 7507.77,
       "resistance": 7779.22,
       "history": [
@@ -27,12 +27,12 @@
         7637.76,
         7650.5,
         7764.7,
-        7714.47
+        7714.87
       ]
     },
     "NASDAQ": {
-      "price": 26944.46,
-      "change_pct": -0.65,
+      "price": 26951.62,
+      "change_pct": -0.63,
       "support": 25802.96,
       "resistance": 27217.33,
       "history": [
@@ -56,12 +56,12 @@
         26418.3,
         26522.54,
         27122.09,
-        26944.46
+        26951.41
       ]
     },
     "Dow Jones": {
-      "price": 51607.71,
-      "change_pct": -0.85,
+      "price": 51597.29,
+      "change_pct": -0.87,
       "support": 51186.67,
       "resistance": 53819.65,
       "history": [
@@ -85,24 +85,24 @@
         51778.04,
         51682.64,
         52048.83,
-        51607.71
+        51598.41
       ]
     },
     "BTC": {
-      "price": 84196.7,
-      "change_pct": -2.61,
+      "price": 84191.1,
+      "change_pct": -2.64,
       "support": 74909.4,
       "resistance": 87385.1
     },
     "ETH": {
-      "price": 2664.31,
-      "change_pct": -3.06,
+      "price": 2662.49,
+      "change_pct": -3.24,
       "support": 2355.12,
       "resistance": 2806.76
     },
     "SOL": {
-      "price": 114.2,
-      "change_pct": -3.1,
+      "price": 114.16,
+      "change_pct": -3.21,
       "support": 94.82,
       "resistance": 119.99
     }
@@ -150,7 +150,7 @@
   "whale_flow": "NEUTRAL",
   "metrics": {
     "vix": {
-      "value": "15.1",
+      "value": "15.0",
       "label": "VIX",
       "color": "green"
     },
@@ -160,22 +160,22 @@
       "color": "blue"
     },
     "dxy": {
-      "value": "101.0",
+      "value": "101.1",
       "label": "DXY",
       "color": "red"
     },
     "oil": {
-      "value": "$91.88",
+      "value": "$91.90",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4330",
+      "value": "$4326",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$65.12",
+      "value": "$65.07",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -193,7 +193,7 @@
     },
     {
       "label": "CAUTION",
-      "text": "S&P 500 down -0.7%",
+      "text": "S&P 500 down -0.6%",
       "type": "caution"
     },
     {
@@ -212,20 +212,20 @@
       "type": "neutral"
     }
   ],
-  "btc_funding": -7.57e-06,
+  "btc_funding": -8.72e-06,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 45.96,
-    "daily_avg": 38.13,
-    "daily_pct": 20.5,
-    "weekly_inflow": 266.92,
-    "weekly_avg": 218.67,
-    "weekly_pct": 22.1,
-    "monthly_inflow": 937.16,
-    "monthly_avg": 840.29,
+    "daily_inflow": 45.9,
+    "daily_avg": 38.12,
+    "daily_pct": 20.4,
+    "weekly_inflow": 266.86,
+    "weekly_avg": 218.66,
+    "weekly_pct": 22.0,
+    "monthly_inflow": 937.1,
+    "monthly_avg": 840.27,
     "monthly_pct": 11.5,
-    "large_tx_count": 580512
+    "large_tx_count": 584684
   },
   "history": {
     "vix": [
@@ -250,7 +250,7 @@
       15.44,
       14.81,
       14.87,
-      15.1
+      15.03
     ],
     "yield_10y": [
       4.7,
@@ -297,7 +297,7 @@
       100.3,
       95.78,
       94.59,
-      91.88
+      91.9
     ],
     "gold": [
       4697.8,
@@ -321,7 +321,7 @@
       4424.9,
       4383.9,
       4376.4,
-      4330.1
+      4326.3
     ],
     "silver": [
       68.54,
@@ -345,7 +345,7 @@
       66.56,
       65.82,
       65.93,
-      65.12
+      65.07
     ],
     "dxy": [
       99.0,
@@ -368,7 +368,7 @@
       100.22,
       100.22,
       100.43,
-      101.04
+      101.07
     ],
     "sp500": [
       7652.86,
@@ -391,7 +391,7 @@
       7637.76,
       7650.5,
       7764.7,
-      7714.47
+      7714.87
     ],
     "nasdaq": [
       25980.19,
@@ -414,7 +414,7 @@
       26418.3,
       26522.54,
       27122.09,
-      26944.46
+      26951.41
     ]
   },
   "econ_events": [
