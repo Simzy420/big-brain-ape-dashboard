@@ -1,6 +1,35 @@
 {
   "tasks": [
     {
+      "id": "sniper-paper-drill-learn",
+      "priority": "high",
+      "title": "Paper drill in Telegram (feed /learn poll)",
+      "subtitle": "Do now \u00b7 CoS watching journal (baseline 18 rows / 0 realised) \u00b7 reply done when finished",
+      "steps": [
+        "Open Big Brain Ape Bot in Telegram (link below)",
+        "Send: /start",
+        "Send: /hire",
+        "Send: /watch",
+        "Send: shield check SLEEPAPE",
+        "Send: snipe SLEEPAPE",
+        "Send: shield check RUGPUP (should get blocked \u2014 good)",
+        "Send: /paper",
+        "Send: /learn",
+        "Optional but useful: close SLEEPAPE so Ledger can record a realised row",
+        "Reply done in Chief of Staff chat \u2014 CoS will recheck /api/learn vs the 18/0 baseline"
+      ],
+      "links": [
+        {
+          "label": "Open @Big_Brain_Ape_Bot",
+          "url": "https://t.me/Big_Brain_Ape_Bot"
+        },
+        {
+          "label": "Command Center",
+          "url": "https://simzy420.github.io/command-center/"
+        }
+      ]
+    },
+    {
       "id": "wan22-templates-netlify",
       "priority": "high",
       "title": "Deploy Wan 2.2 Templates UI on Netlify",
@@ -36,35 +65,6 @@
         {
           "label": "Your Extend Space (unchanged)",
           "url": "https://simzy-wan22-extend.hf.space"
-        }
-      ]
-    },
-    {
-      "id": "sniper-paper-drill-learn",
-      "priority": "high",
-      "title": "Paper drill in Telegram (feed /learn poll)",
-      "subtitle": "iPhone \u00b7 ~2 min \u00b7 fills journal so 5pm Boise digest has rows",
-      "steps": [
-        "Open Big Brain Ape Bot in Telegram (link below)",
-        "Send: /start",
-        "Send: /hire",
-        "Send: /watch",
-        "Send: shield check SLEEPAPE",
-        "Send: snipe SLEEPAPE",
-        "Send: shield check RUGPUP (should get blocked \u2014 good)",
-        "Send: /paper",
-        "Send: /learn",
-        "Optional: close SLEEPAPE (flat paper exit; PnL stays 0 until marks exist)",
-        "Reply here or in Command Center when done \u2014 Chief of Staff will confirm the journal poll sees rows"
-      ],
-      "links": [
-        {
-          "label": "Open @Big_Brain_Ape_Bot",
-          "url": "https://t.me/Big_Brain_Ape_Bot"
-        },
-        {
-          "label": "Command Center",
-          "url": "https://simzy420.github.io/command-center/"
         }
       ]
     },
