@@ -289,7 +289,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 /* ASK AI — one control on every tab, sitting above the bottom nav */
 .bba-ask-inline{display:flex;align-items:center;justify-content:center;width:calc(100% - 32px);margin:0 16px 12px;min-height:48px;padding:12px 14px;border-radius:12px;border:1px solid rgba(88,166,255,.45);background:rgba(88,166,255,.12);color:var(--blue);font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;touch-action:manipulation}
 .bba-ask-inline:active{transform:scale(.98)}
-.bba-chat-fab{position:fixed;right:12px;bottom:calc(var(--bba-nav-h, 68px) + 10px);z-index:10040;min-height:52px;height:52px;padding:0 16px 0 12px;border-radius:999px;border:none;background:linear-gradient(135deg,#58a6ff,#3fb950);color:#0d1117;font-size:16px;font-weight:800;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 4px 18px rgba(88,166,255,.45);touch-action:manipulation}
+.bba-chat-fab{position:fixed;right:max(12px, calc(50vw - 250px + 12px));bottom:calc(var(--bba-nav-h, 68px) + 10px);z-index:10040;min-height:52px;height:52px;padding:0 16px 0 12px;border-radius:999px;border:none;background:linear-gradient(135deg,#58a6ff,#3fb950);color:#0d1117;font-size:16px;font-weight:800;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 4px 18px rgba(88,166,255,.45);touch-action:manipulation}
 .bba-chat-fab:active{transform:scale(.96)}
 .bba-chat-fab.is-hidden{display:none}
 .bba-chat-fab-mark{font-size:20px;line-height:1}
