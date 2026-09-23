@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="BBA Portfolio">
+<title>Big Brain Ape — Portfolio</title>
+<meta name="description" content="Phone-first catalog of Casey's Big Brain Ape products: live apps, older standalones, docs, design, and infrastructure. Star what belongs in the Command Center.">
+<link rel="canonical" href="https://simzy420.github.io/big-brain-ape-dashboard/portfolio.html?v=1">
+<link rel="stylesheet" href="portfolio.css?v=1">
+</head>
+<body>
+  <!-- Open this page as portfolio.html?v=1 so GitHub Pages does not serve a stale copy. -->
+  <header class="hero wrap">
+    <p class="kicker">Big Brain Ape</p>
+    <h1>Portfolio</h1>
+    <p class="lede">Everything built so far — old standalones and newer blends — in one place. Star the pieces that belong in the next Command Center.</p>
+    <p class="open-as">Open as <code>portfolio.html?v=1</code>. <span id="asOf"></span></p>
+  </header>
+
+  <div class="top">
+    <div class="wrap">
+      <div class="search-row">
+        <label class="sr" for="q">Search the catalog</label>
+        <input id="q" type="search" placeholder="Search name, note, platform…" enterkeyhint="search" autocomplete="off">
+        <button type="button" class="filter-toggle" id="filterToggle" aria-expanded="false" aria-controls="filters">Filters</button>
+      </div>
+      <nav class="jumps" id="jumps" aria-label="Sections"></nav>
+      <div class="filters" id="filters" hidden></div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <div class="count-line" id="countLine" aria-live="polite"><span>Loading catalog…</span></div>
+    <div class="catalog" id="catalog"></div>
+    <footer class="footer">
+      <p>Merged from the GitHub, Hugging Face, Marketing, and Railway inventories, plus Virtuals #96114 and Mintlify. No secrets on this page. If a live URL was not in those notes, the card says so.</p>
+      <p>
+        <a href="index.html">Site</a> ·
+        <a href="app35.html?v=26">App</a> ·
+        <a href="tasks.html">Tasks</a> ·
+        <a href="swarm.html">Swarm</a>
+      </p>
+    </footer>
+  </main>
+
+  <div class="sheet" id="sheet">
+    <button type="button" class="sheet-toggle" id="sheetToggle" aria-expanded="false" aria-controls="sheetBody">
+      <strong id="sheetCount">0 selected</strong>
+      <span>Selected for Command Center</span>
+    </button>
+    <div class="sheet-body" id="sheetBody" hidden>
+      <ul class="sheet-list" id="sheetList"></ul>
+      <div class="sheet-actions">
+        <button type="button" class="pri" id="copyBtn">Copy list</button>
+        <button type="button" id="clearBtn">Clear</button>
+      </div>
+      <p class="copy-msg" id="copyMsg" role="status"></p>
+    </div>
+  </div>
+
+  <noscript><p class="wrap empty">This catalog needs JavaScript to search, filter, and remember stars.</p></noscript>
+  <script src="portfolio.js?v=1" defer></script>
+</body>
+</html>
