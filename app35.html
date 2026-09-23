@@ -295,7 +295,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .bba-chat-fab-mark{font-size:20px;line-height:1}
 .bba-chat-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:10045;display:none}
 .bba-chat-overlay.open{display:block}
-.bba-chat-panel{position:fixed;left:0;right:0;max-width:500px;margin:0 auto;bottom:var(--bba-panel-bottom, var(--bba-nav-h, 68px));height:min(72dvh, calc(100dvh - var(--bba-panel-bottom, 68px) - 8px));max-height:calc(100dvh - var(--bba-panel-bottom, 68px) - 8px);background:var(--bg);border:1px solid var(--border);border-bottom:none;border-radius:16px 16px 0 0;z-index:10050;display:none;flex-direction:column;box-shadow:0 -8px 30px rgba(0,0,0,.55);overscroll-behavior:contain}
+.bba-chat-panel{position:fixed;left:0;right:0;max-width:500px;margin:0 auto;bottom:var(--bba-panel-bottom, var(--bba-nav-h, 68px));height:70vh;height:min(72dvh, calc(100dvh - var(--bba-panel-bottom, 68px) - 8px));max-height:calc(100vh - var(--bba-panel-bottom, 68px) - 8px);background:var(--bg);border:1px solid var(--border);border-bottom:none;border-radius:16px 16px 0 0;z-index:10050;display:none;flex-direction:column;box-shadow:0 -8px 30px rgba(0,0,0,.55);overscroll-behavior:contain}
 .bba-chat-panel.open{display:flex}
 .bba-chat-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 12px 12px 16px;border-bottom:1px solid var(--border)}
 .bba-chat-header h3{font-size:18px;font-weight:800;color:var(--blue)}
@@ -1585,6 +1585,12 @@ var rangePos2=range2>0?((d.price-yearLow2)/range2*100):50;
 var trendVs50_2=d.price>ema50_2?'uptrend':'range-bound';
 var aboveYearLow2=d.price>yearLow2*1.1?'well above':'near';
 var cleanTrend2=d.price>ema20_2&&rsiVal2>50?'Clean daily uptrend — momentum supportive.':'Not a clean daily uptrend — wait for confirmation.';
+bbaChatSetContext({
+symbol:sym,
+name:d.companyName||d.name||sym,
+summary:(d.companyName||d.name||sym)+' ('+sym+') at $'+fmtNum(d.price)+', Big Brain Ape '+apeRating.label+' '+apeScore.toFixed(1)+'/10, analyst consensus '+rating.label+(d.targetAvg?(', avg target $'+fmtNum(d.targetAvg)):'')+'.',
+facts:{price:d.price||0,changePct:d.changePercentage,apeLabel:apeRating.label,apeScore:apeScore,consensus:rating.label,target:d.targetAvg||0,pe:d.pe||0,rsi:rsiVal2,ema50:ema50_2,ema20:ema20_2,yearHigh:yearHigh2,yearLow:yearLow2}
+});
 
 // (Interested in TICKER section moved below — now sits just above Recent News)
 
@@ -2137,7 +2143,8 @@ var chg24=m.price_change_percentage_24h||0;
 bbaChatSetContext({
 symbol:symbol,
 name:data.name||symbol,
-summary:(data.name||symbol)+' ('+symbol+') at $'+fmtCrypto(m.current_price.usd)+', Big Brain Ape '+rating.label+' '+cryptoScore.toFixed(1)+'/10, 24h '+(chg24>=0?'+':'')+fmtNum(chg24)+'%.'
+summary:(data.name||symbol)+' ('+symbol+') at $'+fmtCrypto(m.current_price.usd)+', Big Brain Ape '+rating.label+' '+cryptoScore.toFixed(1)+'/10, 24h '+(chg24>=0?'+':'')+fmtNum(chg24)+'%.',
+facts:{price:m.current_price&&m.current_price.usd,chg24:chg24,apeLabel:rating.label,apeScore:cryptoScore,ath:m.ath&&m.ath.usd,fromAth:m.ath_change_percentage&&m.ath_change_percentage.usd,high24:m.high_24h&&m.high_24h.usd,low24:m.low_24h&&m.low_24h.usd,mcapRank:m.market_cap_rank||0}
 });
 
 var html='';
@@ -5290,7 +5297,7 @@ function bbaChatLayout(){
     var vv=window.visualViewport;
     kb=Math.max(0, Math.round(window.innerHeight-vv.height-vv.offsetTop));
   }
-  var bottom=kb>24?kb:navH;
+  var bottom=kb>120?kb:navH;
   var root=document.documentElement;
   root.style.setProperty('--bba-nav-h', navH+'px');
   root.style.setProperty('--bba-kb', kb+'px');
@@ -5375,6 +5382,82 @@ function bbaChatAskDifferent(){
   if(input) input.value=q;
   bbaChatSend();
 }
+function bbaChatMoney(n){
+  if(n==null||isNaN(n)||!n) return '';
+  if(typeof fmtCrypto==='function' && n<1000 && bbaChatContext.facts && bbaChatContext.facts.chg24!=null && !bbaChatContext.facts.rsi) return '$'+fmtCrypto(n);
+  return '$'+fmtNum(n);
+}
+function bbaChatTabHelp(tab){
+  var help={
+    Analyze:'Analyze is the home desk. Type a ticker or tap NVDA, BTC, TSLA, ETH, AAPL, or SOL. The six tiles are SPY, QQQ, DIA, BTC, ETH, and SOL. Tapes across the top are stocks, crypto, and XYZ perps. The four squares are risk appetite, sentiment, tech, and put/call. You get 5 free analyses a day, then $0.25.',
+    Snapshot:'Snapshot is the daily market picture, not a single-ticker rating. Read the levels, then ask me what one of them means.',
+    Briefing:'Briefing is today\'s written note. Read it top to bottom. Ask me to translate any line into plain English.',
+    Trading:'Trading is the desk: positions, the bot tracker, and stock picks. Live, paused, and off are status only. This tab does not send an order.',
+    Crypto:'Crypto is the hub: the sentiment gauge, BTC dominance, market-cap change, gainers versus losers, and funding. For a full coin rating, analyze BTC, ETH, or SOL from the Analyze tab.',
+    Portfolio:'Portfolio is the book saved on this phone. Add a holding and it prices it. Open the side menu and sign in if you want that book on another device.',
+    Pricing:'Pricing is 5 free analyses a day, then $0.25 each. Managed trading is $19.99 a month. The payment screen takes card, Cash App, USDC on Base, or Telegram Stars.',
+    Payment:'Payment is where you pay. Card goes through Stripe. Cash App is $BigBrainApe. USDC on Base uses the address on this screen. Stars are 25 for one analysis and 2000 for a month. After Cash App or crypto, message @BigBrain2Bot.'
+  };
+  return help[tab]||('You are on the '+tab+' screen. Ask me what a number means or how to move around the app.');
+}
+function bbaChatAltTake(){
+  var f=bbaChatContext.facts||{};
+  var sym=bbaChatContext.symbol||'this ticker';
+  var name=bbaChatContext.name&&bbaChatContext.name!==sym?bbaChatContext.name:sym;
+  var lines=[];
+  lines.push(name+(name!==sym?' ('+sym+')':'')+' — a different cut than the card on screen.');
+  if(f.apeLabel){
+    lines.push('The card says '+f.apeLabel+(f.apeScore!=null?' ('+Number(f.apeScore).toFixed(1)+'/10)':'')+'. That badge is mostly analyst consensus plus recent price. Here is the rest.');
+  }
+  if(f.price){
+    var px='Last price '+bbaChatMoney(f.price);
+    if(f.changePct!=null&&!isNaN(f.changePct)) px+=' ('+(Number(f.changePct)>=0?'+':'')+fmtNum(f.changePct)+'%).';
+    else if(f.chg24!=null&&!isNaN(f.chg24)) px+=' ('+(Number(f.chg24)>=0?'+':'')+fmtNum(f.chg24)+'% over 24h).';
+    else px+='.';
+    lines.push(px);
+  }
+  if(f.rsi!=null&&!isNaN(f.rsi)){
+    var rsiNote=f.rsi>=70?'stretched, so chasing is the risk':f.rsi<=30?'washed out, so a bounce is the trade':'mid-range, so momentum is not the story';
+    lines.push('RSI(14) is '+fmtNum(f.rsi)+' — '+rsiNote+'.');
+  }
+  if(f.ema50&&f.price){
+    var dist=(f.price-f.ema50)/f.ema50*100;
+    lines.push('50-day EMA is '+bbaChatMoney(f.ema50)+', and price is '+(dist>=0?'+':'')+fmtNum(dist)+'% from it. '+(Math.abs(dist)>8?'That is extended. A different entry is a pullback toward the 50-day, not the headline buy.':'Price is close to the 50-day, so the card and the trend mostly agree.'));
+  }
+  if(f.yearHigh&&f.yearLow) lines.push('52-week range is '+bbaChatMoney(f.yearLow)+' to '+bbaChatMoney(f.yearHigh)+'.');
+  if(f.target&&f.price){
+    var up=(f.target-f.price)/f.price*100;
+    lines.push('Analyst average target '+bbaChatMoney(f.target)+' is '+(up>=0?'+':'')+fmtNum(up)+'% from here'+(f.consensus?'. Consensus on the card is '+f.consensus+'.':'')+' Weigh that target against RSI and the 50-day, not the badge alone.');
+  }
+  if(f.pe) lines.push('P/E is '+fmtNum(f.pe)+'. The rating badge does not say whether that multiple is cheap.');
+  if(f.fromAth!=null&&!isNaN(f.fromAth)) lines.push('Distance from the all-time high is '+fmtNum(f.fromAth)+'%. 24h range '+bbaChatMoney(f.low24)+' – '+bbaChatMoney(f.high24)+'.');
+  if(f.mcapRank) lines.push('Market cap rank #'+f.mcapRank+'.');
+  lines.push('The card skips volume versus a normal day, the next earnings date, and whether the move is just the index. Ask me about any of those.');
+  return lines.join('\n');
+}
+function bbaChatAnswer(q){
+  var question=String(q||'').toLowerCase();
+  var tab=bbaChatContext.tab||'Analyze';
+  var on=bbaChatLookingAtTicker();
+  var facts=bbaChatContext.facts||null;
+  var hasFacts=!!(on&&facts&&(facts.price||facts.apeLabel));
+  var wantsMore=/different|more stuff|more info|extra|another|missing|deeper|alternate|angle|metric|doesn.?t have/.test(question);
+  var wantsHow=/how do i|how to|what is this|use this|what can you|help|what does|where do i|pricing|free|pay/.test(question);
+  if(hasFacts&&(wantsMore||/analys|rating|target|rsi|support|resistance|buy|sell|hold/.test(question))) return bbaChatAltTake();
+  if(on&&wantsMore&&!hasFacts) return (bbaChatContext.symbol||'That ticker')+' is still loading. Ask again in a second and I will use the card\'s numbers.';
+  if(!on&&wantsMore) return bbaChatTabHelp(tab)+'\n\nNo ticker is open. Run one from Analyze, then tap Ask for different analysis and I will use that card\'s numbers.';
+  if(wantsHow||!on) return bbaChatTabHelp(tab);
+  return hasFacts?bbaChatAltTake():bbaChatTabHelp(tab);
+}
+function bbaChatIsDeferral(text){
+  var t=String(text||'').toLowerCase();
+  if(!t) return true;
+  if(t.indexOf('telegram')>=0) return true;
+  if(t.indexOf('get back to you')>=0) return true;
+  if(t.indexOf('on it')>=0) return true;
+  if(t.indexOf('i\'ll review')>=0||t.indexOf('i will review')>=0) return true;
+  return false;
+}
 function bbaChatAddBubble(html,cls){
   var msgs=document.getElementById('bbaChatMessages');
   var d=document.createElement('div');
@@ -5387,28 +5470,26 @@ function bbaChatAddBubble(html,cls){
 function bbaChatStopPoll(){
   if(bbaChatPollTimer){clearInterval(bbaChatPollTimer);bbaChatPollTimer=null;}
 }
-function bbaChatFinish(thinkEl,html){
-  if(thinkEl&&thinkEl.parentNode) thinkEl.remove();
-  bbaChatAddBubble(html,'ape');
-  bbaChatStopPoll();
-  var sendBtn=document.getElementById('bbaChatSend');
-  if(sendBtn) sendBtn.disabled=false;
-}
 function bbaChatSend(){
   var input=document.getElementById('bbaChatInput');
   var sendBtn=document.getElementById('bbaChatSend');
-  if(!input||!sendBtn||sendBtn.disabled)return;
+  if(!input||!sendBtn)return;
   var text=input.value.trim();
   if(!text)return;
   input.value='';
-  sendBtn.disabled=true;
+  sendBtn.disabled=false;
   bbaChatAddBubble(bbaChatEscape(text),'user');
-  var think=bbaChatAddBubble('<span class="bba-chat-typing">●</span><span class="bba-chat-typing">●</span><span class="bba-chat-typing">●</span> The Ape is thinking','thinking');
+  bbaChatAddBubble(bbaChatEscape(bbaChatAnswer(text)).replace(/\n/g,'<br>'),'ape');
+  bbaChatPost(text);
+}
+function bbaChatPost(text){
+  var payload;
+  try{payload=bbaChatCompose(text);}catch(err){return;}
   bbaChatStopPoll();
   fetch(bbaChatURL+'/send',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({text:bbaChatCompose(text),user:'analysis-app'})
+    body:JSON.stringify({text:payload,user:'analysis-app'})
   }).then(function(r){
     if(!r.ok) throw new Error('HTTP '+r.status);
     return r.json();
@@ -5416,21 +5497,13 @@ function bbaChatSend(){
     var sent=(data&&data.message&&data.message.ts)||Math.floor(Date.now()/1000);
     bbaChatWaitSince=sent;
     bbaChatPollStarted=Date.now();
-    bbaChatPoll(think);
-    bbaChatPollTimer=setInterval(function(){bbaChatPoll(think);},4000);
-  }).catch(function(){
-    if(think&&think.parentNode) think.remove();
-    bbaChatAddBubble('The Ape is sleeping. Try again in a minute.','error');
-    sendBtn.disabled=false;
-  });
+    bbaChatPoll();
+    bbaChatPollTimer=setInterval(bbaChatPoll,4000);
+  }).catch(function(){});
 }
-function bbaChatPoll(thinkEl){
+function bbaChatPoll(){
   if(bbaChatPollStarted&&(Date.now()-bbaChatPollStarted>BBA_CHAT_WAIT_MS)){
-    if(thinkEl&&thinkEl.parentNode) thinkEl.remove();
-    bbaChatAddBubble('Still working on that. Ask again in a bit.','error');
     bbaChatStopPoll();
-    var sendBtn=document.getElementById('bbaChatSend');
-    if(sendBtn) sendBtn.disabled=false;
     return;
   }
   fetch(bbaChatURL+'/messages?since='+bbaChatWaitSince,{method:'GET'})
@@ -5442,11 +5515,12 @@ function bbaChatPoll(thinkEl){
     var msgs=(data&&data.messages)||[];
     for(var i=0;i<msgs.length;i++){
       var m=msgs[i];
-      if(m&&m.role==='agent'&&m.text&&m.ts>bbaChatWaitSince){
-        bbaChatWaitSince=m.ts;
-        bbaChatFinish(thinkEl, bbaChatEscape(m.text).replace(/\n/g,'<br>'));
-        return;
-      }
+      if(!(m&&m.role==='agent'&&m.text&&m.ts>bbaChatWaitSince)) continue;
+      bbaChatWaitSince=m.ts;
+      if(bbaChatIsDeferral(m.text)) continue;
+      bbaChatAddBubble(bbaChatEscape(m.text).replace(/\n/g,'<br>'),'ape');
+      bbaChatStopPoll();
+      return;
     }
   }).catch(function(){});
 }
@@ -5492,7 +5566,7 @@ document.addEventListener('DOMContentLoaded',function(){
     <button type="button" class="bba-chat-close" onclick="bbaChatToggle()" aria-label="Close">✕</button>
   </div>
   <div class="bba-chat-messages" id="bbaChatMessages">
-    <div class="bba-chat-bubble ape">Hey! I'm Big Brain Ape. Ask me about any tab, a ticker, or tell me this analysis is missing something and you want a different take. I usually answer in a minute or two. 🦍</div>
+    <div class="bba-chat-bubble ape">Hey! I'm Big Brain Ape. Ask me how any tab works, or tell me this analysis is missing something. I answer here from the numbers on the screen. 🦍</div>
   </div>
   <div class="bba-chat-suggestions" id="bbaChatSuggestions"></div>
   <div class="bba-chat-input-row">
