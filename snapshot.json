@@ -1,5 +1,5 @@
 {
-  "date": "September 23, 2026 21:45 UTC",
+  "date": "September 23, 2026 21:50 UTC",
   "assets": {
     "S&P 500": {
       "price": 7706.03,
@@ -89,25 +89,25 @@
       ]
     },
     "BTC": {
-      "price": 84477.8,
-      "change_pct": -1.96,
+      "price": 84412.3,
+      "change_pct": -2.14,
       "support": 74909.4,
       "resistance": 87385.1
     },
     "ETH": {
-      "price": 2677.49,
-      "change_pct": -2.5,
+      "price": 2676.39,
+      "change_pct": -2.66,
       "support": 2355.12,
       "resistance": 2806.76
     },
     "SOL": {
-      "price": 114.6,
-      "change_pct": -2.9,
+      "price": 114.46,
+      "change_pct": -3.12,
       "support": 94.82,
       "resistance": 119.99
     }
   },
-  "risk_score": 24,
+  "risk_score": 19,
   "risk_bias": "STRONG RISK-OFF",
   "fear_greed": {
     "value": 71,
@@ -198,6 +198,11 @@
     },
     {
       "label": "CAUTION",
+      "text": "BTC down -2.1% \u2014 watch support",
+      "type": "caution"
+    },
+    {
+      "label": "CAUTION",
       "text": "Yields rising \u2014 risk off",
       "type": "caution"
     },
@@ -205,25 +210,20 @@
       "label": "NEUTRAL",
       "text": "Gold down -1.2% \u2014 risk appetite",
       "type": "neutral"
-    },
-    {
-      "label": "CAUTION",
-      "text": "NVDA down -1.5% \u2014 watch AI sector",
-      "type": "caution"
     }
   ],
-  "btc_funding": -1.02e-05,
+  "btc_funding": -9.42e-06,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 44.57,
-    "daily_avg": 37.93,
+    "daily_inflow": 44.59,
+    "daily_avg": 37.94,
     "daily_pct": 17.5,
-    "weekly_inflow": 265.53,
+    "weekly_inflow": 265.55,
     "weekly_avg": 218.35,
     "weekly_pct": 21.6,
-    "monthly_inflow": 935.77,
-    "monthly_avg": 839.83,
+    "monthly_inflow": 935.8,
+    "monthly_avg": 839.84,
     "monthly_pct": 11.4,
     "large_tx_count": 588399
   },
@@ -368,7 +368,7 @@
       100.22,
       100.22,
       100.43,
-      101.11
+      101.1
     ],
     "sp500": [
       7652.86,
