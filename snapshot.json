@@ -1,5 +1,5 @@
 {
-  "date": "September 23, 2026 21:40 UTC",
+  "date": "September 23, 2026 21:45 UTC",
   "assets": {
     "S&P 500": {
       "price": 7706.03,
@@ -89,25 +89,25 @@
       ]
     },
     "BTC": {
-      "price": 84448.8,
-      "change_pct": -2.04,
+      "price": 84477.8,
+      "change_pct": -1.96,
       "support": 74909.4,
       "resistance": 87385.1
     },
     "ETH": {
-      "price": 2675.85,
-      "change_pct": -2.65,
+      "price": 2677.49,
+      "change_pct": -2.5,
       "support": 2355.12,
       "resistance": 2806.76
     },
     "SOL": {
-      "price": 114.52,
-      "change_pct": -3.04,
+      "price": 114.6,
+      "change_pct": -2.9,
       "support": 94.82,
       "resistance": 119.99
     }
   },
-  "risk_score": 19,
+  "risk_score": 24,
   "risk_bias": "STRONG RISK-OFF",
   "fear_greed": {
     "value": 71,
@@ -198,11 +198,6 @@
     },
     {
       "label": "CAUTION",
-      "text": "BTC down -2.0% \u2014 watch support",
-      "type": "caution"
-    },
-    {
-      "label": "CAUTION",
       "text": "Yields rising \u2014 risk off",
       "type": "caution"
     },
@@ -210,22 +205,27 @@
       "label": "NEUTRAL",
       "text": "Gold down -1.2% \u2014 risk appetite",
       "type": "neutral"
+    },
+    {
+      "label": "CAUTION",
+      "text": "NVDA down -1.5% \u2014 watch AI sector",
+      "type": "caution"
     }
   ],
-  "btc_funding": -1.06e-05,
+  "btc_funding": -1.02e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 44.56,
+    "daily_inflow": 44.57,
     "daily_avg": 37.93,
     "daily_pct": 17.5,
-    "weekly_inflow": 265.52,
+    "weekly_inflow": 265.53,
     "weekly_avg": 218.35,
     "weekly_pct": 21.6,
-    "monthly_inflow": 935.76,
+    "monthly_inflow": 935.77,
     "monthly_avg": 839.83,
     "monthly_pct": 11.4,
-    "large_tx_count": 595645
+    "large_tx_count": 588399
   },
   "history": {
     "vix": [
