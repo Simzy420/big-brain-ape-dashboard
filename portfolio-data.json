@@ -1,0 +1,1436 @@
+{
+  "meta": {
+    "title": "Big Brain Ape \u2014 Portfolio",
+    "as_of": "2026-09-22",
+    "open_as": "portfolio.html?v=1",
+    "subject": "Casey Sims / Big Brain Ape (Simzy420)",
+    "sources": [
+      "GitHub inventory of Simzy420 (19 repos)",
+      "Hugging Face Spaces under Simzy (11 spaces)",
+      "Marketing inventory (Canva, Buffer, product links)",
+      "Railway notes (partial)",
+      "Virtuals profile #96114 and Mintlify docs"
+    ],
+    "category_legend": {
+      "A": "Standalone old apps / standalone products",
+      "B": "Newer combined/blended apps",
+      "C": "Docs / landing pages",
+      "D": "Archives / logs only"
+    },
+    "sections": [
+      {
+        "id": "live",
+        "short": "Live",
+        "title": "Live products",
+        "blurb": "Things you can open today."
+      },
+      {
+        "id": "blended",
+        "short": "Blended",
+        "title": "Blended apps",
+        "blurb": "Newer apps that combine more than one desk or surface."
+      },
+      {
+        "id": "standalone",
+        "short": "Standalone",
+        "title": "Standalone / older versions",
+        "blurb": "Single-purpose builds and the older versions kept next to the new ones."
+      },
+      {
+        "id": "docs",
+        "short": "Docs",
+        "title": "Docs & landings",
+        "blurb": "Linktrees, docs repos, and the live Mintlify site."
+      },
+      {
+        "id": "design",
+        "short": "Design",
+        "title": "Design & social",
+        "blurb": "Canva, Buffer, X, and the routines around them."
+      },
+      {
+        "id": "infra",
+        "short": "Infra",
+        "title": "Infrastructure",
+        "blurb": "Hugging Face spaces, archives, Railway, and known gaps."
+      }
+    ],
+    "section_notes": {
+      "design": "Gamma: none found. Base44: none found. Whop was empty for this connector. The Sep 12 promo clip has no durable public URL. Buffer Ideas were stock onboarding cards, not catalogued as products.",
+      "infra": "Railway was only a partial pass: no CLI and no logged-in session. Hugging Face Spaces that already belong to a product card are linked from that card instead of repeated here."
+    }
+  },
+  "items": [
+    {
+      "id": "virtuals-big-brain-ape",
+      "name": "Virtuals \u2014 Big Brain Ape",
+      "type": "agent",
+      "status": "live",
+      "category": "A",
+      "category_label": "standalone product",
+      "section": "live",
+      "platforms": [
+        "Virtuals",
+        "DegenClaw",
+        "Telegram"
+      ],
+      "version_role": "current",
+      "version_note": "Current public agent (#96114). Older Telegram analysis repos are Big-Brain-Ape-V2.1 and archived big-brain-ape-v2.",
+      "live_links": [
+        {
+          "label": "Virtuals profile",
+          "url": "https://app.virtuals.io/virtuals/96114"
+        }
+      ],
+      "other_links": [
+        {
+          "label": "DegenClaw",
+          "url": "https://degen.virtuals.io"
+        },
+        {
+          "label": "Forum #1729",
+          "url": "https://degen.virtuals.io/forums/1729"
+        },
+        {
+          "label": "Telegram @BigBrain2Bot",
+          "url": "https://t.me/BigBrain2Bot"
+        },
+        {
+          "label": "Mintlify docs",
+          "url": "https://big-brain-ape-trading-bot.mintlify.app"
+        },
+        {
+          "label": "GAME Console",
+          "url": "https://console.game.virtuals.io/"
+        }
+      ],
+      "note": "Public Virtuals agent Big Brain Ape, symbol BIGBRAIN, chain BASE. API status UNDERGRAD. GAME Console credits are a separate meter from USDC.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "product:virtuals-96114"
+      ]
+    },
+    {
+      "id": "telegram-bigbrain2bot",
+      "name": "Telegram @BigBrain2Bot",
+      "type": "bot",
+      "status": "live",
+      "category": "A",
+      "category_label": "standalone product",
+      "section": "live",
+      "platforms": [
+        "Telegram"
+      ],
+      "version_role": "current",
+      "version_note": "Current agent Telegram. Not the memecoin sniper (@Big_Brain_Ape_Bot) and not the archived v2 analysis bot.",
+      "live_links": [
+        {
+          "label": "Open Telegram",
+          "url": "https://t.me/BigBrain2Bot"
+        }
+      ],
+      "other_links": [
+        {
+          "label": "Virtuals profile",
+          "url": "https://app.virtuals.io/virtuals/96114"
+        }
+      ],
+      "note": "Profile blog and the Telegram surface for the Virtuals Big Brain Ape agent.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "product:telegram-bigbrain2bot"
+      ]
+    },
+    {
+      "id": "memecoin-sniper",
+      "name": "MemeCoin Sniper",
+      "type": "bot",
+      "status": "live",
+      "category": "A",
+      "category_label": "standalone product (active)",
+      "section": "live",
+      "platforms": [
+        "Telegram",
+        "Hugging Face",
+        "GitHub"
+      ],
+      "visibility": "public",
+      "version_role": "current",
+      "version_note": "Current Solana sniper desk. Separate from archived big-brain-ape-v2 and from the Hyperliquid desk.",
+      "live_links": [
+        {
+          "label": "Telegram",
+          "url": "https://t.me/Big_Brain_Ape_Bot"
+        },
+        {
+          "label": "Hugging Face",
+          "url": "https://huggingface.co/spaces/Simzy/big-brain-ape-bot"
+        },
+        {
+          "label": "Space URL",
+          "url": "https://simzy-big-brain-ape-bot.hf.space/"
+        }
+      ],
+      "repo_url": "https://github.com/Simzy420/telegram-memecoin-sniper-bot-",
+      "note": "Standalone Solana memecoin sniper desk (grammY app in apps/bot). Five specialists in one Telegram chat. Paper-first; live path stubbed. Archives go to bba-trade-archives.",
+      "updated": "2026-09-22 16:16 MDT",
+      "source_ids": [
+        "repo:telegram-memecoin-sniper-bot-",
+        "hf:Simzy/big-brain-ape-bot"
+      ]
+    },
+    {
+      "id": "liquid98bot",
+      "name": "Liquid98Bot",
+      "type": "bot",
+      "status": "live",
+      "category": "B",
+      "category_label": "roster bot inside Command Center",
+      "section": "live",
+      "platforms": [
+        "Telegram"
+      ],
+      "version_role": "current",
+      "version_note": "No separate GitHub repo. Hyperliquid desk code is hermes-x402-trading-bot plus the dashboard.",
+      "live_links": [
+        {
+          "label": "Telegram",
+          "url": "https://t.me/Liquid98Bot"
+        }
+      ],
+      "note": "Marketing product link. Liquid98Bot is a Command Center roster id, not its own GitHub repo.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "product:liquid98bot"
+      ]
+    },
+    {
+      "id": "command-center",
+      "name": "Command Center",
+      "type": "app",
+      "status": "live",
+      "category": "B",
+      "category_label": "newer combined/blended app",
+      "section": "live",
+      "platforms": [
+        "Vercel",
+        "GitHub Pages",
+        "GitHub",
+        "Hugging Face"
+      ],
+      "visibility": "public",
+      "version_role": "current",
+      "version_note": "Current phone-first blend. Older single bots and the dashboard stay as their own cards.",
+      "live_links": [
+        {
+          "label": "Vercel",
+          "url": "https://command-center-neon-iota.vercel.app/"
+        },
+        {
+          "label": "GitHub Pages",
+          "url": "https://simzy420.github.io/command-center/"
+        }
+      ],
+      "repo_url": "https://github.com/Simzy420/command-center",
+      "other_links": [
+        {
+          "label": "Chat space",
+          "url": "https://huggingface.co/spaces/Simzy/command-center-chat"
+        },
+        {
+          "label": "Chat space URL",
+          "url": "https://simzy-command-center-chat.hf.space/"
+        }
+      ],
+      "note": "Phone-first multi-bot PWA (Vite/TS). Roster: Scout, Sniper, Pulse, Ledger, Shield, Liquid98Bot, Chief of Staff, plus chat, watchlist, Wan 2.2, image-gen, files, and links. Primary deploy is Vercel; also GitHub Pages.",
+      "updated": "2026-09-22 16:50 MDT",
+      "source_ids": [
+        "repo:command-center"
+      ]
+    },
+    {
+      "id": "app35",
+      "name": "App 35",
+      "type": "app",
+      "status": "live",
+      "category": "B",
+      "category_label": "newer combined/blended app",
+      "section": "live",
+      "platforms": [
+        "GitHub Pages"
+      ],
+      "version_role": "current",
+      "version_note": "Current featured app. The older standalone page in this same repo is index-old.html.",
+      "live_links": [
+        {
+          "label": "Linktree link",
+          "url": "https://simzy420.github.io/big-brain-ape-dashboard/app35.html?owner=1"
+        },
+        {
+          "label": "Cache-bust v=26",
+          "url": "https://simzy420.github.io/big-brain-ape-dashboard/app35.html?v=26"
+        }
+      ],
+      "repo_url": "https://github.com/Simzy420/big-brain-ape-dashboard",
+      "note": "Featured dashboard surface from the linktree. Same repo as the current homepage and index-old.html.",
+      "updated": "2026-09-22 20:55 MDT",
+      "source_ids": [
+        "surface:app35"
+      ]
+    },
+    {
+      "id": "dashboard-index",
+      "name": "Dashboard index (current)",
+      "type": "app",
+      "status": "live",
+      "category": "B",
+      "category_label": "newer combined/blended app",
+      "section": "live",
+      "platforms": [
+        "GitHub Pages"
+      ],
+      "version_role": "current",
+      "version_note": "Current homepage (index.html). Older standalone predecessor is index-old.html.",
+      "live_links": [
+        {
+          "label": "Open",
+          "url": "https://simzy420.github.io/big-brain-ape-dashboard/"
+        }
+      ],
+      "repo_url": "https://github.com/Simzy420/big-brain-ape-dashboard",
+      "note": "Current GitHub Pages homepage for the blended trading dashboard. Topics: Hyperliquid, 98 perps, stocks.",
+      "updated": "2026-09-22 20:55 MDT",
+      "source_ids": [
+        "surface:index"
+      ]
+    },
+    {
+      "id": "tasks-board",
+      "name": "Tasks board",
+      "type": "app",
+      "status": "live",
+      "category": "B",
+      "category_label": "newer combined/blended app",
+      "section": "live",
+      "platforms": [
+        "GitHub Pages"
+      ],
+      "live_links": [
+        {
+          "label": "Open",
+          "url": "https://simzy420.github.io/big-brain-ape-dashboard/tasks.html"
+        }
+      ],
+      "repo_url": "https://github.com/Simzy420/big-brain-ape-dashboard",
+      "note": "Personal tasks board shipped in the dashboard repo and listed in the marketing product links.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "surface:tasks"
+      ]
+    },
+    {
+      "id": "wan22-extend",
+      "name": "Wan 2.2 Extend",
+      "type": "app",
+      "status": "live",
+      "category": "A",
+      "category_label": "standalone app (source for HF Space)",
+      "section": "live",
+      "platforms": [
+        "Hugging Face",
+        "GitHub"
+      ],
+      "visibility": "private",
+      "version_role": "current",
+      "version_note": "Current I2V + Extend flow. Older I2V Space is wan555-i2v.",
+      "live_links": [
+        {
+          "label": "Hugging Face",
+          "url": "https://huggingface.co/spaces/Simzy/wan22-extend"
+        },
+        {
+          "label": "Space URL",
+          "url": "https://simzy-wan22-extend.hf.space/"
+        }
+      ],
+      "repo_url": "https://github.com/Simzy420/wan22-extend",
+      "note": "Private Gradio source for Wan 2.2 I2V + Extend. Calls public ZeroGPU Space kulkas2pintu/wan222 and stitches with ffmpeg. Wired into Command Center via Wan22Panel. The GitHub repo is private; the Space is public.",
+      "updated": "2026-09-22 17:38 MDT",
+      "source_ids": [
+        "repo:wan22-extend",
+        "hf:Simzy/wan22-extend"
+      ]
+    },
+    {
+      "id": "dashboard-repo",
+      "name": "big-brain-ape-dashboard",
+      "type": "app",
+      "status": "live",
+      "category": "B",
+      "category_label": "newer combined/blended app",
+      "section": "blended",
+      "platforms": [
+        "GitHub",
+        "GitHub Pages"
+      ],
+      "visibility": "public",
+      "live_links": [
+        {
+          "label": "GitHub Pages",
+          "url": "https://simzy420.github.io/big-brain-ape-dashboard/"
+        }
+      ],
+      "repo_url": "https://github.com/Simzy420/big-brain-ape-dashboard",
+      "note": "Active blended repo. Surfaces are separate cards: current index, App 35, trading dashboard, swarm page, tasks, index-old, and corrigo. Also holds ops scripts.",
+      "updated": "2026-09-22 20:55 MDT",
+      "source_ids": [
+        "repo:big-brain-ape-dashboard"
+      ]
+    },
+    {
+      "id": "trading-dashboard",
+      "name": "Trading dashboard",
+      "type": "app",
+      "status": "live",
+      "category": "B",
+      "category_label": "newer combined/blended app",
+      "section": "blended",
+      "platforms": [
+        "GitHub Pages"
+      ],
+      "live_links": [
+        {
+          "label": "Open",
+          "url": "https://simzy420.github.io/big-brain-ape-dashboard/trading-dashboard.html"
+        }
+      ],
+      "repo_url": "https://github.com/Simzy420/big-brain-ape-dashboard",
+      "note": "Live trading-desk surface inside big-brain-ape-dashboard.",
+      "updated": "2026-09-22 20:55 MDT",
+      "source_ids": [
+        "surface:trading-dashboard"
+      ]
+    },
+    {
+      "id": "swarm-pages",
+      "name": "Swarm page (GitHub Pages)",
+      "type": "app",
+      "status": "live",
+      "category": "B",
+      "category_label": "newer combined/blended app",
+      "section": "blended",
+      "platforms": [
+        "GitHub Pages"
+      ],
+      "version_note": "Pages surface in the dashboard repo. The Docker control center is the separate swarm-control-panel Space.",
+      "live_links": [
+        {
+          "label": "Open",
+          "url": "https://simzy420.github.io/big-brain-ape-dashboard/swarm.html"
+        }
+      ],
+      "repo_url": "https://github.com/Simzy420/big-brain-ape-dashboard",
+      "note": "In-repo swarm page on the dashboard GitHub Pages site.",
+      "updated": "2026-09-22 20:55 MDT",
+      "source_ids": [
+        "surface:swarm-html"
+      ]
+    },
+    {
+      "id": "swarm-control-panel",
+      "name": "Swarm control panel",
+      "type": "app",
+      "status": "live",
+      "category": "B",
+      "category_label": "newer combined/blended app",
+      "section": "blended",
+      "platforms": [
+        "Hugging Face",
+        "GitHub"
+      ],
+      "visibility": "private",
+      "version_note": "Blended multi-agent panel. Pairs with hermes-x402. Not the same file as swarm.html.",
+      "live_links": [
+        {
+          "label": "Hugging Face",
+          "url": "https://huggingface.co/spaces/Simzy/swarm-control-panel"
+        },
+        {
+          "label": "Space URL",
+          "url": "https://simzy-swarm-control-panel.hf.space/"
+        }
+      ],
+      "repo_url": "https://github.com/Simzy420/swarm-control-panel",
+      "note": "Multi-agent control center (Docker HF Space). Paper gate on. Hourly scan workflow. GitHub repo is private; the Space is public.",
+      "updated": "2026-09-22 14:38 MDT",
+      "source_ids": [
+        "repo:swarm-control-panel",
+        "hf:Simzy/swarm-control-panel"
+      ]
+    },
+    {
+      "id": "index-old",
+      "name": "index-old.html",
+      "type": "app",
+      "status": "live",
+      "category": "A",
+      "category_label": "standalone old app",
+      "section": "standalone",
+      "platforms": [
+        "GitHub Pages"
+      ],
+      "version_role": "older",
+      "version_note": "Older standalone predecessor kept in the dashboard repo. Current pages are index.html and app35.html.",
+      "live_links": [
+        {
+          "label": "Open",
+          "url": "https://simzy420.github.io/big-brain-ape-dashboard/index-old.html"
+        }
+      ],
+      "repo_url": "https://github.com/Simzy420/big-brain-ape-dashboard",
+      "note": "Standalone predecessor of the current dashboard homepage, still served from the same repo.",
+      "updated": "2026-09-22 20:55 MDT",
+      "source_ids": [
+        "surface:index-old"
+      ]
+    },
+    {
+      "id": "hermes-x402",
+      "name": "hermes-x402 trading bot",
+      "type": "bot",
+      "status": "private_source",
+      "category": "A",
+      "category_label": "standalone bot (Hyperliquid desk scaffold)",
+      "section": "standalone",
+      "platforms": [
+        "GitHub"
+      ],
+      "visibility": "private",
+      "live_url_note": "Live URL unknown.",
+      "repo_url": "https://github.com/Simzy420/hermes-x402-trading-bot",
+      "note": "Venice-generated x402 + Hermes Hyperliquid perps bot. Paper mode default; backtest, then paper, then live. Control API for the swarm panel. Closest GitHub home for the Hyperliquid / Liquid98 desk logic.",
+      "updated": "2026-09-16 19:39 MDT",
+      "source_ids": [
+        "repo:hermes-x402-trading-bot"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "bba-chat",
+      "name": "bba-chat",
+      "type": "bot",
+      "status": "minimal",
+      "category": "A",
+      "category_label": "standalone infra stub",
+      "section": "standalone",
+      "platforms": [
+        "GitHub",
+        "Hugging Face"
+      ],
+      "visibility": "public",
+      "live_links": [
+        {
+          "label": "Hugging Face",
+          "url": "https://huggingface.co/spaces/Simzy/bba-chat"
+        },
+        {
+          "label": "Space URL",
+          "url": "https://simzy-bba-chat.hf.space/"
+        }
+      ],
+      "repo_url": "https://github.com/Simzy420/bba-chat",
+      "note": "Minimal public chat-relay stub (README plus chat.json). The runnable Space is Simzy/bba-chat.",
+      "updated": "2026-09-07 18:21 MDT",
+      "source_ids": [
+        "repo:bba-chat",
+        "hf:Simzy/bba-chat"
+      ]
+    },
+    {
+      "id": "big-brain-ape-v21",
+      "name": "Big-Brain-Ape-V2.1",
+      "type": "bot",
+      "status": "dormant",
+      "category": "A",
+      "category_label": "standalone old app",
+      "section": "standalone",
+      "platforms": [
+        "GitHub",
+        "Railway",
+        "Telegram"
+      ],
+      "visibility": "private",
+      "version_role": "older",
+      "version_note": "Older private Telegram analysis bot. Later surfaces are the dashboard, Command Center, and the current Telegram bots. Railway URL was not in the inventory.",
+      "live_url_note": "Live URL unknown. Railway deploy is mentioned in the repo README; the public Railway URL was not captured.",
+      "repo_url": "https://github.com/Simzy420/Big-Brain-Ape-V2.1",
+      "note": "Older private Telegram analysis bot (bot.py) with /free, /paid, and /hire. Predecessor to later blended surfaces.",
+      "updated": "2026-08-19 13:07 MDT",
+      "source_ids": [
+        "repo:Big-Brain-Ape-V2.1"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "ai-trading-app",
+      "name": "ai-trading-app",
+      "type": "app",
+      "status": "empty",
+      "category": "A",
+      "category_label": "standalone old / empty stub",
+      "section": "standalone",
+      "platforms": [
+        "GitHub"
+      ],
+      "visibility": "private",
+      "live_url_note": "Live URL unknown. Repo is empty (size 0, no default-branch content).",
+      "repo_url": "https://github.com/Simzy420/ai-trading-app",
+      "note": "Empty private repo. Description only: stock/crypto analysis and hire AI agents.",
+      "updated": "2026-08-30 02:26 MDT",
+      "source_ids": [
+        "repo:ai-trading-app"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "big-brain-ape-original",
+      "name": "Big-Brain-Ape (original)",
+      "type": "docs",
+      "status": "archived",
+      "category": "A",
+      "category_label": "standalone old / superseded",
+      "section": "standalone",
+      "platforms": [
+        "GitHub"
+      ],
+      "visibility": "public",
+      "version_role": "older",
+      "version_note": "Original repo, archived. Active successors called out in the inventory are the dashboard and the sniper.",
+      "live_url_note": "Live URL unknown.",
+      "repo_url": "https://github.com/Simzy420/Big-Brain-Ape",
+      "note": "Original Big Brain Ape repo. Archived.",
+      "updated": "2026-09-15 05:01 MDT",
+      "source_ids": [
+        "repo:Big-Brain-Ape"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "big-brain-ape-v2",
+      "name": "big-brain-ape-v2",
+      "type": "bot",
+      "status": "archived",
+      "category": "A",
+      "category_label": "standalone old app",
+      "section": "standalone",
+      "platforms": [
+        "GitHub",
+        "Telegram"
+      ],
+      "visibility": "public",
+      "version_role": "older",
+      "version_note": "Archived modular v2 Telegram analysis agent. Superseded by later bots, the dashboard, and Command Center.",
+      "live_url_note": "Live URL unknown.",
+      "repo_url": "https://github.com/Simzy420/big-brain-ape-v2",
+      "note": "Archived modular v2 Telegram analysis agent with free Yahoo-style commands.",
+      "updated": "2026-08-15 23:20 MDT",
+      "source_ids": [
+        "repo:big-brain-ape-v2"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "bba-telegram-bot-space",
+      "name": "bba-telegram-bot Space",
+      "type": "space",
+      "status": "live",
+      "category": "A",
+      "category_label": "standalone old app",
+      "section": "standalone",
+      "platforms": [
+        "Hugging Face"
+      ],
+      "visibility": "public",
+      "version_role": "older",
+      "version_note": "Older Telegram bot Space. Current bots are @BigBrain2Bot and @Big_Brain_Ape_Bot.",
+      "live_links": [
+        {
+          "label": "Hugging Face",
+          "url": "https://huggingface.co/spaces/Simzy/bba-telegram-bot"
+        },
+        {
+          "label": "Space URL",
+          "url": "https://simzy-bba-telegram-bot.hf.space/"
+        }
+      ],
+      "note": "Docker Space listed as the older Telegram bot Space. No separate GitHub repo in the Simzy420 inventory.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "hf:Simzy/bba-telegram-bot"
+      ]
+    },
+    {
+      "id": "wan555-i2v",
+      "name": "wan555-i2v",
+      "type": "space",
+      "status": "live",
+      "category": "A",
+      "category_label": "standalone old app",
+      "section": "standalone",
+      "platforms": [
+        "Hugging Face"
+      ],
+      "visibility": "public",
+      "version_role": "older",
+      "version_note": "Older I2V Space. Current extend flow is Wan 2.2 Extend.",
+      "live_links": [
+        {
+          "label": "Hugging Face",
+          "url": "https://huggingface.co/spaces/Simzy/wan555-i2v"
+        },
+        {
+          "label": "Space URL",
+          "url": "https://simzy-wan555-i2v.hf.space/"
+        }
+      ],
+      "note": "Static Space. Inventory note: older I2V. No separate GitHub repo in the Simzy420 inventory.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "hf:Simzy/wan555-i2v"
+      ]
+    },
+    {
+      "id": "corrigo-app",
+      "name": "Corrigo work orders",
+      "type": "app",
+      "status": "live",
+      "category": "A",
+      "category_label": "standalone surface in the dashboard repo",
+      "section": "standalone",
+      "platforms": [
+        "GitHub Pages"
+      ],
+      "live_links": [
+        {
+          "label": "Open",
+          "url": "https://simzy420.github.io/big-brain-ape-dashboard/corrigo-app.html"
+        }
+      ],
+      "repo_url": "https://github.com/Simzy420/big-brain-ape-dashboard",
+      "note": "Sims Construction work-order page shipped in big-brain-ape-dashboard (inventory note: corrigo-*).",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "surface:corrigo-app"
+      ]
+    },
+    {
+      "id": "corrigo-cheatsheet",
+      "name": "Corrigo cheat sheet",
+      "type": "app",
+      "status": "live",
+      "category": "A",
+      "category_label": "standalone surface in the dashboard repo",
+      "section": "standalone",
+      "platforms": [
+        "GitHub Pages"
+      ],
+      "live_links": [
+        {
+          "label": "Open",
+          "url": "https://simzy420.github.io/big-brain-ape-dashboard/corrigo-cheatsheet.html"
+        }
+      ],
+      "repo_url": "https://github.com/Simzy420/big-brain-ape-dashboard",
+      "note": "Phone cheat sheet for SIMS Construction, shipped in big-brain-ape-dashboard (inventory note: corrigo-*).",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "surface:corrigo-cheatsheet"
+      ]
+    },
+    {
+      "id": "mintlify-docs",
+      "name": "Mintlify docs",
+      "type": "docs",
+      "status": "live",
+      "category": "C",
+      "category_label": "docs/landing",
+      "section": "docs",
+      "platforms": [
+        "Mintlify"
+      ],
+      "version_role": "current",
+      "version_note": "Live docs site. The archived GitHub hub is bigbrainape-docs, which does not host GitHub Pages.",
+      "live_links": [
+        {
+          "label": "Open docs",
+          "url": "https://big-brain-ape-trading-bot.mintlify.app"
+        }
+      ],
+      "other_links": [
+        {
+          "label": "Archived docs repo",
+          "url": "https://github.com/Simzy420/bigbrainape-docs"
+        }
+      ],
+      "note": "Live Big Brain Ape docs. Source org/repo for the Mintlify site was not under the accessible Simzy420 repos.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "product:mintlify"
+      ]
+    },
+    {
+      "id": "bigbrainape-docs",
+      "name": "bigbrainape-docs",
+      "type": "docs",
+      "status": "archived",
+      "category": "C",
+      "category_label": "docs/landing",
+      "section": "docs",
+      "platforms": [
+        "GitHub",
+        "Mintlify"
+      ],
+      "visibility": "public",
+      "version_role": "older",
+      "version_note": "Archived docs README hub. The live experience is Mintlify, not GitHub Pages from this repo.",
+      "live_links": [
+        {
+          "label": "Mintlify",
+          "url": "https://big-brain-ape-trading-bot.mintlify.app"
+        }
+      ],
+      "repo_url": "https://github.com/Simzy420/bigbrainape-docs",
+      "note": "Archived official docs repo. Points at the Mintlify site.",
+      "updated": "2026-09-15 05:01 MDT",
+      "source_ids": [
+        "repo:bigbrainape-docs"
+      ]
+    },
+    {
+      "id": "simzy420-linktree",
+      "name": "Simzy420 linktree",
+      "type": "landing",
+      "status": "live",
+      "category": "C",
+      "category_label": "docs/landing",
+      "section": "docs",
+      "platforms": [
+        "GitHub Pages",
+        "GitHub"
+      ],
+      "visibility": "public",
+      "version_role": "current",
+      "version_note": "Current profile linktree. Legacy hub is the archived Big-Brain-Ape- repo.",
+      "live_links": [
+        {
+          "label": "Open",
+          "url": "https://simzy420.github.io/Simzy420/"
+        }
+      ],
+      "repo_url": "https://github.com/Simzy420/Simzy420",
+      "note": "Profile README and GitHub Pages linktree. Links Telegram, App 35, the sniper, the HF API, Mintlify, and social. Mentions org Big-Brain-Ape-Trading-Bot, which returned 404.",
+      "updated": "2026-09-06 08:37 MDT",
+      "source_ids": [
+        "repo:Simzy420"
+      ]
+    },
+    {
+      "id": "big-brain-ape-linktree-legacy",
+      "name": "Big-Brain-Ape- linktree",
+      "type": "landing",
+      "status": "archived",
+      "category": "C",
+      "category_label": "docs/landing (legacy)",
+      "section": "docs",
+      "platforms": [
+        "GitHub",
+        "GitHub Pages"
+      ],
+      "visibility": "public",
+      "version_role": "older",
+      "version_note": "Legacy linktree. Its own GitHub Pages URL is 404. Homepage field still points at the Simzy420 Pages site.",
+      "live_links": [
+        {
+          "label": "Homepage field",
+          "url": "https://simzy420.github.io/Simzy420/"
+        }
+      ],
+      "repo_url": "https://github.com/Simzy420/Big-Brain-Ape-",
+      "note": "Legacy linktree / project hub. Archived.",
+      "updated": "2026-07-17 02:10 MDT",
+      "source_ids": [
+        "repo:Big-Brain-Ape-"
+      ]
+    },
+    {
+      "id": "wan22-extend-home",
+      "name": "Wan 2.2 Extend home",
+      "type": "landing",
+      "status": "live",
+      "category": "C",
+      "category_label": "docs/landing",
+      "section": "docs",
+      "platforms": [
+        "GitHub Pages",
+        "GitHub"
+      ],
+      "visibility": "public",
+      "live_links": [
+        {
+          "label": "Open",
+          "url": "https://simzy420.github.io/wan22-extend-home/"
+        }
+      ],
+      "repo_url": "https://github.com/Simzy420/wan22-extend-home",
+      "other_links": [
+        {
+          "label": "Space",
+          "url": "https://simzy-wan22-extend.hf.space/"
+        }
+      ],
+      "note": "Home Screen / PWA launcher for Wan 2.2 Extend. Redirects standalone installs to the Hugging Face Space.",
+      "updated": "2026-09-22 06:10 MDT",
+      "source_ids": [
+        "repo:wan22-extend-home"
+      ]
+    },
+    {
+      "id": "big-brain-ape-strategy",
+      "name": "big-brain-ape-strategy",
+      "type": "docs",
+      "status": "archived",
+      "category": "C",
+      "category_label": "docs/landing",
+      "section": "docs",
+      "platforms": [
+        "GitHub"
+      ],
+      "visibility": "public",
+      "live_url_note": "Live URL unknown.",
+      "repo_url": "https://github.com/Simzy420/big-brain-ape-strategy",
+      "note": "Archived Druckenmiller / liquidity-first strategy framework for the 98-asset Hyperliquid universe.",
+      "updated": "2026-07-17 02:11 MDT",
+      "source_ids": [
+        "repo:big-brain-ape-strategy"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "substack",
+      "name": "bigbrainape.substack.com",
+      "type": "landing",
+      "status": "not_found",
+      "category": "C",
+      "category_label": "docs/landing",
+      "section": "docs",
+      "platforms": [
+        "Substack"
+      ],
+      "live_links": [
+        {
+          "label": "Probed URL",
+          "url": "https://bigbrainape.substack.com"
+        }
+      ],
+      "note": "Linked from a landing page. HTTP 404 when probed 2026-09-22.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "gap:substack"
+      ]
+    },
+    {
+      "id": "canva-speed-presentation",
+      "name": "Presentation \u2014 Speed is the edge.",
+      "type": "design",
+      "status": "live",
+      "section": "design",
+      "platforms": [
+        "Canva"
+      ],
+      "live_url_note": "No public URL in the inventory. Canva design id DAHVAP4V90k (2 pages).",
+      "note": "BBA crew / speed creative.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "canva:DAHVAP4V90k"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "canva-speed-x",
+      "name": "Twitter / X Post \u2014 SPEED IS THE EDGE",
+      "type": "design",
+      "status": "live",
+      "section": "design",
+      "platforms": [
+        "Canva",
+        "X"
+      ],
+      "live_url_note": "No public URL in the inventory. Canva design id DAHVAOWoVw0.",
+      "note": "Social creative for X.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "canva:DAHVAOWoVw0"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "canva-fintech-dashboard",
+      "name": "Sleek Fintech Dashboard with White Typography",
+      "type": "design",
+      "status": "live",
+      "section": "design",
+      "platforms": [
+        "Canva"
+      ],
+      "live_url_note": "No public URL in the inventory. Canva design id DAHVADsee_Y.",
+      "note": "Dashboard-style graphic.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "canva:DAHVADsee_Y"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "canva-cbd",
+      "name": "Water Soluble CBD",
+      "type": "design",
+      "status": "legacy",
+      "section": "design",
+      "platforms": [
+        "Canva"
+      ],
+      "live_url_note": "No public URL in the inventory. Canva design id DADyC9QyKxg.",
+      "note": "Legacy, about 2020. Unrelated to Big Brain Ape.",
+      "source_ids": [
+        "canva:DADyC9QyKxg"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "canva-cbd-copy",
+      "name": "Copy of Water Soluble CBD",
+      "type": "design",
+      "status": "legacy",
+      "section": "design",
+      "platforms": [
+        "Canva"
+      ],
+      "live_url_note": "No public URL in the inventory. Canva design id DADyDbOMVWY.",
+      "note": "Legacy. Unrelated to Big Brain Ape.",
+      "source_ids": [
+        "canva:DADyDbOMVWY"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "canva-illuminati",
+      "name": "illuminati",
+      "type": "design",
+      "status": "legacy",
+      "section": "design",
+      "platforms": [
+        "Canva"
+      ],
+      "live_url_note": "No public URL in the inventory. Canva design id DADyCbb5B4w.",
+      "note": "Legacy. Unrelated to Big Brain Ape.",
+      "source_ids": [
+        "canva:DADyCbb5B4w"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "buffer-org",
+      "name": "Buffer \u2014 My organization",
+      "type": "social",
+      "status": "active",
+      "section": "design",
+      "platforms": [
+        "Buffer"
+      ],
+      "live_url_note": "No public Buffer URL in the inventory.",
+      "note": "Buffer Free org. 3 channels, 10 scheduled as of 2026-09-22. Org id 6aaa4feb45b9b6ceabe8386a.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "buffer:org"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "buffer-x",
+      "name": "X channel Big_Brain_Ape",
+      "type": "social",
+      "status": "live",
+      "section": "design",
+      "platforms": [
+        "Buffer",
+        "X"
+      ],
+      "live_links": [
+        {
+          "label": "X via Buffer",
+          "url": "https://twitter.com/Big_Brain_Ape"
+        },
+        {
+          "label": "x.com",
+          "url": "https://x.com/Big_Brain_Ape"
+        }
+      ],
+      "note": "Buffer channel connected to X. Channel id 6aaa53aaea19ca0bde561ed4. Mon\u2013Fri mornings plus the marketing routine around 9:49 AM Boise. The dashboard footer also links x.com/Big_Brain_Ape.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "buffer:x"
+      ]
+    },
+    {
+      "id": "postiz",
+      "name": "Postiz",
+      "type": "social",
+      "status": "abandoned",
+      "section": "design",
+      "platforms": [
+        "Postiz"
+      ],
+      "live_url_note": "No URL in the inventory.",
+      "note": "Abandoned. Dropped Sep 16.",
+      "updated": "2026-09-16",
+      "source_ids": [
+        "social:postiz"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "discord-daily",
+      "name": "Discord daily posts",
+      "type": "social",
+      "status": "active",
+      "section": "design",
+      "platforms": [
+        "Discord"
+      ],
+      "live_url_note": "Live URL unknown. The Discord address stays on Marketing and is not listed here.",
+      "note": "Active alongside Buffer X. No public Discord URL in the inventory.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "social:discord-daily"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "linkedin-buffer",
+      "name": "LinkedIn via Buffer",
+      "type": "social",
+      "status": "not_connected",
+      "section": "design",
+      "platforms": [
+        "Buffer"
+      ],
+      "live_url_note": "Not connected \u2014 no URL.",
+      "note": "LinkedIn via Buffer is not connected. Marketing note: do not reconnect for BBA.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "social:linkedin"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "five-bot-desk",
+      "name": "Five-bot desk names",
+      "type": "social",
+      "status": "locked",
+      "category": "B",
+      "category_label": "brand copy for the blended roster",
+      "section": "design",
+      "platforms": [
+        "Brand"
+      ],
+      "live_url_note": "No separate landing page.",
+      "note": "Locked brand copy: Scout, Sniper, Pulse, Ledger, Shield. Names only \u2014 no separate site.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "brand:five-bot-desk"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "daily-product-posts",
+      "name": "Daily product posts",
+      "type": "routine",
+      "status": "enabled",
+      "section": "design",
+      "platforms": [
+        "Routine"
+      ],
+      "live_url_note": "No public URL in the inventory.",
+      "note": "Grok Bot routine, folder daily-product-posts. Enabled. Rotates 3 product leads.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "routine:daily-product-posts"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "bigbrain-api",
+      "name": "Big Brain API",
+      "type": "space",
+      "status": "live",
+      "section": "infra",
+      "platforms": [
+        "Hugging Face"
+      ],
+      "visibility": "public",
+      "live_links": [
+        {
+          "label": "Hugging Face",
+          "url": "https://huggingface.co/spaces/Simzy/bigbrain-api"
+        },
+        {
+          "label": "Space URL",
+          "url": "https://simzy-bigbrain-api.hf.space/"
+        }
+      ],
+      "note": "Docker Space. Inventory note: API. Also linked from the GitHub landing pages.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "hf:Simzy/bigbrain-api"
+      ]
+    },
+    {
+      "id": "campaign-studio",
+      "name": "Campaign studio",
+      "type": "space",
+      "status": "live",
+      "section": "infra",
+      "platforms": [
+        "Hugging Face"
+      ],
+      "visibility": "public",
+      "live_links": [
+        {
+          "label": "Hugging Face",
+          "url": "https://huggingface.co/spaces/Simzy/campaign-studio"
+        },
+        {
+          "label": "Space URL",
+          "url": "https://simzy-campaign-studio.hf.space/"
+        }
+      ],
+      "note": "Docker Space. Inventory note: Campaign studio. No separate GitHub repo in the Simzy420 inventory.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "hf:Simzy/campaign-studio"
+      ]
+    },
+    {
+      "id": "launch-desk",
+      "name": "Launch desk",
+      "type": "space",
+      "status": "live",
+      "section": "infra",
+      "platforms": [
+        "Hugging Face"
+      ],
+      "visibility": "public",
+      "live_links": [
+        {
+          "label": "Hugging Face",
+          "url": "https://huggingface.co/spaces/Simzy/launch-desk"
+        },
+        {
+          "label": "Space URL",
+          "url": "https://simzy-launch-desk.hf.space/"
+        }
+      ],
+      "note": "Docker Space. Inventory note: Launch desk. No separate GitHub repo in the Simzy420 inventory.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "hf:Simzy/launch-desk"
+      ]
+    },
+    {
+      "id": "world-room",
+      "name": "World room",
+      "type": "space",
+      "status": "live",
+      "section": "infra",
+      "platforms": [
+        "Hugging Face"
+      ],
+      "visibility": "public",
+      "live_links": [
+        {
+          "label": "Hugging Face",
+          "url": "https://huggingface.co/spaces/Simzy/world-room"
+        },
+        {
+          "label": "Space URL",
+          "url": "https://simzy-world-room.hf.space/"
+        }
+      ],
+      "note": "Docker Space. Inventory note: World room. No separate GitHub repo in the Simzy420 inventory.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "hf:Simzy/world-room"
+      ]
+    },
+    {
+      "id": "command-center-chat",
+      "name": "Command Center chat",
+      "type": "space",
+      "status": "live",
+      "section": "infra",
+      "platforms": [
+        "Hugging Face"
+      ],
+      "visibility": "public",
+      "live_links": [
+        {
+          "label": "Hugging Face",
+          "url": "https://huggingface.co/spaces/Simzy/command-center-chat"
+        },
+        {
+          "label": "Space URL",
+          "url": "https://simzy-command-center-chat.hf.space/"
+        }
+      ],
+      "other_links": [
+        {
+          "label": "Command Center",
+          "url": "https://command-center-neon-iota.vercel.app/"
+        }
+      ],
+      "note": "Docker Space. CC to Chief of Staff bridge. Bundled from the command-center repo.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "hf:Simzy/command-center-chat"
+      ]
+    },
+    {
+      "id": "bba-backtest-lab",
+      "name": "bba-backtest-lab",
+      "type": "archive",
+      "status": "active_repo",
+      "category": "D",
+      "category_label": "archives/logs/lab",
+      "section": "infra",
+      "platforms": [
+        "GitHub"
+      ],
+      "visibility": "public",
+      "live_url_note": "Live URL unknown.",
+      "repo_url": "https://github.com/Simzy420/bba-backtest-lab",
+      "note": "Public shared backtesting lab (BBA and Grok Bot team). Engine code, round results, journals, comparisons.",
+      "updated": "2026-09-16 13:40 MDT",
+      "source_ids": [
+        "repo:bba-backtest-lab"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "bba-strategy-logs",
+      "name": "bba-strategy-logs",
+      "type": "archive",
+      "status": "active_repo",
+      "category": "D",
+      "category_label": "archives/logs only",
+      "section": "infra",
+      "platforms": [
+        "GitHub"
+      ],
+      "visibility": "private",
+      "live_url_note": "Live URL unknown.",
+      "repo_url": "https://github.com/Simzy420/bba-strategy-logs",
+      "note": "Private strategy board: day logs, Round N results, and coach lessons for Chief of Staff, Researcher, Trader, and Stenographer.",
+      "updated": "2026-09-22 20:43 MDT",
+      "source_ids": [
+        "repo:bba-strategy-logs"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "bba-trade-archives",
+      "name": "bba-trade-archives",
+      "type": "archive",
+      "status": "active_repo",
+      "category": "D",
+      "category_label": "archives/logs only",
+      "section": "infra",
+      "platforms": [
+        "GitHub"
+      ],
+      "visibility": "private",
+      "live_url_note": "Live URL unknown.",
+      "repo_url": "https://github.com/Simzy420/bba-trade-archives",
+      "note": "Private daily trade archives for Memecoin Sniper backtests (YYYY-MM-DD folders). Store only; the writer lives in telegram-memecoin-sniper-bot-.",
+      "updated": "2026-09-12 10:42 MDT",
+      "source_ids": [
+        "repo:bba-trade-archives"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "railway-v21",
+      "name": "Railway (Big-Brain-Ape-V2.1)",
+      "type": "gap",
+      "status": "unknown",
+      "section": "infra",
+      "platforms": [
+        "Railway"
+      ],
+      "live_url_note": "Live URL unknown. Railway CLI was not available and there was no authenticated session.",
+      "other_links": [
+        {
+          "label": "Repo that mentions Railway",
+          "url": "https://github.com/Simzy420/Big-Brain-Ape-V2.1"
+        }
+      ],
+      "note": "Partial inventory. The V2.1 README says deploy on Railway. No project URL was captured.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "gap:railway"
+      ],
+      "live_links": []
+    },
+    {
+      "id": "org-big-brain-ape-trading-bot",
+      "name": "Org Big-Brain-Ape-Trading-Bot",
+      "type": "gap",
+      "status": "not_found",
+      "section": "infra",
+      "platforms": [
+        "GitHub"
+      ],
+      "live_links": [
+        {
+          "label": "Probed URL",
+          "url": "https://github.com/Big-Brain-Ape-Trading-Bot"
+        }
+      ],
+      "note": "Linked from the Simzy420 profile README and linktree. Authenticated lookup as Simzy420 returned 404. Not in the user org list, so those claimed repos could not be inventoried.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "gap:org-big-brain-ape-trading-bot"
+      ]
+    },
+    {
+      "id": "github-pages-user-root",
+      "name": "simzy420.github.io (user root)",
+      "type": "gap",
+      "status": "not_found",
+      "section": "infra",
+      "platforms": [
+        "GitHub Pages"
+      ],
+      "live_links": [
+        {
+          "label": "Probed URL",
+          "url": "https://simzy420.github.io/"
+        }
+      ],
+      "note": "HTTP 404. Project Pages work under /Simzy420/, /big-brain-ape-dashboard/, /command-center/, and /wan22-extend-home/. No apex user site.",
+      "updated": "2026-09-22",
+      "source_ids": [
+        "gap:github-pages-root"
+      ]
+    }
+  ]
+}
