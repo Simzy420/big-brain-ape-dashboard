@@ -4,7 +4,7 @@
       "id": "sniper-paper-drill-learn",
       "priority": "high",
       "title": "Paper drill in Telegram (feed /learn poll)",
-      "subtitle": "iPhone \u00b7 ~2 min \u00b7 fills journal so 5pm Boise digest has rows",
+      "subtitle": "iPhone · ~2 min · fills journal so 5pm Boise digest has rows",
       "steps": [
         "Open Big Brain Ape Bot in Telegram (link below)",
         "Send: /start",
@@ -12,11 +12,11 @@
         "Send: /watch",
         "Send: shield check SLEEPAPE",
         "Send: snipe SLEEPAPE",
-        "Send: shield check RUGPUP (should get blocked \u2014 good)",
+        "Send: shield check RUGPUP (should get blocked — good)",
         "Send: /paper",
         "Send: /learn",
         "Optional: close SLEEPAPE (flat paper exit; PnL stays 0 until marks exist)",
-        "Reply here or in Command Center when done \u2014 Chief of Staff will confirm the journal poll sees rows"
+        "Reply here or in Command Center when done — Chief of Staff will confirm the journal poll sees rows"
       ],
       "links": [
         {
@@ -33,14 +33,14 @@
       "id": "cc-webhook-url-desktop",
       "priority": "high",
       "title": "Copy Command Center chat webhook URL (desktop)",
-      "subtitle": "Phone can\u2019t open \u201cWhen a webhook fires\u201d \u2014 do this on Mac/PC for instant chat wake",
+      "subtitle": "Phone can’t open “When a webhook fires” — do this on Mac/PC for instant chat wake",
       "steps": [
-        "On a computer, open the Grok Bot app (not Google/Safari search \u2014 grokbot:// links are in-app only)",
-        "Open Chief of Staff chat \u2192 click the name in the header \u2192 Routines \u2192 Command Center chat",
+        "On a computer, open the Grok Bot app (not Google/Safari search — grokbot:// links are in-app only)",
+        "Open Chief of Staff chat → click the name in the header → Routines → Command Center chat",
         "Click When a webhook fires",
-        "Copy Webhook URL \u2014 must start with https:// and must NOT be huggingface.co, github.io, or grokbot://",
+        "Copy Webhook URL — must start with https:// and must NOT be huggingface.co, github.io, or grokbot://",
         "Tell Chief of Staff you have it (or paste into the secure field when asked) so it can be set as GROK_WEBHOOK_URL on the Space",
-        "Until then: hard-refresh https://simzy420.github.io/command-center/ and use Chat \u2192 Chief of Staff (replies via 5-minute poll backup)"
+        "Until then: hard-refresh https://simzy420.github.io/command-center/ and use Chat → Chief of Staff (replies via 5-minute poll backup)"
       ],
       "links": [
         {
@@ -58,14 +58,39 @@
       ]
     },
     {
+      "id": "cc-hourly-print-source",
+      "priority": "medium",
+      "title": "Point Stenographer at hourly-print source",
+      "subtitle": "CC Files pack for 2026-09-22 has daily print; hourly artifact not found",
+      "steps": [
+        "Decide where hourly prints live (desk bot export, Hyperliquid tape, Buffer, other)",
+        "Reply with path, repo, or export link — or say “no hourly print” so we close the gap",
+        "Optional: drop a sample file into the board pack folder"
+      ],
+      "links": [
+        {
+          "label": "2026-09-22 files pack",
+          "url": "https://github.com/Simzy420/bba-strategy-logs/tree/main/logs/days/2026-09-22"
+        },
+        {
+          "label": "Pack INDEX",
+          "url": "https://github.com/Simzy420/bba-strategy-logs/blob/main/logs/days/2026-09-22/INDEX.md"
+        },
+        {
+          "label": "Tasks dashboard",
+          "url": "https://simzy420.github.io/big-brain-ape-dashboard/tasks.html"
+        }
+      ]
+    },
+    {
       "id": "gmail-identity-filters",
       "priority": "medium",
       "title": "Create Gmail filters for Identity labels",
-      "subtitle": "API scopes block us from creating filters \u2014 2 min in Gmail UI",
+      "subtitle": "API scopes block us from creating filters — 2 min in Gmail UI",
       "steps": [
-        "Open Gmail Settings \u2192 Filters and Blocked Addresses (link below)",
-        "Create filter: To has caseylsims@gmail.com \u2192 Apply label Identity/Gmail",
-        "Create filter: To has caseysims463@yahoo.com \u2192 Apply label Identity/Yahoo",
+        "Open Gmail Settings → Filters and Blocked Addresses (link below)",
+        "Create filter: To has caseylsims@gmail.com → Apply label Identity/Gmail",
+        "Create filter: To has caseysims463@yahoo.com → Apply label Identity/Yahoo",
         "Optionally check 'Also apply to matching conversations'",
         "Save both filters"
       ],
@@ -80,9 +105,9 @@
       "id": "bitly-finish-signup",
       "priority": "low",
       "title": "Finish Bitly free signup (password step)",
-      "subtitle": "Only if you still want short links \u2014 signup was stuck on password",
+      "subtitle": "Only if you still want short links — signup was stuck on password",
       "steps": [
-        "Open the Bitly signup link below (or bitly.com \u2192 Sign up)",
+        "Open the Bitly signup link below (or bitly.com → Sign up)",
         "Complete email + password",
         "Verify email if asked",
         "Tell Chief of Staff when done so we can connect the connector"
@@ -103,7 +128,7 @@
         "Go to GitHub Settings (link below)",
         "Click Change username (once every 30 days)",
         "Type: Big-Brain-Ape (check availability first)",
-        "Confirm \u2014 repos/stars/followers move automatically",
+        "Confirm — repos/stars/followers move automatically",
         "Tell Chief of Staff when done so links get updated"
       ],
       "links": [
@@ -117,7 +142,7 @@
       "id": "virtuals-review",
       "priority": "low",
       "title": "Submit Virtuals Builder Review",
-      "subtitle": "Unlock Elite tier \u2014 compute credits (5 min form)",
+      "subtitle": "Unlock Elite tier — compute credits (5 min form)",
       "steps": [
         "Open the Virtuals Builder Review form",
         "Fill in Big Brain Ape project details",
