@@ -1,5 +1,5 @@
 {
-  "date": "September 22, 2026 23:55 UTC",
+  "date": "September 23, 2026 00:00 UTC",
   "assets": {
     "S&P 500": {
       "price": 7764.64,
@@ -89,30 +89,34 @@
       ]
     },
     "BTC": {
-      "price": 86147.2,
-      "change_pct": -0.46,
+      "price": 86142.7,
+      "change_pct": -0.5,
       "support": 74909.4,
       "resistance": 87385.1
     },
     "ETH": {
-      "price": 2751.9,
-      "change_pct": -0.76,
+      "price": 2751.18,
+      "change_pct": -0.84,
       "support": 2355.12,
       "resistance": 2806.76
     },
     "SOL": {
-      "price": 118.48,
-      "change_pct": -0.19,
-      "support": 93.22,
+      "price": 118.42,
+      "change_pct": -0.39,
+      "support": 94.82,
       "resistance": 119.99
     }
   },
   "risk_score": 55,
   "risk_bias": "RISK-ON",
   "fear_greed": {
-    "value": 78,
-    "classification": "Extreme Greed",
+    "value": 71,
+    "classification": "Greed",
     "history": [
+      {
+        "value": 71,
+        "label": "Greed"
+      },
       {
         "value": 78,
         "label": "Extreme Greed"
@@ -135,10 +139,6 @@
       },
       {
         "value": 50,
-        "label": "Neutral"
-      },
-      {
-        "value": 51,
         "label": "Neutral"
       }
     ]
@@ -165,17 +165,17 @@
       "color": "red"
     },
     "oil": {
-      "value": "$89.62",
+      "value": "$89.67",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4402",
+      "value": "$4397",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$67.97",
+      "value": "$67.89",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -188,11 +188,11 @@
     },
     {
       "label": "CAUTION",
-      "text": "Greed elevated (78)",
+      "text": "Greed elevated (71)",
       "type": "caution"
     }
   ],
-  "btc_funding": 9.24e-06,
+  "btc_funding": 1.021e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
@@ -205,7 +205,7 @@
     "monthly_inflow": 942.64,
     "monthly_avg": 839.4,
     "monthly_pct": 12.3,
-    "large_tx_count": 624625
+    "large_tx_count": 619671
   },
   "history": {
     "vix": [
@@ -276,7 +276,7 @@
       101.91,
       100.3,
       95.78,
-      89.62
+      89.67
     ],
     "gold": [
       4697.8,
@@ -299,7 +299,7 @@
       4399.7,
       4424.9,
       4383.9,
-      4402.3
+      4397.1
     ],
     "silver": [
       68.54,
@@ -322,7 +322,7 @@
       65.47,
       66.56,
       65.82,
-      67.97
+      67.89
     ],
     "dxy": [
       99.0,
@@ -401,6 +401,36 @@
       "time": "1:55pm ET",
       "forecast": "\u2014",
       "previous": "\u2014",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "UNEMPLOYMENT CLAIMS",
+      "date": "09-24-2026",
+      "time": "12:30pm ET",
+      "forecast": "201K",
+      "previous": "196K",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "REVISED UOM CONSUMER SENTIMENT",
+      "date": "09-25-2026",
+      "time": "2:00pm ET",
+      "forecast": "47.4",
+      "previous": "47.8",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "REVISED UOM INFLATION EXPECTATIONS",
+      "date": "09-25-2026",
+      "time": "2:00pm ET",
+      "forecast": "\u2014",
+      "previous": "4.6%",
       "actual": null,
       "impact": "Medium",
       "country": "USD"
