@@ -1,6 +1,33 @@
 {
   "tasks": [
     {
+      "id": "wan22-cors-use-space",
+      "priority": "high",
+      "title": "Wan templates Generate: use HF Space until Vercel proxy ships",
+      "subtitle": "Phone site CORS \u2014 temporary workaround",
+      "steps": [
+        "Open https://simzy-wan-2-2-templates.hf.space (not wan22-templates.vercel.app)",
+        "Pick a motion from the gallery",
+        "Upload your still photo",
+        "Tap Generate (may wait 1\u20133+ min on ZeroGPU)",
+        "Chief of Staff is adding a Vercel /api/generate proxy so the phone site works again"
+      ],
+      "links": [
+        {
+          "label": "HF Space (works now)",
+          "url": "https://simzy-wan-2-2-templates.hf.space"
+        },
+        {
+          "label": "Phone UI (broken until proxy)",
+          "url": "https://wan22-templates.vercel.app"
+        },
+        {
+          "label": "Cloud agent fix",
+          "url": "https://cursor.com/agents/bc-bc67487e-42a1-5d6e-a1f8-3cf62b45f901"
+        }
+      ]
+    },
+    {
       "id": "sniper-paper-drill-learn",
       "priority": "high",
       "title": "Paper drill in Telegram (feed /learn poll)",
