@@ -1,6 +1,6 @@
 {
-  "timestamp": 1790283859,
-  "generatedAt": "2026-09-24 21:04 UTC",
+  "timestamp": 1790284700,
+  "generatedAt": "2026-09-24 21:18 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -876,7 +876,7 @@
         },
         {
           "date": "2026-09-24",
-          "o": 336.72,
+          "o": 336.32,
           "h": 338.91,
           "l": 334.3,
           "c": 335.92,
@@ -2179,7 +2179,7 @@
         },
         {
           "date": "2026-09-24",
-          "o": 336.22,
+          "o": 336.23,
           "h": 343.09,
           "l": 336.02,
           "c": 342.36,
@@ -2371,10 +2371,10 @@
       "netMargin": 29.84,
       "dividendYield": 0,
       "volume": 25077750,
-      "targetAvg": 770.2093,
+      "targetAvg": 786.8021,
       "targetHigh": 1000.0,
       "targetLow": 580.0,
-      "targetMedian": 770.0,
+      "targetMedian": 780.0,
       "history": [
         {
           "date": "2026-08-13",
@@ -3051,7 +3051,7 @@
         },
         {
           "date": "2026-09-24",
-          "o": 246.02,
+          "o": 245.97,
           "h": 250.43,
           "l": 245.6,
           "c": 249.38,
@@ -3492,7 +3492,7 @@
         },
         {
           "date": "2026-09-24",
-          "o": 600.27,
+          "o": 600.76,
           "h": 630.79,
           "l": 599.35,
           "c": 629.26,
@@ -4798,7 +4798,7 @@
         },
         {
           "date": "2026-09-24",
-          "o": 196.77,
+          "o": 196.74,
           "h": 202.78,
           "l": 193.69,
           "c": 199.21,
@@ -6674,7 +6674,7 @@
       "netMargin": 33.26454,
       "dividendYield": 0,
       "volume": 9051000,
-      "targetAvg": 375.14285,
+      "targetAvg": 374.2381,
       "targetHigh": 436.0,
       "targetLow": 305.0,
       "targetMedian": 372.0,
@@ -7115,7 +7115,7 @@
       "netMargin": 30.15501,
       "dividendYield": 0,
       "volume": 42762920,
-      "targetAvg": 68.80952,
+      "targetAvg": 68.61905,
       "targetHigh": 76.0,
       "targetLow": 62.0,
       "targetMedian": 68.0,
@@ -8322,10 +8322,10 @@
       "netMargin": 8.7,
       "dividendYield": 0,
       "volume": 8947880,
-      "targetAvg": 127.21548,
+      "targetAvg": 126.73906,
       "targetHigh": 144.0,
       "targetLow": 88.0,
-      "targetMedian": 129.0,
+      "targetMedian": 127.5,
       "history": [
         {
           "date": "2026-08-12",
@@ -8639,29 +8639,7 @@
           "revenueActual": 12535000000.0
         }
       ],
-      "upcomingEarnings": [
-        {
-          "date": "2027-04-26",
-          "quarter": 1,
-          "epsEstimate": 0.9182,
-          "revenueEstimate": 12447081659,
-          "hour": ""
-        },
-        {
-          "date": "2027-02-08",
-          "quarter": 4,
-          "epsEstimate": 0.6135,
-          "revenueEstimate": 11326867914,
-          "hour": "amc"
-        },
-        {
-          "date": "2026-10-19",
-          "quarter": 3,
-          "epsEstimate": 0.9049,
-          "revenueEstimate": 13272886126,
-          "hour": "bmo"
-        }
-      ],
+      "upcomingEarnings": [],
       "pe": 0,
       "eps": 3.039,
       "epsTTM": 3.3194,
@@ -9110,10 +9088,10 @@
       "netMargin": 10.78,
       "dividendYield": 0,
       "volume": 10327600,
-      "targetAvg": 152.64545,
+      "targetAvg": 153.86365,
       "targetHigh": 180.0,
       "targetLow": 124.0,
-      "targetMedian": 153.5,
+      "targetMedian": 155.0,
       "history": [
         {
           "date": "2026-08-12",
@@ -15399,7 +15377,7 @@
         },
         {
           "date": "2026-09-24",
-          "o": 88.9,
+          "o": 88.81,
           "h": 91.12,
           "l": 85.94,
           "c": 90.13,
@@ -17308,7 +17286,29 @@
           "revenueActual": 177402000000.0
         }
       ],
-      "upcomingEarnings": [],
+      "upcomingEarnings": [
+        {
+          "date": "2027-05-19",
+          "quarter": 1,
+          "epsEstimate": 0.7451,
+          "revenueEstimate": 187332230499,
+          "hour": ""
+        },
+        {
+          "date": "2027-02-18",
+          "quarter": 4,
+          "epsEstimate": 0.7944,
+          "revenueEstimate": 202363841460,
+          "hour": "amc"
+        },
+        {
+          "date": "2026-11-19",
+          "quarter": 3,
+          "epsEstimate": 0.6432,
+          "revenueEstimate": 189202143186,
+          "hour": ""
+        }
+      ],
       "pe": 0,
       "eps": 2.7291,
       "epsTTM": 2.76,
@@ -17591,80 +17591,6 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/HD.png",
       "ipo": "1984-04-19",
-      "strongBuy": 9,
-      "buy": 19,
-      "hold": 17,
-      "sell": 0,
-      "strongSell": 1,
-      "consensus": "Buy",
-      "recTrend": [
-        {
-          "period": "2026-09-01",
-          "sb": 9,
-          "b": 19,
-          "h": 17,
-          "s": 0,
-          "ss": 1
-        },
-        {
-          "period": "2026-08-01",
-          "sb": 9,
-          "b": 19,
-          "h": 17,
-          "s": 0,
-          "ss": 1
-        },
-        {
-          "period": "2026-07-01",
-          "sb": 9,
-          "b": 19,
-          "h": 17,
-          "s": 0,
-          "ss": 1
-        },
-        {
-          "period": "2026-06-01",
-          "sb": 10,
-          "b": 19,
-          "h": 16,
-          "s": 0,
-          "ss": 1
-        }
-      ],
-      "earnings": [
-        {
-          "period": "2026-09-30",
-          "quarter": 2,
-          "estimate": 4.8762,
-          "actual": 4.92,
-          "surprise": 0.0438,
-          "surprisePct": 0.8982
-        },
-        {
-          "period": "2026-06-30",
-          "quarter": 1,
-          "estimate": 3.5072,
-          "actual": 3.43,
-          "surprise": -0.0772,
-          "surprisePct": -2.2012
-        },
-        {
-          "period": "2026-03-31",
-          "quarter": 4,
-          "estimate": 2.6164,
-          "actual": 2.72,
-          "surprise": 0.1036,
-          "surprisePct": 3.9596
-        },
-        {
-          "period": "2025-12-31",
-          "quarter": 3,
-          "estimate": 3.9535,
-          "actual": 3.74,
-          "surprise": -0.2135,
-          "surprisePct": -5.4003
-        }
-      ],
       "earningsHistory": [
         {
           "quarter": 2,
@@ -17727,15 +17653,7 @@
           "revenueActual": 45277000000.0
         }
       ],
-      "upcomingEarnings": [
-        {
-          "date": "2026-11-17",
-          "quarter": 3,
-          "epsEstimate": 3.956,
-          "revenueEstimate": 44084158321,
-          "hour": ""
-        }
-      ],
+      "upcomingEarnings": [],
       "pe": 0,
       "eps": 14.2271,
       "epsTTM": 14.282599999999999,
@@ -18018,80 +17936,6 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/UNH.png",
       "ipo": "1984-10-17",
-      "strongBuy": 8,
-      "buy": 19,
-      "hold": 7,
-      "sell": 0,
-      "strongSell": 0,
-      "consensus": "Strong Buy",
-      "recTrend": [
-        {
-          "period": "2026-09-01",
-          "sb": 8,
-          "b": 19,
-          "h": 7,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-08-01",
-          "sb": 8,
-          "b": 19,
-          "h": 7,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-07-01",
-          "sb": 8,
-          "b": 19,
-          "h": 6,
-          "s": 0,
-          "ss": 1
-        },
-        {
-          "period": "2026-06-01",
-          "sb": 7,
-          "b": 19,
-          "h": 7,
-          "s": 0,
-          "ss": 1
-        }
-      ],
-      "earnings": [
-        {
-          "period": "2026-06-30",
-          "quarter": 2,
-          "estimate": 4.9533,
-          "actual": 6.38,
-          "surprise": 1.4267,
-          "surprisePct": 28.803
-        },
-        {
-          "period": "2026-03-31",
-          "quarter": 1,
-          "estimate": 6.6406,
-          "actual": 7.23,
-          "surprise": 0.5894,
-          "surprisePct": 8.8757
-        },
-        {
-          "period": "2025-12-31",
-          "quarter": 4,
-          "estimate": 2.1222,
-          "actual": 2.11,
-          "surprise": -0.0122,
-          "surprisePct": -0.5749
-        },
-        {
-          "period": "2025-09-30",
-          "quarter": 3,
-          "estimate": 2.8218,
-          "actual": 2.92,
-          "surprise": 0.0982,
-          "surprisePct": 3.48
-        }
-      ],
       "earningsHistory": [
         {
           "quarter": 2,
@@ -24517,7 +24361,7 @@
         },
         {
           "date": "2026-09-24",
-          "o": 16.44,
+          "o": 16.39,
           "h": 16.71,
           "l": 15.85,
           "c": 16.39,
