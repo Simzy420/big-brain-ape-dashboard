@@ -1,9 +1,9 @@
 {
-  "date": "September 24, 2026 17:30 UTC",
+  "date": "September 24, 2026 17:35 UTC",
   "assets": {
     "S&P 500": {
-      "price": 7703.43,
-      "change_pct": -0.03,
+      "price": 7698.91,
+      "change_pct": -0.09,
       "support": 7507.77,
       "resistance": 7779.22,
       "history": [
@@ -28,12 +28,12 @@
         7650.5,
         7764.7,
         7706.03,
-        7703.43
+        7698.91
       ]
     },
     "NASDAQ": {
-      "price": 26916.22,
-      "change_pct": -0.07,
+      "price": 26890.72,
+      "change_pct": -0.17,
       "support": 25802.96,
       "resistance": 27217.33,
       "history": [
@@ -58,12 +58,12 @@
         26522.54,
         27122.09,
         26936.04,
-        26916.22
+        26890.72
       ]
     },
     "Dow Jones": {
-      "price": 51324.49,
-      "change_pct": -0.36,
+      "price": 51302.16,
+      "change_pct": -0.41,
       "support": 51124.02,
       "resistance": 53819.65,
       "history": [
@@ -88,24 +88,24 @@
         51682.64,
         52048.83,
         51511.59,
-        51324.49
+        51302.16
       ]
     },
     "BTC": {
-      "price": 84328.5,
+      "price": 84253.2,
       "change_pct": 0.36,
       "support": 74909.4,
       "resistance": 87385.1
     },
     "ETH": {
-      "price": 2682.19,
-      "change_pct": 0.78,
+      "price": 2675.75,
+      "change_pct": 0.69,
       "support": 2355.12,
       "resistance": 2806.76
     },
     "SOL": {
-      "price": 117.1,
-      "change_pct": 2.59,
+      "price": 116.94,
+      "change_pct": 2.49,
       "support": 94.82,
       "resistance": 119.99
     }
@@ -153,12 +153,12 @@
   "whale_flow": "NEUTRAL",
   "metrics": {
     "vix": {
-      "value": "15.4",
+      "value": "15.6",
       "label": "VIX",
       "color": "green"
     },
     "yield_10y": {
-      "value": "5.14%",
+      "value": "5.15%",
       "label": "10Y YIELD",
       "color": "blue"
     },
@@ -168,17 +168,17 @@
       "color": "red"
     },
     "oil": {
-      "value": "$94.72",
+      "value": "$94.88",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4299",
+      "value": "$4297",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$64.01",
+      "value": "$63.96",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -195,20 +195,20 @@
       "type": "caution"
     }
   ],
-  "btc_funding": 3.26e-06,
+  "btc_funding": 3.81e-06,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 38.6,
-    "daily_avg": 39.95,
-    "daily_pct": -3.4,
-    "weekly_inflow": 279.67,
-    "weekly_avg": 217.16,
+    "daily_inflow": 38.51,
+    "daily_avg": 39.94,
+    "daily_pct": -3.6,
+    "weekly_inflow": 279.57,
+    "weekly_avg": 217.14,
     "weekly_pct": 28.8,
-    "monthly_inflow": 930.7,
-    "monthly_avg": 838.77,
+    "monthly_inflow": 930.6,
+    "monthly_avg": 838.73,
     "monthly_pct": 11.0,
-    "large_tx_count": 586483
+    "large_tx_count": 583231
   },
   "history": {
     "vix": [
@@ -234,7 +234,7 @@
       14.81,
       14.87,
       15.18,
-      15.42
+      15.62
     ],
     "yield_10y": [
       4.7,
@@ -258,7 +258,7 @@
       5.0,
       4.96,
       5.11,
-      5.14
+      5.15
     ],
     "oil": [
       85.01,
@@ -283,7 +283,7 @@
       95.78,
       94.59,
       92.16,
-      94.72
+      94.88
     ],
     "gold": [
       4697.8,
@@ -308,7 +308,7 @@
       4383.9,
       4376.4,
       4318.4,
-      4298.3
+      4296.8
     ],
     "silver": [
       68.54,
@@ -333,7 +333,7 @@
       65.82,
       65.93,
       64.38,
-      64.01
+      63.96
     ],
     "dxy": [
       99.0,
@@ -357,7 +357,7 @@
       100.22,
       100.43,
       101.1,
-      101.28
+      101.29
     ],
     "sp500": [
       7652.86,
@@ -381,7 +381,7 @@
       7650.5,
       7764.7,
       7706.03,
-      7703.43
+      7698.91
     ],
     "nasdaq": [
       25980.19,
@@ -405,7 +405,7 @@
       26522.54,
       27122.09,
       26936.04,
-      26916.22
+      26890.72
     ]
   },
   "econ_events": [
