@@ -1,5 +1,5 @@
 {
-  "date": "September 24, 2026 23:55 UTC",
+  "date": "September 25, 2026 00:00 UTC",
   "assets": {
     "S&P 500": {
       "price": 7704.13,
@@ -89,21 +89,21 @@
       ]
     },
     "BTC": {
-      "price": 84337.8,
-      "change_pct": -0.05,
+      "price": 84374.6,
+      "change_pct": 0.02,
       "support": 74909.4,
       "resistance": 87385.1
     },
     "ETH": {
-      "price": 2686.48,
-      "change_pct": 0.07,
+      "price": 2686.65,
+      "change_pct": 0.12,
       "support": 2355.12,
       "resistance": 2806.76
     },
     "SOL": {
-      "price": 117.02,
-      "change_pct": 1.82,
-      "support": 94.82,
+      "price": 116.99,
+      "change_pct": 1.77,
+      "support": 95.72,
       "resistance": 119.99
     }
   },
@@ -113,6 +113,10 @@
     "value": 71,
     "classification": "Greed",
     "history": [
+      {
+        "value": 71,
+        "label": "Greed"
+      },
       {
         "value": 71,
         "label": "Greed"
@@ -135,10 +139,6 @@
       },
       {
         "value": 71,
-        "label": "Greed"
-      },
-      {
-        "value": 56,
         "label": "Greed"
       }
     ]
@@ -165,17 +165,17 @@
       "color": "red"
     },
     "oil": {
-      "value": "$93.93",
+      "value": "$93.96",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4309",
+      "value": "$4306",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$64.21",
+      "value": "$64.10",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -192,20 +192,20 @@
       "type": "caution"
     }
   ],
-  "btc_funding": 1.44e-06,
+  "btc_funding": 2.14e-06,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 38.1,
+    "daily_inflow": 38.06,
     "daily_avg": 39.88,
-    "daily_pct": -4.5,
-    "weekly_inflow": 279.17,
-    "weekly_avg": 217.05,
+    "daily_pct": -4.6,
+    "weekly_inflow": 279.13,
+    "weekly_avg": 217.04,
     "weekly_pct": 28.6,
-    "monthly_inflow": 930.19,
-    "monthly_avg": 838.6,
+    "monthly_inflow": 930.15,
+    "monthly_avg": 838.59,
     "monthly_pct": 10.9,
-    "large_tx_count": 637488
+    "large_tx_count": 634055
   },
   "history": {
     "vix": [
@@ -280,7 +280,7 @@
       95.78,
       94.59,
       92.16,
-      93.93
+      93.96
     ],
     "gold": [
       4697.8,
@@ -305,7 +305,7 @@
       4383.9,
       4376.4,
       4318.4,
-      4309.2
+      4305.9
     ],
     "silver": [
       68.54,
@@ -330,7 +330,7 @@
       65.82,
       65.93,
       64.38,
-      64.21
+      64.1
     ],
     "dxy": [
       99.0,
@@ -405,31 +405,21 @@
   },
   "econ_events": [
     {
-      "label": "UNEMPLOYMENT CLAIMS",
-      "date": "09-24-2026",
-      "time": "12:30pm ET",
-      "forecast": "201K",
-      "previous": "196K",
+      "label": "REVISED UOM CONSUMER SENTIMENT",
+      "date": "09-25-2026",
+      "time": "2:00pm ET",
+      "forecast": "47.4",
+      "previous": "47.8",
       "actual": null,
       "impact": "Medium",
       "country": "USD"
     },
     {
-      "label": "PRESIDENT TRUMP SPEAKS",
-      "date": "09-24-2026",
-      "time": "2:15pm ET",
+      "label": "REVISED UOM INFLATION EXPECTATIONS",
+      "date": "09-25-2026",
+      "time": "2:00pm ET",
       "forecast": "\u2014",
-      "previous": "\u2014",
-      "actual": null,
-      "impact": "Medium",
-      "country": "USD"
-    },
-    {
-      "label": "PRESIDENT TRUMP SPEAKS",
-      "date": "09-24-2026",
-      "time": "11:55pm ET",
-      "forecast": "\u2014",
-      "previous": "\u2014",
+      "previous": "4.6%",
       "actual": null,
       "impact": "Medium",
       "country": "USD"
