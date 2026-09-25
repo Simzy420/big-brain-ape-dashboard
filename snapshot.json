@@ -1,5 +1,5 @@
 {
-  "date": "September 25, 2026 22:00 UTC",
+  "date": "September 25, 2026 22:05 UTC",
   "assets": {
     "S&P 500": {
       "price": 7743.41,
@@ -92,59 +92,29 @@
       ]
     },
     "BTC": {
-      "price": 83747.3,
-      "change_pct": -0.66,
+      "price": 83844.1,
+      "change_pct": -0.57,
       "support": 74909.4,
       "resistance": 87385.1
     },
     "ETH": {
-      "price": 2679.76,
-      "change_pct": -0.21,
+      "price": 2683.29,
+      "change_pct": -0.1,
       "support": 2355.12,
       "resistance": 2806.76
     },
     "SOL": {
-      "price": 120.88,
-      "change_pct": 3.5,
+      "price": 121.3,
+      "change_pct": 3.84,
       "support": 95.72,
       "resistance": 122.93
     }
   },
-  "risk_score": 71,
+  "risk_score": 76,
   "risk_bias": "STRONG RISK-ON",
   "fear_greed": {
-    "value": 71,
-    "classification": "Greed",
-    "history": [
-      {
-        "value": 71,
-        "label": "Greed"
-      },
-      {
-        "value": 71,
-        "label": "Greed"
-      },
-      {
-        "value": 71,
-        "label": "Greed"
-      },
-      {
-        "value": 78,
-        "label": "Extreme Greed"
-      },
-      {
-        "value": 70,
-        "label": "Greed"
-      },
-      {
-        "value": 71,
-        "label": "Greed"
-      },
-      {
-        "value": 71,
-        "label": "Greed"
-      }
-    ]
+    "value": 50,
+    "classification": "Neutral"
   },
   "sector_tech": "NEUTRAL",
   "sector_color": "gray",
@@ -190,11 +160,6 @@
       "type": "bullish"
     },
     {
-      "label": "CAUTION",
-      "text": "Greed elevated (71)",
-      "type": "caution"
-    },
-    {
       "label": "BULLISH",
       "text": "Dollar weakening \u2014 risk asset fuel",
       "type": "bullish"
@@ -205,20 +170,20 @@
       "type": "bullish"
     }
   ],
-  "btc_funding": 2.548e-05,
+  "btc_funding": 2.364e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 36.2,
-    "daily_avg": 38.65,
-    "daily_pct": -6.4,
-    "weekly_inflow": 270.57,
-    "weekly_avg": 218.83,
+    "daily_inflow": 36.1,
+    "daily_avg": 38.64,
+    "daily_pct": -6.6,
+    "weekly_inflow": 270.47,
+    "weekly_avg": 218.8,
     "weekly_pct": 23.6,
-    "monthly_inflow": 937.83,
-    "monthly_avg": 837.45,
+    "monthly_inflow": 937.73,
+    "monthly_avg": 837.42,
     "monthly_pct": 12.0,
-    "large_tx_count": 597299
+    "large_tx_count": 600951
   },
   "history": {
     "vix": [
