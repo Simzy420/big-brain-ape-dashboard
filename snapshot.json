@@ -1,5 +1,5 @@
 {
-  "date": "September 25, 2026 10:30 UTC",
+  "date": "September 25, 2026 10:35 UTC",
   "assets": {
     "S&P 500": {
       "price": 7704.13,
@@ -89,20 +89,20 @@
       ]
     },
     "BTC": {
-      "price": 84688.6,
-      "change_pct": 1.76,
+      "price": 84667.5,
+      "change_pct": 1.71,
       "support": 74909.4,
       "resistance": 87385.1
     },
     "ETH": {
-      "price": 2713.45,
-      "change_pct": 2.88,
+      "price": 2710.63,
+      "change_pct": 2.81,
       "support": 2355.12,
       "resistance": 2806.76
     },
     "SOL": {
-      "price": 118.89,
-      "change_pct": 5.2,
+      "price": 118.82,
+      "change_pct": 5.37,
       "support": 95.72,
       "resistance": 119.99
     }
@@ -165,17 +165,17 @@
       "color": "green"
     },
     "oil": {
-      "value": "$92.88",
+      "value": "$92.90",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4340",
+      "value": "$4344",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$65.30",
+      "value": "$65.31",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -195,22 +195,27 @@
       "label": "CAUTION",
       "text": "Yields rising \u2014 risk off",
       "type": "caution"
+    },
+    {
+      "label": "BULLISH",
+      "text": "Gold up 1.1% \u2014 safe haven bid",
+      "type": "bullish"
     }
   ],
-  "btc_funding": -9.1e-07,
+  "btc_funding": -2.46e-06,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 34.85,
-    "daily_avg": 38.46,
-    "daily_pct": -9.4,
-    "weekly_inflow": 269.23,
-    "weekly_avg": 218.51,
+    "daily_inflow": 34.71,
+    "daily_avg": 38.44,
+    "daily_pct": -9.7,
+    "weekly_inflow": 269.09,
+    "weekly_avg": 218.48,
     "weekly_pct": 23.2,
-    "monthly_inflow": 936.48,
-    "monthly_avg": 837.01,
+    "monthly_inflow": 936.34,
+    "monthly_avg": 836.96,
     "monthly_pct": 11.9,
-    "large_tx_count": 736095
+    "large_tx_count": 732366
   },
   "history": {
     "vix": [
@@ -285,7 +290,7 @@
       94.59,
       92.16,
       94.61,
-      92.88
+      92.87
     ],
     "gold": [
       4694.5,
@@ -310,7 +315,7 @@
       4376.4,
       4318.4,
       4298.0,
-      4340.5
+      4343.9
     ],
     "silver": [
       68.64,
@@ -335,7 +340,7 @@
       65.93,
       64.38,
       63.46,
-      65.3
+      65.31
     ],
     "dxy": [
       98.92,
@@ -359,7 +364,7 @@
       100.43,
       101.1,
       101.29,
-      101.05
+      101.04
     ],
     "sp500": [
       7677.28,
