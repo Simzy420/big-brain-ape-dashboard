@@ -1,6 +1,47 @@
 {
   "tasks": [
     {
+      "id": "scam-wallet-sweep-okx",
+      "priority": "high",
+      "title": "URGENT: New OKX wallet + sweep burned Virtuals wallet",
+      "subtitle": "Discord fake support asked for seed \u00b7 funds still on-chain (~$1.4k HL USDC + ~$180 Base USDC) \u00b7 CoS cannot create wallet for you",
+      "steps": [
+        "Block/report Discord Support @Virtual_protocol. Do NOT open rpcmultinode.blockchain or any Update RPC / beta connect links.",
+        "Open official OKX app from home screen (or https://web3.okx.com/download). Web3 Wallet only.",
+        "Add wallet \u2192 Create wallet (NOT Import). Write new seed on paper only. Confirm words. Never paste seed in chat/Discord/Trust/sites.",
+        "With NEW wallet selected + Base network: copy Receive address into Notes as NEW SAFE. Check first/last 6 chars.",
+        "Switch to OLD wallet \u2192 Base \u2192 Send USDC (~$181) to NEW SAFE address \u2192 triple-check \u2192 Send.",
+        "Same wallet \u2192 Send VIRTUAL (~$12). Leave a little ETH for gas; then send rest of ETH if you want.",
+        "Hyperliquid / HyperCore: withdraw ~$1,400 USDC from the OLD account to the NEW address (match the withdraw network shown). Biggest pile \u2014 do carefully but soon.",
+        "After value is out: open https://revoke.cash (type it) \u2192 connect OLD OKX \u2192 Base \u2192 Revoke unknown approvals. Repeat Ethereum/BNB if needed.",
+        "Trust Wallet \u2192 Settings \u2192 Wallets \u2192 delete the imported burned wallet. Never re-import that phrase.",
+        "Later: https://app.virtuals.io with NEW wallet only. Leave Robinhood alone.",
+        "Reply Chief of Staff with remaining Base USDC/ETH amounts only (no seed, no full address) when stuck or done."
+      ],
+      "links": [
+        {
+          "label": "OKX Wallet official download",
+          "url": "https://web3.okx.com/download"
+        },
+        {
+          "label": "revoke.cash (type this yourself)",
+          "url": "https://revoke.cash"
+        },
+        {
+          "label": "BaseScan burned address (public)",
+          "url": "https://basescan.org/address/0x37a8023762c69f7150d878733fd9f635f1070fc6"
+        },
+        {
+          "label": "Virtuals app (official)",
+          "url": "https://app.virtuals.io"
+        },
+        {
+          "label": "Tasks dashboard",
+          "url": "https://simzy420.github.io/big-brain-ape-dashboard/tasks.html"
+        }
+      ]
+    },
+    {
       "id": "sniper-paper-drill-learn",
       "priority": "high",
       "title": "Paper drill in Telegram (feed /learn poll)",
