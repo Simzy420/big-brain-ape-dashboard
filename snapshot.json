@@ -1,5 +1,5 @@
 {
-  "date": "September 25, 2026 22:05 UTC",
+  "date": "September 25, 2026 22:10 UTC",
   "assets": {
     "S&P 500": {
       "price": 7743.41,
@@ -92,29 +92,59 @@
       ]
     },
     "BTC": {
-      "price": 83844.1,
-      "change_pct": -0.57,
+      "price": 83885.3,
+      "change_pct": -0.48,
       "support": 74909.4,
       "resistance": 87385.1
     },
     "ETH": {
-      "price": 2683.29,
-      "change_pct": -0.1,
+      "price": 2684.13,
+      "change_pct": -0.0,
       "support": 2355.12,
       "resistance": 2806.76
     },
     "SOL": {
-      "price": 121.3,
-      "change_pct": 3.84,
+      "price": 121.37,
+      "change_pct": 4.14,
       "support": 95.72,
       "resistance": 122.93
     }
   },
-  "risk_score": 76,
+  "risk_score": 71,
   "risk_bias": "STRONG RISK-ON",
   "fear_greed": {
-    "value": 50,
-    "classification": "Neutral"
+    "value": 71,
+    "classification": "Greed",
+    "history": [
+      {
+        "value": 71,
+        "label": "Greed"
+      },
+      {
+        "value": 71,
+        "label": "Greed"
+      },
+      {
+        "value": 71,
+        "label": "Greed"
+      },
+      {
+        "value": 78,
+        "label": "Extreme Greed"
+      },
+      {
+        "value": 70,
+        "label": "Greed"
+      },
+      {
+        "value": 71,
+        "label": "Greed"
+      },
+      {
+        "value": 71,
+        "label": "Greed"
+      }
+    ]
   },
   "sector_tech": "NEUTRAL",
   "sector_color": "gray",
@@ -160,6 +190,11 @@
       "type": "bullish"
     },
     {
+      "label": "CAUTION",
+      "text": "Greed elevated (71)",
+      "type": "caution"
+    },
+    {
       "label": "BULLISH",
       "text": "Dollar weakening \u2014 risk asset fuel",
       "type": "bullish"
@@ -170,18 +205,18 @@
       "type": "bullish"
     }
   ],
-  "btc_funding": 2.364e-05,
+  "btc_funding": 2.361e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 36.1,
-    "daily_avg": 38.64,
-    "daily_pct": -6.6,
-    "weekly_inflow": 270.47,
+    "daily_inflow": 36.06,
+    "daily_avg": 38.63,
+    "daily_pct": -6.7,
+    "weekly_inflow": 270.44,
     "weekly_avg": 218.8,
     "weekly_pct": 23.6,
-    "monthly_inflow": 937.73,
-    "monthly_avg": 837.42,
+    "monthly_inflow": 937.69,
+    "monthly_avg": 837.41,
     "monthly_pct": 12.0,
     "large_tx_count": 600951
   },
