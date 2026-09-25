@@ -1,9 +1,9 @@
 {
-  "date": "September 25, 2026 16:15 UTC",
+  "date": "September 25, 2026 16:20 UTC",
   "assets": {
     "S&P 500": {
-      "price": 7745.72,
-      "change_pct": 0.54,
+      "price": 7738.0,
+      "change_pct": 0.44,
       "support": 7507.77,
       "resistance": 7782.19,
       "history": [
@@ -29,12 +29,12 @@
         7764.64,
         7706.03,
         7704.13,
-        7745.71
+        7737.51
       ]
     },
     "NASDAQ": {
-      "price": 27113.96,
-      "change_pct": 0.65,
+      "price": 27077.11,
+      "change_pct": 0.51,
       "support": 25802.96,
       "resistance": 27288.79,
       "history": [
@@ -60,12 +60,12 @@
         27244.28,
         26936.04,
         26939.37,
-        27113.96
+        27077.11
       ]
     },
     "Dow Jones": {
-      "price": 51802.94,
-      "change_pct": 0.88,
+      "price": 51778.69,
+      "change_pct": 0.83,
       "support": 51124.02,
       "resistance": 53819.65,
       "history": [
@@ -91,24 +91,24 @@
         51863.69,
         51511.59,
         51349.98,
-        51802.94
+        51780.04
       ]
     },
     "BTC": {
-      "price": 84020.9,
-      "change_pct": -0.23,
+      "price": 84015.2,
+      "change_pct": -0.58,
       "support": 74909.4,
       "resistance": 87385.1
     },
     "ETH": {
-      "price": 2694.79,
-      "change_pct": 0.81,
+      "price": 2691.24,
+      "change_pct": 0.13,
       "support": 2355.12,
       "resistance": 2806.76
     },
     "SOL": {
-      "price": 120.92,
-      "change_pct": 3.95,
+      "price": 121.34,
+      "change_pct": 3.67,
       "support": 95.72,
       "resistance": 122.21
     }
@@ -156,12 +156,12 @@
   "whale_flow": "NEUTRAL",
   "metrics": {
     "vix": {
-      "value": "15.1",
+      "value": "15.0",
       "label": "VIX",
       "color": "green"
     },
     "yield_10y": {
-      "value": "5.18%",
+      "value": "5.17%",
       "label": "10Y YIELD",
       "color": "blue"
     },
@@ -171,17 +171,17 @@
       "color": "green"
     },
     "oil": {
-      "value": "$92.07",
+      "value": "$91.53",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4330",
+      "value": "$4331",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$65.07",
+      "value": "$65.05",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -199,24 +199,24 @@
     },
     {
       "label": "BULLISH",
-      "text": "S&P 500 up 0.5%",
+      "text": "S&P 500 up 0.4%",
       "type": "bullish"
     }
   ],
-  "btc_funding": 1.87e-06,
+  "btc_funding": 4.16e-06,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 38.24,
-    "daily_avg": 38.95,
-    "daily_pct": -1.8,
-    "weekly_inflow": 272.62,
-    "weekly_avg": 219.3,
-    "weekly_pct": 24.3,
-    "monthly_inflow": 939.87,
-    "monthly_avg": 838.13,
+    "daily_inflow": 38.02,
+    "daily_avg": 38.91,
+    "daily_pct": -2.3,
+    "weekly_inflow": 272.4,
+    "weekly_avg": 219.25,
+    "weekly_pct": 24.2,
+    "monthly_inflow": 939.65,
+    "monthly_avg": 838.06,
     "monthly_pct": 12.1,
-    "large_tx_count": 684558
+    "large_tx_count": 688258
   },
   "history": {
     "vix": [
@@ -243,7 +243,7 @@
       14.21,
       15.18,
       15.67,
-      15.12
+      15.04
     ],
     "yield_10y": [
       4.64,
@@ -268,7 +268,7 @@
       4.97,
       5.11,
       5.16,
-      5.18
+      5.17
     ],
     "oil": [
       82.36,
@@ -293,7 +293,7 @@
       94.59,
       92.16,
       94.61,
-      92.07
+      91.53
     ],
     "gold": [
       4694.5,
@@ -318,7 +318,7 @@
       4376.4,
       4318.4,
       4298.0,
-      4330.2
+      4330.7
     ],
     "silver": [
       68.64,
@@ -343,7 +343,7 @@
       65.93,
       64.38,
       63.46,
-      65.07
+      65.05
     ],
     "dxy": [
       98.92,
@@ -393,7 +393,7 @@
       7764.64,
       7706.03,
       7704.13,
-      7745.71
+      7737.51
     ],
     "nasdaq": [
       26151.3,
@@ -418,7 +418,7 @@
       27244.28,
       26936.04,
       26939.37,
-      27113.96
+      27077.11
     ]
   },
   "econ_events": [
