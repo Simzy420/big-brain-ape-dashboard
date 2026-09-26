@@ -1,6 +1,6 @@
 {
-  "timestamp": 1790405815,
-  "generatedAt": "2026-09-26 06:56 UTC",
+  "timestamp": 1790406656,
+  "generatedAt": "2026-09-26 07:10 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -7380,6 +7380,80 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/V.png",
       "ipo": "2008-03-25",
+      "strongBuy": 12,
+      "buy": 33,
+      "hold": 6,
+      "sell": 0,
+      "strongSell": 0,
+      "consensus": "Strong Buy",
+      "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 12,
+          "b": 33,
+          "h": 6,
+          "s": 0,
+          "ss": 0
+        },
+        {
+          "period": "2026-08-01",
+          "sb": 12,
+          "b": 35,
+          "h": 4,
+          "s": 0,
+          "ss": 0
+        },
+        {
+          "period": "2026-07-01",
+          "sb": 11,
+          "b": 34,
+          "h": 4,
+          "s": 0,
+          "ss": 0
+        },
+        {
+          "period": "2026-06-01",
+          "sb": 11,
+          "b": 33,
+          "h": 4,
+          "s": 0,
+          "ss": 0
+        }
+      ],
+      "earnings": [
+        {
+          "period": "2026-06-30",
+          "quarter": 3,
+          "estimate": 3.2923,
+          "actual": 3.32,
+          "surprise": 0.0277,
+          "surprisePct": 0.8414
+        },
+        {
+          "period": "2026-03-31",
+          "quarter": 2,
+          "estimate": 3.1579,
+          "actual": 3.31,
+          "surprise": 0.1521,
+          "surprisePct": 4.8165
+        },
+        {
+          "period": "2025-12-31",
+          "quarter": 1,
+          "estimate": 3.2026,
+          "actual": 3.17,
+          "surprise": -0.0326,
+          "surprisePct": -1.0179
+        },
+        {
+          "period": "2025-09-30",
+          "quarter": 4,
+          "estimate": 3.0257,
+          "actual": 2.98,
+          "surprise": -0.0457,
+          "surprisePct": -1.5104
+        }
+      ],
       "earningsHistory": [
         {
           "quarter": 2,
@@ -7432,7 +7506,29 @@
           "revenueActual": 10172000000.0
         }
       ],
-      "upcomingEarnings": [],
+      "upcomingEarnings": [
+        {
+          "date": "2027-04-26",
+          "quarter": 2,
+          "epsEstimate": 3.7423,
+          "revenueEstimate": 12595105054,
+          "hour": ""
+        },
+        {
+          "date": "2027-01-27",
+          "quarter": 1,
+          "epsEstimate": 3.6965,
+          "revenueEstimate": 12424934629,
+          "hour": ""
+        },
+        {
+          "date": "2026-10-26",
+          "quarter": 4,
+          "epsEstimate": 3.5019,
+          "revenueEstimate": 12313811320,
+          "hour": "amc"
+        }
+      ],
       "pe": 0,
       "eps": 10.2024,
       "epsTTM": 11.752600000000001,
