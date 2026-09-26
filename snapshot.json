@@ -1,5 +1,5 @@
 {
-  "date": "September 25, 2026 23:55 UTC",
+  "date": "September 26, 2026 00:00 UTC",
   "assets": {
     "S&P 500": {
       "price": 7743.41,
@@ -92,20 +92,20 @@
       ]
     },
     "BTC": {
-      "price": 84004.8,
-      "change_pct": -0.4,
+      "price": 84049.6,
+      "change_pct": -0.38,
       "support": 74909.4,
       "resistance": 87385.1
     },
     "ETH": {
-      "price": 2690.32,
-      "change_pct": 0.17,
+      "price": 2690.57,
+      "change_pct": 0.15,
       "support": 2355.12,
       "resistance": 2806.76
     },
     "SOL": {
-      "price": 121.97,
-      "change_pct": 4.23,
+      "price": 122.12,
+      "change_pct": 4.38,
       "support": 95.72,
       "resistance": 122.93
     }
@@ -113,9 +113,13 @@
   "risk_score": 71,
   "risk_bias": "STRONG RISK-ON",
   "fear_greed": {
-    "value": 71,
+    "value": 74,
     "classification": "Greed",
     "history": [
+      {
+        "value": 74,
+        "label": "Greed"
+      },
       {
         "value": 71,
         "label": "Greed"
@@ -134,10 +138,6 @@
       },
       {
         "value": 70,
-        "label": "Greed"
-      },
-      {
-        "value": 71,
         "label": "Greed"
       },
       {
@@ -191,7 +191,7 @@
     },
     {
       "label": "CAUTION",
-      "text": "Greed elevated (71)",
+      "text": "Greed elevated (74)",
       "type": "caution"
     },
     {
@@ -205,18 +205,18 @@
       "type": "bullish"
     }
   ],
-  "btc_funding": 9.09e-06,
+  "btc_funding": 7.69e-06,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 35.98,
-    "daily_avg": 38.62,
+    "daily_inflow": 36.0,
+    "daily_avg": 38.63,
     "daily_pct": -6.8,
-    "weekly_inflow": 270.35,
+    "weekly_inflow": 270.38,
     "weekly_avg": 218.78,
     "weekly_pct": 23.6,
-    "monthly_inflow": 937.61,
-    "monthly_avg": 837.38,
+    "monthly_inflow": 937.64,
+    "monthly_avg": 837.39,
     "monthly_pct": 12.0,
     "large_tx_count": 598711
   },
@@ -423,21 +423,51 @@
   },
   "econ_events": [
     {
-      "label": "REVISED UOM CONSUMER SENTIMENT",
-      "date": "09-25-2026",
-      "time": "2:00pm ET",
-      "forecast": "47.4",
-      "previous": "47.8",
+      "label": "PRESIDENT TRUMP SPEAKS",
+      "date": "09-22-2026",
+      "time": "1:55pm ET",
+      "forecast": "\u2014",
+      "previous": "\u2014",
       "actual": null,
       "impact": "Medium",
       "country": "USD"
     },
     {
-      "label": "REVISED UOM INFLATION EXPECTATIONS",
+      "label": "UNEMPLOYMENT CLAIMS",
+      "date": "09-24-2026",
+      "time": "12:30pm ET",
+      "forecast": "201K",
+      "previous": "196K",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "PRESIDENT TRUMP SPEAKS",
+      "date": "09-24-2026",
+      "time": "2:15pm ET",
+      "forecast": "\u2014",
+      "previous": "\u2014",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "PRESIDENT TRUMP SPEAKS",
+      "date": "09-24-2026",
+      "time": "11:55pm ET",
+      "forecast": "\u2014",
+      "previous": "\u2014",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "REVISED UOM CONSUMER SENTIMENT",
       "date": "09-25-2026",
       "time": "2:00pm ET",
-      "forecast": "\u2014",
-      "previous": "4.6%",
+      "forecast": "47.4",
+      "previous": "47.8",
       "actual": null,
       "impact": "Medium",
       "country": "USD"
