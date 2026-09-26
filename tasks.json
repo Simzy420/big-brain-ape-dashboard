@@ -4,17 +4,17 @@
       "id": "scam-wallet-sweep-okx",
       "priority": "high",
       "title": "URGENT: New OKX wallet + sweep burned Virtuals wallet",
-      "subtitle": "Discord fake support asked for seed · funds still on-chain (~$1.4k HL USDC + ~$180 Base USDC) · CoS cannot create wallet for you",
+      "subtitle": "Discord fake support asked for seed \u00b7 funds still on-chain (~$1.4k HL USDC + ~$180 Base USDC) \u00b7 CoS cannot create wallet for you",
       "steps": [
         "Block/report Discord Support @Virtual_protocol. Do NOT open rpcmultinode.blockchain or any Update RPC / beta connect links.",
         "Open official OKX app from home screen (or https://web3.okx.com/download). Web3 Wallet only.",
-        "Add wallet → Create wallet (NOT Import). Write new seed on paper only. Confirm words. Never paste seed in chat/Discord/Trust/sites.",
+        "Add wallet \u2192 Create wallet (NOT Import). Write new seed on paper only. Confirm words. Never paste seed in chat/Discord/Trust/sites.",
         "With NEW wallet selected + Base network: copy Receive address into Notes as NEW SAFE. Check first/last 6 chars.",
-        "Switch to OLD wallet → Base → Send USDC (~$181) to NEW SAFE address → triple-check → Send.",
-        "Same wallet → Send VIRTUAL (~$12). Leave a little ETH for gas; then send rest of ETH if you want.",
-        "Hyperliquid / HyperCore: withdraw ~$1,400 USDC from the OLD account to the NEW address (match the withdraw network shown). Biggest pile — do carefully but soon.",
-        "After value is out: open https://revoke.cash (type it) → connect OLD OKX → Base → Revoke unknown approvals. Repeat Ethereum/BNB if needed.",
-        "Trust Wallet → Settings → Wallets → delete the imported burned wallet. Never re-import that phrase.",
+        "Switch to OLD wallet \u2192 Base \u2192 Send USDC (~$181) to NEW SAFE address \u2192 triple-check \u2192 Send.",
+        "Same wallet \u2192 Send VIRTUAL (~$12). Leave a little ETH for gas; then send rest of ETH if you want.",
+        "Hyperliquid / HyperCore: withdraw ~$1,400 USDC from the OLD account to the NEW address (match the withdraw network shown). Biggest pile \u2014 do carefully but soon.",
+        "After value is out: open https://revoke.cash (type it) \u2192 connect OLD OKX \u2192 Base \u2192 Revoke unknown approvals. Repeat Ethereum/BNB if needed.",
+        "Trust Wallet \u2192 Settings \u2192 Wallets \u2192 delete the imported burned wallet. Never re-import that phrase.",
         "Later: https://app.virtuals.io with NEW wallet only. Leave Robinhood alone.",
         "Reply Chief of Staff with remaining Base USDC/ETH amounts only (no seed, no full address) when stuck or done."
       ],
@@ -42,10 +42,37 @@
       ]
     },
     {
+      "id": "sniper-paper-mark-pr16",
+      "priority": "high",
+      "title": "Review / merge sniper paper mark-to-market PR #16",
+      "subtitle": "Draft open ~8:00 PM Boise \u00b7 38 tests pass \u00b7 paper-only DexScreener marks so /learn can score wins/losses",
+      "steps": [
+        "Open https://github.com/Simzy420/telegram-memecoin-sniper-bot-/pull/16",
+        "Read the PR body (formula + Telegram verify steps). Confirm LIVE_TRADING stays off.",
+        "Mark ready for review / merge when you are happy (or ask CoS to merge).",
+        "After merge: deploy the bot host that serves Telegram + /api/learn.",
+        "Then re-run a market-name paper clip (not SLEEPAPE drill) and close after the mark moves; reply done so CoS can recheck /learn."
+      ],
+      "links": [
+        {
+          "label": "PR #16 (draft)",
+          "url": "https://github.com/Simzy420/telegram-memecoin-sniper-bot-/pull/16"
+        },
+        {
+          "label": "Cloud agent transcript",
+          "url": "https://cursor.com/agents/bc-4ff075bd-05f9-5c72-b544-d0d564c8b087"
+        },
+        {
+          "label": "Tasks dashboard",
+          "url": "https://simzy420.github.io/big-brain-ape-dashboard/tasks.html"
+        }
+      ]
+    },
+    {
       "id": "sniper-paper-drill-learn",
       "priority": "high",
       "title": "Paper drill in Telegram (feed /learn poll)",
-      "subtitle": "Still open · CoS poll ~4:53 PM Boise: 53 rows / 1 realised (was 18/0 morning baseline) · reply done when Telegram drill finished",
+      "subtitle": "Still open \u00b7 CoS poll ~4:55 PM Boise: 74 rows / 1 realised (was 53/1 prior night) \u00b7 draft PR #16 wires DexScreener marks (not merged yet) \u00b7 reply done when Telegram drill finished",
       "steps": [
         "Open Big Brain Ape Bot in Telegram (link below)",
         "Send: /start",
@@ -53,11 +80,12 @@
         "Send: /watch",
         "Send: shield check SLEEPAPE",
         "Send: snipe SLEEPAPE",
-        "Send: shield check RUGPUP (should get blocked — good)",
+        "Send: shield check RUGPUP (should get blocked \u2014 good)",
         "Send: /paper",
         "Send: /learn",
         "Optional but useful: close SLEEPAPE so Ledger can record a realised row",
-        "Reply done in Chief of Staff chat — CoS will recheck /api/learn vs the 53/1 baseline"
+        "Reply done in Chief of Staff chat \u2014 CoS will recheck /api/learn vs the 53/1 baseline",
+        "After PR #16 merges + deploys: /watch, snipe a market-feed name (not SLEEPAPE \u2014 drills have no DexScreener mint), close after the mark moves, then /learn \u2014 expect a non-zero realised when exit \u2260 entry"
       ],
       "links": [
         {
@@ -67,6 +95,10 @@
         {
           "label": "Command Center",
           "url": "https://simzy420.github.io/command-center/"
+        },
+        {
+          "label": "Draft PR #16 \u2014 paper DexScreener marks",
+          "url": "https://github.com/Simzy420/telegram-memecoin-sniper-bot-/pull/16"
         }
       ]
     },
@@ -74,16 +106,16 @@
       "id": "wan22-templates-netlify",
       "priority": "high",
       "title": "Deploy Wan 2.2 Templates UI on Netlify",
-      "subtitle": "PR #1 merged · still need Netlify site + phone Generate test",
+      "subtitle": "PR #1 merged \u00b7 still need Netlify site + phone Generate test",
       "steps": [
-        "Repo PR #1 (gallery + how-to) is already merged on GitHub — skip waiting on code",
-        "Open Netlify → Add new site → Import an existing project",
-        "Choose GitHub → authorize if asked → pick Simzy420/wan22-templates",
+        "Repo PR #1 (gallery + how-to) is already merged on GitHub \u2014 skip waiting on code",
+        "Open Netlify \u2192 Add new site \u2192 Import an existing project",
+        "Choose GitHub \u2192 authorize if asked \u2192 pick Simzy420/wan22-templates",
         "Build command: npm run build",
         "Publish directory: dist",
         "Add env var VITE_HF_SPACE = https://simzy-wan-2-2-templates.hf.space",
         "Deploy site, open the Netlify URL on your phone",
-        "Scroll demo templates → pick one → upload a still of yourself → Generate",
+        "Scroll demo templates \u2192 pick one \u2192 upload a still of yourself \u2192 Generate",
         "If Generate fails with CORS: in repo public/config.js set USE_PROXY true, redeploy, and add Netlify env HF_TOKEN (your Hugging Face token)",
         "Reply here or in Command Center with the Netlify URL when it is live"
       ],
@@ -114,12 +146,12 @@
       "id": "wan22-hf-space-sync",
       "priority": "high",
       "title": "Push Wan templates space/ to Hugging Face Space",
-      "subtitle": "PR #1 merged on GitHub · live HF Space is separate git — gallery won’t update until you push",
+      "subtitle": "PR #1 merged on GitHub \u00b7 live HF Space is separate git \u2014 gallery won\u2019t update until you push",
       "steps": [
         "Open https://huggingface.co/spaces/Simzy/Wan-2.2-templates/tree/main",
         "Replace space files with the merged repo copies: space/app.py, space/requirements.txt, space/README.md (from Simzy420/wan22-templates main)",
         "Commit + push on the HF Space repo (or use huggingface-cli upload)",
-        "Hard-refresh https://simzy-wan-2-2-templates.hf.space — confirm autoplay gallery + How to use & create templates",
+        "Hard-refresh https://simzy-wan-2-2-templates.hf.space \u2014 confirm autoplay gallery + How to use & create templates",
         "Reply done in Chief of Staff or Command Center"
       ],
       "links": [
@@ -145,14 +177,14 @@
       "id": "cc-webhook-url-desktop",
       "priority": "high",
       "title": "Copy Command Center chat webhook URL (desktop)",
-      "subtitle": "Phone can’t open “When a webhook fires” — do this on Mac/PC for instant chat wake",
+      "subtitle": "Phone can\u2019t open \u201cWhen a webhook fires\u201d \u2014 do this on Mac/PC for instant chat wake",
       "steps": [
-        "On a computer, open the Grok Bot app (not Google/Safari search — grokbot:// links are in-app only)",
-        "Open Chief of Staff chat → click the name in the header → Routines → Command Center chat",
+        "On a computer, open the Grok Bot app (not Google/Safari search \u2014 grokbot:// links are in-app only)",
+        "Open Chief of Staff chat \u2192 click the name in the header \u2192 Routines \u2192 Command Center chat",
         "Click When a webhook fires",
-        "Copy Webhook URL — must start with https:// and must NOT be huggingface.co, github.io, or grokbot://",
+        "Copy Webhook URL \u2014 must start with https:// and must NOT be huggingface.co, github.io, or grokbot://",
         "Tell Chief of Staff you have it (or paste into the secure field when asked) so it can be set as GROK_WEBHOOK_URL on the Space",
-        "Until then: hard-refresh https://simzy420.github.io/command-center/ and use Chat → Chief of Staff (replies via 5-minute poll backup)"
+        "Until then: hard-refresh https://simzy420.github.io/command-center/ and use Chat \u2192 Chief of Staff (replies via 5-minute poll backup)"
       ],
       "links": [
         {
@@ -176,7 +208,7 @@
       "subtitle": "CC Files pack for 2026-09-22 has daily print; hourly artifact not found",
       "steps": [
         "Decide where hourly prints live (desk bot export, Hyperliquid tape, Buffer, other)",
-        "Reply with path, repo, or export link — or say “no hourly print” so we close the gap",
+        "Reply with path, repo, or export link \u2014 or say \u201cno hourly print\u201d so we close the gap",
         "Optional: drop a sample file into the board pack folder"
       ],
       "links": [
@@ -198,11 +230,11 @@
       "id": "gmail-identity-filters",
       "priority": "medium",
       "title": "Create Gmail filters for Identity labels",
-      "subtitle": "API scopes block us from creating filters — 2 min in Gmail UI",
+      "subtitle": "API scopes block us from creating filters \u2014 2 min in Gmail UI",
       "steps": [
-        "Open Gmail Settings → Filters and Blocked Addresses (link below)",
-        "Create filter: To has caseylsims@gmail.com → Apply label Identity/Gmail",
-        "Create filter: To has caseysims463@yahoo.com → Apply label Identity/Yahoo",
+        "Open Gmail Settings \u2192 Filters and Blocked Addresses (link below)",
+        "Create filter: To has caseylsims@gmail.com \u2192 Apply label Identity/Gmail",
+        "Create filter: To has caseysims463@yahoo.com \u2192 Apply label Identity/Yahoo",
         "Optionally check 'Also apply to matching conversations'",
         "Save both filters"
       ],
@@ -217,9 +249,9 @@
       "id": "bitly-finish-signup",
       "priority": "low",
       "title": "Finish Bitly free signup (password step)",
-      "subtitle": "Only if you still want short links — signup was stuck on password",
+      "subtitle": "Only if you still want short links \u2014 signup was stuck on password",
       "steps": [
-        "Open the Bitly signup link below (or bitly.com → Sign up)",
+        "Open the Bitly signup link below (or bitly.com \u2192 Sign up)",
         "Complete email + password",
         "Verify email if asked",
         "Tell Chief of Staff when done so we can connect the connector"
@@ -240,7 +272,7 @@
         "Go to GitHub Settings (link below)",
         "Click Change username (once every 30 days)",
         "Type: Big-Brain-Ape (check availability first)",
-        "Confirm — repos/stars/followers move automatically",
+        "Confirm \u2014 repos/stars/followers move automatically",
         "Tell Chief of Staff when done so links get updated"
       ],
       "links": [
@@ -254,7 +286,7 @@
       "id": "virtuals-review",
       "priority": "low",
       "title": "Submit Virtuals Builder Review",
-      "subtitle": "Unlock Elite tier — compute credits (5 min form)",
+      "subtitle": "Unlock Elite tier \u2014 compute credits (5 min form)",
       "steps": [
         "Open the Virtuals Builder Review form",
         "Fill in Big Brain Ape project details",
