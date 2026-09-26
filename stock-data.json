@@ -1,6 +1,6 @@
 {
-  "timestamp": 1790398133,
-  "generatedAt": "2026-09-26 04:48 UTC",
+  "timestamp": 1790398973,
+  "generatedAt": "2026-09-26 05:02 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -8304,7 +8304,29 @@
           "revenueActual": 23650000000.0
         }
       ],
-      "upcomingEarnings": [],
+      "upcomingEarnings": [
+        {
+          "date": "2027-05-04",
+          "quarter": 2,
+          "epsEstimate": 1.8333,
+          "revenueEstimate": 27266423085,
+          "hour": ""
+        },
+        {
+          "date": "2027-02-01",
+          "quarter": 1,
+          "epsEstimate": 1.9184,
+          "revenueEstimate": 27818819021,
+          "hour": ""
+        },
+        {
+          "date": "2026-11-11",
+          "quarter": 4,
+          "epsEstimate": 1.6857,
+          "revenueEstimate": 25390695191,
+          "hour": "amc"
+        }
+      ],
       "pe": 0,
       "eps": 6.8493,
       "epsTTM": 4.8475,
@@ -16941,29 +16963,7 @@
           "revenueActual": 19496000000.0
         }
       ],
-      "upcomingEarnings": [
-        {
-          "date": "2027-04-20",
-          "quarter": 1,
-          "epsEstimate": 0.4481,
-          "revenueEstimate": 27639181710,
-          "hour": ""
-        },
-        {
-          "date": "2027-01-25",
-          "quarter": 4,
-          "epsEstimate": 0.044,
-          "revenueEstimate": 27189747977,
-          "hour": "amc"
-        },
-        {
-          "date": "2026-10-27",
-          "quarter": 3,
-          "epsEstimate": -0.1512,
-          "revenueEstimate": 25752522377,
-          "hour": "bmo"
-        }
-      ],
+      "upcomingEarnings": [],
       "pe": 0,
       "eps": 2.9319,
       "epsTTM": 2.9605999999999986,
@@ -17246,80 +17246,6 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/WMT.png",
       "ipo": "1972-08-25",
-      "strongBuy": 12,
-      "buy": 30,
-      "hold": 6,
-      "sell": 0,
-      "strongSell": 0,
-      "consensus": "Strong Buy",
-      "recTrend": [
-        {
-          "period": "2026-09-01",
-          "sb": 12,
-          "b": 30,
-          "h": 6,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-08-01",
-          "sb": 14,
-          "b": 29,
-          "h": 5,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-07-01",
-          "sb": 14,
-          "b": 29,
-          "h": 5,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-06-01",
-          "sb": 14,
-          "b": 29,
-          "h": 5,
-          "s": 0,
-          "ss": 0
-        }
-      ],
-      "earnings": [
-        {
-          "period": "2026-09-30",
-          "quarter": 2,
-          "estimate": 0.7487,
-          "actual": 0.81,
-          "surprise": 0.0613,
-          "surprisePct": 8.1875
-        },
-        {
-          "period": "2026-06-30",
-          "quarter": 1,
-          "estimate": 0.6638,
-          "actual": 0.66,
-          "surprise": -0.0038,
-          "surprisePct": -0.5725
-        },
-        {
-          "period": "2026-03-31",
-          "quarter": 4,
-          "estimate": 0.7334,
-          "actual": 0.74,
-          "surprise": 0.0066,
-          "surprisePct": 0.8999
-        },
-        {
-          "period": "2025-12-31",
-          "quarter": 3,
-          "estimate": 0.6068,
-          "actual": 0.62,
-          "surprise": 0.0132,
-          "surprisePct": 2.1753
-        }
-      ],
       "earningsHistory": [
         {
           "quarter": 2,
@@ -26716,27 +26642,15 @@
       "low": 54.31,
       "prevClose": 54.53,
       "upcomingEarnings": [],
-      "pe": 0,
-      "eps": 0,
-      "epsTTM": 0,
-      "revenuePerShare": 0,
-      "revenueGrowthYoY": 0,
-      "earningsNonGaap": 0,
-      "nonGaapEPS": 0,
-      "roe": 0,
-      "beta": 0.8809593,
-      "yearHigh": 58.6,
-      "yearLow": 47.67,
-      "priceAvg50": 0,
-      "priceAvg200": 0,
-      "grossMargin": 0,
-      "netMargin": 0,
-      "dividendYield": 0,
-      "volume": 39330960,
+      "yearHigh": 54.885,
+      "yearLow": 54.31,
+      "priceAvg50": 54.84,
+      "priceAvg200": 54.84,
       "targetAvg": 0,
       "targetHigh": 0,
       "targetLow": 0,
       "targetMedian": 0,
+      "beta": 0,
       "history": [
         {
           "date": "2026-08-14",
