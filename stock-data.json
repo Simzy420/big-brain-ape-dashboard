@@ -1,6 +1,6 @@
 {
-  "timestamp": 1790401554,
-  "generatedAt": "2026-09-26 05:45 UTC",
+  "timestamp": 1790402454,
+  "generatedAt": "2026-09-26 06:00 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -7075,15 +7075,50 @@
           "revenueActual": 28247000000.0
         }
       ],
-      "yearHigh": 56.745,
-      "yearLow": 55.865,
-      "priceAvg50": 56.7,
-      "priceAvg200": 56.7,
+      "upcomingEarnings": [
+        {
+          "date": "2027-04-14",
+          "quarter": 1,
+          "epsEstimate": 1.2505,
+          "revenueEstimate": 32712575516,
+          "hour": "bmo"
+        },
+        {
+          "date": "2027-01-15",
+          "quarter": 4,
+          "epsEstimate": 1.1714,
+          "revenueEstimate": 31058008858,
+          "hour": "bmo"
+        },
+        {
+          "date": "2026-10-14",
+          "quarter": 3,
+          "epsEstimate": 1.1842,
+          "revenueEstimate": 31504704860,
+          "hour": "bmo"
+        }
+      ],
+      "pe": 0,
+      "eps": 3.9721,
+      "epsTTM": 4.5089,
+      "revenuePerShare": 12.45394,
+      "revenueGrowthYoY": 99.36713,
+      "earningsNonGaap": 4.5089,
+      "nonGaapEPS": 4.5089,
+      "roe": 11.129999999999999,
+      "beta": 1.2047445,
+      "yearHigh": 65.225,
+      "yearLow": 46.12,
+      "priceAvg50": 0,
+      "priceAvg200": 0,
+      "grossMargin": 0,
+      "netMargin": 30.15501,
+      "dividendYield": 0,
+      "volume": 43995730,
       "targetAvg": 68.61905,
       "targetHigh": 76.0,
       "targetLow": 62.0,
       "targetMedian": 68.0,
-      "beta": 1.164,
       "history": [
         {
           "date": "2026-08-14",
@@ -7336,6 +7371,15 @@
       "high": 368.3347,
       "low": 363.79,
       "prevClose": 367.98,
+      "name": "Visa Inc",
+      "companyName": "Visa Inc",
+      "exchange": "NEW YORK STOCK EXCHANGE, INC.",
+      "sector": "Financial Services",
+      "industry": "Financial Services",
+      "marketCap": 685915879043.4559,
+      "country": "US",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/V.png",
+      "ipo": "2008-03-25",
       "strongBuy": 12,
       "buy": 33,
       "hold": 6,
