@@ -1,36 +1,6 @@
 {
-  "date": "September 26, 2026 13:40 UTC",
+  "date": "September 26, 2026 13:45 UTC",
   "assets": {
-    "S&P 500": {
-      "price": 7743.41,
-      "change_pct": 0.51,
-      "support": 7507.77,
-      "resistance": 7782.19,
-      "history": [
-        7675.7,
-        7730.99,
-        7711.76,
-        7686.14,
-        7631.47,
-        7666.6,
-        7747.71,
-        7718.6,
-        7673.52,
-        7636.36,
-        7591.7,
-        7656.98,
-        7619.98,
-        7585.73,
-        7551.81,
-        7637.76,
-        7650.5,
-        7764.7,
-        7764.64,
-        7706.03,
-        7704.13,
-        7743.41
-      ]
-    },
     "NASDAQ": {
       "price": 27068.72,
       "change_pct": 0.48,
@@ -92,26 +62,26 @@
       ]
     },
     "BTC": {
-      "price": 83890.0,
-      "change_pct": -0.21,
+      "price": 83889.9,
+      "change_pct": -0.1,
       "support": 74909.4,
       "resistance": 87385.1
     },
     "ETH": {
-      "price": 2682.57,
-      "change_pct": -0.65,
+      "price": 2682.51,
+      "change_pct": -0.46,
       "support": 2355.12,
       "resistance": 2806.76
     },
     "SOL": {
-      "price": 120.62,
-      "change_pct": 0.8,
+      "price": 120.56,
+      "change_pct": 0.95,
       "support": 95.72,
       "resistance": 122.93
     }
   },
-  "risk_score": 71,
-  "risk_bias": "STRONG RISK-ON",
+  "risk_score": 63,
+  "risk_bias": "RISK-ON",
   "fear_greed": {
     "value": 74,
     "classification": "Greed",
@@ -146,8 +116,8 @@
       }
     ]
   },
-  "sector_tech": "NEUTRAL",
-  "sector_color": "gray",
+  "sector_tech": "HOT",
+  "sector_color": "red",
   "put_call": "0.85",
   "options_bias": "NEUTRAL",
   "whale_flow": "NEUTRAL",
@@ -198,18 +168,13 @@
       "label": "BULLISH",
       "text": "Dollar weakening \u2014 risk asset fuel",
       "type": "bullish"
-    },
-    {
-      "label": "BULLISH",
-      "text": "S&P 500 up 0.5%",
-      "type": "bullish"
     }
   ],
-  "btc_funding": -6.93e-06,
+  "btc_funding": -6.45e-06,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 24.63,
+    "daily_inflow": 24.64,
     "daily_avg": 38.69,
     "daily_pct": -36.3,
     "weekly_inflow": 270.86,
@@ -218,7 +183,7 @@
     "monthly_inflow": 928.9,
     "monthly_avg": 840.19,
     "monthly_pct": 10.6,
-    "large_tx_count": 594880
+    "large_tx_count": 597885
   },
   "history": {
     "vix": [
@@ -368,30 +333,7 @@
       101.29,
       100.97
     ],
-    "sp500": [
-      7675.7,
-      7730.99,
-      7711.76,
-      7686.14,
-      7631.47,
-      7666.6,
-      7747.71,
-      7718.6,
-      7673.52,
-      7636.36,
-      7591.7,
-      7656.98,
-      7619.98,
-      7585.73,
-      7551.81,
-      7637.76,
-      7650.5,
-      7764.7,
-      7764.64,
-      7706.03,
-      7704.13,
-      7743.41
-    ],
+    "sp500": [],
     "nasdaq": [
       26130.2,
       26541.35,
