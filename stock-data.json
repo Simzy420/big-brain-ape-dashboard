@@ -1,6 +1,6 @@
 {
-  "timestamp": 1790488734,
-  "generatedAt": "2026-09-27 05:58 UTC",
+  "timestamp": 1790489634,
+  "generatedAt": "2026-09-27 06:13 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -18369,15 +18369,27 @@
           "hour": "bmo"
         }
       ],
-      "yearHigh": 379.17,
-      "yearLow": 371.17,
-      "priceAvg50": 376.59,
-      "priceAvg200": 376.59,
+      "pe": 0,
+      "eps": 13.2338,
+      "epsTTM": 15.551,
+      "revenuePerShare": 496.8311,
+      "revenueGrowthYoY": 6.46,
+      "earningsNonGaap": 15.551,
+      "nonGaapEPS": 15.551,
+      "roe": 14.399999999999999,
+      "beta": 0.5371535,
+      "yearHigh": 461.62,
+      "yearLow": 255.97,
+      "priceAvg50": 0,
+      "priceAvg200": 0,
+      "grossMargin": 0,
+      "netMargin": 3.14,
+      "dividendYield": 0,
+      "volume": 4954840,
       "targetAvg": 481.72,
       "targetHigh": 529.0,
       "targetLow": 380.0,
       "targetMedian": 490.0,
-      "beta": 0.622,
       "history": [
         {
           "date": "2026-08-14",
@@ -18639,6 +18651,80 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/JNJ.png",
       "ipo": "1944-09-25",
+      "strongBuy": 7,
+      "buy": 15,
+      "hold": 9,
+      "sell": 0,
+      "strongSell": 0,
+      "consensus": "Strong Buy",
+      "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 7,
+          "b": 15,
+          "h": 9,
+          "s": 0,
+          "ss": 0
+        },
+        {
+          "period": "2026-08-01",
+          "sb": 7,
+          "b": 15,
+          "h": 9,
+          "s": 0,
+          "ss": 0
+        },
+        {
+          "period": "2026-07-01",
+          "sb": 7,
+          "b": 14,
+          "h": 10,
+          "s": 0,
+          "ss": 0
+        },
+        {
+          "period": "2026-06-01",
+          "sb": 7,
+          "b": 14,
+          "h": 10,
+          "s": 0,
+          "ss": 0
+        }
+      ],
+      "earnings": [
+        {
+          "period": "2026-06-30",
+          "quarter": 2,
+          "estimate": 2.8745,
+          "actual": 2.9,
+          "surprise": 0.0255,
+          "surprisePct": 0.8871
+        },
+        {
+          "period": "2026-03-31",
+          "quarter": 1,
+          "estimate": 2.6914,
+          "actual": 2.7,
+          "surprise": 0.0086,
+          "surprisePct": 0.3195
+        },
+        {
+          "period": "2025-12-31",
+          "quarter": 4,
+          "estimate": 2.4633,
+          "actual": 2.46,
+          "surprise": -0.0033,
+          "surprisePct": -0.134
+        },
+        {
+          "period": "2025-09-30",
+          "quarter": 3,
+          "estimate": 2.7848,
+          "actual": 2.8,
+          "surprise": 0.0152,
+          "surprisePct": 0.5458
+        }
+      ],
       "earningsHistory": [
         {
           "quarter": 2,
@@ -18691,15 +18777,50 @@
           "revenueActual": 23743000000.0
         }
       ],
-      "yearHigh": 272.2459,
-      "yearLow": 269.2573,
-      "priceAvg50": 271.22,
-      "priceAvg200": 271.22,
+      "upcomingEarnings": [
+        {
+          "date": "2027-04-12",
+          "quarter": 1,
+          "epsEstimate": 2.9232,
+          "revenueEstimate": 25909986520,
+          "hour": ""
+        },
+        {
+          "date": "2027-01-26",
+          "quarter": 4,
+          "epsEstimate": 3.0305,
+          "revenueEstimate": 26788173652,
+          "hour": "amc"
+        },
+        {
+          "date": "2026-10-13",
+          "quarter": 3,
+          "epsEstimate": 2.5873,
+          "revenueEstimate": 25568030022,
+          "hour": ""
+        }
+      ],
+      "pe": 0,
+      "eps": 11.0332,
+      "epsTTM": 8.624199999999998,
+      "revenuePerShare": 40.1332,
+      "revenueGrowthYoY": 8.06,
+      "earningsNonGaap": 8.624199999999998,
+      "nonGaapEPS": 8.624199999999998,
+      "roe": 25.740000000000002,
+      "beta": 0.20763902,
+      "yearHigh": 281.07,
+      "yearLow": 175.91,
+      "priceAvg50": 0,
+      "priceAvg200": 0,
+      "grossMargin": 68.05,
+      "netMargin": 21.48,
+      "dividendYield": 0,
+      "volume": 6513420,
       "targetAvg": 277.9091,
       "targetHigh": 320.0,
       "targetLow": 190.0,
       "targetMedian": 282.0,
-      "beta": 0.235,
       "history": [
         {
           "date": "2026-08-14",
