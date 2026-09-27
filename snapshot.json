@@ -1,5 +1,5 @@
 {
-  "date": "September 27, 2026 04:35 UTC",
+  "date": "September 27, 2026 04:45 UTC",
   "assets": {
     "S&P 500": {
       "price": 7743.41,
@@ -92,20 +92,20 @@
       ]
     },
     "BTC": {
-      "price": 84297.8,
-      "change_pct": 0.53,
+      "price": 84269.8,
+      "change_pct": 0.38,
       "support": 74909.4,
       "resistance": 87385.1
     },
     "ETH": {
-      "price": 2692.5,
-      "change_pct": 0.29,
+      "price": 2690.86,
+      "change_pct": 0.12,
       "support": 2355.12,
       "resistance": 2806.76
     },
     "SOL": {
-      "price": 120.26,
-      "change_pct": -0.07,
+      "price": 120.16,
+      "change_pct": -0.28,
       "support": 95.72,
       "resistance": 122.93
     }
@@ -200,20 +200,20 @@
       "type": "bullish"
     }
   ],
-  "btc_funding": 4.061e-05,
+  "btc_funding": 3.7e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 17.3,
-    "daily_avg": 36.82,
-    "daily_pct": -53.0,
-    "weekly_inflow": 257.77,
-    "weekly_avg": 210.76,
-    "weekly_pct": 22.3,
-    "monthly_inflow": 903.27,
-    "monthly_avg": 837.99,
-    "monthly_pct": 7.8,
-    "large_tx_count": 690932
+    "daily_inflow": 0,
+    "daily_avg": 0,
+    "daily_pct": 0,
+    "weekly_inflow": 0,
+    "weekly_avg": 0,
+    "weekly_pct": 0,
+    "monthly_inflow": 0,
+    "monthly_avg": 0,
+    "monthly_pct": 0,
+    "large_tx_count": 685892
   },
   "history": {
     "vix": [
@@ -410,53 +410,53 @@
   },
   "econ_events": [
     {
-      "label": "PRESIDENT TRUMP SPEAKS",
-      "date": "09-22-2026",
-      "time": "1:55pm ET",
-      "forecast": "\u2014",
-      "previous": "\u2014",
-      "actual": null,
-      "impact": "Medium",
-      "country": "USD"
-    },
-    {
-      "label": "UNEMPLOYMENT CLAIMS",
-      "date": "09-24-2026",
-      "time": "12:30pm ET",
-      "forecast": "201K",
-      "previous": "196K",
-      "actual": null,
-      "impact": "Medium",
-      "country": "USD"
-    },
-    {
-      "label": "PRESIDENT TRUMP SPEAKS",
-      "date": "09-24-2026",
-      "time": "2:15pm ET",
-      "forecast": "\u2014",
-      "previous": "\u2014",
-      "actual": null,
-      "impact": "Medium",
-      "country": "USD"
-    },
-    {
-      "label": "PRESIDENT TRUMP SPEAKS",
-      "date": "09-24-2026",
-      "time": "11:55pm ET",
-      "forecast": "\u2014",
-      "previous": "\u2014",
-      "actual": null,
-      "impact": "Medium",
-      "country": "USD"
-    },
-    {
-      "label": "REVISED UOM CONSUMER SENTIMENT",
-      "date": "09-25-2026",
+      "label": "CB CONSUMER CONFIDENCE",
+      "date": "09-29-2026",
       "time": "2:00pm ET",
-      "forecast": "47.4",
-      "previous": "47.8",
+      "forecast": "90.1",
+      "previous": "89.4",
       "actual": null,
       "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "JOLTS JOB OPENINGS",
+      "date": "09-29-2026",
+      "time": "2:00pm ET",
+      "forecast": "7.23M",
+      "previous": "7.27M",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "ADP NON-FARM EMPLOYMENT CHANGE",
+      "date": "09-30-2026",
+      "time": "12:15pm ET",
+      "forecast": "70K",
+      "previous": "38K",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "CORE PCE PRICE INDEX M/M",
+      "date": "09-30-2026",
+      "time": "12:30pm ET",
+      "forecast": "0.3%",
+      "previous": "0.2%",
+      "actual": null,
+      "impact": "High",
+      "country": "USD"
+    },
+    {
+      "label": "FINAL GDP Q/Q",
+      "date": "09-30-2026",
+      "time": "12:30pm ET",
+      "forecast": "1.5%",
+      "previous": "1.5%",
+      "actual": null,
+      "impact": "High",
       "country": "USD"
     }
   ]
