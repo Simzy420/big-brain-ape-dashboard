@@ -1,6 +1,6 @@
 {
-  "timestamp": 1790585564,
-  "generatedAt": "2026-09-28 08:52 UTC",
+  "timestamp": 1790586405,
+  "generatedAt": "2026-09-28 09:06 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -8242,46 +8242,6 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/DIS.png",
       "ipo": "1957-11-12",
-      "strongBuy": 11,
-      "buy": 23,
-      "hold": 3,
-      "sell": 1,
-      "strongSell": 0,
-      "consensus": "Strong Buy",
-      "recTrend": [
-        {
-          "period": "2026-09-01",
-          "sb": 11,
-          "b": 23,
-          "h": 3,
-          "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-08-01",
-          "sb": 11,
-          "b": 22,
-          "h": 3,
-          "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-07-01",
-          "sb": 11,
-          "b": 21,
-          "h": 3,
-          "s": 1,
-          "ss": 0
-        },
-        {
-          "period": "2026-06-01",
-          "sb": 11,
-          "b": 21,
-          "h": 3,
-          "s": 1,
-          "ss": 0
-        }
-      ],
       "earnings": [
         {
           "period": "2026-06-30",
@@ -13596,10 +13556,10 @@
       "netMargin": 7.02,
       "dividendYield": 0,
       "volume": 9396850,
-      "targetAvg": 185.5342,
-      "targetHigh": 238.53664,
-      "targetLow": 95.32901,
-      "targetMedian": 187.99606,
+      "targetAvg": 185.20802,
+      "targetHigh": 238.11728,
+      "targetLow": 95.16142,
+      "targetMedian": 187.66556,
       "history": [
         {
           "date": "2026-08-14",
@@ -14037,7 +13997,7 @@
       "netMargin": 55.91,
       "dividendYield": 0,
       "volume": 24763940,
-      "targetAvg": 1515.5435,
+      "targetAvg": 1520.7609,
       "targetHigh": 2200.0,
       "targetLow": 361.0,
       "targetMedian": 1545.0,
@@ -16596,7 +16556,29 @@
           "revenueActual": 44375000000.0
         }
       ],
-      "upcomingEarnings": [],
+      "upcomingEarnings": [
+        {
+          "date": "2027-04-29",
+          "quarter": 1,
+          "epsEstimate": 3.5232,
+          "revenueEstimate": 54108428151,
+          "hour": ""
+        },
+        {
+          "date": "2027-01-28",
+          "quarter": 4,
+          "epsEstimate": 4.1803,
+          "revenueEstimate": 56281360190,
+          "hour": "amc"
+        },
+        {
+          "date": "2026-10-23",
+          "quarter": 3,
+          "epsEstimate": 4.7945,
+          "revenueEstimate": 58478202807,
+          "hour": "bmo"
+        }
+      ],
       "pe": 0,
       "eps": 6.6266,
       "epsTTM": 10.4285,
@@ -23586,10 +23568,10 @@
       "netMargin": -4.17,
       "dividendYield": 0,
       "volume": 28707680,
-      "targetAvg": 6.297606,
-      "targetHigh": 10.093423,
-      "targetLow": 3.9030604,
-      "targetMedian": 6.0088806,
+      "targetAvg": 6.3074737,
+      "targetHigh": 10.109239,
+      "targetLow": 3.9091763,
+      "targetMedian": 6.018296,
       "history": [
         {
           "date": "2026-08-14",
@@ -24713,6 +24695,80 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/SPCE.png",
       "ipo": "2017-09-18",
+      "strongBuy": 1,
+      "buy": 1,
+      "hold": 6,
+      "sell": 3,
+      "strongSell": 2,
+      "consensus": "Strong Sell",
+      "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 1,
+          "b": 1,
+          "h": 6,
+          "s": 3,
+          "ss": 2
+        },
+        {
+          "period": "2026-08-01",
+          "sb": 1,
+          "b": 1,
+          "h": 6,
+          "s": 3,
+          "ss": 2
+        },
+        {
+          "period": "2026-07-01",
+          "sb": 1,
+          "b": 1,
+          "h": 6,
+          "s": 3,
+          "ss": 2
+        },
+        {
+          "period": "2026-06-01",
+          "sb": 1,
+          "b": 1,
+          "h": 6,
+          "s": 3,
+          "ss": 2
+        }
+      ],
+      "earnings": [
+        {
+          "period": "2026-06-30",
+          "quarter": 2,
+          "estimate": -0.6557,
+          "actual": -0.58,
+          "surprise": 0.0757,
+          "surprisePct": 11.5449
+        },
+        {
+          "period": "2026-03-31",
+          "quarter": 1,
+          "estimate": -0.8806,
+          "actual": -0.81,
+          "surprise": 0.0706,
+          "surprisePct": 8.0173
+        },
+        {
+          "period": "2025-12-31",
+          "quarter": 4,
+          "estimate": -1.0557,
+          "actual": -0.98,
+          "surprise": 0.0757,
+          "surprisePct": 7.1706
+        },
+        {
+          "period": "2025-09-30",
+          "quarter": 3,
+          "estimate": -1.4675,
+          "actual": -1.09,
+          "surprise": 0.3775,
+          "surprisePct": 25.724
+        }
+      ],
       "earningsHistory": [
         {
           "quarter": 2,
@@ -24775,7 +24831,29 @@
           "revenueActual": 406000.0
         }
       ],
-      "upcomingEarnings": [],
+      "upcomingEarnings": [
+        {
+          "date": "2027-05-12",
+          "quarter": 1,
+          "epsEstimate": -0.3366,
+          "revenueEstimate": 37230000,
+          "hour": ""
+        },
+        {
+          "date": "2027-03-29",
+          "quarter": 4,
+          "epsEstimate": -0.5661,
+          "revenueEstimate": 4202400,
+          "hour": "amc"
+        },
+        {
+          "date": "2026-11-11",
+          "quarter": 3,
+          "epsEstimate": -0.4777,
+          "revenueEstimate": 339996,
+          "hour": ""
+        }
+      ],
       "pe": 0,
       "eps": -5.4429,
       "epsTTM": -3.3804,
