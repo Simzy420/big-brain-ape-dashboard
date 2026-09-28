@@ -1,9 +1,9 @@
 {
-  "date": "September 28, 2026 17:45 UTC",
+  "date": "September 28, 2026 17:50 UTC",
   "assets": {
     "S&P 500": {
-      "price": 7700.46,
-      "change_pct": -0.55,
+      "price": 7702.07,
+      "change_pct": -0.53,
       "support": 7507.77,
       "resistance": 7782.19,
       "history": [
@@ -27,12 +27,12 @@
         7706.03,
         7704.13,
         7743.41,
-        7700.46
+        7702.07
       ]
     },
     "NASDAQ": {
-      "price": 26899.04,
-      "change_pct": -0.63,
+      "price": 26904.76,
+      "change_pct": -0.61,
       "support": 25802.96,
       "resistance": 27288.79,
       "history": [
@@ -56,12 +56,12 @@
         26936.04,
         26939.37,
         27068.72,
-        26899.04
+        26904.76
       ]
     },
     "Dow Jones": {
-      "price": 51612.85,
-      "change_pct": -0.42,
+      "price": 51608.12,
+      "change_pct": -0.43,
       "support": 51124.02,
       "resistance": 53819.65,
       "history": [
@@ -85,24 +85,24 @@
         51511.59,
         51349.98,
         51828.62,
-        51612.85
+        51608.12
       ]
     },
     "BTC": {
-      "price": 83958.7,
-      "change_pct": -0.57,
+      "price": 83855.6,
+      "change_pct": -0.8,
       "support": 74909.4,
       "resistance": 87385.1
     },
     "ETH": {
-      "price": 2699.55,
-      "change_pct": 0.47,
+      "price": 2694.64,
+      "change_pct": 0.16,
       "support": 2355.12,
       "resistance": 2806.76
     },
     "SOL": {
-      "price": 119.83,
-      "change_pct": -1.72,
+      "price": 119.55,
+      "change_pct": -2.07,
       "support": 95.72,
       "resistance": 124.99
     }
@@ -165,17 +165,17 @@
       "color": "red"
     },
     "oil": {
-      "value": "$92.60",
+      "value": "$92.58",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4170",
+      "value": "$4167",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$61.77",
+      "value": "$61.73",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -188,7 +188,7 @@
     },
     {
       "label": "CAUTION",
-      "text": "S&P 500 down -0.6%",
+      "text": "S&P 500 down -0.5%",
       "type": "caution"
     },
     {
@@ -198,7 +198,7 @@
     },
     {
       "label": "NEUTRAL",
-      "text": "Gold down -3.5% \u2014 risk appetite",
+      "text": "Gold down -3.6% \u2014 risk appetite",
       "type": "neutral"
     },
     {
@@ -207,20 +207,20 @@
       "type": "bullish"
     }
   ],
-  "btc_funding": 5.649e-05,
+  "btc_funding": 5.506e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 41.19,
-    "daily_avg": 34.62,
-    "daily_pct": 19.0,
-    "weekly_inflow": 242.33,
-    "weekly_avg": 217.94,
+    "daily_inflow": 41.28,
+    "daily_avg": 34.63,
+    "daily_pct": 19.2,
+    "weekly_inflow": 242.42,
+    "weekly_avg": 217.96,
     "weekly_pct": 11.2,
-    "monthly_inflow": 934.01,
-    "monthly_avg": 842.52,
+    "monthly_inflow": 934.1,
+    "monthly_avg": 842.55,
     "monthly_pct": 10.9,
-    "large_tx_count": 810977
+    "large_tx_count": 799718
   },
   "history": {
     "vix": [
@@ -245,7 +245,7 @@
       15.18,
       15.67,
       14.87,
-      15.94
+      15.93
     ],
     "yield_10y": [
       4.72,
@@ -291,7 +291,7 @@
       92.16,
       94.61,
       92.41,
-      92.6
+      92.58
     ],
     "gold": [
       4529.9,
@@ -314,7 +314,7 @@
       4318.4,
       4298.0,
       4321.2,
-      4169.5
+      4167.1
     ],
     "silver": [
       67.0,
@@ -337,7 +337,7 @@
       64.38,
       63.46,
       64.25,
-      61.77
+      61.73
     ],
     "dxy": [
       99.7,
@@ -360,7 +360,7 @@
       101.1,
       101.29,
       100.97,
-      101.13
+      101.14
     ],
     "sp500": [
       7711.76,
@@ -383,7 +383,7 @@
       7706.03,
       7704.13,
       7743.41,
-      7700.46
+      7702.07
     ],
     "nasdaq": [
       26402.42,
@@ -406,7 +406,7 @@
       26936.04,
       26939.37,
       27068.72,
-      26899.04
+      26904.76
     ]
   },
   "econ_events": [
