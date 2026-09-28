@@ -1,25 +1,16 @@
 {
-  "timestamp": 1790605790,
-  "generatedAt": "2026-09-28 14:29 UTC",
+  "timestamp": 1790606871,
+  "generatedAt": "2026-09-28 14:47 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
-      "price": 231.4,
-      "change": 6.33,
-      "changePercentage": 2.8125,
+      "price": 229.15,
+      "change": 4.08,
+      "changePercentage": 1.8128,
       "open": 226.505,
       "high": 233.21,
       "low": 226.505,
       "prevClose": 225.07,
-      "name": "NVIDIA Corp",
-      "companyName": "NVIDIA Corp",
-      "exchange": "NASDAQ NMS - GLOBAL MARKET",
-      "sector": "Semiconductors",
-      "industry": "Semiconductors",
-      "marketCap": 5424187044224.28,
-      "country": "US",
-      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/942959144056.png",
-      "ipo": "1999-01-22",
       "strongBuy": 24,
       "buy": 41,
       "hold": 3,
@@ -179,27 +170,15 @@
           "hour": "amc"
         }
       ],
-      "pe": 0,
-      "eps": 4.8979,
-      "epsTTM": 7.9108,
-      "revenuePerShare": 12.4756,
-      "revenueGrowthYoY": 83.38,
-      "earningsNonGaap": 7.9108,
-      "nonGaapEPS": 7.9108,
-      "roe": 110.11,
-      "beta": 2.2211509,
-      "yearHigh": 236.54,
-      "yearLow": 164.27,
-      "priceAvg50": 0,
-      "priceAvg200": 0,
-      "grossMargin": 74.67,
-      "netMargin": 63.66,
-      "dividendYield": 0,
-      "volume": 106388690,
+      "yearHigh": 233.21,
+      "yearLow": 226.505,
+      "priceAvg50": 229.15,
+      "priceAvg200": 229.15,
       "targetAvg": 327.7,
       "targetHigh": 515.0,
       "targetLow": 180.0,
       "targetMedian": 315.0,
+      "beta": 2.217,
       "history": [
         {
           "date": "2026-08-17",
@@ -437,471 +416,21 @@
           "date": "2026-09-28",
           "o": 229.7,
           "h": 233.21,
-          "l": 229.5,
-          "c": 231.24,
-          "v": 50705231
-        }
-      ]
-    },
-    "AAPL": {
-      "symbol": "AAPL",
-      "price": 341.34,
-      "change": 0.27,
-      "changePercentage": 0.0792,
-      "open": 340.435,
-      "high": 342.988,
-      "low": 340.17,
-      "prevClose": 341.07,
-      "name": "Apple Inc",
-      "companyName": "Apple Inc",
-      "exchange": "NASDAQ NMS - GLOBAL MARKET",
-      "sector": "Technology",
-      "industry": "Technology",
-      "marketCap": 4977637064987.001,
-      "country": "US",
-      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/AAPL.png",
-      "ipo": "1980-12-12",
-      "strongBuy": 12,
-      "buy": 22,
-      "hold": 15,
-      "sell": 3,
-      "strongSell": 1,
-      "consensus": "Buy",
-      "recTrend": [
-        {
-          "period": "2026-09-01",
-          "sb": 12,
-          "b": 22,
-          "h": 15,
-          "s": 3,
-          "ss": 1
-        },
-        {
-          "period": "2026-08-01",
-          "sb": 13,
-          "b": 24,
-          "h": 14,
-          "s": 3,
-          "ss": 0
-        },
-        {
-          "period": "2026-07-01",
-          "sb": 13,
-          "b": 23,
-          "h": 16,
-          "s": 2,
-          "ss": 0
-        },
-        {
-          "period": "2026-06-01",
-          "sb": 14,
-          "b": 24,
-          "h": 15,
-          "s": 2,
-          "ss": 0
-        }
-      ],
-      "earnings": [
-        {
-          "period": "2026-06-30",
-          "quarter": 3,
-          "estimate": 1.9271,
-          "actual": 1.91,
-          "surprise": -0.0171,
-          "surprisePct": -0.8873
-        },
-        {
-          "period": "2026-03-31",
-          "quarter": 2,
-          "estimate": 1.9884,
-          "actual": 2.01,
-          "surprise": 0.0216,
-          "surprisePct": 1.0863
-        },
-        {
-          "period": "2025-12-31",
-          "quarter": 1,
-          "estimate": 2.7257,
-          "actual": 2.84,
-          "surprise": 0.1143,
-          "surprisePct": 4.1934
-        },
-        {
-          "period": "2025-09-30",
-          "quarter": 4,
-          "estimate": 1.8075,
-          "actual": 1.85,
-          "surprise": 0.0425,
-          "surprisePct": 2.3513
-        }
-      ],
-      "earningsHistory": [
-        {
-          "quarter": 2,
-          "year": 2026,
-          "reportDate": "2026-07-30",
-          "epsEstimate": 1.89,
-          "epsActual": 2.02,
-          "epsSurprise": 0.13000000000000012,
-          "epsSurprisePct": 6.74,
-          "revenueActual": 109417000000.0
-        },
-        {
-          "quarter": 1,
-          "year": 2026,
-          "reportDate": "2026-04-30",
-          "epsEstimate": 1.94,
-          "epsActual": 2.01,
-          "epsSurprise": 0.06999999999999984,
-          "epsSurprisePct": 3.46,
-          "revenueActual": 111184000000.0
-        },
-        {
-          "quarter": 4,
-          "year": 2025,
-          "reportDate": "2026-01-29",
-          "epsEstimate": 2.67,
-          "epsActual": 2.84,
-          "epsSurprise": 0.16999999999999993,
-          "epsSurprisePct": 6.34,
-          "revenueActual": 143756000000.0
-        },
-        {
-          "quarter": 3,
-          "year": 2025,
-          "reportDate": "2025-10-30",
-          "epsEstimate": 1.77,
-          "epsActual": 1.85,
-          "epsSurprise": 0.08000000000000007,
-          "epsSurprisePct": 4.52,
-          "revenueActual": 102466000000.0
-        },
-        {
-          "quarter": 2,
-          "year": 2025,
-          "reportDate": "2025-07-31",
-          "epsEstimate": 1.43,
-          "epsActual": 1.57,
-          "epsSurprise": 0.14000000000000012,
-          "epsSurprisePct": 10.12,
-          "revenueActual": 94036000000.0
-        },
-        {
-          "quarter": 1,
-          "year": 2025,
-          "reportDate": "2025-05-01",
-          "epsEstimate": 1.62,
-          "epsActual": 1.65,
-          "epsSurprise": 0.029999999999999805,
-          "epsSurprisePct": 1.69,
-          "revenueActual": 94036000000.0
-        }
-      ],
-      "upcomingEarnings": [
-        {
-          "date": "2027-04-28",
-          "quarter": 2,
-          "epsEstimate": 2.2951,
-          "revenueEstimate": 127095153972,
-          "hour": ""
-        },
-        {
-          "date": "2027-01-27",
-          "quarter": 1,
-          "epsEstimate": 2.9388,
-          "revenueEstimate": 155067727231,
-          "hour": ""
-        },
-        {
-          "date": "2026-10-28",
-          "quarter": 4,
-          "epsEstimate": 2.0219,
-          "revenueEstimate": 115327453620,
-          "hour": "amc"
-        }
-      ],
-      "pe": 0,
-      "eps": 7.465,
-      "epsTTM": 8.723299999999998,
-      "revenuePerShare": 31.725,
-      "revenueGrowthYoY": 14.24,
-      "earningsNonGaap": 8.723299999999998,
-      "nonGaapEPS": 8.723299999999998,
-      "roe": 137.17999999999998,
-      "beta": 1.0942847,
-      "yearHigh": 345.34,
-      "yearLow": 243.42,
-      "priceAvg50": 0,
-      "priceAvg200": 0,
-      "grossMargin": 48.65,
-      "netMargin": 27.62,
-      "dividendYield": 0,
-      "volume": 39239220,
-      "targetAvg": 328.22205,
-      "targetHigh": 405.0,
-      "targetLow": 215.0,
-      "targetMedian": 340.0,
-      "history": [
-        {
-          "date": "2026-08-17",
-          "o": 306.21,
-          "h": 307.66,
-          "l": 302.94,
-          "c": 305.59,
-          "v": 38169300
-        },
-        {
-          "date": "2026-08-18",
-          "o": 307.58,
-          "h": 311.49,
-          "l": 305.74,
-          "c": 310.03,
-          "v": 53424500
-        },
-        {
-          "date": "2026-08-19",
-          "o": 310.14,
-          "h": 319.28,
-          "l": 309.6,
-          "c": 316.83,
-          "v": 50505600
-        },
-        {
-          "date": "2026-08-20",
-          "o": 317.46,
-          "h": 320.28,
-          "l": 310.65,
-          "c": 311.3,
-          "v": 40959200
-        },
-        {
-          "date": "2026-08-21",
-          "o": 312.05,
-          "h": 312.38,
-          "l": 307.01,
-          "c": 309.35,
-          "v": 46876800
-        },
-        {
-          "date": "2026-08-24",
-          "o": 311.47,
-          "h": 313.36,
-          "l": 309.97,
-          "c": 310.34,
-          "v": 34673600
-        },
-        {
-          "date": "2026-08-25",
-          "o": 310.79,
-          "h": 313.59,
-          "l": 308.21,
-          "c": 309.9,
-          "v": 25869800
-        },
-        {
-          "date": "2026-08-26",
-          "o": 310.3,
-          "h": 315.43,
-          "l": 308.8,
-          "c": 313.45,
-          "v": 34024500
-        },
-        {
-          "date": "2026-08-27",
-          "o": 310.55,
-          "h": 315.4,
-          "l": 309.4,
-          "c": 314.58,
-          "v": 32419200
-        },
-        {
-          "date": "2026-08-28",
-          "o": 316.85,
-          "h": 322.37,
-          "l": 315.45,
-          "c": 319.7,
-          "v": 38649400
-        },
-        {
-          "date": "2026-08-31",
-          "o": 319.6,
-          "h": 321.24,
-          "l": 312.8,
-          "c": 316.85,
-          "v": 41242700
-        },
-        {
-          "date": "2026-09-01",
-          "o": 316.98,
-          "h": 327.3,
-          "l": 314.73,
-          "c": 325.13,
-          "v": 53167400
-        },
-        {
-          "date": "2026-09-02",
-          "o": 326.87,
-          "h": 328.4,
-          "l": 323.53,
-          "c": 324.96,
-          "v": 33776400
-        },
-        {
-          "date": "2026-09-03",
-          "o": 324.87,
-          "h": 330.81,
-          "l": 324.11,
-          "c": 328.21,
-          "v": 37225800
-        },
-        {
-          "date": "2026-09-04",
-          "o": 328.31,
-          "h": 328.93,
-          "l": 317.86,
-          "c": 319.97,
-          "v": 39606900
-        },
-        {
-          "date": "2026-09-08",
-          "o": 317.1,
-          "h": 320.7,
-          "l": 314.9,
-          "c": 316.22,
-          "v": 35477100
-        },
-        {
-          "date": "2026-09-09",
-          "o": 315.49,
-          "h": 319.15,
-          "l": 309.9,
-          "c": 315.34,
-          "v": 65640000
-        },
-        {
-          "date": "2026-09-10",
-          "o": 316.67,
-          "h": 326.74,
-          "l": 316.51,
-          "c": 326.57,
-          "v": 70011900
-        },
-        {
-          "date": "2026-09-11",
-          "o": 327.45,
-          "h": 336.22,
-          "l": 326.3,
-          "c": 332.27,
-          "v": 50716900
-        },
-        {
-          "date": "2026-09-14",
-          "o": 334.79,
-          "h": 335.5,
-          "l": 331.34,
-          "c": 333.08,
-          "v": 39269100
-        },
-        {
-          "date": "2026-09-15",
-          "o": 330.14,
-          "h": 331.78,
-          "l": 328.35,
-          "c": 331.34,
-          "v": 31748200
-        },
-        {
-          "date": "2026-09-16",
-          "o": 332.53,
-          "h": 335.48,
-          "l": 330.7,
-          "c": 332.41,
-          "v": 35981000
-        },
-        {
-          "date": "2026-09-17",
-          "o": 334.77,
-          "h": 338.34,
-          "l": 330.18,
-          "c": 337.0,
-          "v": 36700200
-        },
-        {
-          "date": "2026-09-18",
-          "o": 337.91,
-          "h": 338.49,
-          "l": 332.53,
-          "c": 336.13,
-          "v": 86588200
-        },
-        {
-          "date": "2026-09-21",
-          "o": 335.28,
-          "h": 339.64,
-          "l": 333.05,
-          "c": 338.98,
-          "v": 34999200
-        },
-        {
-          "date": "2026-09-22",
-          "o": 340.14,
-          "h": 345.34,
-          "l": 338.75,
-          "c": 339.75,
-          "v": 40711800
-        },
-        {
-          "date": "2026-09-23",
-          "o": 341.08,
-          "h": 341.8,
-          "l": 335.5,
-          "c": 337.02,
-          "v": 31658800
-        },
-        {
-          "date": "2026-09-24",
-          "o": 336.72,
-          "h": 338.91,
-          "l": 334.3,
-          "c": 335.92,
-          "v": 24733100
-        },
-        {
-          "date": "2026-09-25",
-          "o": 336.04,
-          "h": 341.67,
-          "l": 334.53,
-          "c": 341.07,
-          "v": 29950100
-        },
-        {
-          "date": "2026-09-28",
-          "o": 340.37,
-          "h": 342.99,
-          "l": 340.17,
-          "c": 340.86,
-          "v": 6757453
+          "l": 228.56,
+          "c": 228.7,
+          "v": 57747391
         }
       ]
     },
     "TSLA": {
       "symbol": "TSLA",
-      "price": 361.29,
-      "change": -10.82,
-      "changePercentage": -2.9077,
+      "price": 359.81,
+      "change": -12.3,
+      "changePercentage": -3.3055,
       "open": 368.52,
       "high": 369.43,
-      "low": 360.72,
+      "low": 359.27,
       "prevClose": 372.11,
-      "name": "Tesla Inc",
-      "companyName": "Tesla Inc",
-      "exchange": "NASDAQ NMS - GLOBAL MARKET",
-      "sector": "Automobiles",
-      "industry": "Automobiles",
-      "marketCap": 1469666169690.996,
-      "country": "US",
-      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/TSLA.png",
-      "ipo": "2010-06-29",
       "strongBuy": 10,
       "buy": 20,
       "hold": 25,
@@ -1051,27 +580,15 @@
           "hour": "amc"
         }
       ],
-      "pe": 0,
-      "eps": 1.0754,
-      "epsTTM": 1.0766,
-      "revenuePerShare": 29.2709,
-      "revenueGrowthYoY": 11.75,
-      "earningsNonGaap": 1.0766,
-      "nonGaapEPS": 1.0766,
-      "roe": 4.569999999999999,
-      "beta": 1.7507938,
-      "yearHigh": 498.83,
-      "yearLow": 297.38,
-      "priceAvg50": 0,
-      "priceAvg200": 0,
-      "grossMargin": 18.85,
-      "netMargin": 3.67,
-      "dividendYield": 0,
-      "volume": 35633580,
+      "yearHigh": 369.43,
+      "yearLow": 359.27,
+      "priceAvg50": 359.81,
+      "priceAvg200": 359.81,
       "targetAvg": 395.83212,
       "targetHigh": 600.0,
       "targetLow": 125.0,
       "targetMedian": 412.5,
+      "beta": 1.845,
       "history": [
         {
           "date": "2026-08-17",
@@ -1309,17 +826,17 @@
           "date": "2026-09-28",
           "o": 368.06,
           "h": 369.43,
-          "l": 360.72,
-          "c": 361.13,
-          "v": 9877511
+          "l": 359.27,
+          "c": 359.8,
+          "v": 12184954
         }
       ]
     },
     "MSFT": {
       "symbol": "MSFT",
-      "price": 508.72,
-      "change": -7.45,
-      "changePercentage": -1.4433,
+      "price": 506.12,
+      "change": -10.05,
+      "changePercentage": -1.947,
       "open": 510.985,
       "high": 510.985,
       "low": 502.22,
@@ -1371,40 +888,6 @@
           "h": 5,
           "s": 0,
           "ss": 0
-        }
-      ],
-      "earnings": [
-        {
-          "period": "2026-06-30",
-          "quarter": 4,
-          "estimate": 4.3274,
-          "actual": 4.74,
-          "surprise": 0.4126,
-          "surprisePct": 9.5346
-        },
-        {
-          "period": "2026-03-31",
-          "quarter": 3,
-          "estimate": 4.1432,
-          "actual": 4.27,
-          "surprise": 0.1268,
-          "surprisePct": 3.0604
-        },
-        {
-          "period": "2025-12-31",
-          "quarter": 2,
-          "estimate": 4.0345,
-          "actual": 4.14,
-          "surprise": 0.1055,
-          "surprisePct": 2.6149
-        },
-        {
-          "period": "2025-09-30",
-          "quarter": 1,
-          "estimate": 3.7391,
-          "actual": 4.13,
-          "surprise": 0.3909,
-          "surprisePct": 10.4544
         }
       ],
       "earningsHistory": [
@@ -1492,27 +975,15 @@
           "hour": ""
         }
       ],
-      "pe": 0,
-      "eps": 17.9457,
-      "epsTTM": 17.9466,
-      "revenuePerShare": 44.596,
-      "revenueGrowthYoY": 17.79,
-      "earningsNonGaap": 17.9466,
-      "nonGaapEPS": 17.9466,
-      "roe": 33.22,
-      "beta": 1.0609311,
-      "yearHigh": 553.72,
-      "yearLow": 349.2,
-      "priceAvg50": 0,
-      "priceAvg200": 0,
-      "grossMargin": 67.94,
-      "netMargin": 40.31,
-      "dividendYield": 0,
-      "volume": 23892980,
+      "yearHigh": 510.985,
+      "yearLow": 502.22,
+      "priceAvg50": 506.12,
+      "priceAvg200": 506.12,
       "targetAvg": 577.26135,
       "targetHigh": 870.0,
       "targetLow": 440.0,
       "targetMedian": 575.0,
+      "beta": 1.108,
       "history": [
         {
           "date": "2026-08-17",
@@ -1751,16 +1222,16 @@
           "o": 505.42,
           "h": 509.84,
           "l": 502.22,
-          "c": 508.08,
-          "v": 5543008
+          "c": 506.08,
+          "v": 6382810
         }
       ]
     },
     "GOOGL": {
       "symbol": "GOOGL",
-      "price": 341.52,
-      "change": -2.4,
-      "changePercentage": -0.6978,
+      "price": 340.44,
+      "change": -3.48,
+      "changePercentage": -1.0119,
       "open": 341.45,
       "high": 343.59,
       "low": 339.56,
@@ -1898,29 +1369,6 @@
           "epsSurprise": 0.1200000000000001,
           "epsSurprisePct": 5.67,
           "revenueActual": 96428000000.0
-        }
-      ],
-      "upcomingEarnings": [
-        {
-          "date": "2027-04-27",
-          "quarter": 1,
-          "epsEstimate": 3.4588,
-          "revenueEstimate": 140266467801,
-          "hour": ""
-        },
-        {
-          "date": "2027-02-02",
-          "quarter": 4,
-          "epsEstimate": 3.4514,
-          "revenueEstimate": 145948228022,
-          "hour": "amc"
-        },
-        {
-          "date": "2026-10-27",
-          "quarter": 3,
-          "epsEstimate": 3.1199,
-          "revenueEstimate": 131212345892,
-          "hour": "amc"
         }
       ],
       "pe": 0,
@@ -2182,19 +1630,19 @@
           "o": 340.7,
           "h": 343.59,
           "l": 339.56,
-          "c": 341.15,
-          "v": 4454362
+          "c": 340.37,
+          "v": 5195990
         }
       ]
     },
     "META": {
       "symbol": "META",
-      "price": 722.13,
-      "change": -29.53,
-      "changePercentage": -3.9286,
+      "price": 720.51,
+      "change": -31.15,
+      "changePercentage": -4.1442,
       "open": 741.985,
       "high": 750.576,
-      "low": 717.7,
+      "low": 717.65,
       "prevClose": 751.66,
       "name": "Meta Platforms Inc",
       "companyName": "Meta Platforms Inc",
@@ -2205,46 +1653,6 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/FB.png",
       "ipo": "2012-05-18",
-      "strongBuy": 20,
-      "buy": 42,
-      "hold": 9,
-      "sell": 0,
-      "strongSell": 0,
-      "consensus": "Strong Buy",
-      "recTrend": [
-        {
-          "period": "2026-09-01",
-          "sb": 20,
-          "b": 42,
-          "h": 9,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-08-01",
-          "sb": 21,
-          "b": 41,
-          "h": 9,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-07-01",
-          "sb": 21,
-          "b": 42,
-          "h": 8,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-06-01",
-          "sb": 22,
-          "b": 41,
-          "h": 9,
-          "s": 0,
-          "ss": 0
-        }
-      ],
       "earnings": [
         {
           "period": "2026-06-30",
@@ -2612,17 +2020,17 @@
           "date": "2026-09-28",
           "o": 750.42,
           "h": 750.58,
-          "l": 717.7,
-          "c": 722.74,
-          "v": 9940759
+          "l": 717.65,
+          "c": 719.08,
+          "v": 11092827
         }
       ]
     },
     "AMZN": {
       "symbol": "AMZN",
-      "price": 247.08,
-      "change": -2.59,
-      "changePercentage": -1.0374,
+      "price": 246.29,
+      "change": -3.38,
+      "changePercentage": -1.3538,
       "open": 247.6525,
       "high": 247.6525,
       "low": 244.725,
@@ -3054,19 +2462,19 @@
           "o": 246.32,
           "h": 247.17,
           "l": 244.73,
-          "c": 246.79,
-          "v": 8213695
+          "c": 246.21,
+          "v": 9725786
         }
       ]
     },
     "AMD": {
       "symbol": "AMD",
-      "price": 609.16,
-      "change": -21.47,
-      "changePercentage": -3.4045,
+      "price": 599.13,
+      "change": -31.5,
+      "changePercentage": -4.995,
       "open": 620.1675,
       "high": 629.75,
-      "low": 606.75,
+      "low": 597.682,
       "prevClose": 630.63,
       "name": "Advanced Micro Devices Inc",
       "companyName": "Advanced Micro Devices Inc",
@@ -3494,20 +2902,20 @@
           "date": "2026-09-28",
           "o": 624.9,
           "h": 629.65,
-          "l": 606.75,
-          "c": 608.47,
-          "v": 6052660
+          "l": 597.64,
+          "c": 598.46,
+          "v": 7809601
         }
       ]
     },
     "NFLX": {
       "symbol": "NFLX",
-      "price": 70.18,
-      "change": -0.965,
-      "changePercentage": -1.3564,
+      "price": 69.77,
+      "change": -1.375,
+      "changePercentage": -1.9327,
       "open": 71.495,
       "high": 71.66000000000001,
-      "low": 69.84,
+      "low": 69.72,
       "prevClose": 71.145,
       "name": "Netflix Inc",
       "companyName": "Netflix Inc",
@@ -3677,27 +3085,15 @@
           "hour": "amc"
         }
       ],
-      "pe": 0,
-      "eps": 2.528,
-      "epsTTM": 3.1742,
-      "revenuePerShare": 11.3512,
-      "revenueGrowthYoY": 16.02,
-      "earningsNonGaap": 3.1742,
-      "nonGaapEPS": 3.1742,
-      "roe": 47.96,
-      "beta": 1.6026675,
-      "yearHigh": 124.86,
-      "yearLow": 65.08,
-      "priceAvg50": 0,
-      "priceAvg200": 0,
-      "grossMargin": 49.12,
-      "netMargin": 28.22,
-      "dividendYield": 0,
-      "volume": 38248470,
+      "yearHigh": 71.66000000000001,
+      "yearLow": 69.72,
+      "priceAvg50": 69.77,
+      "priceAvg200": 69.77,
       "targetAvg": 92.92667,
       "targetHigh": 135.0,
       "targetLow": 57.0,
       "targetMedian": 92.0,
+      "beta": 1.526,
       "history": [
         {
           "date": "2026-08-17",
@@ -3935,17 +3331,17 @@
           "date": "2026-09-28",
           "o": 71.55,
           "h": 71.58,
-          "l": 69.85,
-          "c": 70.12,
-          "v": 10032964
+          "l": 69.72,
+          "c": 69.79,
+          "v": 11888822
         }
       ]
     },
     "PLTR": {
       "symbol": "PLTR",
-      "price": 187.84,
-      "change": -1.83,
-      "changePercentage": -0.9648,
+      "price": 186.69,
+      "change": -2.98,
+      "changePercentage": -1.5711,
       "open": 187.5305,
       "high": 189.6,
       "low": 185.62,
@@ -4377,19 +3773,19 @@
           "o": 186.23,
           "h": 189.6,
           "l": 185.62,
-          "c": 187.56,
-          "v": 4259491
+          "c": 186.5,
+          "v": 4979477
         }
       ]
     },
     "COIN": {
       "symbol": "COIN",
-      "price": 193.75,
-      "change": -1.36,
-      "changePercentage": -0.697,
+      "price": 192.41,
+      "change": -2.7,
+      "changePercentage": -1.3838,
       "open": 193.295,
       "high": 198.7799,
-      "low": 193,
+      "low": 191.46,
       "prevClose": 195.11,
       "name": "Coinbase Global Inc",
       "companyName": "Coinbase Global Inc",
@@ -4800,20 +4196,20 @@
           "date": "2026-09-28",
           "o": 196.0,
           "h": 198.78,
-          "l": 193.0,
-          "c": 193.42,
-          "v": 2198460
+          "l": 191.46,
+          "c": 192.55,
+          "v": 2547113
         }
       ]
     },
     "HOOD": {
       "symbol": "HOOD",
-      "price": 118.29,
-      "change": -1.11,
-      "changePercentage": -0.9296,
+      "price": 117.03,
+      "change": -2.37,
+      "changePercentage": -1.9849,
       "open": 117.2175,
       "high": 120.17,
-      "low": 117.2175,
+      "low": 116.56,
       "prevClose": 119.4,
       "name": "Robinhood Markets Inc",
       "companyName": "Robinhood Markets Inc",
@@ -5231,20 +4627,20 @@
           "date": "2026-09-28",
           "o": 117.95,
           "h": 120.17,
-          "l": 117.32,
-          "c": 118.08,
-          "v": 3668729
+          "l": 116.56,
+          "c": 117.06,
+          "v": 4632277
         }
       ]
     },
     "MSTR": {
       "symbol": "MSTR",
-      "price": 156.87,
-      "change": -1.74,
-      "changePercentage": -1.097,
+      "price": 155.6,
+      "change": -3.01,
+      "changePercentage": -1.8977,
       "open": 156.375,
       "high": 159.75,
-      "low": 156.3304,
+      "low": 155.06,
       "prevClose": 158.61,
       "name": "Strategy Inc",
       "companyName": "Strategy Inc",
@@ -5662,20 +5058,20 @@
           "date": "2026-09-28",
           "o": 157.9,
           "h": 159.75,
-          "l": 156.33,
-          "c": 156.66,
-          "v": 4634896
+          "l": 155.06,
+          "c": 155.73,
+          "v": 5609446
         }
       ]
     },
     "SPY": {
       "symbol": "SPY",
-      "price": 767.47,
-      "change": -3.88,
-      "changePercentage": -0.503,
+      "price": 764.38,
+      "change": -6.97,
+      "changePercentage": -0.9036,
       "open": 768.27,
       "high": 768.61,
-      "low": 766.97,
+      "low": 763.79,
       "prevClose": 771.35,
       "upcomingEarnings": [],
       "pe": 0,
@@ -5936,20 +5332,20 @@
           "date": "2026-09-28",
           "o": 768.35,
           "h": 768.59,
-          "l": 766.98,
-          "c": 767.19,
-          "v": 7151468
+          "l": 763.79,
+          "c": 764.76,
+          "v": 9609537
         }
       ]
     },
     "QQQ": {
       "symbol": "QQQ",
-      "price": 736.31,
-      "change": -8.19,
-      "changePercentage": -1.1001,
+      "price": 732.52,
+      "change": -11.98,
+      "changePercentage": -1.6091,
       "open": 739.1475,
       "high": 741.42,
-      "low": 735.29,
+      "low": 731.63,
       "prevClose": 744.5,
       "upcomingEarnings": [],
       "pe": 0,
@@ -6210,17 +5606,17 @@
           "date": "2026-09-28",
           "o": 740.46,
           "h": 741.42,
-          "l": 735.31,
-          "c": 736.2,
-          "v": 7553201
+          "l": 731.63,
+          "c": 732.78,
+          "v": 10941845
         }
       ]
     },
     "DIA": {
       "symbol": "DIA",
-      "price": 515.48,
-      "change": -2.01,
-      "changePercentage": -0.3884,
+      "price": 514.08,
+      "change": -3.41,
+      "changePercentage": -0.6589,
       "open": 515.105,
       "high": 515.63,
       "low": 513.42,
@@ -6485,16 +5881,16 @@
           "o": 514.29,
           "h": 515.62,
           "l": 513.42,
-          "c": 515.24,
-          "v": 622338
+          "c": 514.27,
+          "v": 822001
         }
       ]
     },
     "JPM": {
       "symbol": "JPM",
-      "price": 340.44,
-      "change": -2.62,
-      "changePercentage": -0.7637,
+      "price": 339.25,
+      "change": -3.81,
+      "changePercentage": -1.1106,
       "open": 341.76,
       "high": 342,
       "low": 338.28,
@@ -6916,19 +6312,19 @@
           "o": 341.83,
           "h": 342.0,
           "l": 338.28,
-          "c": 340.47,
-          "v": 1243580
+          "c": 338.93,
+          "v": 1419382
         }
       ]
     },
     "BAC": {
       "symbol": "BAC",
-      "price": 56.23,
-      "change": -0.47,
-      "changePercentage": -0.8289,
+      "price": 56.01,
+      "change": -0.69,
+      "changePercentage": -1.2169,
       "open": 56.4925,
       "high": 56.67,
-      "low": 56.18,
+      "low": 55.96,
       "prevClose": 56.7,
       "name": "Bank of America Corp",
       "companyName": "Bank of America Corp",
@@ -7356,17 +6752,17 @@
           "date": "2026-09-28",
           "o": 56.42,
           "h": 56.67,
-          "l": 56.18,
-          "c": 56.21,
-          "v": 4556551
+          "l": 55.91,
+          "c": 55.93,
+          "v": 5624758
         }
       ]
     },
     "V": {
       "symbol": "V",
-      "price": 369.09,
-      "change": 1.71,
-      "changePercentage": 0.4655,
+      "price": 367.74,
+      "change": 0.36,
+      "changePercentage": 0.098,
       "open": 367.315,
       "high": 370.37,
       "low": 366.0604,
@@ -7788,16 +7184,16 @@
           "o": 366.7,
           "h": 370.37,
           "l": 366.06,
-          "c": 368.92,
-          "v": 1003367
+          "c": 367.74,
+          "v": 1183173
         }
       ]
     },
     "MA": {
       "symbol": "MA",
-      "price": 568.42,
-      "change": 0.77,
-      "changePercentage": 0.1356,
+      "price": 567.18,
+      "change": -0.47,
+      "changePercentage": -0.0828,
       "open": 567.12,
       "high": 569.57,
       "low": 563.5,
@@ -8219,16 +7615,16 @@
           "o": 566.28,
           "h": 569.57,
           "l": 563.5,
-          "c": 568.03,
-          "v": 281669
+          "c": 566.92,
+          "v": 372091
         }
       ]
     },
     "DIS": {
       "symbol": "DIS",
-      "price": 106.19,
-      "change": 0.04,
-      "changePercentage": 0.0377,
+      "price": 105.6,
+      "change": -0.55,
+      "changePercentage": -0.5181,
       "open": 105.6,
       "high": 106.575,
       "low": 105.01,
@@ -8660,29 +8056,20 @@
           "o": 105.12,
           "h": 106.57,
           "l": 105.04,
-          "c": 106.09,
-          "v": 1363479
+          "c": 105.54,
+          "v": 1672744
         }
       ]
     },
     "KO": {
       "symbol": "KO",
-      "price": 87.57,
-      "change": -0.24,
-      "changePercentage": -0.2733,
+      "price": 87.41,
+      "change": -0.4,
+      "changePercentage": -0.4555,
       "open": 87.8975,
       "high": 87.8975,
       "low": 87.05,
       "prevClose": 87.81,
-      "name": "Coca-Cola Co",
-      "companyName": "Coca-Cola Co",
-      "exchange": "NEW YORK STOCK EXCHANGE, INC.",
-      "sector": "Beverages",
-      "industry": "Beverages",
-      "marketCap": 377806806054.4533,
-      "country": "US",
-      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/KO.png",
-      "ipo": "1950-01-26",
       "strongBuy": 8,
       "buy": 19,
       "hold": 8,
@@ -8809,33 +8196,10 @@
           "revenueActual": 12535000000.0
         }
       ],
-      "upcomingEarnings": [
-        {
-          "date": "2027-04-26",
-          "quarter": 1,
-          "epsEstimate": 0.9182,
-          "revenueEstimate": 12447081659,
-          "hour": ""
-        },
-        {
-          "date": "2027-02-08",
-          "quarter": 4,
-          "epsEstimate": 0.6135,
-          "revenueEstimate": 11326867914,
-          "hour": "amc"
-        },
-        {
-          "date": "2026-10-19",
-          "quarter": 3,
-          "epsEstimate": 0.9049,
-          "revenueEstimate": 13272886126,
-          "hour": "bmo"
-        }
-      ],
       "yearHigh": 87.8975,
       "yearLow": 87.05,
-      "priceAvg50": 87.57,
-      "priceAvg200": 87.57,
+      "priceAvg50": 87.41,
+      "priceAvg200": 87.41,
       "targetAvg": 94.65217,
       "targetHigh": 104.0,
       "targetLow": 75.0,
@@ -9079,18 +8443,18 @@
           "o": 87.61,
           "h": 87.69,
           "l": 87.05,
-          "c": 87.47,
-          "v": 2286216
+          "c": 87.39,
+          "v": 2752761
         }
       ]
     },
     "PEP": {
       "symbol": "PEP",
-      "price": 128.23,
-      "change": -0.4,
-      "changePercentage": -0.311,
+      "price": 128.45,
+      "change": -0.18,
+      "changePercentage": -0.1399,
       "open": 127.98,
-      "high": 128.345,
+      "high": 128.48,
       "low": 126.721,
       "prevClose": 128.63,
       "name": "PepsiCo Inc",
@@ -9508,18 +8872,18 @@
         {
           "date": "2026-09-28",
           "o": 127.35,
-          "h": 128.35,
+          "h": 128.48,
           "l": 126.72,
-          "c": 128.08,
-          "v": 1421540
+          "c": 128.32,
+          "v": 1691284
         }
       ]
     },
     "GME": {
       "symbol": "GME",
-      "price": 23.84,
-      "change": 0.45,
-      "changePercentage": 1.9239,
+      "price": 23.83,
+      "change": 0.44,
+      "changePercentage": 1.8811,
       "open": 23.165,
       "high": 24.12,
       "low": 23.165,
@@ -9917,18 +9281,18 @@
           "o": 23.26,
           "h": 24.12,
           "l": 23.22,
-          "c": 23.84,
-          "v": 2232857
+          "c": 23.82,
+          "v": 2476471
         }
       ]
     },
     "COST": {
       "symbol": "COST",
-      "price": 926.87,
-      "change": 4.105,
-      "changePercentage": 0.4449,
+      "price": 929.04,
+      "change": 6.275,
+      "changePercentage": 0.68,
       "open": 924.8675,
-      "high": 928.87,
+      "high": 930.8,
       "low": 913,
       "prevClose": 922.765,
       "name": "Costco Wholesale Corp",
@@ -10346,18 +9710,18 @@
         {
           "date": "2026-09-28",
           "o": 924.88,
-          "h": 928.87,
+          "h": 930.8,
           "l": 913.0,
-          "c": 927.06,
-          "v": 403097
+          "c": 930.12,
+          "v": 534726
         }
       ]
     },
     "LLY": {
       "symbol": "LLY",
-      "price": 1190.58,
-      "change": 7.12,
-      "changePercentage": 0.6016,
+      "price": 1187.34,
+      "change": 3.88,
+      "changePercentage": 0.3279,
       "open": 1183.67,
       "high": 1192.959,
       "low": 1172.56,
@@ -10779,16 +10143,16 @@
           "o": 1180.3,
           "h": 1192.96,
           "l": 1172.56,
-          "c": 1189.63,
-          "v": 372258
+          "c": 1187.45,
+          "v": 412146
         }
       ]
     },
     "HIMS": {
       "symbol": "HIMS",
-      "price": 29.15,
-      "change": -0.27,
-      "changePercentage": -0.9177,
+      "price": 28.69,
+      "change": -0.73,
+      "changePercentage": -2.4813,
       "open": 29.06,
       "high": 29.275,
       "low": 28.46,
@@ -11220,16 +10584,16 @@
           "o": 29.0,
           "h": 29.27,
           "l": 28.46,
-          "c": 29.13,
-          "v": 1424899
+          "c": 28.67,
+          "v": 1726965
         }
       ]
     },
     "DKNG": {
       "symbol": "DKNG",
-      "price": 21.49,
-      "change": -0.53,
-      "changePercentage": -2.4069,
+      "price": 21.34,
+      "change": -0.68,
+      "changePercentage": -3.0881,
       "open": 21.785,
       "high": 21.92,
       "low": 21.24,
@@ -11651,19 +11015,19 @@
           "o": 21.62,
           "h": 21.91,
           "l": 21.24,
-          "c": 21.41,
-          "v": 3858243
+          "c": 21.32,
+          "v": 4702699
         }
       ]
     },
     "INTC": {
       "symbol": "INTC",
-      "price": 117.43,
-      "change": -5.57,
-      "changePercentage": -4.5285,
+      "price": 115.43,
+      "change": -7.57,
+      "changePercentage": -6.1545,
       "open": 120.0475,
       "high": 121.71,
-      "low": 115.7,
+      "low": 115.38,
       "prevClose": 123,
       "name": "Intel Corp",
       "companyName": "Intel Corp",
@@ -12081,20 +11445,20 @@
           "date": "2026-09-28",
           "o": 120.65,
           "h": 121.71,
-          "l": 115.7,
-          "c": 117.4,
-          "v": 31942237
+          "l": 115.3,
+          "c": 115.45,
+          "v": 39589792
         }
       ]
     },
     "ORCL": {
       "symbol": "ORCL",
-      "price": 133.69,
-      "change": -3.41,
-      "changePercentage": -2.4872,
+      "price": 132.32,
+      "change": -4.78,
+      "changePercentage": -3.4865,
       "open": 134.0675,
       "high": 135.69,
-      "low": 132.5,
+      "low": 132.05,
       "prevClose": 137.1,
       "name": "Oracle Corp",
       "companyName": "Oracle Corp",
@@ -12522,20 +11886,20 @@
           "date": "2026-09-28",
           "o": 132.73,
           "h": 135.69,
-          "l": 132.5,
-          "c": 133.64,
-          "v": 8329585
+          "l": 132.05,
+          "c": 132.21,
+          "v": 10353404
         }
       ]
     },
     "TSM": {
       "symbol": "TSM",
-      "price": 446.73,
-      "change": -3.88,
-      "changePercentage": -0.8611,
+      "price": 443.77,
+      "change": -6.84,
+      "changePercentage": -1.5179,
       "open": 446.745,
       "high": 449.62,
-      "low": 444.81,
+      "low": 443.11,
       "prevClose": 450.61,
       "name": "Taiwan Semiconductor Manufacturing Co Ltd",
       "companyName": "Taiwan Semiconductor Manufacturing Co Ltd",
@@ -12953,20 +12317,20 @@
           "date": "2026-09-28",
           "o": 448.39,
           "h": 449.6,
-          "l": 444.81,
-          "c": 447.04,
-          "v": 1674269
+          "l": 443.11,
+          "c": 443.68,
+          "v": 2391114
         }
       ]
     },
     "RIVN": {
       "symbol": "RIVN",
-      "price": 15.25,
-      "change": -0.22,
-      "changePercentage": -1.4221,
+      "price": 15.07,
+      "change": -0.4,
+      "changePercentage": -2.5856,
       "open": 15.305,
       "high": 15.379999999999999,
-      "low": 15.13,
+      "low": 15.04,
       "prevClose": 15.47,
       "name": "Rivian Automotive Inc",
       "companyName": "Rivian Automotive Inc",
@@ -13384,20 +12748,20 @@
           "date": "2026-09-28",
           "o": 15.27,
           "h": 15.37,
-          "l": 15.13,
-          "c": 15.22,
-          "v": 3168303
+          "l": 15.03,
+          "c": 15.04,
+          "v": 4306449
         }
       ]
     },
     "BABA": {
       "symbol": "BABA",
-      "price": 110.01,
-      "change": 0.27,
-      "changePercentage": 0.246,
+      "price": 109.27,
+      "change": -0.47,
+      "changePercentage": -0.4283,
       "open": 109.715,
       "high": 110.12,
-      "low": 109.31,
+      "low": 109.22,
       "prevClose": 109.74,
       "name": "Alibaba Group Holding Ltd",
       "companyName": "Alibaba Group Holding Ltd",
@@ -13584,10 +12948,10 @@
       "netMargin": 7.02,
       "dividendYield": 0,
       "volume": 9396850,
-      "targetAvg": 185.50809,
-      "targetHigh": 238.51527,
-      "targetLow": 95.32047,
-      "targetMedian": 187.97923,
+      "targetAvg": 185.26202,
+      "targetHigh": 238.1989,
+      "targetLow": 95.19404,
+      "targetMedian": 187.72989,
       "history": [
         {
           "date": "2026-08-17",
@@ -13825,20 +13189,20 @@
           "date": "2026-09-28",
           "o": 109.64,
           "h": 110.12,
-          "l": 109.31,
-          "c": 109.99,
-          "v": 1443375
+          "l": 109.22,
+          "c": 109.25,
+          "v": 1983898
         }
       ]
     },
     "MU": {
       "symbol": "MU",
-      "price": 1049.21,
-      "change": -33.07,
-      "changePercentage": -3.0556,
+      "price": 1035.03,
+      "change": -47.25,
+      "changePercentage": -4.3658,
       "open": 1067.49,
       "high": 1084.81,
-      "low": 1045.6,
+      "low": 1032,
       "prevClose": 1082.28,
       "name": "Micron Technology Inc",
       "companyName": "Micron Technology Inc",
@@ -14266,20 +13630,20 @@
           "date": "2026-09-28",
           "o": 1075.6,
           "h": 1084.81,
-          "l": 1045.6,
-          "c": 1048.98,
-          "v": 6064593
+          "l": 1032.0,
+          "c": 1036.21,
+          "v": 7729000
         }
       ]
     },
     "SNDK": {
       "symbol": "SNDK",
-      "price": 1688.65,
-      "change": -89.15,
-      "changePercentage": -5.0146,
+      "price": 1667.05,
+      "change": -110.75,
+      "changePercentage": -6.2296,
       "open": 1730.26,
       "high": 1762,
-      "low": 1685.52,
+      "low": 1659.02,
       "prevClose": 1777.8,
       "name": "Sandisk Corp",
       "companyName": "Sandisk Corp",
@@ -14697,20 +14061,20 @@
           "date": "2026-09-28",
           "o": 1735.14,
           "h": 1762.0,
-          "l": 1685.52,
-          "c": 1688.0,
-          "v": 2344822
+          "l": 1659.02,
+          "c": 1668.38,
+          "v": 3113402
         }
       ]
     },
     "CRCL": {
       "symbol": "CRCL",
-      "price": 85.29,
-      "change": -3.71,
-      "changePercentage": -4.1685,
+      "price": 85.07,
+      "change": -3.93,
+      "changePercentage": -4.4157,
       "open": 86.6375,
       "high": 88.03,
-      "low": 85.2,
+      "low": 84.82,
       "prevClose": 89,
       "name": "Circle Internet Group Inc",
       "companyName": "Circle Internet Group Inc",
@@ -15128,20 +14492,20 @@
           "date": "2026-09-28",
           "o": 87.0,
           "h": 88.03,
-          "l": 85.2,
-          "c": 85.33,
-          "v": 3240421
+          "l": 84.83,
+          "c": 85.14,
+          "v": 3767090
         }
       ]
     },
     "CRWV": {
       "symbol": "CRWV",
-      "price": 85.22,
-      "change": -2.37,
-      "changePercentage": -2.7058,
+      "price": 83.87,
+      "change": -3.72,
+      "changePercentage": -4.2471,
       "open": 85.8375,
       "high": 88.2258,
-      "low": 85.16,
+      "low": 83.61,
       "prevClose": 87.59,
       "name": "CoreWeave Inc",
       "companyName": "CoreWeave Inc",
@@ -15559,20 +14923,20 @@
           "date": "2026-09-28",
           "o": 86.35,
           "h": 88.22,
-          "l": 85.08,
-          "c": 85.13,
-          "v": 5011256
+          "l": 83.61,
+          "c": 83.74,
+          "v": 7197610
         }
       ]
     },
     "CAT": {
       "symbol": "CAT",
-      "price": 824.18,
-      "change": 2.6,
-      "changePercentage": 0.3165,
+      "price": 815.72,
+      "change": -5.86,
+      "changePercentage": -0.7133,
       "open": 815.775,
       "high": 824.679,
-      "low": 815.775,
+      "low": 815.26,
       "prevClose": 821.58,
       "name": "Caterpillar Inc",
       "companyName": "Caterpillar Inc",
@@ -16000,17 +15364,17 @@
           "date": "2026-09-28",
           "o": 821.05,
           "h": 824.68,
-          "l": 816.97,
-          "c": 823.88,
-          "v": 308407
+          "l": 814.38,
+          "c": 814.66,
+          "v": 398692
         }
       ]
     },
     "XOM": {
       "symbol": "XOM",
-      "price": 162.76,
-      "change": 2.17,
-      "changePercentage": 1.3513,
+      "price": 163.07,
+      "change": 2.48,
+      "changePercentage": 1.5443,
       "open": 162.805,
       "high": 163.54,
       "low": 162,
@@ -16425,18 +15789,18 @@
           "o": 162.8,
           "h": 163.54,
           "l": 162.05,
-          "c": 162.71,
-          "v": 2275154
+          "c": 163.09,
+          "v": 2753395
         }
       ]
     },
     "CVX": {
       "symbol": "CVX",
-      "price": 207.39,
-      "change": 2.94,
-      "changePercentage": 1.438,
+      "price": 207.75,
+      "change": 3.3,
+      "changePercentage": 1.6141,
       "open": 206.655,
-      "high": 207.785,
+      "high": 207.84,
       "low": 206.1,
       "prevClose": 204.45,
       "name": "Chevron Corp",
@@ -16864,18 +16228,18 @@
         {
           "date": "2026-09-28",
           "o": 207.0,
-          "h": 207.79,
+          "h": 207.84,
           "l": 206.1,
-          "c": 207.33,
-          "v": 1384421
+          "c": 207.68,
+          "v": 1738914
         }
       ]
     },
     "BA": {
       "symbol": "BA",
-      "price": 189.45,
-      "change": -8.62,
-      "changePercentage": -4.352,
+      "price": 188.76,
+      "change": -9.31,
+      "changePercentage": -4.7004,
       "open": 194.9325,
       "high": 194.9325,
       "low": 187.58,
@@ -17025,50 +16389,15 @@
           "revenueActual": 19496000000.0
         }
       ],
-      "upcomingEarnings": [
-        {
-          "date": "2027-04-20",
-          "quarter": 1,
-          "epsEstimate": 0.4481,
-          "revenueEstimate": 27639181710,
-          "hour": ""
-        },
-        {
-          "date": "2027-01-25",
-          "quarter": 4,
-          "epsEstimate": 0.044,
-          "revenueEstimate": 27189747977,
-          "hour": "amc"
-        },
-        {
-          "date": "2026-10-27",
-          "quarter": 3,
-          "epsEstimate": -0.1512,
-          "revenueEstimate": 25752522377,
-          "hour": "bmo"
-        }
-      ],
-      "pe": 0,
-      "eps": 2.9319,
-      "epsTTM": 2.9605999999999986,
-      "revenuePerShare": 118.8907,
-      "revenueGrowthYoY": 24.78,
-      "earningsNonGaap": 2.9605999999999986,
-      "nonGaapEPS": 2.9605999999999986,
-      "roe": 132.92,
-      "beta": 1.3314998,
-      "yearHigh": 254.35,
-      "yearLow": 176.77,
-      "priceAvg50": 0,
-      "priceAvg200": 0,
-      "grossMargin": 4.68,
-      "netMargin": 2.59,
-      "dividendYield": 0,
-      "volume": 8071350,
+      "yearHigh": 194.9325,
+      "yearLow": 187.58,
+      "priceAvg50": 188.76,
+      "priceAvg200": 188.76,
       "targetAvg": 273.5,
       "targetHigh": 305.0,
       "targetLow": 246.0,
       "targetMedian": 273.5,
+      "beta": 1.213,
       "history": [
         {
           "date": "2026-08-17",
@@ -17307,16 +16636,16 @@
           "o": 192.62,
           "h": 192.77,
           "l": 187.6,
-          "c": 189.66,
-          "v": 4398684
+          "c": 188.76,
+          "v": 5120928
         }
       ]
     },
     "WMT": {
       "symbol": "WMT",
-      "price": 108.92,
-      "change": 0.94,
-      "changePercentage": 0.8705,
+      "price": 109.28,
+      "change": 1.3,
+      "changePercentage": 1.2039,
       "open": 108.165,
       "high": 109.28,
       "low": 107.27,
@@ -17746,18 +17075,18 @@
         {
           "date": "2026-09-28",
           "o": 107.9,
-          "h": 109.28,
+          "h": 109.29,
           "l": 107.27,
-          "c": 108.88,
-          "v": 3006323
+          "c": 109.25,
+          "v": 3743640
         }
       ]
     },
     "HD": {
       "symbol": "HD",
-      "price": 293.43,
-      "change": 0.23,
-      "changePercentage": 0.0784,
+      "price": 292.47,
+      "change": -0.73,
+      "changePercentage": -0.249,
       "open": 291.695,
       "high": 293.63,
       "low": 289.31,
@@ -17916,15 +17245,27 @@
           "hour": ""
         }
       ],
-      "yearHigh": 293.63,
-      "yearLow": 289.31,
-      "priceAvg50": 293.43,
-      "priceAvg200": 293.43,
+      "pe": 0,
+      "eps": 14.2271,
+      "epsTTM": 14.282599999999999,
+      "revenuePerShare": 169.8554,
+      "revenueGrowthYoY": 2.5,
+      "earningsNonGaap": 14.282599999999999,
+      "nonGaapEPS": 14.282599999999999,
+      "roe": 102.67999999999999,
+      "beta": 0.95075446,
+      "yearHigh": 411.41,
+      "yearLow": 289.1,
+      "priceAvg50": 0,
+      "priceAvg200": 0,
+      "grossMargin": 33.21,
+      "netMargin": 8.41,
+      "dividendYield": 0,
+      "volume": 5337060,
       "targetAvg": 377.1875,
       "targetHigh": 425.0,
       "targetLow": 310.0,
       "targetMedian": 379.0,
-      "beta": 0.955,
       "history": [
         {
           "date": "2026-08-17",
@@ -18163,16 +17504,16 @@
           "o": 290.27,
           "h": 293.63,
           "l": 289.31,
-          "c": 293.17,
-          "v": 832393
+          "c": 292.45,
+          "v": 976893
         }
       ]
     },
     "UNH": {
       "symbol": "UNH",
-      "price": 376.74,
-      "change": 0.15,
-      "changePercentage": 0.0398,
+      "price": 377.28,
+      "change": 0.69,
+      "changePercentage": 0.1832,
       "open": 377.155,
       "high": 380.98,
       "low": 375.825,
@@ -18604,16 +17945,16 @@
           "o": 376.36,
           "h": 380.98,
           "l": 375.83,
-          "c": 376.5,
-          "v": 715234
+          "c": 377.09,
+          "v": 832284
         }
       ]
     },
     "JNJ": {
       "symbol": "JNJ",
-      "price": 272.21,
-      "change": 0.99,
-      "changePercentage": 0.365,
+      "price": 272.53,
+      "change": 1.31,
+      "changePercentage": 0.483,
       "open": 271.375,
       "high": 273.25,
       "low": 269.27,
@@ -19035,16 +18376,16 @@
           "o": 270.17,
           "h": 273.25,
           "l": 269.27,
-          "c": 272.09,
-          "v": 1220690
+          "c": 272.12,
+          "v": 1364797
         }
       ]
     },
     "ABNB": {
       "symbol": "ABNB",
-      "price": 157.53,
-      "change": 0.06,
-      "changePercentage": 0.0381,
+      "price": 156.87,
+      "change": -0.6,
+      "changePercentage": -0.381,
       "open": 155.97,
       "high": 158.54,
       "low": 154.11,
@@ -19466,16 +18807,16 @@
           "o": 156.0,
           "h": 158.54,
           "l": 154.11,
-          "c": 157.37,
-          "v": 871677
+          "c": 156.87,
+          "v": 1053863
         }
       ]
     },
     "SHOP": {
       "symbol": "SHOP",
-      "price": 138.3,
-      "change": -3.95,
-      "changePercentage": -2.7768,
+      "price": 138.23,
+      "change": -4.02,
+      "changePercentage": -2.826,
       "open": 139.51,
       "high": 139.51,
       "low": 136.49,
@@ -19897,16 +19238,16 @@
           "o": 138.09,
           "h": 139.26,
           "l": 136.5,
-          "c": 138.09,
-          "v": 2036814
+          "c": 138.24,
+          "v": 2397033
         }
       ]
     },
     "PYPL": {
       "symbol": "PYPL",
-      "price": 54.24,
-      "change": -0.8,
-      "changePercentage": -1.4535,
+      "price": 54.16,
+      "change": -0.88,
+      "changePercentage": -1.5988,
       "open": 54.65,
       "high": 54.66,
       "low": 52.94,
@@ -20338,16 +19679,16 @@
           "o": 54.38,
           "h": 54.6,
           "l": 52.94,
-          "c": 54.19,
-          "v": 2415498
+          "c": 54.12,
+          "v": 2816482
         }
       ]
     },
     "ROKU": {
       "symbol": "ROKU",
-      "price": 153.17,
-      "change": 0.49,
-      "changePercentage": 0.3209,
+      "price": 152.98,
+      "change": 0.3,
+      "changePercentage": 0.1965,
       "open": 152.19,
       "high": 153.24,
       "low": 151.6536,
@@ -20779,16 +20120,16 @@
           "o": 152.32,
           "h": 153.24,
           "l": 151.65,
-          "c": 153.13,
-          "v": 251304
+          "c": 152.89,
+          "v": 279268
         }
       ]
     },
     "ZM": {
       "symbol": "ZM",
-      "price": 87.19,
-      "change": -2.52,
-      "changePercentage": -2.8091,
+      "price": 87.26,
+      "change": -2.45,
+      "changePercentage": -2.731,
       "open": 88.2125,
       "high": 88.22250000000001,
       "low": 85.38,
@@ -21220,29 +20561,20 @@
           "o": 87.79,
           "h": 87.99,
           "l": 85.49,
-          "c": 87.17,
-          "v": 483248
+          "c": 87.2,
+          "v": 584641
         }
       ]
     },
     "DOCU": {
       "symbol": "DOCU",
-      "price": 65.78,
-      "change": -1.72,
-      "changePercentage": -2.5481,
+      "price": 66.04,
+      "change": -1.46,
+      "changePercentage": -2.163,
       "open": 65.835,
       "high": 66.23,
       "low": 63.92,
       "prevClose": 67.5,
-      "name": "DocuSign Inc",
-      "companyName": "DocuSign Inc",
-      "exchange": "NASDAQ NMS - GLOBAL MARKET",
-      "sector": "Technology",
-      "industry": "Technology",
-      "marketCap": 12615915022.28584,
-      "country": "US",
-      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/DOCU.png",
-      "ipo": "2018-04-27",
       "strongBuy": 4,
       "buy": 6,
       "hold": 18,
@@ -21651,16 +20983,16 @@
           "o": 65.85,
           "h": 66.22,
           "l": 63.92,
-          "c": 65.76,
-          "v": 380351
+          "c": 65.97,
+          "v": 441978
         }
       ]
     },
     "SNAP": {
       "symbol": "SNAP",
-      "price": 5.32,
-      "change": -0.1,
-      "changePercentage": -1.845,
+      "price": 5.31,
+      "change": -0.11,
+      "changePercentage": -2.0295,
       "open": 5.33,
       "high": 5.34,
       "low": 5.19,
@@ -22083,15 +21415,15 @@
           "h": 5.34,
           "l": 5.19,
           "c": 5.3,
-          "v": 6180832
+          "v": 6868339
         }
       ]
     },
     "PINS": {
       "symbol": "PINS",
-      "price": 18.56,
-      "change": -0.34,
-      "changePercentage": -1.7989,
+      "price": 18.54,
+      "change": -0.36,
+      "changePercentage": -1.9048,
       "open": 18.765,
       "high": 18.765,
       "low": 18.32,
@@ -22105,46 +21437,6 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/PINS.png",
       "ipo": "2019-04-18",
-      "strongBuy": 6,
-      "buy": 18,
-      "hold": 21,
-      "sell": 0,
-      "strongSell": 0,
-      "consensus": "Hold",
-      "recTrend": [
-        {
-          "period": "2026-09-01",
-          "sb": 6,
-          "b": 18,
-          "h": 21,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-08-01",
-          "sb": 6,
-          "b": 18,
-          "h": 21,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-07-01",
-          "sb": 6,
-          "b": 17,
-          "h": 21,
-          "s": 0,
-          "ss": 0
-        },
-        {
-          "period": "2026-06-01",
-          "sb": 7,
-          "b": 17,
-          "h": 21,
-          "s": 0,
-          "ss": 0
-        }
-      ],
       "earnings": [
         {
           "period": "2026-06-30",
@@ -22513,16 +21805,16 @@
           "o": 18.7,
           "h": 18.71,
           "l": 18.32,
-          "c": 18.54,
-          "v": 811988
+          "c": 18.56,
+          "v": 953968
         }
       ]
     },
     "UBER": {
       "symbol": "UBER",
-      "price": 68.72,
-      "change": -0.9,
-      "changePercentage": -1.2927,
+      "price": 68.52,
+      "change": -1.1,
+      "changePercentage": -1.58,
       "open": 69.635,
       "high": 69.68,
       "low": 67.73,
@@ -22954,16 +22246,16 @@
           "o": 69.36,
           "h": 69.68,
           "l": 67.73,
-          "c": 68.72,
-          "v": 5092418
+          "c": 68.63,
+          "v": 5925125
         }
       ]
     },
     "LYFT": {
       "symbol": "LYFT",
-      "price": 14.78,
-      "change": -0.085,
-      "changePercentage": -0.5718,
+      "price": 14.71,
+      "change": -0.155,
+      "changePercentage": -1.0427,
       "open": 14.7,
       "high": 14.855,
       "low": 14.445,
@@ -23385,19 +22677,19 @@
           "o": 14.73,
           "h": 14.85,
           "l": 14.44,
-          "c": 14.76,
-          "v": 1310435
+          "c": 14.72,
+          "v": 1602153
         }
       ]
     },
     "NIO": {
       "symbol": "NIO",
-      "price": 3.65,
-      "change": 0.07,
-      "changePercentage": 1.9553,
+      "price": 3.62,
+      "change": 0.04,
+      "changePercentage": 1.1173,
       "open": 3.645,
       "high": 3.67,
-      "low": 3.62,
+      "low": 3.61,
       "prevClose": 3.58,
       "name": "NIO Inc",
       "companyName": "NIO Inc",
@@ -23584,10 +22876,10 @@
       "netMargin": -4.17,
       "dividendYield": 0,
       "volume": 28707680,
-      "targetAvg": 6.3074737,
-      "targetHigh": 10.109239,
-      "targetLow": 3.9091763,
-      "targetMedian": 6.018296,
+      "targetAvg": 6.3073792,
+      "targetHigh": 10.109087,
+      "targetLow": 3.9091177,
+      "targetMedian": 6.0182056,
       "history": [
         {
           "date": "2026-08-17",
@@ -23825,20 +23117,20 @@
           "date": "2026-09-28",
           "o": 3.64,
           "h": 3.67,
-          "l": 3.62,
-          "c": 3.63,
-          "v": 6763373
+          "l": 3.61,
+          "c": 3.62,
+          "v": 7914720
         }
       ]
     },
     "PLUG": {
       "symbol": "PLUG",
-      "price": 1.94,
-      "change": -0.04,
-      "changePercentage": -2.0202,
+      "price": 1.9,
+      "change": -0.08,
+      "changePercentage": -4.0404,
       "open": 1.95,
       "high": 1.959,
-      "low": 1.9,
+      "low": 1.87,
       "prevClose": 1.98,
       "name": "Plug Power Inc",
       "companyName": "Plug Power Inc",
@@ -23998,27 +23290,15 @@
           "hour": "bmo"
         }
       ],
-      "pe": 0,
-      "eps": -1.4229,
-      "epsTTM": -1.2492,
-      "revenuePerShare": 0.5348,
-      "revenueGrowthYoY": 10.59,
-      "earningsNonGaap": -1.2492,
-      "nonGaapEPS": -1.2492,
-      "roe": -176.19,
-      "beta": 2.0952823,
-      "yearHigh": 4.58,
-      "yearLow": 1.7,
-      "priceAvg50": 0,
-      "priceAvg200": 0,
-      "grossMargin": -18.55,
-      "netMargin": -220.59,
-      "dividendYield": 0,
-      "volume": 46804310,
+      "yearHigh": 1.959,
+      "yearLow": 1.87,
+      "priceAvg50": 1.9,
+      "priceAvg200": 1.9,
       "targetAvg": 3.55312,
       "targetHigh": 7.0,
       "targetLow": 0.75,
       "targetMedian": 3.5,
+      "beta": 2.222,
       "history": [
         {
           "date": "2026-08-17",
@@ -24256,20 +23536,20 @@
           "date": "2026-09-28",
           "o": 1.95,
           "h": 1.96,
-          "l": 1.9,
-          "c": 1.91,
-          "v": 11299917
+          "l": 1.87,
+          "c": 1.88,
+          "v": 15842049
         }
       ]
     },
     "FCEL": {
       "symbol": "FCEL",
-      "price": 16.09,
-      "change": -0.4,
-      "changePercentage": -2.4257,
+      "price": 15.87,
+      "change": -0.62,
+      "changePercentage": -3.7599,
       "open": 16.17,
       "high": 16.310000000000002,
-      "low": 15.882,
+      "low": 15.78,
       "prevClose": 16.49,
       "name": "Fuelcell Energy Inc",
       "companyName": "Fuelcell Energy Inc",
@@ -24687,17 +23967,17 @@
           "date": "2026-09-28",
           "o": 16.12,
           "h": 16.3,
-          "l": 15.88,
-          "c": 16.06,
-          "v": 670189
+          "l": 15.78,
+          "c": 15.84,
+          "v": 924191
         }
       ]
     },
     "SPCE": {
       "symbol": "SPCE",
-      "price": 3.2,
-      "change": 0.01,
-      "changePercentage": 0.3135,
+      "price": 3.17,
+      "change": -0.02,
+      "changePercentage": -0.627,
       "open": 3.15,
       "high": 3.22,
       "low": 3.11,
@@ -25129,19 +24409,19 @@
           "o": 3.13,
           "h": 3.22,
           "l": 3.11,
-          "c": 3.18,
-          "v": 982622
+          "c": 3.15,
+          "v": 1244223
         }
       ]
     },
     "TLT": {
       "symbol": "TLT",
-      "price": 78.6,
-      "change": -0.72,
-      "changePercentage": -0.9077,
+      "price": 78.35,
+      "change": -0.97,
+      "changePercentage": -1.2229,
       "open": 78.89,
       "high": 78.9,
-      "low": 78.58,
+      "low": 78.3,
       "prevClose": 79.32,
       "upcomingEarnings": [],
       "pe": 0,
@@ -25402,20 +24682,20 @@
           "date": "2026-09-28",
           "o": 78.64,
           "h": 78.87,
-          "l": 78.58,
-          "c": 78.6,
-          "v": 12579285
+          "l": 78.29,
+          "c": 78.3,
+          "v": 17992304
         }
       ]
     },
     "GLD": {
       "symbol": "GLD",
-      "price": 379.16,
-      "change": -14.25,
-      "changePercentage": -3.6222,
+      "price": 377.44,
+      "change": -15.97,
+      "changePercentage": -4.0594,
       "open": 380.445,
       "high": 381.52,
-      "low": 379.05,
+      "low": 377.16,
       "prevClose": 393.41,
       "upcomingEarnings": [],
       "pe": 0,
@@ -25676,20 +24956,20 @@
           "date": "2026-09-28",
           "o": 379.76,
           "h": 381.52,
-          "l": 378.99,
-          "c": 379.02,
-          "v": 5024337
+          "l": 376.88,
+          "c": 377.15,
+          "v": 5999557
         }
       ]
     },
     "SLV": {
       "symbol": "SLV",
-      "price": 55.4,
-      "change": -2.74,
-      "changePercentage": -4.7128,
+      "price": 55.02,
+      "change": -3.12,
+      "changePercentage": -5.3664,
       "open": 55.285,
       "high": 55.835,
-      "low": 55.285,
+      "low": 54.87,
       "prevClose": 58.14,
       "upcomingEarnings": [],
       "pe": 0,
@@ -25950,19 +25230,19 @@
           "date": "2026-09-28",
           "o": 55.32,
           "h": 55.83,
-          "l": 55.28,
-          "c": 55.37,
-          "v": 8073829
+          "l": 54.87,
+          "c": 54.97,
+          "v": 10455214
         }
       ]
     },
     "USO": {
       "symbol": "USO",
-      "price": 151.85,
-      "change": 3.52,
-      "changePercentage": 2.3731,
+      "price": 153.57,
+      "change": 5.24,
+      "changePercentage": 3.5327,
       "open": 151.8575,
-      "high": 152.24,
+      "high": 153.6,
       "low": 150.79,
       "prevClose": 148.33,
       "upcomingEarnings": [],
@@ -26223,18 +25503,18 @@
         {
           "date": "2026-09-28",
           "o": 151.88,
-          "h": 152.24,
+          "h": 153.94,
           "l": 150.79,
-          "c": 151.87,
-          "v": 1734574
+          "c": 153.8,
+          "v": 2178477
         }
       ]
     },
     "XLE": {
       "symbol": "XLE",
-      "price": 62.46,
-      "change": 0.42,
-      "changePercentage": 0.677,
+      "price": 62.43,
+      "change": 0.39,
+      "changePercentage": 0.6286,
       "open": 62.745,
       "high": 62.7865,
       "low": 62.27,
@@ -26499,19 +25779,19 @@
           "o": 62.77,
           "h": 62.79,
           "l": 62.27,
-          "c": 62.44,
-          "v": 9326773
+          "c": 62.48,
+          "v": 10470692
         }
       ]
     },
     "XLK": {
       "symbol": "XLK",
-      "price": 194.25,
-      "change": -2.02,
-      "changePercentage": -1.0292,
+      "price": 193.13,
+      "change": -3.14,
+      "changePercentage": -1.5998,
       "open": 194.585,
       "high": 196.15,
-      "low": 194.06,
+      "low": 192.68,
       "prevClose": 196.27,
       "upcomingEarnings": [],
       "pe": 0,
@@ -26772,293 +26052,19 @@
           "date": "2026-09-28",
           "o": 195.24,
           "h": 196.15,
-          "l": 194.06,
-          "c": 194.18,
-          "v": 1601760
-        }
-      ]
-    },
-    "XLF": {
-      "symbol": "XLF",
-      "price": 54.53,
-      "change": -0.31,
-      "changePercentage": -0.5653,
-      "open": 54.76,
-      "high": 54.76,
-      "low": 54.435,
-      "prevClose": 54.84,
-      "upcomingEarnings": [],
-      "pe": 0,
-      "eps": 0,
-      "epsTTM": 0,
-      "revenuePerShare": 0,
-      "revenueGrowthYoY": 0,
-      "earningsNonGaap": 0,
-      "nonGaapEPS": 0,
-      "roe": 0,
-      "beta": 0.87845063,
-      "yearHigh": 58.6,
-      "yearLow": 47.67,
-      "priceAvg50": 0,
-      "priceAvg200": 0,
-      "grossMargin": 0,
-      "netMargin": 0,
-      "dividendYield": 0,
-      "volume": 38771240,
-      "targetAvg": 0,
-      "targetHigh": 0,
-      "targetLow": 0,
-      "targetMedian": 0,
-      "history": [
-        {
-          "date": "2026-08-17",
-          "o": 57.76,
-          "h": 58.06,
-          "l": 57.35,
-          "c": 57.38,
-          "v": 45636700
-        },
-        {
-          "date": "2026-08-18",
-          "o": 57.53,
-          "h": 57.78,
-          "l": 57.37,
-          "c": 57.64,
-          "v": 25389400
-        },
-        {
-          "date": "2026-08-19",
-          "o": 57.68,
-          "h": 57.99,
-          "l": 57.22,
-          "c": 57.28,
-          "v": 35648300
-        },
-        {
-          "date": "2026-08-20",
-          "o": 57.27,
-          "h": 57.46,
-          "l": 56.71,
-          "c": 56.75,
-          "v": 30704200
-        },
-        {
-          "date": "2026-08-21",
-          "o": 57.12,
-          "h": 57.5,
-          "l": 57.05,
-          "c": 57.28,
-          "v": 27273100
-        },
-        {
-          "date": "2026-08-24",
-          "o": 57.5,
-          "h": 58.17,
-          "l": 57.44,
-          "c": 58.01,
-          "v": 31462900
-        },
-        {
-          "date": "2026-08-25",
-          "o": 57.98,
-          "h": 58.15,
-          "l": 57.67,
-          "c": 58.1,
-          "v": 23685100
-        },
-        {
-          "date": "2026-08-26",
-          "o": 58.04,
-          "h": 58.17,
-          "l": 57.82,
-          "c": 58.05,
-          "v": 20054000
-        },
-        {
-          "date": "2026-08-27",
-          "o": 57.71,
-          "h": 58.02,
-          "l": 57.53,
-          "c": 57.68,
-          "v": 26082100
-        },
-        {
-          "date": "2026-08-28",
-          "o": 57.78,
-          "h": 58.2,
-          "l": 57.72,
-          "c": 57.9,
-          "v": 25142600
-        },
-        {
-          "date": "2026-08-31",
-          "o": 57.66,
-          "h": 57.73,
-          "l": 57.49,
-          "c": 57.51,
-          "v": 25215700
-        },
-        {
-          "date": "2026-09-01",
-          "o": 57.41,
-          "h": 57.78,
-          "l": 56.93,
-          "c": 57.0,
-          "v": 32396200
-        },
-        {
-          "date": "2026-09-02",
-          "o": 57.18,
-          "h": 58.02,
-          "l": 57.12,
-          "c": 57.46,
-          "v": 31321800
-        },
-        {
-          "date": "2026-09-03",
-          "o": 57.8,
-          "h": 58.39,
-          "l": 57.79,
-          "c": 58.35,
-          "v": 32670500
-        },
-        {
-          "date": "2026-09-04",
-          "o": 57.84,
-          "h": 58.17,
-          "l": 57.72,
-          "c": 57.9,
-          "v": 26361500
-        },
-        {
-          "date": "2026-09-08",
-          "o": 57.51,
-          "h": 57.62,
-          "l": 57.06,
-          "c": 57.1,
-          "v": 38239200
-        },
-        {
-          "date": "2026-09-09",
-          "o": 56.93,
-          "h": 57.13,
-          "l": 56.53,
-          "c": 56.86,
-          "v": 27523000
-        },
-        {
-          "date": "2026-09-10",
-          "o": 56.71,
-          "h": 56.91,
-          "l": 56.49,
-          "c": 56.67,
-          "v": 25355100
-        },
-        {
-          "date": "2026-09-11",
-          "o": 57.24,
-          "h": 57.42,
-          "l": 56.76,
-          "c": 57.05,
-          "v": 34701500
-        },
-        {
-          "date": "2026-09-14",
-          "o": 57.14,
-          "h": 57.37,
-          "l": 56.56,
-          "c": 56.83,
-          "v": 38162400
-        },
-        {
-          "date": "2026-09-15",
-          "o": 56.77,
-          "h": 56.79,
-          "l": 56.26,
-          "c": 56.65,
-          "v": 30161600
-        },
-        {
-          "date": "2026-09-16",
-          "o": 56.62,
-          "h": 56.65,
-          "l": 55.24,
-          "c": 55.73,
-          "v": 53072800
-        },
-        {
-          "date": "2026-09-17",
-          "o": 56.07,
-          "h": 56.2,
-          "l": 55.36,
-          "c": 55.68,
-          "v": 29191300
-        },
-        {
-          "date": "2026-09-18",
-          "o": 55.46,
-          "h": 55.78,
-          "l": 55.26,
-          "c": 55.66,
-          "v": 36017900
-        },
-        {
-          "date": "2026-09-21",
-          "o": 56.05,
-          "h": 56.21,
-          "l": 55.72,
-          "c": 55.9,
-          "v": 30640800
-        },
-        {
-          "date": "2026-09-22",
-          "o": 56.0,
-          "h": 56.05,
-          "l": 54.55,
-          "c": 54.8,
-          "v": 69837400
-        },
-        {
-          "date": "2026-09-23",
-          "o": 54.5,
-          "h": 55.08,
-          "l": 54.46,
-          "c": 54.54,
-          "v": 42703400
-        },
-        {
-          "date": "2026-09-24",
-          "o": 54.61,
-          "h": 54.82,
-          "l": 54.25,
-          "c": 54.53,
-          "v": 28808000
-        },
-        {
-          "date": "2026-09-25",
-          "o": 54.63,
-          "h": 54.89,
-          "l": 54.31,
-          "c": 54.84,
-          "v": 29101300
-        },
-        {
-          "date": "2026-09-28",
-          "o": 54.67,
-          "h": 54.72,
-          "l": 54.44,
-          "c": 54.53,
-          "v": 7048540
+          "l": 192.69,
+          "c": 193.19,
+          "v": 2165659
         }
       ]
     },
     "XLV": {
       "symbol": "XLV",
-      "price": 170.84,
-      "change": 0.14,
-      "changePercentage": 0.082,
+      "price": 170.94,
+      "change": 0.24,
+      "changePercentage": 0.1406,
       "open": 170.285,
-      "high": 170.92,
+      "high": 171.1,
       "low": 169.58,
       "prevClose": 170.7,
       "upcomingEarnings": [],
@@ -27319,10 +26325,10 @@
         {
           "date": "2026-09-28",
           "o": 169.97,
-          "h": 170.92,
+          "h": 171.1,
           "l": 169.58,
-          "c": 170.9,
-          "v": 1832420
+          "c": 170.87,
+          "v": 2182185
         }
       ]
     }
