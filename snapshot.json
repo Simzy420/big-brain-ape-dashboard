@@ -1,5 +1,5 @@
 {
-  "date": "September 28, 2026 13:05 UTC",
+  "date": "September 28, 2026 13:10 UTC",
   "assets": {
     "S&P 500": {
       "price": 7743.41,
@@ -92,20 +92,20 @@
       ]
     },
     "BTC": {
-      "price": 83351.6,
-      "change_pct": -1.59,
+      "price": 83273.0,
+      "change_pct": -1.71,
       "support": 74909.4,
       "resistance": 87385.1
     },
     "ETH": {
-      "price": 2682.27,
-      "change_pct": -0.73,
+      "price": 2679.86,
+      "change_pct": -0.86,
       "support": 2355.12,
       "resistance": 2806.76
     },
     "SOL": {
-      "price": 119.51,
-      "change_pct": -2.84,
+      "price": 119.35,
+      "change_pct": -3.02,
       "support": 95.72,
       "resistance": 124.99
     }
@@ -158,7 +158,7 @@
       "color": "green"
     },
     "yield_10y": {
-      "value": "5.22%",
+      "value": "5.21%",
       "label": "10Y YIELD",
       "color": "blue"
     },
@@ -168,17 +168,17 @@
       "color": "red"
     },
     "oil": {
-      "value": "$94.28",
+      "value": "$94.55",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4181",
+      "value": "$4182",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$61.60",
+      "value": "$61.56",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -210,20 +210,20 @@
       "type": "neutral"
     }
   ],
-  "btc_funding": 6.274e-05,
+  "btc_funding": 6.099e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 34.61,
-    "daily_avg": 33.68,
-    "daily_pct": 2.8,
-    "weekly_inflow": 235.76,
-    "weekly_avg": 216.4,
+    "daily_inflow": 34.57,
+    "daily_avg": 33.67,
+    "daily_pct": 2.7,
+    "weekly_inflow": 235.71,
+    "weekly_avg": 216.39,
     "weekly_pct": 8.9,
-    "monthly_inflow": 927.44,
-    "monthly_avg": 840.35,
+    "monthly_inflow": 927.39,
+    "monthly_avg": 840.34,
     "monthly_pct": 10.4,
-    "large_tx_count": 798167
+    "large_tx_count": 801740
   },
   "history": {
     "vix": [
@@ -271,7 +271,7 @@
       5.11,
       5.16,
       5.18,
-      5.22
+      5.21
     ],
     "oil": [
       83.4,
@@ -294,7 +294,7 @@
       92.16,
       94.61,
       92.41,
-      94.3
+      94.55
     ],
     "gold": [
       4529.9,
@@ -317,7 +317,7 @@
       4318.4,
       4298.0,
       4321.2,
-      4180.8
+      4181.7
     ],
     "silver": [
       67.0,
@@ -340,7 +340,7 @@
       64.38,
       63.46,
       64.25,
-      61.6
+      61.56
     ],
     "dxy": [
       99.7,
@@ -363,7 +363,7 @@
       101.1,
       101.29,
       100.97,
-      101.19
+      101.18
     ],
     "sp500": [
       7675.7,
@@ -414,5 +414,56 @@
       27068.72
     ]
   },
-  "econ_events": []
+  "econ_events": [
+    {
+      "label": "CB CONSUMER CONFIDENCE",
+      "date": "09-29-2026",
+      "time": "2:00pm ET",
+      "forecast": "90.1",
+      "previous": "89.4",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "JOLTS JOB OPENINGS",
+      "date": "09-29-2026",
+      "time": "2:00pm ET",
+      "forecast": "7.23M",
+      "previous": "7.27M",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "ADP NON-FARM EMPLOYMENT CHANGE",
+      "date": "09-30-2026",
+      "time": "12:15pm ET",
+      "forecast": "70K",
+      "previous": "38K",
+      "actual": null,
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "label": "CORE PCE PRICE INDEX M/M",
+      "date": "09-30-2026",
+      "time": "12:30pm ET",
+      "forecast": "0.3%",
+      "previous": "0.2%",
+      "actual": null,
+      "impact": "High",
+      "country": "USD"
+    },
+    {
+      "label": "FINAL GDP Q/Q",
+      "date": "09-30-2026",
+      "time": "12:30pm ET",
+      "forecast": "1.5%",
+      "previous": "1.5%",
+      "actual": null,
+      "impact": "High",
+      "country": "USD"
+    }
+  ]
 }
