@@ -1,6 +1,34 @@
 {
-  "date": "September 28, 2026 21:00 UTC",
+  "date": "September 28, 2026 21:05 UTC",
   "assets": {
+    "S&P 500": {
+      "price": 7683.69,
+      "change_pct": -0.77,
+      "support": 7507.77,
+      "resistance": 7782.19,
+      "history": [
+        7686.14,
+        7631.47,
+        7666.6,
+        7747.71,
+        7718.6,
+        7673.52,
+        7636.36,
+        7591.7,
+        7656.98,
+        7619.98,
+        7585.73,
+        7551.81,
+        7637.76,
+        7650.5,
+        7764.7,
+        7764.64,
+        7706.03,
+        7704.13,
+        7743.41,
+        7683.69
+      ]
+    },
     "NASDAQ": {
       "price": 26820.38,
       "change_pct": -0.92,
@@ -58,26 +86,26 @@
       ]
     },
     "BTC": {
-      "price": 83573.3,
-      "change_pct": -1.11,
+      "price": 83598.0,
+      "change_pct": -1.16,
       "support": 74909.4,
       "resistance": 87385.1
     },
     "ETH": {
-      "price": 2685.49,
-      "change_pct": 0.02,
+      "price": 2688.62,
+      "change_pct": 0.06,
       "support": 2355.12,
       "resistance": 2806.76
     },
     "SOL": {
-      "price": 118.94,
-      "change_pct": -3.06,
+      "price": 118.95,
+      "change_pct": -3.13,
       "support": 95.72,
       "resistance": 124.99
     }
   },
-  "risk_score": 32,
-  "risk_bias": "RISK-OFF",
+  "risk_score": 24,
+  "risk_bias": "STRONG RISK-OFF",
   "fear_greed": {
     "value": 74,
     "classification": "Greed",
@@ -112,8 +140,8 @@
       }
     ]
   },
-  "sector_tech": "COOL",
-  "sector_color": "blue",
+  "sector_tech": "NEUTRAL",
+  "sector_color": "gray",
   "put_call": "0.85",
   "options_bias": "NEUTRAL",
   "whale_flow": "NEUTRAL",
@@ -134,17 +162,17 @@
       "color": "red"
     },
     "oil": {
-      "value": "$93.42",
+      "value": "$93.29",
       "label": "WTI OIL",
       "color": "yellow"
     },
     "gold": {
-      "value": "$4145",
+      "value": "$4146",
       "label": "GOLD",
       "color": "yellow"
     },
     "silver": {
-      "value": "$61.02",
+      "value": "$61.01",
       "label": "SILVER",
       "color": "yellow"
     }
@@ -162,12 +190,17 @@
     },
     {
       "label": "CAUTION",
+      "text": "S&P 500 down -0.8%",
+      "type": "caution"
+    },
+    {
+      "label": "CAUTION",
       "text": "Yields rising \u2014 risk off",
       "type": "caution"
     },
     {
       "label": "NEUTRAL",
-      "text": "Gold down -4.1% \u2014 risk appetite",
+      "text": "Gold down -4.0% \u2014 risk appetite",
       "type": "neutral"
     },
     {
@@ -176,20 +209,20 @@
       "type": "bullish"
     }
   ],
-  "btc_funding": 3.674e-05,
+  "btc_funding": 3.736e-05,
   "btc_oi": 0,
   "btc_long_short": 0,
   "whale_data": {
-    "daily_inflow": 42.62,
-    "daily_avg": 34.82,
-    "daily_pct": 22.4,
-    "weekly_inflow": 243.76,
-    "weekly_avg": 218.27,
+    "daily_inflow": 42.55,
+    "daily_avg": 34.81,
+    "daily_pct": 22.2,
+    "weekly_inflow": 243.7,
+    "weekly_avg": 218.25,
     "weekly_pct": 11.7,
-    "monthly_inflow": 935.44,
-    "monthly_avg": 842.99,
+    "monthly_inflow": 935.38,
+    "monthly_avg": 842.97,
     "monthly_pct": 11.0,
-    "large_tx_count": 758796
+    "large_tx_count": 741130
   },
   "history": {
     "vix": [
@@ -260,7 +293,7 @@
       92.16,
       94.61,
       92.41,
-      93.42
+      93.29
     ],
     "gold": [
       4529.9,
@@ -283,7 +316,7 @@
       4318.4,
       4298.0,
       4321.2,
-      4145.2
+      4146.1
     ],
     "silver": [
       67.0,
@@ -306,7 +339,7 @@
       64.38,
       63.46,
       64.25,
-      61.02
+      61.01
     ],
     "dxy": [
       99.7,
@@ -331,7 +364,28 @@
       100.97,
       101.2
     ],
-    "sp500": [],
+    "sp500": [
+      7686.14,
+      7631.47,
+      7666.6,
+      7747.71,
+      7718.6,
+      7673.52,
+      7636.36,
+      7591.7,
+      7656.98,
+      7619.98,
+      7585.73,
+      7551.81,
+      7637.76,
+      7650.5,
+      7764.7,
+      7764.64,
+      7706.03,
+      7704.13,
+      7743.41,
+      7683.69
+    ],
     "nasdaq": [
       26370.89,
       26099.77,
