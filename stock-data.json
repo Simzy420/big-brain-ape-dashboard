@@ -1,6 +1,6 @@
 {
-  "timestamp": 1790554955,
-  "generatedAt": "2026-09-28 00:22 UTC",
+  "timestamp": 1790555795,
+  "generatedAt": "2026-09-28 00:36 UTC",
   "stocks": {
     "NVDA": {
       "symbol": "NVDA",
@@ -8639,7 +8639,29 @@
           "revenueActual": 12535000000.0
         }
       ],
-      "upcomingEarnings": [],
+      "upcomingEarnings": [
+        {
+          "date": "2027-04-26",
+          "quarter": 1,
+          "epsEstimate": 0.9182,
+          "revenueEstimate": 12447081659,
+          "hour": ""
+        },
+        {
+          "date": "2027-02-08",
+          "quarter": 4,
+          "epsEstimate": 0.6135,
+          "revenueEstimate": 11326867914,
+          "hour": "amc"
+        },
+        {
+          "date": "2026-10-19",
+          "quarter": 3,
+          "epsEstimate": 0.9049,
+          "revenueEstimate": 13272886126,
+          "hour": "bmo"
+        }
+      ],
       "pe": 0,
       "eps": 3.039,
       "epsTTM": 3.3194,
@@ -17286,29 +17308,7 @@
           "revenueActual": 177402000000.0
         }
       ],
-      "upcomingEarnings": [
-        {
-          "date": "2027-05-19",
-          "quarter": 1,
-          "epsEstimate": 0.7451,
-          "revenueEstimate": 187332230499,
-          "hour": ""
-        },
-        {
-          "date": "2027-02-18",
-          "quarter": 4,
-          "epsEstimate": 0.7944,
-          "revenueEstimate": 202363841460,
-          "hour": "amc"
-        },
-        {
-          "date": "2026-11-19",
-          "quarter": 3,
-          "epsEstimate": 0.6432,
-          "revenueEstimate": 189202143186,
-          "hour": ""
-        }
-      ],
+      "upcomingEarnings": [],
       "pe": 0,
       "eps": 2.7291,
       "epsTTM": 2.76,
@@ -17936,6 +17936,46 @@
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/UNH.png",
       "ipo": "1984-10-17",
+      "strongBuy": 8,
+      "buy": 19,
+      "hold": 7,
+      "sell": 0,
+      "strongSell": 0,
+      "consensus": "Strong Buy",
+      "recTrend": [
+        {
+          "period": "2026-09-01",
+          "sb": 8,
+          "b": 19,
+          "h": 7,
+          "s": 0,
+          "ss": 0
+        },
+        {
+          "period": "2026-08-01",
+          "sb": 8,
+          "b": 19,
+          "h": 7,
+          "s": 0,
+          "ss": 0
+        },
+        {
+          "period": "2026-07-01",
+          "sb": 8,
+          "b": 19,
+          "h": 6,
+          "s": 0,
+          "ss": 1
+        },
+        {
+          "period": "2026-06-01",
+          "sb": 7,
+          "b": 19,
+          "h": 7,
+          "s": 0,
+          "ss": 1
+        }
+      ],
       "earnings": [
         {
           "period": "2026-06-30",
