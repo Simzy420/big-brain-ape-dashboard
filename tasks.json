@@ -42,44 +42,6 @@
       ]
     },
     {
-      "id": "sniper-paper-drill-learn",
-      "priority": "high",
-      "title": "Paper drill in Telegram (feed /learn poll)",
-      "subtitle": "Still open \u00b7 HF Space Simzy/big-brain-ape-bot redeployed 2026-09-28 ~7:37 PM Boise (commit 7b8966e \u2014 Deploy GitHub main: paper DexScreener marks #16, LIVE_TRADING=false) \u00b7 host /health ok \u00b7 last known learn poll 74 rows / 1 realised (2026-09-25, no re-poll tonight) \u00b7 use a market-feed name (not SLEEPAPE) \u00b7 reply done when Telegram drill finished",
-      "steps": [
-        "Confirm deploy is live (done 2026-09-28 ~7:37 PM Boise): HF Space lastModified moved off 2026-09-22; /health returns ok.",
-        "Open Big Brain Ape Bot in Telegram (link below)",
-        "Send: /start",
-        "Send: /hire",
-        "Send: /watch",
-        "Send: shield check on a market-feed name (not SLEEPAPE \u2014 drills have no DexScreener mint)",
-        "Send: snipe <that market-feed name>",
-        "Send: shield check RUGPUP (should get blocked \u2014 good)",
-        "Send: /paper",
-        "Close the paper clip after the mark moves",
-        "Send: /learn \u2014 expect non-zero realised when exit \u2260 entry now that #16 is on the host",
-        "Reply done in Chief of Staff chat \u2014 CoS will recheck /api/learn vs the 74/1 baseline"
-      ],
-      "links": [
-        {
-          "label": "Open @Big_Brain_Ape_Bot",
-          "url": "https://t.me/Big_Brain_Ape_Bot"
-        },
-        {
-          "label": "Command Center",
-          "url": "https://simzy420.github.io/command-center/"
-        },
-        {
-          "label": "PR #16 (merged) \u2014 paper DexScreener marks",
-          "url": "https://github.com/Simzy420/telegram-memecoin-sniper-bot-/pull/16"
-        },
-        {
-          "label": "HF Space (redeployed 2026-09-28 with #16)",
-          "url": "https://huggingface.co/spaces/Simzy/big-brain-ape-bot"
-        }
-      ]
-    },
-    {
       "id": "wan22-templates-netlify",
       "priority": "high",
       "title": "Deploy Wan 2.2 Templates UI on Netlify",
