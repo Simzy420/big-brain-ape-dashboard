@@ -1,6 +1,39 @@
 {
   "tasks": [
     {
+      "id": "swapr-pr4-redeploy",
+      "priority": "high",
+      "title": "Redeploy Swapr after Generate fix (PR #4)",
+      "subtitle": "Async Netlify jobs \u00b7 stop Inactivity Timeout \u00b7 merged 02795204",
+      "steps": [
+        "Open Netlify site for https://swapr-casey.netlify.app/ (site name likely swapr-casey).",
+        "Site configuration \u2192 Environment variables: set HF_TOKEN to your Hugging Face token (write/read as used on Vercel wan22-templates). Optional: HF_SPACE_URL=https://simzy-wan-2-2-templates.hf.space",
+        "Deploys \u2192 Trigger deploy \u2192 Clear cache and deploy site (so main with PR #4 is live).",
+        "Functions: confirm generate-background is listed as a background function; generate and job stay normal.",
+        "On phone: hard-refresh https://swapr-casey.netlify.app/ (or close tab and reopen).",
+        "Pick Wave Hello, upload still, Generate \u2014 leave tab open a few minutes; status should poll, not Instant Timeout HTML.",
+        "Reply Chief of Staff with success or the exact new error text (no secrets)."
+      ],
+      "links": [
+        {
+          "label": "Swapr (Netlify)",
+          "url": "https://swapr-casey.netlify.app/"
+        },
+        {
+          "label": "Merged PR #4",
+          "url": "https://github.com/Simzy420/wan22-templates/pull/4"
+        },
+        {
+          "label": "HF Space (templates)",
+          "url": "https://huggingface.co/spaces/Simzy/Wan-2.2-templates"
+        },
+        {
+          "label": "Tasks",
+          "url": "https://simzy420.github.io/big-brain-ape-dashboard/tasks.html"
+        }
+      ]
+    },
+    {
       "id": "scam-wallet-sweep-okx",
       "priority": "high",
       "title": "URGENT: New OKX wallet + sweep burned Virtuals wallet",
@@ -38,46 +71,6 @@
         {
           "label": "Tasks dashboard",
           "url": "https://simzy420.github.io/big-brain-ape-dashboard/tasks.html"
-        }
-      ]
-    },
-    {
-      "id": "wan22-templates-netlify",
-      "priority": "high",
-      "title": "Deploy Wan 2.2 Templates UI on Netlify",
-      "subtitle": "PR #1 merged \u00b7 still need Netlify site + phone Generate test",
-      "steps": [
-        "Repo PR #1 (gallery + how-to) is already merged on GitHub \u2014 skip waiting on code",
-        "Open Netlify \u2192 Add new site \u2192 Import an existing project",
-        "Choose GitHub \u2192 authorize if asked \u2192 pick Simzy420/wan22-templates",
-        "Build command: npm run build",
-        "Publish directory: dist",
-        "Add env var VITE_HF_SPACE = https://simzy-wan-2-2-templates.hf.space",
-        "Deploy site, open the Netlify URL on your phone",
-        "Scroll demo templates \u2192 pick one \u2192 upload a still of yourself \u2192 Generate",
-        "If Generate fails with CORS: in repo public/config.js set USE_PROXY true, redeploy, and add Netlify env HF_TOKEN (your Hugging Face token)",
-        "Reply here or in Command Center with the Netlify URL when it is live"
-      ],
-      "links": [
-        {
-          "label": "GitHub: wan22-templates",
-          "url": "https://github.com/Simzy420/wan22-templates"
-        },
-        {
-          "label": "HF Space (works now)",
-          "url": "https://simzy-wan-2-2-templates.hf.space"
-        },
-        {
-          "label": "Dataset clips",
-          "url": "https://huggingface.co/datasets/Simzy/wan22-template-clips"
-        },
-        {
-          "label": "Netlify new site",
-          "url": "https://app.netlify.com/start"
-        },
-        {
-          "label": "Your Extend Space (unchanged)",
-          "url": "https://simzy-wan22-extend.hf.space"
         }
       ]
     },
