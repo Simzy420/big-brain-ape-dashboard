@@ -1,0 +1,80 @@
+{
+  "updated": "2026-09-29T20:26:00-06:00",
+  "nextFocus": "PCE",
+  "indicators": [
+    {
+      "id": "PCE",
+      "name": "Core PCE y/y",
+      "fullName": "Personal Consumption Expenditures Price Index (core, y/y)",
+      "unit": "%",
+      "next": {
+        "release": "2026-09-30",
+        "time": "8:30 AM ET",
+        "period": "August 2026",
+        "forecast": 3.3,
+        "forecastMom": 0.3,
+        "headlineForecast": 3.7,
+        "headlineMom": 0.4,
+        "soft": "Core 0.2% m/m or y/y ≤ 3.2%",
+        "inline": "Core 0.3% m/m / 3.3% y/y",
+        "hot": "Core ≥ 0.4% m/m or y/y ≥ 3.4%",
+        "note": "Last PCE before Oct 28 FOMC. Annual BEA revisions drop in the same release."
+      },
+      "history": [
+        {"date": "2026-02-27", "period": "Jan", "actual": 3.3, "forecast": 3.3},
+        {"date": "2026-03-27", "period": "Feb", "actual": 3.3, "forecast": 3.3},
+        {"date": "2026-04-30", "period": "Mar", "actual": 3.3, "forecast": 3.3},
+        {"date": "2026-05-30", "period": "Apr", "actual": 3.3, "forecast": 3.2},
+        {"date": "2026-06-27", "period": "May", "actual": 3.3, "forecast": 3.3},
+        {"date": "2026-07-31", "period": "Jun", "actual": 3.3, "forecast": 3.3},
+        {"date": "2026-08-26", "period": "Jul", "actual": 3.3, "forecast": 3.3}
+      ]
+    },
+    {
+      "id": "CPI",
+      "name": "Core CPI y/y",
+      "fullName": "Consumer Price Index (core, y/y)",
+      "unit": "%",
+      "next": {
+        "release": "2026-10-14",
+        "time": "8:30 AM ET",
+        "period": "September 2026",
+        "forecast": null,
+        "note": "Next CPI after tomorrow's PCE. Date tentative until BLS calendar confirms."
+      },
+      "history": []
+    },
+    {
+      "id": "NFP",
+      "name": "Nonfarm Payrolls",
+      "fullName": "Change in Nonfarm Payrolls",
+      "unit": "k",
+      "next": {
+        "release": "2026-10-02",
+        "time": "8:30 AM ET",
+        "period": "September 2026",
+        "forecast": null,
+        "note": "Friday after PCE. ADP prints tomorrow as a warm-up."
+      },
+      "history": []
+    },
+    {
+      "id": "CONF",
+      "name": "Consumer Confidence",
+      "fullName": "Conference Board Consumer Confidence",
+      "unit": "",
+      "next": {
+        "release": "2026-09-29",
+        "time": "10:00 AM ET",
+        "period": "September 2026",
+        "forecast": 89.0,
+        "actual": 81.9,
+        "previous": 88.6,
+        "note": "Printed today — 81.9 vs 89 forecast. Soft confidence + high yields."
+      },
+      "history": [
+        {"date": "2026-09-29", "period": "Sep", "actual": 81.9, "forecast": 89.0}
+      ]
+    }
+  ]
+}
