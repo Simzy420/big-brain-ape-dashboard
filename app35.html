@@ -606,6 +606,16 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <div id="view-trading" class="view">
 <div class="header"><button class="back-btn" onclick="switchView('home')">‹ Back</button><h1>Trading <span>Desk</span> 🦍</h1></div>
 <div id="tradingContent"><div class="loading"><div class="spinner"></div>Loading positions...</div></div>
+
+<!-- COMPUTE BALANCE WIDGET -->
+<div id="computeWidget" style="margin:16px 0;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:12px">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+    <div style="font-size:17px;font-weight:700;color:var(--blue)">⚡ Compute Balance</div>
+    <button id="computeRefreshBtn" onclick="loadComputeBalance()" style="background:var(--card);border:1px solid var(--border);color:var(--blue);font-size:20px;padding:6px 12px;border-radius:8px;cursor:pointer">🔄</button>
+  </div>
+  <div id="computeContent" style="font-size:15px;color:var(--text2)">Loading compute balance...</div>
+</div>
+
 <div id="botTracker"></div>
 <div id="stockPicks"><div class="loading"><div class="spinner" style="width:24px;height:24px"></div>Loading picks...</div></div>
 </div>
@@ -788,7 +798,7 @@ var btn=document.querySelector('[data-view="'+name+'"]');
 if(btn)btn.classList.add('active');
 window.scrollTo(0,0);
 bbaChatOnView(name);
-if(name==='trading'){loadTrading();loadBots();loadStockPicks();}
+if(name==='trading'){loadTrading();loadBots();loadStockPicks();loadComputeBalance();}
 else if(name==='briefing')loadBriefing();
 else if(name==='snapshot')loadSnapshot();
 else if(name==='crypto')loadCrypto();
@@ -4102,6 +4112,38 @@ out.innerHTML='<div class="briefing-card"><h3>Trading Desk</h3><p>Unable to load
 
 // ===== BOT TRACKER =====
 function loadBots(){
+
+// COMPUTE BALANCE — global function
+function loadComputeBalance(){
+var el=document.getElementById('computeContent');
+var btn=document.getElementById('computeRefreshBtn');
+if(btn){btn.style.opacity='0.5';btn.textContent='⏳';}
+el.innerHTML='<span style="color:var(--text2)">Fetching latest balance...</span>';
+sameDomainGet('compute-balance.json?t='+Date.now())
+.then(function(d){
+var pct=d.limit>0?Math.round(d.remaining/d.limit*100):0;
+var barColor=pct>50?'var(--green)':pct>20?'var(--orange)':'var(--red)';
+var html='<div style="display:flex;justify-content:space-between;margin-bottom:8px">';
+html+='<span style="color:var(--text2);font-size:15px">Remaining</span>';
+html+='<span style="font-size:24px;font-weight:800;color:'+barColor+'">$'+(d.remaining||0).toFixed(2)+'</span>';
+html+='</div>';
+html+='<div style="background:var(--bg);border-radius:6px;height:8px;overflow:hidden;margin-bottom:8px">';
+html+='<div style="width:'+pct+'%;height:100%;background:'+barColor+';border-radius:6px;transition:width 0.3s"></div>';
+html+='</div>';
+html+='<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text2)">';
+html+='<span>Limit: $'+(d.limit||0).toFixed(2)+'</span>';
+html+='<span>Total Used: $'+(d.totalUsage||0).toFixed(2)+'</span>';
+html+='</div>';
+html+='<div style="font-size:12px;color:var(--text2);margin-top:6px;text-align:right">Updated: '+(d.updated||'—')+'</div>';
+el.innerHTML=html;
+if(btn){btn.style.opacity='1';btn.textContent='🔄';}
+})
+.catch(function(e){
+el.innerHTML='<span style="color:var(--red)">⚠️ Could not load compute balance. Tap 🔄 to retry.</span>';
+if(btn){btn.style.opacity='1';btn.textContent='🔄';}
+});
+}
+window.loadComputeBalance=loadComputeBalance;
 var bots=JSON.parse(localStorage.getItem(BOT_STORAGE_KEY)||'null');
 if(!bots){bots=DEFAULT_BOTS;saveBots(bots);}
 renderBots(bots);
