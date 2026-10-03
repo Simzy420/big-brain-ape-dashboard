@@ -17,7 +17,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size: 17px;line-height:1.5;-webkit-tap-highlight-color:transparent}
 .app{max-width:500px;margin:0 auto;padding-bottom:calc(var(--bba-nav-h, 68px) + 12px)}
-.header{text-align:center;padding:16px 20px 10px;position:relative}
+.header{text-align:center;padding:16px 20px 10px 72px;position:relative}
 .header h1{font-size: 32px;font-weight:700}
 .header h1 span{color:var(--blue)}
 .header p{color:var(--text2);font-size: 16px;margin-top:4px}
@@ -437,7 +437,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <!-- HOME VIEW -->
 <div id="view-home" class="view active">
 <div class="header">
-<button onclick="openSideMenu()" style="background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;padding:0 8px 0 0;flex-shrink:0">☰</button>
+<button id="menuBtn" onclick="openSideMenu()" style="position:absolute;left:18px;top:16px;background:none;border:none;color:var(--text);font-size:26px;cursor:pointer;padding:8px;z-index:6;line-height:1">☰</button>
 <h1>Big Brain <span>Ape</span> 🦍</h1>
 </div>
 
@@ -3052,9 +3052,38 @@ ctx.fillText('$'+fmtCrypto(min),4,ch-4);
 // ==============================
 // TICKER TAPES
 // ==============================
+
+function normalizeMarkets(mkt){
+if(!mkt)return {stocks:[],crypto:[],indices:[],xyzPerps:[]};
+if((mkt.crypto&&mkt.crypto.length)||(mkt.stocks&&mkt.stocks.length)||(mkt.indices&&mkt.indices.length))return mkt;
+var bag=mkt.markets||{};
+var stocks=[],crypto=[],indices=[];
+var cryptos={BTC:1,ETH:1,SOL:1,HYPE:1,AVAX:1,BNB:1,XRP:1,DOGE:1,ADA:1,AAVE:1,XLM:1};
+for(var sym in bag){
+var row=bag[sym];
+if(!row||typeof row.price!=='number')continue;
+var ch=row.change24h||row.change||0;
+var item={symbol:sym,price:row.price,change24h:ch,changePercentage:ch,source:row.source||''};
+if(cryptos[sym])crypto.push(item);
+else if(sym==='SPY'||sym==='QQQ'||sym==='DIA')indices.push(item);
+else stocks.push(item);
+}
+return {stocks:stocks,crypto:crypto,indices:indices,xyzPerps:mkt.xyzPerps||[]};
+}
+function fillSqFromSnapshot(snap){
+var a=(snap&&snap.assets)||{};
+var map={SP500:a['S&P 500'],NASDAQ:a.NASDAQ,DOW:a['Dow Jones'],BTC:a.BTC,ETH:a.ETH,SOL:a.SOL};
+for(var k in map){
+var it=map[k];
+if(!it||!it.price)continue;
+setSq6(k,it.price,it.change_pct,{support:it.support,resistance:it.resistance});
+}
+}
+
 function loadTickerTapes(){
 sameDomainGet(MARKETS_URL)
 .then(function(mkt){
+mkt=normalizeMarkets(mkt);
 var stocks=mkt.stocks||[];
 var crypto=mkt.crypto||[];
 var xyz=mkt.xyzPerps||[];
@@ -3075,6 +3104,7 @@ renderTape('tapeStocks',sdStocks);
 renderTape('tapeStocks',stocks);
 }
 
+if(!crypto.length){crypto=stocks.filter(function(s){return {BTC:1,ETH:1,SOL:1,HYPE:1}[s.symbol]});}
 renderTape('tapeCrypto',crypto);
 
 // Fallback: if xyz perps have no prices, use stock-data.json for those too
@@ -3126,6 +3156,7 @@ requestAnimationFrame(animateTapes);
 function loadHomeData(){
 sameDomainGet(MARKETS_URL)
 .then(function(mkt){
+mkt=normalizeMarkets(mkt);
 // 6 squares: S&P500, NASDAQ, Dow, BTC, ETH, SOL
 var idxList=mkt.indices||[];
 var cryList=mkt.crypto||[];
@@ -3152,6 +3183,7 @@ if(sol)setSq6('SOL',sol.price,sol.change24h,getSR(sol));
 return sameDomainGet(SNAPSHOT_URL);
 })
 .then(function(snap){
+fillSqFromSnapshot(snap);
 // 4 SQUARES: Risk On, Market Sentiment, Tech Sector, Options Flow
 // Risk On
 var riskBias=snap.risk_bias||snap.riskBias||'—';
@@ -4049,15 +4081,28 @@ html+='<div class="account-row"><span class="label">Account Value</span><span cl
 html+='<div class="account-row"><span class="label">Cash (Buying Power)</span><span class="val">$'+fmtNum(pos.availableCash||pos.withdrawable||pos.margin||pos.cash||0)+'</span></div>';
 var upnl=pos.totalUnrealizedPnl||pos.unrealizedPnl||0;
 html+='<div class="account-row"><span class="label">Unrealized P&L</span><span class="val" style="color:'+(upnl>=0?'var(--green)':'var(--red)')+'">'+(upnl>=0?'+':'')+'$'+fmtNum(upnl)+'</span></div>';
-html+='<div class="account-row"><span class="label">Margin Used</span><span class="val">$'+fmtNum(pos.totalMarginUsed||0)+'</span></div>';
+html+='<div class="account-row"><span class="label">Margin Used</span><span class="val" id="deskMargin">$'+fmtNum(pos.totalMarginUsed||0)+'</span></div>';
 html+='</div>';
 
-if(pos.positions&&pos.positions.length>0){
+var rawPos=pos.positions||[];
+var positions=rawPos.map(function(p){
+var lev=p.leverage&&typeof p.leverage==='object'?p.leverage.value:p.leverage;
+var sym=String(p.symbol||p.token||'').replace('xyz:','');
+var pnl=parseFloat(p.unrealizedPnl||p.pnl||0)||0;
+var entry=parseFloat(p.entryPrice||p.entryPx||0)||0;
+var size=Math.abs(parseFloat(p.size)||0);
+return {symbol:sym,side:p.side||'long',size:size,entryPrice:entry,currentPrice:parseFloat(p.currentPrice||p.markPx||0)||0,leverage:lev||1,marginUsed:parseFloat(p.marginUsed)||0,unrealizedPnl:pnl,pnlPercent:parseFloat(p.pnlPercent)||0,tvSymbol:p.tvSymbol||sym};
+});
+var sumPnl=positions.reduce(function(s,p){return s+p.unrealizedPnl;},0);
+var sumMargin=positions.reduce(function(s,p){return s+p.marginUsed;},0);
+if(sumMargin&&!pos.totalMarginUsed){html=html.replace('id="deskMargin">$'+fmtNum(0),'id="deskMargin">$'+fmtNum(sumMargin));}
+if(positions.length>0){
+html=html.replace('Unrealized P&L</span><span class="val" style="color:'+(0>=0?'var(--green)':'var(--red)')+'">'+(0>=0?'+':'')+'$'+fmtNum(0)+'</span>','Unrealized P&L</span><span class="val" style="color:'+(sumPnl>=0?'var(--green)':'var(--red)')+'">'+(sumPnl>=0?'+':'')+'$'+fmtNum(sumPnl)+'</span>');
 html+='<div class="section-title">Open Positions</div>';
 html+='<div style="font-size: 17px;color:var(--text2);margin-bottom:8px">Tap any position for live chart + latest news</div>';
-for(var i=0;i<pos.positions.length;i++){
-var p=pos.positions[i];
-var pnl=p.unrealizedPnl||p.pnl||0;
+for(var i=0;i<positions.length;i++){
+var p=positions[i];
+var pnl=p.unrealizedPnl||0;
 var pnlPct=p.pnlPercent||0;
 var pnlClass=pnl>=0?'up':'down';
 var tvSym=p.tvSymbol||('NASDAQ:'+p.symbol);
