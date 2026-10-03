@@ -1,70 +1,47 @@
 {
-  "timestamp": 1787697958,
-  "generatedAt": "2026-08-25 22:45 UTC",
-  "accountValue": 1750.46,
-  "withdrawable": 315.74,
-  "portfolioValue": 1750.46,
-  "totalUnrealizedPnl": 197.06,
-  "totalMarginUsed": 1237.66,
-  "availableCash": 315.74,
+  "address": "0x37a8023762c69f7150d878733fd9f635f1070fc6",
+  "network": "mainnet",
+  "abstraction": "unifiedAccount",
+  "accountValue": "1299.644297",
+  "withdrawable": "688.651028",
   "positions": [
     {
-      "symbol": "NVDA",
-      "rawToken": "xyz:NVDA",
-      "side": "LONG",
-      "size": 8.7,
-      "entryPrice": 213.21,
-      "currentPrice": 214.2,
-      "unrealizedPnl": 8.58,
-      "pnlPercent": 1.4,
-      "marginUsed": 621.18,
-      "leverage": 3,
-      "marginType": "cross",
-      "positionValue": 1863.53,
-      "tvSymbol": "NASDAQ:NVDA"
-    },
-    {
-      "symbol": "GOLD",
-      "rawToken": "xyz:GOLD",
-      "side": "LONG",
-      "size": 0.396,
-      "entryPrice": 4194.34,
-      "currentPrice": 4670.3,
-      "unrealizedPnl": 188.48,
-      "pnlPercent": 34.0,
-      "marginUsed": 616.48,
-      "leverage": 3,
-      "marginType": "cross",
-      "positionValue": 1849.44,
-      "tvSymbol": "TVC:GOLD"
+      "token": "xyz:GOLD",
+      "size": "0.46",
+      "entryPx": "4171.16",
+      "unrealizedPnl": "-12.082",
+      "marginUsed": "623.075269",
+      "leverage": {
+        "type": "isolated",
+        "value": 3,
+        "rawUsd": "-1283.578731"
+      }
     }
   ],
-  "pieValueSlices": [
+  "spotBalances": [
     {
-      "label": "NVDA",
-      "value": 1863.53
+      "token": "USDC",
+      "total": "1311.726297",
+      "hold": "623.075269",
+      "usdValue": "1311.726297"
     },
     {
-      "label": "GOLD",
-      "value": 1849.44
+      "token": "USDE",
+      "total": "0.0",
+      "hold": "0.0",
+      "usdValue": "0.000000"
     },
     {
-      "label": "Cash",
-      "value": 315.74
-    }
-  ],
-  "pieMarginSlices": [
-    {
-      "label": "NVDA",
-      "value": 621.18
+      "token": "USDT0",
+      "total": "0.0",
+      "hold": "0.0",
+      "usdValue": "0.000000"
     },
     {
-      "label": "GOLD",
-      "value": 616.48
-    },
-    {
-      "label": "Available",
-      "value": 315.74
+      "token": "USDH",
+      "total": "0.0",
+      "hold": "0.0",
+      "usdValue": "0.000000"
     }
   ]
 }
