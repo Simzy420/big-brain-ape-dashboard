@@ -1,711 +1,95 @@
 {
-  "timestamp": 1787697975,
-  "generatedAt": "2026-08-25 22:46 UTC",
-  "xyzPerps": [
-    {
-      "symbol": "NVDA",
-      "rawSymbol": "NVDA",
-      "price": 213.05,
-      "change24h": 2.19,
-      "tvSymbol": "NASDAQ:NVDA",
-      "type": "perp"
+  "markets": {
+    "BTC": {
+      "price": 84610,
+      "change24h": -0.1683544056060315,
+      "source": "CoinGecko"
     },
-    {
-      "symbol": "META",
-      "rawSymbol": "META",
-      "price": 570.05,
-      "change24h": 1.97,
-      "tvSymbol": "NASDAQ:META",
-      "type": "perp"
+    "ETH": {
+      "price": 2675.08,
+      "change24h": -1.0493249773471673,
+      "source": "CoinGecko"
     },
-    {
-      "symbol": "GOOGL",
-      "rawSymbol": "GOOGL",
-      "price": 346.96,
-      "change24h": -0.32,
-      "tvSymbol": "NASDAQ:GOOGL",
-      "type": "perp"
+    "SOL": {
+      "price": 119.17,
+      "change24h": 0.48391294788972955,
+      "source": "CoinGecko"
     },
-    {
-      "symbol": "AAPL",
-      "rawSymbol": "AAPL",
-      "price": 309.9,
-      "change24h": -0.14,
-      "tvSymbol": "NASDAQ:AAPL",
-      "type": "perp"
+    "HYPE": {
+      "price": 89.55,
+      "change24h": 2.0352861660965744,
+      "source": "CoinGecko"
     },
-    {
-      "symbol": "MSFT",
-      "rawSymbol": "MSFT",
-      "price": 491.71,
-      "change24h": 0.9,
-      "tvSymbol": "NASDAQ:MSFT",
-      "type": "perp"
+    "AVAX": {
+      "price": 10.89,
+      "change24h": -0.7133421537330246,
+      "source": "CoinGecko"
     },
-    {
-      "symbol": "AMZN",
-      "rawSymbol": "AMZN",
-      "price": 261.06,
-      "change24h": -0.39,
-      "tvSymbol": "NASDAQ:AMZN",
-      "type": "perp"
+    "BNB": {
+      "price": 768.97,
+      "change24h": -0.27284646228387416,
+      "source": "CoinGecko"
     },
-    {
-      "symbol": "AMD",
-      "rawSymbol": "AMD",
-      "price": 479.18,
-      "change24h": 4.91,
-      "tvSymbol": "NASDAQ:AMD",
-      "type": "perp"
+    "NVDA": {
+      "price": 233.95,
+      "change24h": 1.3385,
+      "source": "Finnhub"
     },
-    {
-      "symbol": "INTC",
-      "rawSymbol": "INTC",
-      "price": 87.48,
-      "change24h": 0.25,
-      "tvSymbol": "NASDAQ:INTC",
-      "type": "perp"
+    "AAPL": {
+      "price": 333.69,
+      "change24h": 1.0202,
+      "source": "Finnhub"
     },
-    {
-      "symbol": "PLTR",
-      "rawSymbol": "PLTR",
-      "price": 172.73,
-      "change24h": -1.8,
-      "tvSymbol": "NYSE:PLTR",
-      "type": "perp"
+    "MSFT": {
+      "price": 517.53,
+      "change24h": 0.9224,
+      "source": "Finnhub"
     },
-    {
-      "symbol": "NFLX",
-      "rawSymbol": "NFLX",
-      "price": 82.23,
-      "change24h": 2.77,
-      "tvSymbol": "NASDAQ:NFLX",
-      "type": "perp"
+    "GOOGL": {
+      "price": 343.5,
+      "change24h": 1.5551,
+      "source": "Finnhub"
     },
-    {
-      "symbol": "ORCL",
-      "rawSymbol": "ORCL",
-      "price": 144.76,
-      "change24h": 1.62,
-      "tvSymbol": "NYSE:ORCL",
-      "type": "perp"
+    "AMZN": {
+      "price": 251.52,
+      "change24h": 1.3254,
+      "source": "Finnhub"
     },
-    {
-      "symbol": "TSM",
-      "rawSymbol": "TSM",
-      "price": 417.41,
-      "change24h": 1.78,
-      "tvSymbol": "NYSE:TSM",
-      "type": "perp"
+    "META": {
+      "price": 728.08,
+      "change24h": 0.2962,
+      "source": "Finnhub"
     },
-    {
-      "symbol": "COIN",
-      "rawSymbol": "COIN",
-      "price": 187.16,
-      "change24h": 4.28,
-      "tvSymbol": "NASDAQ:COIN",
-      "type": "perp"
+    "TSLA": {
+      "price": 370.59,
+      "change24h": 4.6539,
+      "source": "Finnhub"
     },
-    {
-      "symbol": "HOOD",
-      "rawSymbol": "HOOD",
-      "price": 112.09,
-      "change24h": 8.17,
-      "tvSymbol": "NASDAQ:HOOD",
-      "type": "perp"
+    "AMD": {
+      "price": 633.91,
+      "change24h": 2.9526,
+      "source": "Finnhub"
     },
-    {
-      "symbol": "MSTR",
-      "rawSymbol": "MSTR",
-      "price": 126.83,
-      "change24h": 3.42,
-      "tvSymbol": "NASDAQ:MSTR",
-      "type": "perp"
+    "NFLX": {
+      "price": 67.06,
+      "change24h": -1.1643,
+      "source": "Finnhub"
     },
-    {
-      "symbol": "TSLA",
-      "rawSymbol": "TSLA",
-      "price": 350.25,
-      "change24h": 0.37,
-      "tvSymbol": "NASDAQ:TSLA",
-      "type": "perp"
+    "ORCL": {
+      "price": 142.3,
+      "change24h": 3.0637,
+      "source": "Finnhub"
     },
-    {
-      "symbol": "RIVN",
-      "rawSymbol": "RIVN",
-      "price": 16.74,
-      "change24h": 0.84,
-      "tvSymbol": "NASDAQ:RIVN",
-      "type": "perp"
+    "TSM": {
+      "price": 472.78,
+      "change24h": 2.9573,
+      "source": "Finnhub"
     },
-    {
-      "symbol": "BABA",
-      "rawSymbol": "BABA",
-      "price": 119.44,
-      "change24h": 0.82,
-      "tvSymbol": "NYSE:BABA",
-      "type": "perp"
-    },
-    {
-      "symbol": "GME",
-      "rawSymbol": "GME",
-      "price": 18.09,
-      "change24h": 0.28,
-      "tvSymbol": "NYSE:GME",
-      "type": "perp"
-    },
-    {
-      "symbol": "COST",
-      "rawSymbol": "COST",
-      "price": 960.01,
-      "change24h": -1.17,
-      "tvSymbol": "NASDAQ:COST",
-      "type": "perp"
-    },
-    {
-      "symbol": "LLY",
-      "rawSymbol": "LLY",
-      "price": 1233.66,
-      "change24h": -1.06,
-      "tvSymbol": "NYSE:LLY",
-      "type": "perp"
-    },
-    {
-      "symbol": "HIMS",
-      "rawSymbol": "HIMS",
-      "price": 31.75,
-      "change24h": 2.16,
-      "tvSymbol": "NYSE:HIMS",
-      "type": "perp"
-    },
-    {
-      "symbol": "DKNG",
-      "rawSymbol": "DKNG",
-      "price": 25.79,
-      "change24h": -0.69,
-      "tvSymbol": "NASDAQ:DKNG",
-      "type": "perp"
-    },
-    {
-      "symbol": "CRCL",
-      "rawSymbol": "CRCL",
-      "price": 92.02,
-      "change24h": 4.9,
-      "tvSymbol": "NASDAQ:CRCL",
-      "type": "perp"
-    },
-    {
-      "symbol": "CRWV",
-      "rawSymbol": "CRWV",
-      "price": 88.04,
-      "change24h": 2.08,
-      "tvSymbol": "NASDAQ:CRWV",
-      "type": "perp"
-    },
-    {
-      "symbol": "MU",
-      "rawSymbol": "MU",
-      "price": 932.97,
-      "change24h": 2.48,
-      "tvSymbol": "NASDAQ:MU",
-      "type": "perp"
-    },
-    {
-      "symbol": "SNDK",
-      "rawSymbol": "SNDK",
-      "price": 1480.77,
-      "change24h": -0.83,
-      "tvSymbol": "NASDAQ:SNDK",
-      "type": "perp"
-    },
-    {
-      "symbol": "SP 500",
-      "rawSymbol": "SP500",
-      "price": 765.91,
-      "change24h": 0.32,
-      "tvSymbol": "SP:SPX",
-      "type": "perp",
-      "note": "Price via SPY ETF"
-    },
-    {
-      "symbol": "NASDAQ 100",
-      "rawSymbol": "XYZ100",
-      "price": 710.72,
-      "change24h": 0.62,
-      "tvSymbol": "NASDAQ:NDX",
-      "type": "perp",
-      "note": "Price via QQQ ETF"
-    },
-    {
-      "symbol": "EUR/USD",
-      "rawSymbol": "EUR",
-      "price": 710.72,
-      "change24h": 0.62,
-      "tvSymbol": "FX:EURUSD",
-      "type": "perp",
-      "note": "Price via QQQ ETF"
-    },
-    {
-      "symbol": "DOLLAR INDEX",
-      "rawSymbol": "DXY",
-      "price": 765.91,
-      "change24h": 0.32,
-      "tvSymbol": "TVC:DXY",
-      "type": "perp",
-      "note": "Price via SPY ETF"
+    "COIN": {
+      "price": 183,
+      "change24h": -3.3229,
+      "source": "Finnhub"
     }
-  ],
-  "crypto": [
-    {
-      "symbol": "BTC",
-      "price": 78822.5,
-      "change24h": 0.08,
-      "tvSymbol": "BINANCE:BTCUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "ETH",
-      "price": 2450.93,
-      "change24h": -1.09,
-      "tvSymbol": "BINANCE:ETHUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "SOL",
-      "price": 97.28,
-      "change24h": -0.53,
-      "tvSymbol": "BINANCE:SOLUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "BNB",
-      "price": 697.23,
-      "change24h": -0.76,
-      "tvSymbol": "BINANCE:BNBUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "XRP",
-      "price": 1.4456,
-      "change24h": -2.17,
-      "tvSymbol": "BINANCE:XRPUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "ADA",
-      "price": 0.2117,
-      "change24h": -3.99,
-      "tvSymbol": "BINANCE:ADAUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "AVAX",
-      "price": 7.376,
-      "change24h": -1.93,
-      "tvSymbol": "BINANCE:AVAXUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "LINK",
-      "price": 11.37,
-      "change24h": -2.17,
-      "tvSymbol": "BINANCE:LINKUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "DOT",
-      "price": 0.8611,
-      "change24h": -3.83,
-      "tvSymbol": "BINANCE:DOTUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "DOGE",
-      "price": 0.08667,
-      "change24h": -3.48,
-      "tvSymbol": "BINANCE:DOGEUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "LTC",
-      "price": 50.45,
-      "change24h": -2.21,
-      "tvSymbol": "BINANCE:LTCUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "TRX",
-      "price": 0.33707,
-      "change24h": -2.03,
-      "tvSymbol": "BINANCE:TRXUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "UNI",
-      "price": 4.28,
-      "change24h": -0.19,
-      "tvSymbol": "BINANCE:UNIUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "ATOM",
-      "price": 1.535,
-      "change24h": 0.39,
-      "tvSymbol": "BINANCE:ATOMUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "NEAR",
-      "price": 1.88,
-      "change24h": -3.39,
-      "tvSymbol": "BINANCE:NEARUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "ARB",
-      "price": 0.09325,
-      "change24h": -3.3,
-      "tvSymbol": "BINANCE:ARBUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "OP",
-      "price": 0.1015,
-      "change24h": -5.25,
-      "tvSymbol": "BINANCE:OPUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "APT",
-      "price": 0.5711,
-      "change24h": -5.62,
-      "tvSymbol": "BINANCE:APTUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "FIL",
-      "price": 0.7166,
-      "change24h": -4.59,
-      "tvSymbol": "BINANCE:FILUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "INJ",
-      "price": 5.644,
-      "change24h": 0.02,
-      "tvSymbol": "BINANCE:INJUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "TIA",
-      "price": 0.3535,
-      "change24h": -4.3,
-      "tvSymbol": "BINANCE:TIAUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "SEI",
-      "price": 0.04643,
-      "change24h": -1.13,
-      "tvSymbol": "BINANCE:SEIUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "SUI",
-      "price": 0.7645,
-      "change24h": -4.47,
-      "tvSymbol": "BINANCE:SUIUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "RUNE",
-      "price": 0.4857,
-      "change24h": 1.78,
-      "tvSymbol": "BINANCE:RUNEUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "AAVE",
-      "price": 127.01,
-      "change24h": -3.15,
-      "tvSymbol": "BINANCE:AAVEUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "CRV",
-      "price": 0.3171,
-      "change24h": -5.54,
-      "tvSymbol": "BINANCE:CRVUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "LDO",
-      "price": 0.3672,
-      "change24h": -1.26,
-      "tvSymbol": "BINANCE:LDOUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "FET",
-      "price": 0.1642,
-      "change24h": -5.03,
-      "tvSymbol": "BINANCE:FETUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "TAO",
-      "price": 231.83,
-      "change24h": -3.71,
-      "tvSymbol": "BINANCE:TAOUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "WIF",
-      "price": 0.197,
-      "change24h": -1.7,
-      "tvSymbol": "BINANCE:WIFUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "JTO",
-      "price": 0.5217,
-      "change24h": -7.88,
-      "tvSymbol": "BINANCE:JTOUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "ETHFI",
-      "price": 0.5599,
-      "change24h": -9.71,
-      "tvSymbol": "BINANCE:ETHFIUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "HBAR",
-      "price": 0.07832,
-      "change24h": -1.6,
-      "tvSymbol": "BINANCE:HBARUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "XLM",
-      "price": 0.18505,
-      "change24h": -4.38,
-      "tvSymbol": "BINANCE:XLMUSDT",
-      "type": "crypto"
-    },
-    {
-      "symbol": "ENA",
-      "price": 0.145,
-      "change24h": -4.22,
-      "tvSymbol": "BINANCE:ENAUSDT",
-      "type": "crypto"
-    }
-  ],
-  "stocks": [
-    {
-      "symbol": "AAPL",
-      "price": 309.9,
-      "change24h": -0.14,
-      "name": "AAPL",
-      "tvSymbol": "NASDAQ:AAPL",
-      "type": "stock"
-    },
-    {
-      "symbol": "MSFT",
-      "price": 491.71,
-      "change24h": 0.9,
-      "name": "MSFT",
-      "tvSymbol": "NASDAQ:MSFT",
-      "type": "stock"
-    },
-    {
-      "symbol": "NVDA",
-      "price": 213.05,
-      "change24h": 2.19,
-      "name": "NVDA",
-      "tvSymbol": "NASDAQ:NVDA",
-      "type": "stock"
-    },
-    {
-      "symbol": "TSLA",
-      "price": 350.25,
-      "change24h": 0.37,
-      "name": "TSLA",
-      "tvSymbol": "NASDAQ:TSLA",
-      "type": "stock"
-    },
-    {
-      "symbol": "HOOD",
-      "price": 112.09,
-      "change24h": 8.17,
-      "name": "HOOD",
-      "tvSymbol": "NASDAQ:HOOD",
-      "type": "stock"
-    },
-    {
-      "symbol": "PLTR",
-      "price": 172.73,
-      "change24h": -1.8,
-      "name": "PLTR",
-      "tvSymbol": "NYSE:PLTR",
-      "type": "stock"
-    },
-    {
-      "symbol": "SPY",
-      "price": 765.91,
-      "change24h": 0.32,
-      "name": "SPY",
-      "tvSymbol": "AMEX:SPY",
-      "type": "stock"
-    },
-    {
-      "symbol": "QQQ",
-      "price": 710.72,
-      "change24h": 0.62,
-      "name": "QQQ",
-      "tvSymbol": "NASDAQ:QQQ",
-      "type": "stock"
-    },
-    {
-      "symbol": "AMZN",
-      "price": 261.06,
-      "change24h": -0.39,
-      "name": "AMZN",
-      "tvSymbol": "NASDAQ:AMZN",
-      "type": "stock"
-    },
-    {
-      "symbol": "META",
-      "price": 570.05,
-      "change24h": 1.97,
-      "name": "META",
-      "tvSymbol": "NASDAQ:META",
-      "type": "stock"
-    },
-    {
-      "symbol": "AMD",
-      "price": 479.18,
-      "change24h": 4.91,
-      "name": "AMD",
-      "tvSymbol": "NASDAQ:AMD",
-      "type": "stock"
-    },
-    {
-      "symbol": "GOOGL",
-      "price": 346.96,
-      "change24h": -0.32,
-      "name": "GOOGL",
-      "tvSymbol": "NASDAQ:GOOGL",
-      "type": "stock"
-    },
-    {
-      "symbol": "NFLX",
-      "price": 82.23,
-      "change24h": 2.77,
-      "name": "NFLX",
-      "tvSymbol": "NASDAQ:NFLX",
-      "type": "stock"
-    },
-    {
-      "symbol": "COIN",
-      "price": 187.16,
-      "change24h": 4.28,
-      "name": "COIN",
-      "tvSymbol": "NASDAQ:COIN",
-      "type": "stock"
-    },
-    {
-      "symbol": "MSTR",
-      "price": 126.83,
-      "change24h": 3.42,
-      "name": "MSTR",
-      "tvSymbol": "NASDAQ:MSTR",
-      "type": "stock"
-    },
-    {
-      "symbol": "ORCL",
-      "price": 144.76,
-      "change24h": 1.62,
-      "name": "ORCL",
-      "tvSymbol": "NYSE:ORCL",
-      "type": "stock"
-    },
-    {
-      "symbol": "INTC",
-      "price": 87.48,
-      "change24h": 0.25,
-      "name": "INTC",
-      "tvSymbol": "NASDAQ:INTC",
-      "type": "stock"
-    },
-    {
-      "symbol": "RIVN",
-      "price": 16.74,
-      "change24h": 0.84,
-      "name": "RIVN",
-      "tvSymbol": "NASDAQ:RIVN",
-      "type": "stock"
-    },
-    {
-      "symbol": "BABA",
-      "price": 119.44,
-      "change24h": 0.82,
-      "name": "BABA",
-      "tvSymbol": "NYSE:BABA",
-      "type": "stock"
-    },
-    {
-      "symbol": "COST",
-      "price": 960.01,
-      "change24h": -1.17,
-      "name": "COST",
-      "tvSymbol": "NASDAQ:COST",
-      "type": "stock"
-    },
-    {
-      "symbol": "LLY",
-      "price": 1233.66,
-      "change24h": -1.06,
-      "name": "LLY",
-      "tvSymbol": "NYSE:LLY",
-      "type": "stock"
-    },
-    {
-      "symbol": "DKNG",
-      "price": 25.79,
-      "change24h": -0.69,
-      "name": "DKNG",
-      "tvSymbol": "NASDAQ:DKNG",
-      "type": "stock"
-    },
-    {
-      "symbol": "HIMS",
-      "price": 31.75,
-      "change24h": 2.16,
-      "name": "HIMS",
-      "tvSymbol": "NYSE:HIMS",
-      "type": "stock"
-    }
-  ],
-  "indices": [
-    {
-      "symbol": "SPY",
-      "name": "S&P 500 (SPY)",
-      "price": 765.91,
-      "changePercentage": 0.02
-    },
-    {
-      "symbol": "QQQ",
-      "name": "NASDAQ (QQQ)",
-      "price": 710.72,
-      "changePercentage": -0.38
-    },
-    {
-      "symbol": "DIA",
-      "name": "Dow Jones (DIA)",
-      "price": 535.24,
-      "changePercentage": 0.57
-    }
-  ]
+  },
+  "updated": "2026-10-03T00:37:19.180305+00:00"
 }
