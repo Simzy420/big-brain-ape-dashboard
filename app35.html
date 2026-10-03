@@ -4126,7 +4126,7 @@ html+='<div class="briefing-card"><p>No open positions. The agent is currently i
 out.innerHTML=html;
 
 // Also fetch trading posts for rationale
-return sameDomainGet(TRADING_POSTS_URL);
+return sameDomainGet(TRADING_POSTS_URL).catch(function(){return null;});
 })
 .then(function(tp){
 if(!tp||!tp.posts||tp.posts.length===0)return;
