@@ -1064,6 +1064,57 @@ function savePortfolio(p){localStorage.setItem('bba_portfolio',JSON.stringify(p)
 function getPortfolioUnlocked(){return localStorage.getItem('bba_portfolio_unlocked')==='true'}
 function setPortfolioUnlocked(v){if(v)localStorage.setItem('bba_portfolio_unlocked','true');else localStorage.removeItem('bba_portfolio_unlocked')}
 
+// ==============================
+// PAYMENT UNLOCK — checks Supabase + API
+// ==============================
+// Simple API endpoint (runs on the same server as dashboard cron scripts)
+// Returns {unlocked: true/false} for a given email
+var BBA_UNLOCK_API='https://simzy420.github.io/big-brain-ape-dashboard/unlock-status.json';
+
+function checkSupabaseUnlock(){
+var user=getStoredUser();
+if(!user||!user.email)return Promise.resolve(false);
+// First check localStorage — instant unlock if already verified
+if(getPortfolioUnlocked())return Promise.resolve(true);
+// Query Supabase unlocks table by email
+return fetch(SUPABASE_URL+'/rest/v1/unlocks?email=eq.'+encodeURIComponent(user.email.toLowerCase())+'&select=status',{
+headers:{'apikey':SUPABASE_ANON_KEY}
+}).then(function(r){return r.json()}).then(function(d){
+if(d&&d.length>0&&d[0].status==='active'){
+setPortfolioUnlocked(true);
+return true;
+}
+return false;
+}).catch(function(){return false});
+}
+
+// Called when user clicks "I paid" or opens portfolio after paying
+window.verifyPayment=function(){
+var user=getStoredUser();
+if(!user||!user.email){
+alert('Please sign in first (menu → Sign In), then try again.');
+return;
+}
+checkSupabaseUnlock().then(function(unlocked){
+if(unlocked){
+alert('✅ Payment verified! Portfolio unlocked — add unlimited positions.');
+setPortfolioUnlocked(true);
+window.loadPortfolio();
+}else{
+alert('Payment not found yet. It can take a few minutes for USDC to confirm on Base.\\n\\nIf you just paid, wait 2-3 minutes and try again. If it still doesn\\'t work, message @BigBrain2Bot on Telegram.');
+}
+});
+};
+
+// Check unlock on page load if user is logged in
+setTimeout(function(){
+if(getStoredUser()&&getStoredUser().email){
+checkSupabaseUnlock().then(function(unlocked){
+if(unlocked){setPortfolioUnlocked(true);window.loadPortfolio();}
+});
+}
+},3000);
+
 window.loadPortfolio=function(){
 var holdings=getPortfolio();
 var container=document.getElementById('portfolioContent');
@@ -1236,8 +1287,9 @@ overlay.innerHTML='<div style="background:var(--card);border:1px solid var(--bor
 '<div style="font-size:20px;font-weight:700;margin-bottom:8px">Unlock Unlimited Portfolio</div>'+
 '<p style="color:var(--text2);font-size:14px;margin-bottom:16px">Send $0.25 USDC (Base) to:</p>'+
 '<div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:16px;word-break:break-all;font-size:13px;font-family:monospace">0x37a8023762c69f7150d878733fd9f635f1070fc6</div>'+
-'<p style="color:var(--text2);font-size:13px;margin-bottom:20px">Then reply "I paid" in the Telegram bot to unlock.</p>'+
-'<button onclick="this.closest(\'div[style*=fixed]\').remove()" style="background:linear-gradient(135deg,#58a6ff,#3fb950);border:none;color:#0d1117;font-size:16px;font-weight:700;padding:12px 28px;border-radius:12px;cursor:pointer">Got it</button>'+
+'<p style="color:var(--text2);font-size:13px;margin-bottom:20px">Then tap "I Paid — Verify" below or reply "I paid" in the Telegram bot.</p>'+
+'<button onclick="this.closest(\'div[style*=fixed]\').remove();window.verifyPayment()" style="background:linear-gradient(135deg,#58a6ff,#3fb950);border:none;color:#0d1117;font-size:16px;font-weight:700;padding:12px 28px;border-radius:12px;cursor:pointer;margin-bottom:8px;width:100%">✅ I Paid — Verify</button>'+
+'<button onclick="this.closest(\'div[style*=fixed]\').remove()" style="background:transparent;border:1px solid var(--border);color:var(--text2);font-size:15px;padding:12px 20px;border-radius:12px;cursor:pointer;width:100%">Cancel</button>'+
 '</div>';
 document.body.appendChild(overlay);
 };
