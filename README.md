@@ -23,4 +23,9 @@ Once GitHub Pages is enabled:
 
 Wait 1–2 minutes and the link above will work.
 
-## Built by Grok for Big Brain Ape
+## Built by the Ape Team
+
+**AI Models:**
+- 🧠 GLM 5.2 (Venice.ai) — Primary reasoning & trading decisions
+- 🌙 Kimi K3 (Moonshot AI) — 1M context, vision, deep code analysis
+- ⚡ Hermes Agent (Nous Research) — Orchestration, tools, memory, scheduling
