@@ -1329,34 +1329,25 @@ function addLineItem(type) {
         <option value="Material" ${type==='Material'?'selected':''}>Material</option>
       </select>
     </div>
-    <div class="field">
-      <label>Description</label>
-      <input type="text" id="item${lineItemCount}Desc" placeholder="What kind of work or material?">
-      <button class="voice-btn" style="font-size:16px;padding:10px 18px" onclick="startVoice('item${lineItemCount}Desc', this)">
-        <span class="voice-icon">🎙️</span> Speak
-      </button>
-    </div>
     <div class="field-row">
       <div class="field">
         <label id="item${lineItemCount}QtyLabel">Hours</label>
         <input type="number" id="item${lineItemCount}Qty" placeholder="0" step="0.5" inputmode="decimal">
+        <button class="voice-btn" style="font-size:16px;padding:10px 18px" onclick="startVoice('item${lineItemCount}Qty', this)">
+          <span class="voice-icon">🎙️</span> Speak
+        </button>
       </div>
       <div class="field">
         <label>Rate / Price</label>
         <input type="number" id="item${lineItemCount}Rate" placeholder="0.00" step="0.01" inputmode="decimal">
+        <button class="voice-btn" style="font-size:16px;padding:10px 18px" onclick="startVoice('item${lineItemCount}Rate', this)">
+          <span class="voice-icon">🎙️</span> Speak
+        </button>
       </div>
-    </div>
-    <div class="field">
-      <label>Number of Guys (optional)</label>
-      <input type="number" id="item${lineItemCount}Guys" placeholder="1" min="1" inputmode="numeric">
-      <button class="voice-btn" style="font-size:16px;padding:10px 18px" onclick="startVoice('item${lineItemCount}Guys', this)">
-        <span class="voice-icon">🎙️</span> Speak
-      </button>
     </div>
   `;
   document.getElementById('lineItems').appendChild(div);
   updateItemTitle(lineItemCount);
-  document.getElementById('item' + lineItemCount + 'Guys').value = 1;
 }
 
 function updateItemTitle(id) {
@@ -1393,13 +1384,7 @@ function calculateTotal() {
     if (!el) continue;
     const qty = parseFloat(document.getElementById('item' + i + 'Qty').value) || 0;
     const rate = parseFloat(document.getElementById('item' + i + 'Rate').value) || 0;
-    const guys = parseFloat(document.getElementById('item' + i + 'Guys').value) || 1;
-    const type = document.getElementById('item' + i + 'Type').value;
-    if (type === 'Labor') {
-      total += qty * rate * guys;
-    } else {
-      total += qty * rate;
-    }
+    total += qty * rate;
   }
   return total;
 }
@@ -1435,16 +1420,13 @@ function generateSummary() {
     const el = document.getElementById('item' + i);
     if (!el) continue;
     const type = document.getElementById('item' + i + 'Type').value;
-    const desc = document.getElementById('item' + i + 'Desc').value.trim();
     const qty = parseFloat(document.getElementById('item' + i + 'Qty').value) || 0;
     const rate = parseFloat(document.getElementById('item' + i + 'Rate').value) || 0;
-    const guys = parseFloat(document.getElementById('item' + i + 'Guys').value) || 1;
 
-    if (qty > 0 || desc) {
-      const lineTotal = type === 'Labor' ? qty * rate * guys : qty * rate;
-      const guysText = type === 'Labor' && guys > 1 ? ` (${guys} guys)` : '';
+    if (qty > 0) {
+      const lineTotal = qty * rate;
       const qtyLabel = type === 'Labor' ? 'hrs' : 'qty';
-      summaryHTML += `<div class="summary-line"><span class="label">${escapeHtml(type)}: ${escapeHtml(desc)}${guysText}</span><span class="value">${qty} ${qtyLabel} × $${rate.toFixed(2)} = $${lineTotal.toFixed(2)}</span></div>`;
+      summaryHTML += `<div class="summary-line"><span class="label">${escapeHtml(type)}</span><span class="value">${qty} ${qtyLabel} × $${rate.toFixed(2)} = $${lineTotal.toFixed(2)}</span></div>`;
     }
   }
 
@@ -1475,15 +1457,12 @@ function generateSummary() {
     const el = document.getElementById('item' + i);
     if (!el) continue;
     const type = document.getElementById('item' + i + 'Type').value;
-    const desc = document.getElementById('item' + i + 'Desc').value.trim();
     const qty = parseFloat(document.getElementById('item' + i + 'Qty').value) || 0;
     const rate = parseFloat(document.getElementById('item' + i + 'Rate').value) || 0;
-    const guys = parseFloat(document.getElementById('item' + i + 'Guys').value) || 1;
 
-    if (qty > 0 || desc) {
-      const lineTotal = type === 'Labor' ? qty * rate * guys : qty * rate;
-      const guysText = type === 'Labor' && guys > 1 ? ` (${guys} guys)` : '';
-      copyText += `  ${type}: ${desc}${guysText} — ${qty} ${type==='Labor'?'hours':'units'} @ $${rate.toFixed(2)} = $${lineTotal.toFixed(2)}\n`;
+    if (qty > 0) {
+      const lineTotal = qty * rate;
+      copyText += `  ${type}: ${qty} ${type==='Labor'?'hours':'units'} @ $${rate.toFixed(2)} = $${lineTotal.toFixed(2)}\n`;
       if (type === 'Labor') laborTotal += lineTotal;
       else materialTotal += lineTotal;
     }
@@ -1511,10 +1490,8 @@ function generateSummary() {
     if (!el) continue;
     currentSummary.items.push({
       type: document.getElementById('item' + i + 'Type').value,
-      desc: document.getElementById('item' + i + 'Desc').value.trim(),
       qty: parseFloat(document.getElementById('item' + i + 'Qty').value) || 0,
-      rate: parseFloat(document.getElementById('item' + i + 'Rate').value) || 0,
-      guys: parseFloat(document.getElementById('item' + i + 'Guys').value) || 1
+      rate: parseFloat(document.getElementById('item' + i + 'Rate').value) || 0
     });
   }
 
@@ -1633,11 +1610,10 @@ function viewSaved(index) {
 
   if (wo.items) {
     wo.items.forEach(item => {
-      if (item.qty > 0 || item.desc) {
-        const lineTotal = item.type === 'Labor' ? item.qty * item.rate * item.guys : item.qty * item.rate;
-        const guysText = item.type === 'Labor' && item.guys > 1 ? ` (${item.guys} guys)` : '';
+      if (item.qty > 0) {
+        const lineTotal = item.qty * item.rate;
         const qtyLabel = item.type === 'Labor' ? 'hrs' : 'qty';
-        summaryHTML += `<div class="summary-line"><span class="label">${escapeHtml(item.type)}: ${escapeHtml(item.desc)}${guysText}</span><span class="value">${item.qty} ${qtyLabel} × $${item.rate.toFixed(2)} = $${lineTotal.toFixed(2)}</span></div>`;
+        summaryHTML += `<div class="summary-line"><span class="label">${escapeHtml(item.type)}</span><span class="value">${item.qty} ${qtyLabel} × $${item.rate.toFixed(2)} = $${lineTotal.toFixed(2)}</span></div>`;
       }
     });
   }
