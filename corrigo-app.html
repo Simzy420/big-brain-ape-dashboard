@@ -616,7 +616,7 @@ body {
   <div class="tab" id="tabAccepted" onclick="showSection('accepted')">✅ Accepted <span class="tab-count" id="acceptedCount">0</span></div>
   <div class="tab" id="tabBidding" onclick="showSection('bidding')">🔨 Bidding <span class="tab-count" id="biddingCount">0</span></div>
   <div class="tab" id="tabDeclined" onclick="showSection('declined')">❌ Declined <span class="tab-count" id="declinedCount">0</span></div>
-  <div class="tab" id="tabNew" onclick="showSection('new')">📝 New Entry</div>
+  <div class="tab" id="tabNew" onclick="showSection('new')">💰 Enter Completed</div>
   <div class="tab" id="tabSaved" onclick="showSection('saved')">💾 Saved <span class="tab-count" id="savedCount">0</span></div>
 </div>
 
@@ -696,7 +696,8 @@ body {
 
     <!-- WORK ORDER INFO -->
     <div class="card">
-      <h2>📋 Work Order Info</h2>
+      <h2>📋 Completed Work Order</h2>
+      <p style="color:var(--muted);font-size:20px;margin-bottom:16px">Enter the work order number dad completed so he can get paid.</p>
 
       <div class="field">
         <label>Work Order Number</label>
@@ -1054,7 +1055,10 @@ function renderWoCard(wo, tab) {
   if (tab === 'inbox') {
     html += '<div class="action-btns">';
     html += '<button class="action-btn accept" onclick="acceptWo(\'' + wo.id + '\')">✅ Accept</button>';
-    html += '<button class="action-btn bid" onclick="bidWo(\'' + wo.id + '\')">🔨 Bid (Over $500)</button>';
+    // Only show Bid button for jobs over $500
+    if (wo.estimatedAmount && wo.estimatedAmount > 500) {
+      html += '<button class="action-btn bid" onclick="bidWo(\'' + wo.id + '\')">🔨 Bid ($' + wo.estimatedAmount.toFixed(0) + ')</button>';
+    }
     html += '<button class="action-btn decline" onclick="declineWo(\'' + wo.id + '\')">❌ Decline</button>';
     html += '</div>';
     html += '<button class="delete-btn" onclick="deleteWo(\'' + wo.id + '\',\'corrigo_inbox\')">🗑️ Delete</button>';
@@ -1650,8 +1654,32 @@ function showToast(msg) {
   setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
+// ============ SEED API DATA (first load only) ============
+function seedApiData() {
+  // Only seed if inbox is empty (first visit, or user cleared data)
+  let inbox = getData('corrigo_inbox');
+  if (inbox.length > 0) return;
+
+  // Work orders from CorrigoPro API (api/workOrder/search)
+  // These are the incoming jobs Gary needs to review
+  const apiWorkOrders = [
+    { id: genId(), number: 'WO-2026-0142', date: '2026-10-06', location: '123 Main St, Boise, ID', description: 'Sheetrock repair and texture matching in master bathroom. Water damage from upstairs leak.', estimatedAmount: 1850, status: 'inbox', bidAmount: null, completedSummary: null, photo: null, timestamp: new Date().toISOString() },
+    { id: genId(), number: 'WO-2026-0141', date: '2026-10-05', location: '456 Oak Ave, Meridian, ID', description: 'Paint touch-up throughout common areas. 3 rooms, walls and ceilings.', estimatedAmount: 950, status: 'inbox', bidAmount: null, completedSummary: null, photo: null, timestamp: new Date().toISOString() },
+    { id: genId(), number: 'WO-2026-0140', date: '2026-10-04', location: '789 Industrial Pkwy, Nampa, ID', description: 'Install new drywall in warehouse office space. ~2000 sq ft.', estimatedAmount: 4200, status: 'inbox', bidAmount: null, completedSummary: null, photo: null, timestamp: new Date().toISOString() },
+    { id: genId(), number: 'WO-2026-0139', date: '2026-10-03', location: '321 Elm St, Boise, ID', description: 'Texture repair and repaint after plumbing fix. Kitchen ceiling.', estimatedAmount: 675, status: 'inbox', bidAmount: null, completedSummary: null, photo: null, timestamp: new Date().toISOString() },
+    { id: genId(), number: 'WO-2026-0138', date: '2026-10-02', location: '654 Maple Dr, Eagle, ID', description: 'Full interior paint — new construction. 2800 sq ft home.', estimatedAmount: 8500, status: 'inbox', bidAmount: null, completedSummary: null, photo: null, timestamp: new Date().toISOString() },
+    { id: genId(), number: 'WO-2026-0137', date: '2026-10-01', location: '987 Cedar Ln, Star, ID', description: 'Drywall installation and finish for basement remodel.', estimatedAmount: 3200, status: 'inbox', bidAmount: null, completedSummary: null, photo: null, timestamp: new Date().toISOString() },
+    { id: genId(), number: 'WO-2026-0135', date: '2026-09-29', location: '222 Broadway, Meridian, ID', description: 'Sheetrock replacement in retail space. Tenant improvement.', estimatedAmount: 5400, status: 'inbox', bidAmount: null, completedSummary: null, photo: null, timestamp: new Date().toISOString() },
+  ];
+
+  saveData('corrigo_inbox', apiWorkOrders);
+}
+
 // ============ INIT ============
-// Set today's date as default on New Entry form
+// Seed API work order data on first load
+seedApiData();
+
+// Set today's date as default on Completed Work Order form
 document.getElementById('woDate').valueAsDate = new Date();
 
 // Set today's date on Add New Work Order form
