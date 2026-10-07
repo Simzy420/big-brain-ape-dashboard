@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="SIMS Corrigo">
+<title>SIMS Construction — CorrigoPro Integration Dashboard</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0f0f17;
+  --card: #1c1c2e;
+  --card-hover: #222240;
+  --border: #33334d;
+  --text: #ffffff;
+  --muted: #8888aa;
+  --blue: #0099ff;
+  --green: #00cc66;
+  --orange: #ff9500;
+  --red: #ff3b30;
+  --purple: #af52de;
+  --big: 20px;
+  --bigger: 24px;
+  --biggest: 28px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: var(--big);
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  padding-bottom: 80px;
+}
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, #0099ff, #00cc66);
+  padding: 20px 16px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+.header h1 { font-size: 26px; font-weight: 800; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+.header p { font-size: 16px; color: rgba(255,255,255,0.9); margin-top: 4px; }
+
+/* API STATUS BAR */
+.api-status-bar {
+  background: rgba(255,149,0,0.15);
+  border-bottom: 2px solid var(--orange);
+  padding: 10px 16px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--orange);
+  position: sticky;
+  top: 70px;
+  z-index: 99;
+}
+.api-status-bar.connected {
+  background: rgba(0,204,102,0.15);
+  border-color: var(--green);
+  color: var(--green);
+}
+
+/* SIDEBAR / NAV */
+.nav-bar {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 10px 12px;
+  background: var(--bg);
+  position: sticky;
+  top: 104px;
+  z-index: 98;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) var(--bg);
+}
+.nav-bar::-webkit-scrollbar { height: 5px; }
+.nav-bar::-webkit-scrollbar-track { background: var(--bg); }
+.nav-bar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+.nav-item {
+  flex-shrink: 0;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-block;
+}
+.nav-item.active {
+  background: linear-gradient(135deg, #0099ff, #00cc66);
+  color: #fff;
+  border-color: transparent;
+}
+.nav-item .nav-badge {
+  display: inline-block;
+  background: rgba(0,0,0,0.3);
+  border-radius: 20px;
+  padding: 2px 8px;
+  font-size: 14px;
+  margin-left: 4px;
+}
+
+/* CONTAINER */
+.container { max-width: 900px; margin: 0 auto; padding: 16px; }
+
+/* SECTIONS */
+.section { display: none; }
+.section.active { display: block; }
+
+/* CARDS */
+.card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color: var(--blue); }
+.card h2 { font-size: var(--bigger); font-weight: 700; margin-bottom: 16px; color: var(--blue); }
+.card h3 { font-size: var(--big); font-weight: 700; margin-bottom: 8px; }
+
+/* STAT CARDS */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.stat-card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+}
+.stat-card .stat-icon { font-size: 36px; margin-bottom: 8px; }
+.stat-card .stat-value { font-size: 32px; font-weight: 800; }
+.stat-card .stat-label { font-size: 14px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+.stat-card.blue { border-color: var(--blue); }
+.stat-card.blue .stat-value { color: var(--blue); }
+.stat-card.green { border-color: var(--green); }
+.stat-card.green .stat-value { color: var(--green); }
+.stat-card.orange { border-color: var(--orange); }
+.stat-card.orange .stat-value { color: var(--orange); }
+.stat-card.red { border-color: var(--red); }
+.stat-card.red .stat-value { color: var(--red); }
+.stat-card.purple { border-color: var(--purple); }
+.stat-card.purple .stat-value { color: var(--purple); }
+
+/* TABLE */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 18px;
+}
+.data-table th {
+  text-align: left;
+  padding: 12px 14px;
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--border);
+}
+.data-table td {
+  padding: 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.data-table tr:hover td { background: rgba(0,153,255,0.05); }
+.data-table .td-num { color: var(--blue); font-weight: 700; }
+.data-table .td-money { color: var(--green); font-weight: 700; white-space: nowrap; }
+.data-table .td-muted { color: var(--muted); }
+
+/* STATUS BADGES */
+.status-badge {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.status-new { background: rgba(255,149,0,0.2); color: var(--orange); }
+.status-accepted { background: rgba(0,153,255,0.2); color: var(--blue); }
+.status-inprogress { background: rgba(175,82,222,0.2); color: var(--purple); }
+.status-completed { background: rgba(0,204,102,0.2); color: var(--green); }
+.status-declined { background: rgba(255,59,48,0.2); color: var(--red); }
+.status-bidding { background: rgba(255,149,0,0.2); color: var(--orange); }
+.status-invoiced { background: rgba(0,153,255,0.2); color: var(--blue); }
+.status-paid { background: rgba(0,204,102,0.2); color: var(--green); }
+.status-disputed { background: rgba(255,59,48,0.2); color: var(--red); }
+.status-draft { background: rgba(136,136,170,0.2); color: var(--muted); }
+
+/* PRIORITY BADGE */
+.priority-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 6px;
+}
+.priority-high { background: var(--red); color: #fff; }
+.priority-medium { background: var(--orange); color: #fff; }
+.priority-low { background: var(--green); color: #fff; }
+
+/* BUTTONS */
+.btn {
+  display: inline-block;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 24px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.1s, opacity 0.2s;
+  font-family: inherit;
+  text-decoration: none;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: linear-gradient(135deg, #00cc66, #0099ff); color: #fff; }
+.btn-blue { background: var(--blue); color: #fff; }
+.btn-green { background: var(--green); color: #fff; }
+.btn-orange { background: var(--orange); color: #fff; }
+.btn-red { background: var(--red); color: #fff; }
+.btn-secondary { background: var(--border); color: var(--text); }
+.btn-sm { padding: 8px 16px; font-size: 16px; }
+.btn-block { display: block; width: 100%; }
+
+/* FORM FIELDS */
+.field { margin-bottom: 16px; }
+.field label {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.field input, .field textarea, .field select {
+  width: 100%;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 18px;
+  color: var(--text);
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.field input:focus, .field textarea:focus, .field select:focus { border-color: var(--blue); }
+.field textarea { min-height: 80px; resize: vertical; }
+.field-row { display: flex; gap: 12px; }
+.field-row .field { flex: 1; }
+
+/* MODAL */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 24px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+.modal h2 { font-size: 24px; color: var(--blue); margin-bottom: 16px; }
+.modal-close {
+  float: right;
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* DETAIL VIEW */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.detail-item .detail-label {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.detail-item .detail-value {
+  font-size: 18px;
+  color: var(--text);
+  margin-top: 2px;
+}
+
+/* TIMELINE */
+.timeline-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.timeline-item:last-child { border-bottom: none; }
+.timeline-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--blue);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+.timeline-dot.green { background: var(--green); }
+.timeline-dot.orange { background: var(--orange); }
+.timeline-dot.red { background: var(--red); }
+.timeline-content { flex: 1; }
+.timeline-time { font-size: 14px; color: var(--muted); }
+.timeline-text { font-size: 18px; }
+
+/* EMPTY STATE */
+.empty { text-align: center; padding: 60px 20px; color: var(--muted); }
+.empty-icon { font-size: 64px; margin-bottom: 16px; }
+.empty p { font-size: 20px; }
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--green);
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 700;
+  z-index: 3000;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  max-width: 90vw;
+  text-align: center;
+}
+.toast.show { opacity: 1; }
+
+/* CREW CARD */
+.crew-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.crew-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0099ff, #00cc66);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+.crew-info { flex: 1; }
+.crew-name { font-size: 20px; font-weight: 700; }
+.crew-role { font-size: 16px; color: var(--muted); }
+.crew-phone { font-size: 16px; color: var(--blue); }
+
+/* INVOICE LINE ITEM */
+.invoice-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 18px;
+}
+.invoice-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--green);
+  padding: 16px 0 4px;
+  border-top: 3px solid var(--green);
+  margin-top: 8px;
+}
+
+/* MESSAGE ITEM */
+.message-item {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.message-sender { font-size: 18px; font-weight: 700; color: var(--blue); }
+.message-time { font-size: 14px; color: var(--muted); }
+.message-body { font-size: 18px; line-height: 1.5; }
+.message-wo-link {
+  display: inline-block;
+  background: rgba(0,153,255,0.1);
+  border: 1px solid var(--blue);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--blue);
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+/* SEARCH */
+.search-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.search-bar input {
+  flex: 1;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 18px;
+  color: var(--text);
+  font-family: inherit;
+  outline: none;
+}
+.search-bar input:focus { border-color: var(--blue); }
+.search-bar select {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 16px;
+  color: var(--text);
+  font-family: inherit;
+  outline: none;
+}
+
+/* CHECKLIST */
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.checklist-item:hover { border-color: var(--blue); }
+.checklist-box {
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--border);
+  border-radius: 6px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--green);
+}
+.checklist-box.checked { background: var(--green); border-color: var(--green); }
+.checklist-text { flex: 1; font-size: 18px; }
+.checklist-text.done { text-decoration: line-through; color: var(--muted); }
+
+/* EQUIPMENT CARD */
+.equip-card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.equip-card:hover { border-color: var(--blue); }
+.equip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.equip-name { font-size: 20px; font-weight: 700; color: var(--blue); }
+.equip-type { font-size: 16px; color: var(--muted); }
+.equip-meta { font-size: 16px; color: var(--muted); }
+
+/* INFO BANNER */
+.info-banner {
+  background: rgba(0,153,255,0.1);
+  border: 2px solid var(--blue);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+  font-size: 18px;
+  line-height: 1.5;
+}
+.info-banner strong { color: var(--blue); }
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .data-table { font-size: 16px; }
+  .data-table th { font-size: 12px; }
+  .data-table td { padding: 10px 8px; }
+  .detail-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>🔧 SIMS Construction</h1>
+  <p>CorrigoPro Integration Dashboard</p>
+</div>
+
+<!-- API STATUS BAR -->
+<div class="api-status-bar" id="apiStatusBar">
+  ⚠️ DEMO MODE — Mock Data | API credentials required to go live
+</div>
+
+<!-- NAV BAR -->
+<div class="nav-bar" id="navBar">
+  <a class="nav-item active" onclick="showSection('dashboard')">📊 Dashboard</a>
+  <a class="nav-item" onclick="showSection('workorders')">📋 Work Orders <span class="nav-badge" id="woBadge">0</span></a>
+  <a class="nav-item" onclick="showSection('invoices')">💳 Invoices <span class="nav-badge" id="invBadge">0</span></a>
+  <a class="nav-item" onclick="showSection('crew')">👷 Crew <span class="nav-badge" id="crewBadge">0</span></a>
+  <a class="nav-item" onclick="showSection('equipment')">🚜 Equipment <span class="nav-badge" id="equipBadge">0</span></a>
+  <a class="nav-item" onclick="showSection('messages')">💬 Messages <span class="nav-badge" id="msgBadge">0</span></a>
+  <a class="nav-item" onclick="showSection('procedures')">✅ Procedures</a>
+  <a class="nav-item" onclick="showSection('visits')">📍 Visits <span class="nav-badge" id="visitBadge">0</span></a>
+  <a class="nav-item" onclick="showSection('settings')">⚙️ Settings</a>
+</div>
+
+<div class="container">
+
+  <!-- ===== DASHBOARD ===== -->
+  <div class="section active" id="sectionDashboard">
+    <div class="info-banner">
+      <strong>What this is:</strong> A preview of what SIMS Construction's CorrigoPro integration would look like with a live API connection. All data below is mock data based on the actual CorrigoPro API data models. When you get CPD credentials, this same dashboard connects to real CorrigoPro data — the UI stays the same, the data becomes real.
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card orange" onclick="showSection('workorders')">
+        <div class="stat-icon">📋</div>
+        <div class="stat-value" id="dashNewWO">0</div>
+        <div class="stat-label">New Work Orders</div>
+      </div>
+      <div class="stat-card blue" onclick="showSection('workorders')">
+        <div class="stat-icon">🔨</div>
+        <div class="stat-value" id="dashActiveWO">0</div>
+        <div class="stat-label">Active Jobs</div>
+      </div>
+      <div class="stat-card green" onclick="showSection('invoices')">
+        <div class="stat-icon">💳</div>
+        <div class="stat-value" id="dashOutstandingInv">0</div>
+        <div class="stat-label">Outstanding Invoices</div>
+      </div>
+      <div class="stat-card purple" onclick="showSection('crew')">
+        <div class="stat-icon">👷</div>
+        <div class="stat-value" id="dashCrewSize">0</div>
+        <div class="stat-label">Crew Members</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📋 Recent Work Orders</h2>
+      <div id="dashRecentWO"></div>
+    </div>
+
+    <div class="card">
+      <h2>💰 Revenue This Month</h2>
+      <div id="dashRevenue"></div>
+    </div>
+
+    <div class="card">
+      <h2>📈 Quick Actions</h2>
+      <div style="display:flex;flex-wrap:wrap;gap:10px">
+        <button class="btn btn-primary" onclick="showSection('workorders')">📋 View Work Orders</button>
+        <button class="btn btn-blue" onclick="showSection('invoices')">💳 View Invoices</button>
+        <button class="btn btn-green" onclick="showSection('crew')">👷 View Crew</button>
+        <button class="btn btn-orange" onclick="showSection('equipment')">🚜 View Equipment</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== WORK ORDERS ===== -->
+  <div class="section" id="sectionWorkorders">
+    <div class="card">
+      <h2>📋 Work Orders</h2>
+      <p style="color:var(--muted);font-size:16px;margin-bottom:16px">CorrigoPro API: <code>/api/workOrder/search</code> + <code>/api/workOrder</code></p>
+
+      <div class="search-bar">
+        <input type="text" id="woSearch" placeholder="Search by #, location, description..." oninput="renderWorkOrders()">
+        <select id="woFilter" onchange="renderWorkOrders()">
+          <option value="all">All Status</option>
+          <option value="new">New</option>
+          <option value="accepted">Accepted</option>
+          <option value="inprogress">In Progress</option>
+          <option value="completed">Completed</option>
+          <option value="declined">Declined</option>
+        </select>
+      </div>
+
+      <table class="data-table" id="woTable">
+        <thead>
+          <tr>
+            <th>WO #</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Est. $</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="woTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== INVOICES ===== -->
+  <div class="section" id="sectionInvoices">
+    <div class="card">
+      <h2>💳 Invoices</h2>
+      <p style="color:var(--muted);font-size:16px;margin-bottom:16px">CorrigoPro API: <code>/api/invoice</code> + <code>/api/invoice/submit</code></p>
+
+      <div class="search-bar">
+        <input type="text" id="invSearch" placeholder="Search invoices..." oninput="renderInvoices()">
+        <select id="invFilter" onchange="renderInvoices()">
+          <option value="all">All Status</option>
+          <option value="draft">Draft</option>
+          <option value="invoiced">Invoiced</option>
+          <option value="paid">Paid</option>
+          <option value="disputed">Disputed</option>
+        </select>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Invoice #</th>
+            <th>WO #</th>
+            <th>Customer</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="invTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== CREW ===== -->
+  <div class="section" id="sectionCrew">
+    <div class="card">
+      <h2>👷 Crew & Subcontractors</h2>
+      <p style="color:var(--muted);font-size:16px;margin-bottom:16px">CorrigoPro API: <code>/api/associates</code></p>
+      <div id="crewList"></div>
+    </div>
+  </div>
+
+  <!-- ===== EQUIPMENT ===== -->
+  <div class="section" id="sectionEquipment">
+    <div class="card">
+      <h2>🚜 Equipment</h2>
+      <p style="color:var(--muted);font-size:16px;margin-bottom:16px">CorrigoPro API: <code>/api/equipment</code> + <code>/api/equipment/details</code></p>
+      <div id="equipList"></div>
+    </div>
+  </div>
+
+  <!-- ===== MESSAGES ===== -->
+  <div class="section" id="sectionMessages">
+    <div class="card">
+      <h2>💬 Messages</h2>
+      <p style="color:var(--muted);font-size:16px;margin-bottom:16px">CorrigoPro API: <code>/api/messages</code> + <code>/api/messages/search</code></p>
+      <div id="messageList"></div>
+    </div>
+  </div>
+
+  <!-- ===== PROCEDURES ===== -->
+  <div class="section" id="sectionProcedures">
+    <div class="card">
+      <h2>✅ Procedures & Checklists</h2>
+      <p style="color:var(--muted);font-size:16px;margin-bottom:16px">CorrigoPro API: <code>/api/procedure</code> + <code>/api/procedure/step</code></p>
+      <div id="procedureList"></div>
+    </div>
+  </div>
+
+  <!-- ===== VISITS ===== -->
+  <div class="section" id="sectionVisits">
+    <div class="card">
+      <h2>📍 Service Visits</h2>
+      <p style="color:var(--muted);font-size:16px;margin-bottom:16px">CorrigoPro API: <code>/api/visits</code> + <code>/api/visits/checkIn</code> + <code>/api/visits/checkOut</code></p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Visit #</th>
+            <th>WO #</th>
+            <th>Technician</th>
+            <th>Location</th>
+            <th>Scheduled</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="visitTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== SETTINGS ===== -->
+  <div class="section" id="sectionSettings">
+    <div class="card">
+      <h2>⚙️ API Settings</h2>
+      <p style="color:var(--muted);font-size:16px;margin-bottom:16px">This is where API credentials would go once you have a CPD plan.</p>
+
+      <div class="field">
+        <label>API Base URL</label>
+        <input type="text" value="https://api.corrigopro.com" readonly>
+      </div>
+      <div class="field">
+        <label>API Key / OAuth Token</label>
+        <input type="text" placeholder="Enter API key after CPD enrollment" >
+      </div>
+      <div class="field">
+        <label>Branch ID</label>
+        <input type="text" placeholder="Your CorrigoPro Branch ID" >
+      </div>
+      <div class="field">
+        <label>Company Name</label>
+        <input type="text" value="SIMS Construction" readonly>
+      </div>
+      <div class="field">
+        <label>CorrigoPro Plan</label>
+        <input type="text" value="Not Enrolled (Demo Mode)" readonly>
+      </div>
+
+      <div class="info-banner" style="margin-top:16px">
+        <strong>To go live:</strong> Purchase a CPD plan ($245/mo minimum) + implementation fee ($5,000). Contact Rachel at CorrigoPro Direct. Then enter your API credentials here and this dashboard connects to real data.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📊 API Coverage</h2>
+      <p style="color:var(--muted);font-size:16px;margin-bottom:12px">This dashboard covers these CorrigoPro API endpoints:</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>Category</th><th>Endpoints</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Work Orders</td><td>Search, Get, Accept, Reject, CheckIn, CheckOut, Pause, Notes, Custom Fields</td><td><span class="status-badge status-completed">✅ Built</span></td></tr>
+          <tr><td>Invoicing</td><td>Get, Save, Submit, Recall, Attachments, Price List</td><td><span class="status-badge status-completed">✅ Built</span></td></tr>
+          <tr><td>Associates</td><td>List Technicians, Subcontractors, CruLeads</td><td><span class="status-badge status-completed">✅ Built</span></td></tr>
+          <tr><td>Equipment</td><td>Add, Update, Delete, Details, History, Available</td><td><span class="status-badge status-completed">✅ Built</span></td></tr>
+          <tr><td>Messages</td><td>Get, Send, Search</td><td><span class="status-badge status-completed">✅ Built</span></td></tr>
+          <tr><td>Procedures</td><td>Get, Step, Update, MarkAsNA, Attachments</td><td><span class="status-badge status-completed">✅ Built</span></td></tr>
+          <tr><td>Visits</td><td>Get, CheckIn, CheckOut, Services, Attachments</td><td><span class="status-badge status-completed">✅ Built</span></td></tr>
+          <tr><td>Bulk Operations</td><td>Accept, Reject, Assign, Unassign</td><td><span class="status-badge status-draft">📋 Ready</span></td></tr>
+          <tr><td>Attachments</td><td>Upload, Download, Update, Delete</td><td><span class="status-badge status-completed">✅ Built</span></td></tr>
+          <tr><td>Refrigerant</td><td>Circuits, Cylinders, Transactions, Certifications</td><td><span class="status-badge status-draft">📋 Available</span></td></tr>
+          <tr><td>Digital Rounds</td><td>Search, View, Start, Accept, Reject</td><td><span class="status-badge status-draft">📋 Available</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal" id="modalContent">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ============ MOCK DATA ============
+// Based on actual CorrigoPro API data models
+const MOCK = {
+  workOrders: [
+    { id: 1, number: 'WO-2026-0142', date: '2026-10-06', location: '123 Main St, Boise, ID', description: 'Sheetrock repair and texture matching in master bathroom. Water damage from upstairs leak.', priority: 'high', status: 'new', estimatedAmount: 1850, customer: 'Anderson Residence', branchId: 1 },
+    { id: 2, number: 'WO-2026-0141', date: '2026-10-05', location: '456 Oak Ave, Meridian, ID', description: 'Paint touch-up throughout common areas. 3 rooms, walls and ceilings.', priority: 'medium', status: 'accepted', estimatedAmount: 950, customer: 'Canyon Ridge Apartments', branchId: 1 },
+    { id: 3, number: 'WO-2026-0140', date: '2026-10-04', location: '789 Industrial Pkwy, Nampa, ID', description: 'Install new drywall in warehouse office space. ~2000 sq ft.', priority: 'medium', status: 'inprogress', estimatedAmount: 4200, customer: 'Treasure Valley Logistics', branchId: 1 },
+    { id: 4, number: 'WO-2026-0139', date: '2026-10-03', location: '321 Elm St, Boise, ID', description: 'Texture repair and repaint after plumbing fix. Kitchen ceiling.', priority: 'low', status: 'completed', estimatedAmount: 675, customer: 'Martinez Residence', branchId: 1 },
+    { id: 5, number: 'WO-2026-0138', date: '2026-10-02', location: '654 Maple Dr, Eagle, ID', description: 'Full interior paint — new construction. 2800 sq ft home.', priority: 'medium', status: 'completed', estimatedAmount: 8500, customer: 'Summit Homes', branchId: 1 },
+    { id: 6, number: 'WO-2026-0137', date: '2026-10-01', location: '987 Cedar Ln, Star, ID', description: 'Drywall installation and finish for basement remodel.', priority: 'medium', status: 'completed', estimatedAmount: 3200, customer: 'Thompson Residence', branchId: 1 },
+    { id: 7, number: 'WO-2026-0136', date: '2026-09-30', location: '111 State St, Boise, ID', description: 'Exterior stucco repair and painting. South-facing wall.', priority: 'low', status: 'declined', estimatedAmount: 2100, customer: 'Capitol Building Management', branchId: 1 },
+    { id: 8, number: 'WO-2026-0135', date: '2026-09-29', location: '222 Broadway, Meridian, ID', description: 'Sheetrock replacement in retail space. Tenant improvement.', priority: 'high', status: 'completed', estimatedAmount: 5400, customer: 'Broadway Commercial LLC', branchId: 1 },
+  ],
+
+  invoices: [
+    { id: 1, number: 'INV-2026-0089', woNumber: 'WO-2026-0139', customer: 'Martinez Residence', amount: 675.00, status: 'paid', date: '2026-10-03', lineItems: [{ desc: 'Labor: Texture repair kitchen ceiling', qty: 4, rate: 85, type: 'Labor' }, { desc: 'Joint compound', qty: 2, rate: 35, type: 'Material' }, { desc: 'Primer & paint', qty: 1, rate: 65, type: 'Material' }] },
+    { id: 2, number: 'INV-2026-0088', woNumber: 'WO-2026-0138', customer: 'Summit Homes', amount: 8500.00, status: 'paid', date: '2026-10-02', lineItems: [{ desc: 'Labor: Interior paint 2800sqft', qty: 40, rate: 85, type: 'Labor', guys: 2 }, { desc: 'Primer (15 gallons)', qty: 15, rate: 45, type: 'Material' }, { desc: 'Paint (25 gallons)', qty: 25, rate: 55, type: 'Material' }, { desc: 'Supplies', qty: 1, rate: 225, type: 'Material' }] },
+    { id: 3, number: 'INV-2026-0087', woNumber: 'WO-2026-0137', customer: 'Thompson Residence', amount: 3200.00, status: 'paid', date: '2026-10-01', lineItems: [{ desc: 'Labor: Drywall install basement', qty: 24, rate: 85, type: 'Labor', guys: 2 }, { desc: 'Drywall sheets (40)', qty: 40, rate: 18, type: 'Material' }, { desc: 'Mud & tape', qty: 1, rate: 280, type: 'Material' }] },
+    { id: 4, number: 'INV-2026-0086', woNumber: 'WO-2026-0135', customer: 'Broadway Commercial LLC', amount: 5400.00, status: 'invoiced', date: '2026-09-29', lineItems: [{ desc: 'Labor: Sheetrock replacement', qty: 32, rate: 85, type: 'Labor', guys: 2 }, { desc: 'Drywall sheets (60)', qty: 60, rate: 18, type: 'Material' }, { desc: 'Finishing materials', qty: 1, rate: 420, type: 'Material' }] },
+    { id: 5, number: 'INV-2026-0085', woNumber: 'WO-2026-0140', customer: 'Treasure Valley Logistics', amount: 4200.00, status: 'draft', date: '2026-10-04', lineItems: [{ desc: 'Labor: Drywall install warehouse office', qty: 40, rate: 85, type: 'Labor', guys: 3 }, { desc: 'Drywall sheets (80)', qty: 80, rate: 18, type: 'Material' }, { desc: 'Steel studs & track', qty: 1, rate: 800, type: 'Material' }] },
+  ],
+
+  crew: [
+    { id: 101, name: 'Gary Sims', role: 'CruLead', phone: '+1 (208) 317-7214', specialties: ['Drywall', 'Painting', 'Texture', 'General Construction'] },
+    { id: 102, name: 'Casey Sims', role: 'CruMember', phone: '+1 (208) 555-0142', specialties: ['Data Entry', 'Invoicing', 'Project Coordination'] },
+    { id: 103, name: 'Mike Rodriguez', role: 'CruMember', phone: '+1 (208) 555-0188', specialties: ['Drywall', 'Mudding', 'Taping'] },
+    { id: 104, name: 'Jake Thompson', role: 'CruMember', phone: '+1 (208) 555-0199', specialties: ['Painting', 'Texture'] },
+    { id: 105, name: 'Dave Wilson', role: 'Subcontractor', phone: '+1 (208) 555-0211', specialties: ['Electrical', 'Low Voltage'] },
+  ],
+
+  equipment: [
+    { id: 201, name: 'Drywall Lift', type: 'Material Handling', location: 'Shop / Montpelier', status: 'available', lastService: '2026-08-15', notes: 'Used for ceiling drywall installation' },
+    { id: 202, name: 'Mud Mixer (Portamix)', type: 'Tools', location: 'Truck 1', status: 'in-use', lastService: '2026-09-01', notes: 'WO-2026-0140 — Nampa warehouse' },
+    { id: 203, name: 'Texture Hopper (Marshalltown)', type: 'Tools', location: 'Truck 2', status: 'available', lastService: '2026-07-20', notes: 'Knockdown and orange peel textures' },
+    { id: 204, name: 'Spray Rig (Graco 395)', type: 'Paint Equipment', location: 'Shop / Montpelier', status: 'available', lastService: '2026-09-10', notes: 'Airless paint sprayer — needs new tip' },
+    { id: 205, name: 'Scaffold Set (6 tiers)', type: 'Access Equipment', location: 'Trailer', status: 'available', lastService: '2026-06-01', notes: 'Baker scaffold with casters' },
+    { id: 206, name: 'Compressor (Makita MAC520)', type: 'Air Tools', location: 'Truck 1', status: 'in-use', lastService: '2026-08-22', notes: 'WO-2026-0140 — Nampa warehouse' },
+  ],
+
+  messages: [
+    { id: 301, sender: 'Canyon Ridge Apartments', senderType: 'Customer', time: '2026-10-06T08:30:00', body: 'Ready for you to start on the paint touch-up. Unit 12 and 14 are vacant. Key is in the lockbox.', woNumber: 'WO-2026-0141' },
+    { id: 302, sender: 'Treasure Valley Logistics', senderType: 'Customer', time: '2026-10-05T14:15:00', body: 'The warehouse office space is cleared out and ready for drywall. Power is on. We need this done by Friday.', woNumber: 'WO-2026-0140' },
+    { id: 303, sender: 'Gary Sims', senderType: 'CorrigoPro', time: '2026-10-05T07:00:00', body: 'Casey — I accepted the Canyon Ridge job. I\'ll start tomorrow morning. Can you get the invoice started?', woNumber: 'WO-2026-0141' },
+    { id: 304, sender: 'Anderson Residence', senderType: 'Customer', time: '2026-10-06T09:45:00', body: 'The water damage is in the master bath. We\'ve had a plumber fix the leak upstairs already. Just need the sheetrock repaired and texture matched.', woNumber: 'WO-2026-0142' },
+    { id: 305, sender: 'Broadway Commercial LLC', senderType: 'Customer', time: '2026-09-29T11:20:00', body: 'Invoice INV-2026-0086 received. We\'ll process payment this week.', woNumber: 'WO-2026-0135' },
+  ],
+
+  procedures: [
+    { id: 401, name: 'Drywall Installation — Standard', steps: [
+      { text: 'Measure and cut drywall sheets to fit', done: true },
+      { text: 'Secure drywall with screws (every 8 inches)', done: true },
+      { text: 'Tape all seams with joint tape', done: true },
+      { text: 'Apply first coat of joint compound (mud)', done: true },
+      { text: 'Let dry 24 hours, then apply second coat', done: false },
+      { text: 'Sand smooth and apply third coat if needed', done: false },
+      { text: 'Final sand and texture match', done: false },
+      { text: 'Clean up and remove debris', done: false },
+    ], woNumber: 'WO-2026-0140' },
+    { id: 402, name: 'Interior Paint — New Construction', steps: [
+      { text: 'Prep walls: patch holes, sand rough spots', done: true },
+      { text: 'Tape off trim, windows, doors', done: true },
+      { text: 'Prime all surfaces', done: true },
+      { text: 'Cut in edges and corners', done: false },
+      { text: 'Roll first coat', done: false },
+      { text: 'Let dry 4 hours, inspect for coverage', done: false },
+      { text: 'Roll second coat', done: false },
+      { text: 'Remove tape, touch up, final inspection', done: false },
+    ], woNumber: 'WO-2026-0138' },
+    { id: 403, name: 'Texture Repair — Water Damage', steps: [
+      { text: 'Inspect damage area and identify texture type', done: false },
+      { text: 'Cut out damaged drywall section', done: false },
+      { text: 'Install replacement drywall piece', done: false },
+      { text: 'Mud and tape seams', done: false },
+      { text: 'Sand smooth and blend with surrounding area', done: false },
+      { text: 'Apply matching texture (knockdown/orange peel)', done: false },
+      { text: 'Prime repaired area', done: false },
+      { text: 'Paint to match existing wall color', done: false },
+    ], woNumber: 'WO-2026-0142' },
+  ],
+
+  visits: [
+    { id: 501, visitNumber: 'V-2026-0042', woNumber: 'WO-2026-0140', technician: 'Gary Sims + Mike Rodriguez', location: '789 Industrial Pkwy, Nampa, ID', scheduled: '2026-10-04T08:00:00', status: 'inprogress', checkedIn: '2026-10-04T07:55:00', checkedOut: null },
+    { id: 502, visitNumber: 'V-2026-0041', woNumber: 'WO-2026-0141', technician: 'Jake Thompson', location: '456 Oak Ave, Meridian, ID', scheduled: '2026-10-06T09:00:00', status: 'scheduled', checkedIn: null, checkedOut: null },
+    { id: 503, visitNumber: 'V-2026-0040', woNumber: 'WO-2026-0139', technician: 'Gary Sims', location: '321 Elm St, Boise, ID', scheduled: '2026-10-03T10:00:00', status: 'completed', checkedIn: '2026-10-03T09:58:00', checkedOut: '2026-10-03T14:30:00' },
+    { id: 504, visitNumber: 'V-2026-0039', woNumber: 'WO-2026-0138', technician: 'Gary Sims + Jake Thompson', location: '654 Maple Dr, Eagle, ID', scheduled: '2026-10-02T08:00:00', status: 'completed', checkedIn: '2026-10-02T07:45:00', checkedOut: '2026-10-02T17:00:00' },
+  ],
+};
+
+// ============ NAVIGATION ============
+function showSection(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  const sectionMap = {
+    dashboard: 'sectionDashboard',
+    workorders: 'sectionWorkorders',
+    invoices: 'sectionInvoices',
+    crew: 'sectionCrew',
+    equipment: 'sectionEquipment',
+    messages: 'sectionMessages',
+    procedures: 'sectionProcedures',
+    visits: 'sectionVisits',
+    settings: 'sectionSettings',
+  };
+
+  const sec = sectionMap[name];
+  if (sec) {
+    document.getElementById(sec).classList.add('active');
+  }
+
+  // Find and activate the corresponding nav item
+  const navItems = document.querySelectorAll('.nav-item');
+  navItems.forEach(item => {
+    if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(`'${name}'`)) {
+      item.classList.add('active');
+    }
+  });
+
+  // Render section-specific content
+  if (name === 'dashboard') renderDashboard();
+  if (name === 'workorders') renderWorkOrders();
+  if (name === 'invoices') renderInvoices();
+  if (name === 'crew') renderCrew();
+  if (name === 'equipment') renderEquipment();
+  if (name === 'messages') renderMessages();
+  if (name === 'procedures') renderProcedures();
+  if (name === 'visits') renderVisits();
+
+  window.scrollTo(0, 0);
+}
+
+// ============ DASHBOARD ============
+function renderDashboard() {
+  const newWO = MOCK.workOrders.filter(w => w.status === 'new').length;
+  const activeWO = MOCK.workOrders.filter(w => w.status === 'accepted' || w.status === 'inprogress').length;
+  const outstandingInv = MOCK.invoices.filter(i => i.status === 'invoiced' || i.status === 'draft').length;
+  const crewSize = MOCK.crew.length;
+
+  document.getElementById('dashNewWO').textContent = newWO;
+  document.getElementById('dashActiveWO').textContent = activeWO;
+  document.getElementById('dashOutstandingInv').textContent = outstandingInv;
+  document.getElementById('dashCrewSize').textContent = crewSize;
+
+  // Recent WOs
+  const recent = MOCK.workOrders.slice(0, 4);
+  let woHtml = '';
+  recent.forEach(wo => {
+    woHtml += `
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+        <div>
+          <div style="font-weight:700;color:var(--blue)">${escapeHtml(wo.number)}</div>
+          <div style="font-size:16px;color:var(--muted)">${escapeHtml(wo.location)}</div>
+        </div>
+        <div style="text-align:right">
+          <span class="status-badge status-${wo.status}">${capitalize(wo.status)}</span>
+          <div style="color:var(--green);font-weight:700;margin-top:4px">$${wo.estimatedAmount.toLocaleString()}</div>
+        </div>
+      </div>`;
+  });
+  document.getElementById('dashRecentWO').innerHTML = woHtml;
+
+  // Revenue
+  const paidInv = MOCK.invoices.filter(i => i.status === 'paid');
+  const totalPaid = paidInv.reduce((sum, i) => sum + i.amount, 0);
+  const outstandingInv2 = MOCK.invoices.filter(i => i.status === 'invoiced' || i.status === 'draft');
+  const totalOutstanding = outstandingInv2.reduce((sum, i) => sum + i.amount, 0);
+
+  document.getElementById('dashRevenue').innerHTML = `
+    <div class="summary-line" style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+      <span style="color:var(--muted);font-weight:700">Collected (Paid)</span>
+      <span style="color:var(--green);font-weight:800;font-size:24px">$${totalPaid.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</span>
+    </div>
+    <div class="summary-line" style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+      <span style="color:var(--muted);font-weight:700">Outstanding (Invoiced + Draft)</span>
+      <span style="color:var(--orange);font-weight:800;font-size:24px">$${totalOutstanding.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding:12px 0 0;border-top:2px solid var(--border);margin-top:8px">
+      <span style="font-weight:800">Total Revenue (Oct)</span>
+      <span style="color:var(--green);font-weight:800;font-size:28px">$${(totalPaid + totalOutstanding).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</span>
+    </div>`;
+}
+
+// ============ WORK ORDERS ============
+function renderWorkOrders() {
+  const search = (document.getElementById('woSearch')?.value || '').toLowerCase();
+  const filter = document.getElementById('woFilter')?.value || 'all';
+
+  let list = MOCK.workOrders.filter(wo => {
+    if (filter !== 'all' && wo.status !== filter) return false;
+    if (search) {
+      const haystack = (wo.number + ' ' + wo.location + ' ' + wo.description + ' ' + wo.customer).toLowerCase();
+      if (!haystack.includes(search)) return false;
+    }
+    return true;
+  });
+
+  let html = '';
+  if (list.length === 0) {
+    html = '<div class="empty"><div class="empty-icon">📋</div><p>No work orders match your search.</p></div>';
+  } else {
+    list.forEach(wo => {
+      html += `
+        <tr>
+          <td class="td-num">${escapeHtml(wo.number)}</td>
+          <td>${escapeHtml(wo.location)}</td>
+          <td>${escapeHtml(wo.description.substring(0, 60))}${wo.description.length > 60 ? '...' : ''}</td>
+          <td><span class="priority-badge priority-${wo.priority}">${capitalize(wo.priority)}</span></td>
+          <td><span class="status-badge status-${wo.status}">${capitalize(wo.status)}</span></td>
+          <td class="td-money">$${wo.estimatedAmount.toLocaleString()}</td>
+          <td><button class="btn btn-blue btn-sm" onclick="showWODetail(${wo.id})">View</button></td>
+        </tr>`;
+    });
+  }
+  document.getElementById('woTableBody').innerHTML = html;
+  document.getElementById('woBadge').textContent = MOCK.workOrders.length;
+}
+
+function showWODetail(id) {
+  const wo = MOCK.workOrders.find(w => w.id === id);
+  if (!wo) return;
+
+  const crew = MOCK.crew.filter(c => c.role === 'CruMember' || c.role === 'CruLead');
+  const visits = MOCK.visits.filter(v => v.woNumber === wo.number);
+  const invoices = MOCK.invoices.filter(i => i.woNumber === wo.number);
+  const procedures = MOCK.procedures.filter(p => p.woNumber === wo.number);
+  const messages = MOCK.messages.filter(m => m.woNumber === wo.number);
+
+  let timelineHtml = '';
+  // Build a simple timeline
+  const events = [];
+  events.push({ time: wo.date + 'T00:00:00', text: 'Work order created', color: 'blue' });
+  if (wo.status === 'accepted' || wo.status === 'inprogress' || wo.status === 'completed') {
+    events.push({ time: wo.date + 'T08:00:00', text: 'Accepted by Gary Sims', color: 'green' });
+  }
+  visits.forEach(v => {
+    if (v.checkedIn) events.push({ time: v.checkedIn, text: `Checked in at ${v.location}`, color: 'green' });
+    if (v.checkedOut) events.push({ time: v.checkedOut, text: `Checked out`, color: 'orange' });
+  });
+  if (wo.status === 'completed') events.push({ time: wo.date + 'T17:00:00', text: 'Work completed', color: 'green' });
+  if (wo.status === 'declined') events.push({ time: wo.date + 'T12:00:00', text: 'Declined', color: 'red' });
+
+  events.sort((a, b) => new Date(a.time) - new Date(b.time));
+  events.forEach(e => {
+    timelineHtml += `
+      <div class="timeline-item">
+        <div class="timeline-dot ${e.color}"></div>
+        <div class="timeline-content">
+          <div class="timeline-time">${new Date(e.time).toLocaleString('en-US', { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' })}</div>
+          <div class="timeline-text">${escapeHtml(e.text)}</div>
+        </div>
+      </div>`;
+  });
+
+  let invHtml = '';
+  invoices.forEach(inv => {
+    invHtml += `<div style="padding:8px 0;border-bottom:1px solid var(--border)"><strong>${inv.number}</strong> — $${inv.amount.toLocaleString(undefined,{minimumFractionDigits:2})} <span class="status-badge status-${inv.status}">${capitalize(inv.status)}</span></div>`;
+  });
+  if (!invHtml) invHtml = '<div style="color:var(--muted)">No invoices yet.</div>';
+
+  let msgHtml = '';
+  messages.forEach(m => {
+    msgHtml += `
+      <div class="message-item">
+        <div class="message-header">
+          <span class="message-sender">${escapeHtml(m.sender)}</span>
+          <span class="message-time">${new Date(m.time).toLocaleString('en-US', { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' })}</span>
+        </div>
+        <div class="message-body">${escapeHtml(m.body)}</div>
+      </div>`;
+  });
+  if (!msgHtml) msgHtml = '<div style="color:var(--muted)">No messages.</div>';
+
+  let procHtml = '';
+  procedures.forEach(proc => {
+    procHtml += `<div style="margin-bottom:12px"><strong>${escapeHtml(proc.name)}</strong></div>`;
+    proc.steps.forEach((step, i) => {
+      procHtml += `
+        <div class="checklist-item" onclick="toggleStep(${proc.id}, ${i})">
+          <div class="checklist-box ${step.done ? 'checked' : ''}">${step.done ? '✓' : ''}</div>
+          <div class="checklist-text ${step.done ? 'done' : ''}">${escapeHtml(step.text)}</div>
+        </div>`;
+    });
+  });
+  if (!procHtml) procHtml = '<div style="color:var(--muted)">No procedures assigned.</div>';
+
+  document.getElementById('modalBody').innerHTML = `
+    <h2>${escapeHtml(wo.number)}</h2>
+    <div class="detail-grid">
+      <div class="detail-item"><div class="detail-label">Status</div><div class="detail-value"><span class="status-badge status-${wo.status}">${capitalize(wo.status)}</span></div></div>
+      <div class="detail-item"><div class="detail-label">Priority</div><div class="detail-value"><span class="priority-badge priority-${wo.priority}">${capitalize(wo.priority)}</span></div></div>
+      <div class="detail-item"><div class="detail-label">Customer</div><div class="detail-value">${escapeHtml(wo.customer)}</div></div>
+      <div class="detail-item"><div class="detail-label">Est. Amount</div><div class="detail-value" style="color:var(--green);font-weight:700">$${wo.estimatedAmount.toLocaleString()}</div></div>
+      <div class="detail-item"><div class="detail-label">Date</div><div class="detail-value">${wo.date}</div></div>
+      <div class="detail-item"><div class="detail-label">Location</div><div class="detail-value">${escapeHtml(wo.location)}</div></div>
+    </div>
+
+    <div style="margin-bottom:16px">
+      <div class="detail-label" style="margin-bottom:4px">Description</div>
+      <div style="font-size:18px;line-height:1.5">${escapeHtml(wo.description)}</div>
+    </div>
+
+    <h3 style="margin-top:20px;color:var(--blue)">📅 Timeline</h3>
+    ${timelineHtml}
+
+    <h3 style="margin-top:20px;color:var(--blue)">✅ Procedures</h3>
+    ${procHtml}
+
+    <h3 style="margin-top:20px;color:var(--blue)">💳 Invoices</h3>
+    ${invHtml}
+
+    <h3 style="margin-top:20px;color:var(--blue)">💬 Messages</h3>
+    ${msgHtml}
+
+    <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap">
+      ${wo.status === 'new' ? `<button class="btn btn-green" onclick="mockAction('Accept ${wo.number}')">✅ Accept</button><button class="btn btn-orange" onclick="mockAction('Bid on ${wo.number}')">🔨 Bid</button><button class="btn btn-red" onclick="mockAction('Decline ${wo.number}')">❌ Decline</button>` : ''}
+      ${wo.status === 'accepted' ? `<button class="btn btn-blue" onclick="mockAction('Check in to ${wo.number}')">📍 Check In</button><button class="btn btn-green" onclick="mockAction('Complete ${wo.number}')">✅ Complete</button>` : ''}
+      ${wo.status === 'inprogress' ? `<button class="btn btn-orange" onclick="mockAction('Pause ${wo.number}')">⏸️ Pause</button><button class="btn btn-green" onclick="mockAction('Complete ${wo.number}')">✅ Complete</button>` : ''}
+      <button class="btn btn-secondary" onclick="mockAction('Add note to ${wo.number}')">📝 Add Note</button>
+      <button class="btn btn-secondary" onclick="mockAction('Upload attachment to ${wo.number}')">📎 Upload</button>
+    </div>
+  `;
+  document.getElementById('detailModal').classList.add('show');
+}
+
+// ============ INVOICES ============
+function renderInvoices() {
+  const search = (document.getElementById('invSearch')?.value || '').toLowerCase();
+  const filter = document.getElementById('invFilter')?.value || 'all';
+
+  let list = MOCK.invoices.filter(inv => {
+    if (filter !== 'all' && inv.status !== filter) return false;
+    if (search) {
+      const haystack = (inv.number + ' ' + inv.woNumber + ' ' + inv.customer).toLowerCase();
+      if (!haystack.includes(search)) return false;
+    }
+    return true;
+  });
+
+  let html = '';
+  if (list.length === 0) {
+    html = '<div class="empty"><div class="empty-icon">💳</div><p>No invoices match your search.</p></div>';
+  } else {
+    list.forEach(inv => {
+      html += `
+        <tr>
+          <td class="td-num">${escapeHtml(inv.number)}</td>
+          <td class="td-num">${escapeHtml(inv.woNumber)}</td>
+          <td>${escapeHtml(inv.customer)}</td>
+          <td class="td-money">$${inv.amount.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+          <td><span class="status-badge status-${inv.status}">${capitalize(inv.status)}</span></td>
+          <td class="td-muted">${inv.date}</td>
+          <td><button class="btn btn-blue btn-sm" onclick="showInvDetail(${inv.id})">View</button></td>
+        </tr>`;
+    });
+  }
+  document.getElementById('invTableBody').innerHTML = html;
+  document.getElementById('invBadge').textContent = MOCK.invoices.length;
+}
+
+function showInvDetail(id) {
+  const inv = MOCK.invoices.find(i => i.id === id);
+  if (!inv) return;
+
+  let lineHtml = '';
+  let total = 0;
+  inv.lineItems.forEach(item => {
+    const lineTotal = item.type === 'Labor' ? item.qty * item.rate * (item.guys || 1) : item.qty * item.rate;
+    total += lineTotal;
+    const guysText = item.type === 'Labor' && item.guys > 1 ? ` (${item.guys} guys)` : '';
+    lineHtml += `
+      <div class="invoice-line">
+        <span><strong>${item.type}:</strong> ${escapeHtml(item.desc)}${guysText}<br><span style="color:var(--muted);font-size:16px">${item.qty} ${item.type === 'Labor' ? 'hrs' : 'units'} × $${item.rate.toFixed(2)}</span></span>
+        <span style="font-weight:700">$${lineTotal.toLocaleString(undefined, {minimumFractionDigits:2})}</span>
+      </div>`;
+  });
+
+  document.getElementById('modalBody').innerHTML = `
+    <h2>${escapeHtml(inv.number)}</h2>
+    <div class="detail-grid">
+      <div class="detail-item"><div class="detail-label">Status</div><div class="detail-value"><span class="status-badge status-${inv.status}">${capitalize(inv.status)}</span></div></div>
+      <div class="detail-item"><div class="detail-label">Work Order</div><div class="detail-value">${escapeHtml(inv.woNumber)}</div></div>
+      <div class="detail-item"><div class="detail-label">Customer</div><div class="detail-value">${escapeHtml(inv.customer)}</div></div>
+      <div class="detail-item"><div class="detail-label">Date</div><div class="detail-value">${inv.date}</div></div>
+    </div>
+
+    <h3 style="color:var(--blue);margin-top:16px">Line Items</h3>
+    ${lineHtml}
+    <div class="invoice-total"><span>TOTAL</span><span>$${total.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
+
+    <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap">
+      ${inv.status === 'draft' ? `<button class="btn btn-green" onclick="mockAction('Submit ${inv.number}')">📤 Submit Invoice</button>` : ''}
+      ${inv.status === 'invoiced' ? `<button class="btn btn-orange" onclick="mockAction('Recall ${inv.number}')">↩️ Recall</button>` : ''}
+      <button class="btn btn-secondary" onclick="mockAction('Add attachment to ${inv.number}')">📎 Add Attachment</button>
+      <button class="btn btn-secondary" onclick="mockAction('Download ${inv.number}')">⬇️ Download</button>
+    </div>
+  `;
+  document.getElementById('detailModal').classList.add('show');
+}
+
+// ============ CREW ============
+function renderCrew() {
+  let html = '';
+  MOCK.crew.forEach(member => {
+    const initials = member.name.split(' ').map(n => n[0]).join('');
+    const specHtml = member.specialties.map(s => `<span style="display:inline-block;background:rgba(0,153,255,0.1);border:1px solid var(--blue);border-radius:8px;padding:2px 8px;font-size:14px;color:var(--blue);margin:2px">${escapeHtml(s)}</span>`).join('');
+    html += `
+      <div class="crew-card">
+        <div class="crew-avatar">${initials}</div>
+        <div class="crew-info">
+          <div class="crew-name">${escapeHtml(member.name)}</div>
+          <div class="crew-role">${escapeHtml(member.role)}</div>
+          <div class="crew-phone">${escapeHtml(member.phone)}</div>
+          <div style="margin-top:6px">${specHtml}</div>
+        </div>
+      </div>`;
+  });
+  document.getElementById('crewList').innerHTML = html;
+  document.getElementById('crewBadge').textContent = MOCK.crew.length;
+}
+
+// ============ EQUIPMENT ============
+function renderEquipment() {
+  let html = '';
+  MOCK.equipment.forEach(eq => {
+    const statusColor = eq.status === 'available' ? 'var(--green)' : 'var(--orange)';
+    html += `
+      <div class="equip-card" onclick="showEquipDetail(${eq.id})">
+        <div class="equip-header">
+          <div class="equip-name">${escapeHtml(eq.name)}</div>
+          <div style="font-weight:700;color:${statusColor}">${eq.status === 'available' ? '✅ Available' : '🔨 In Use'}</div>
+        </div>
+        <div class="equip-type">${escapeHtml(eq.type)}</div>
+        <div class="equip-meta">📍 ${escapeHtml(eq.location)} | 🔧 Last serviced: ${eq.lastService}</div>
+      </div>`;
+  });
+  document.getElementById('equipList').innerHTML = html;
+  document.getElementById('equipBadge').textContent = MOCK.equipment.length;
+}
+
+function showEquipDetail(id) {
+  const eq = MOCK.equipment.find(e => e.id === id);
+  if (!eq) return;
+
+  document.getElementById('modalBody').innerHTML = `
+    <h2>${escapeHtml(eq.name)}</h2>
+    <div class="detail-grid">
+      <div class="detail-item"><div class="detail-label">Type</div><div class="detail-value">${escapeHtml(eq.type)}</div></div>
+      <div class="detail-item"><div class="detail-label">Status</div><div class="detail-value" style="color:${eq.status === 'available' ? 'var(--green)' : 'var(--orange)'};font-weight:700">${eq.status === 'available' ? 'Available' : 'In Use'}</div></div>
+      <div class="detail-item"><div class="detail-label">Location</div><div class="detail-value">${escapeHtml(eq.location)}</div></div>
+      <div class="detail-item"><div class="detail-label">Last Service</div><div class="detail-value">${eq.lastService}</div></div>
+    </div>
+    <div style="margin-bottom:16px">
+      <div class="detail-label" style="margin-bottom:4px">Notes</div>
+      <div style="font-size:18px">${escapeHtml(eq.notes)}</div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-blue" onclick="mockAction('View history for ${eq.name}')">📜 View History</button>
+      <button class="btn btn-secondary" onclick="mockAction('Update ${eq.name}')">✏️ Update</button>
+      <button class="btn btn-secondary" onclick="mockAction('Check availability for ${eq.name}')">🔍 Check Availability</button>
+    </div>
+  `;
+  document.getElementById('detailModal').classList.add('show');
+}
+
+// ============ MESSAGES ============
+function renderMessages() {
+  let html = '';
+  MOCK.messages.forEach(m => {
+    const senderIcon = m.senderType === 'Customer' ? '👤' : m.senderType === 'CorrigoPro' ? '🔧' : '💬';
+    html += `
+      <div class="message-item">
+        <div class="message-header">
+          <span class="message-sender">${senderIcon} ${escapeHtml(m.sender)}</span>
+          <span class="message-time">${new Date(m.time).toLocaleString('en-US', { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' })}</span>
+        </div>
+        <div class="message-body">${escapeHtml(m.body)}</div>
+        ${m.woNumber ? `<div class="message-wo-link" onclick="showWODetailByNumber('${m.woNumber}')">📋 ${m.woNumber}</div>` : ''}
+      </div>`;
+  });
+  document.getElementById('messageList').innerHTML = html;
+  document.getElementById('msgBadge').textContent = MOCK.messages.length;
+}
+
+function showWODetailByNumber(number) {
+  const wo = MOCK.workOrders.find(w => w.number === number);
+  if (wo) showWODetail(wo.id);
+}
+
+// ============ PROCEDURES ============
+function renderProcedures() {
+  let html = '';
+  MOCK.procedures.forEach(proc => {
+    const doneCount = proc.steps.filter(s => s.done).length;
+    const totalCount = proc.steps.length;
+    const pct = Math.round((doneCount / totalCount) * 100);
+
+    let stepsHtml = '';
+    proc.steps.forEach((step, i) => {
+      stepsHtml += `
+        <div class="checklist-item" onclick="toggleStep(${proc.id}, ${i})">
+          <div class="checklist-box ${step.done ? 'checked' : ''}">${step.done ? '✓' : ''}</div>
+          <div class="checklist-text ${step.done ? 'done' : ''}">${escapeHtml(step.text)}</div>
+        </div>`;
+    });
+
+    html += `
+      <div class="card" style="margin-bottom:16px">
+        <h2>${escapeHtml(proc.name)}</h2>
+        ${proc.woNumber ? `<div style="color:var(--blue);font-weight:700;margin-bottom:12px">📋 ${proc.woNumber}</div>` : ''}
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+          <div style="flex:1;height:12px;background:var(--bg);border-radius:6px;overflow:hidden">
+            <div style="width:${pct}%;height:100%;background:linear-gradient(135deg,#00cc66,#0099ff);border-radius:6px;transition:width 0.3s"></div>
+          </div>
+          <span style="font-weight:700;color:${pct === 100 ? 'var(--green)' : 'var(--orange)'}">${doneCount}/${totalCount} (${pct}%)</span>
+        </div>
+        ${stepsHtml}
+      </div>`;
+  });
+  document.getElementById('procedureList').innerHTML = html;
+}
+
+function toggleStep(procId, stepIndex) {
+  const proc = MOCK.procedures.find(p => p.id === procId);
+  if (proc) {
+    proc.steps[stepIndex].done = !proc.steps[stepIndex].done;
+    renderProcedures();
+    showToast(proc.steps[stepIndex].done ? '✅ Step completed!' : '↩️ Step un-checked');
+  }
+}
+
+// ============ VISITS ============
+function renderVisits() {
+  let html = '';
+  MOCK.visits.forEach(v => {
+    const statusBadge = v.status === 'completed' ? 'completed' : v.status === 'inprogress' ? 'inprogress' : 'new';
+    html += `
+      <tr>
+        <td class="td-num">${escapeHtml(v.visitNumber)}</td>
+        <td class="td-num">${escapeHtml(v.woNumber)}</td>
+        <td>${escapeHtml(v.technician)}</td>
+        <td>${escapeHtml(v.location)}</td>
+        <td class="td-muted">${new Date(v.scheduled).toLocaleString('en-US', { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' })}</td>
+        <td><span class="status-badge status-${statusBadge}">${capitalize(v.status)}</span></td>
+        <td>
+          ${v.status === 'scheduled' ? `<button class="btn btn-green btn-sm" onclick="mockAction('Check in to ${v.visitNumber}')">📍 Check In</button>` : ''}
+          ${v.status === 'inprogress' ? `<button class="btn btn-orange btn-sm" onclick="mockAction('Check out of ${v.visitNumber}')">✅ Check Out</button>` : ''}
+          ${v.status === 'completed' ? `<button class="btn btn-secondary btn-sm" onclick="mockAction('View ${v.visitNumber}')">View</button>` : ''}
+        </td>
+      </tr>`;
+  });
+  document.getElementById('visitTableBody').innerHTML = html;
+  document.getElementById('visitBadge').textContent = MOCK.visits.length;
+}
+
+// ============ HELPERS ============
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function capitalize(str) {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function closeModal() {
+  document.getElementById('detailModal').classList.remove('show');
+}
+
+function mockAction(action) {
+  showToast(`🔗 API Call: ${action} (requires live credentials)`);
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ============ INIT ============
+renderDashboard();
+</script>
+
+</body>
+</html>
