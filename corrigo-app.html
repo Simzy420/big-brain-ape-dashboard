@@ -1035,34 +1035,9 @@ function renderWoCard(wo, tab) {
     html += '<div class="wo-field"><div class="wo-field-label">📍 Location</div><div class="wo-field-value">' + escapeHtml(wo.location) + '</div></div>';
   }
 
-  // Property (from CorrigoPro email)
-  if (wo.property) {
-    html += '<div class="wo-field"><div class="wo-field-label">🏠 Property</div><div class="wo-field-value">' + escapeHtml(wo.property) + '</div></div>';
-  }
-
   // Description
   if (wo.description) {
     html += '<div class="wo-field"><div class="wo-field-label">🔨 Description</div><div class="wo-field-value">' + escapeHtml(wo.description) + '</div></div>';
-  }
-
-  // Priority (from CorrigoPro email)
-  if (wo.priority) {
-    html += '<div class="wo-field"><div class="wo-field-label">⚡ Priority</div><div class="wo-field-value">' + escapeHtml(wo.priority) + '</div></div>';
-  }
-
-  // On-Site By (from CorrigoPro email)
-  if (wo.onSiteBy) {
-    html += '<div class="wo-field"><div class="wo-field-label">📆 On-Site By</div><div class="wo-field-value">' + escapeHtml(wo.onSiteBy) + '</div></div>';
-  }
-
-  // Service Contact (from CorrigoPro email)
-  if (wo.serviceContact) {
-    html += '<div class="wo-field"><div class="wo-field-label">👤 Contact</div><div class="wo-field-value">' + escapeHtml(wo.serviceContact) + '</div></div>';
-  }
-
-  // Access Info / Lock Box (from CorrigoPro email)
-  if (wo.accessInfo) {
-    html += '<div class="wo-field"><div class="wo-field-label">🔑 Access</div><div class="wo-field-value">' + escapeHtml(wo.accessInfo) + '</div></div>';
   }
 
   // Bid amount (bidding tab)
