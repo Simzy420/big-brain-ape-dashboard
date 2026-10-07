@@ -1035,9 +1035,34 @@ function renderWoCard(wo, tab) {
     html += '<div class="wo-field"><div class="wo-field-label">📍 Location</div><div class="wo-field-value">' + escapeHtml(wo.location) + '</div></div>';
   }
 
+  // Property (from CorrigoPro email)
+  if (wo.property) {
+    html += '<div class="wo-field"><div class="wo-field-label">🏠 Property</div><div class="wo-field-value">' + escapeHtml(wo.property) + '</div></div>';
+  }
+
   // Description
   if (wo.description) {
     html += '<div class="wo-field"><div class="wo-field-label">🔨 Description</div><div class="wo-field-value">' + escapeHtml(wo.description) + '</div></div>';
+  }
+
+  // Priority (from CorrigoPro email)
+  if (wo.priority) {
+    html += '<div class="wo-field"><div class="wo-field-label">⚡ Priority</div><div class="wo-field-value">' + escapeHtml(wo.priority) + '</div></div>';
+  }
+
+  // On-Site By (from CorrigoPro email)
+  if (wo.onSiteBy) {
+    html += '<div class="wo-field"><div class="wo-field-label">📆 On-Site By</div><div class="wo-field-value">' + escapeHtml(wo.onSiteBy) + '</div></div>';
+  }
+
+  // Service Contact (from CorrigoPro email)
+  if (wo.serviceContact) {
+    html += '<div class="wo-field"><div class="wo-field-label">👤 Contact</div><div class="wo-field-value">' + escapeHtml(wo.serviceContact) + '</div></div>';
+  }
+
+  // Access Info / Lock Box (from CorrigoPro email)
+  if (wo.accessInfo) {
+    html += '<div class="wo-field"><div class="wo-field-label">🔑 Access</div><div class="wo-field-value">' + escapeHtml(wo.accessInfo) + '</div></div>';
   }
 
   // Bid amount (bidding tab)
@@ -1654,34 +1679,39 @@ function showToast(msg) {
   setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
-// ============ SEED API DATA (first load only) ============
-function seedApiData() {
-  // Only seed if inbox is empty (first visit, or user cleared data)
-  let inbox = getData('corrigo_inbox');
-  if (inbox.length > 0) return;
+// ============ LOAD REAL WORK ORDERS FROM JSON ============
+function loadWorkOrders() {
+  // Fetch the real work orders JSON file
+  fetch('work-orders.json?v=' + Date.now())
+    .then(r => r.json())
+    .then(newOrders => {
+      let inbox = getData('corrigo_inbox');
+      let existing = new Set(inbox.map(w => w.number));
 
-  // Work orders from CorrigoPro API (api/workOrder/search)
-  // These are the incoming jobs Gary needs to review
-  // 95% of Gary's bids are $500 and under — church maintenance work
-  const apiWorkOrders = [
-    { id: genId(), number: 'WO-2026-0148', date: '2026-10-07', location: 'Boise Idaho Temple', description: 'Touch up paint in baptistry area. Scuff marks on walls from chairs.', estimatedAmount: 480, status: 'inbox', bidAmount: null, completedSummary: null, photo: null, timestamp: new Date().toISOString() },
-    { id: genId(), number: 'WO-2026-0147', date: '2026-10-07', location: 'Meridian Idaho Stake Center', description: 'Drywall repair in men\'s restroom. Hole behind door handle needs patch and texture.', estimatedAmount: 450, status: 'inbox', bidAmount: null, completedSummary: null, photo: null, timestamp: new Date().toISOString() },
-    { id: genId(), number: 'WO-2026-0146', date: '2026-10-06', location: 'Nampa Idaho Stake Center', description: 'Repaint hallway and stairwell. Walls only, ceiling is fine.', estimatedAmount: 500, status: 'inbox', bidAmount: null, completedSummary: null, photo: null, timestamp: new Date().toISOString() },
-    { id: genId(), number: 'WO-2026-0145', date: '2026-10-06', location: 'Caldwell Idaho Temple', description: 'Texture repair in foyer. Water stain on ceiling after roof fix.', estimatedAmount: 475, status: 'inbox', bidAmount: null, completedSummary: null, photo: null, timestamp: new Date().toISOString() },
-    { id: genId(), number: 'WO-2026-0144', date: '2026-10-05', location: 'Boise Idaho Stake Center', description: 'Sheetrock repair in classroom. Crack in wall from settling, needs tape and mud.', estimatedAmount: 400, status: 'inbox', bidAmount: null, completedSummary: null, photo: null, timestamp: new Date().toISOString() },
-    { id: genId(), number: 'WO-2026-0143', date: '2026-10-05', location: 'Eagle Idaho Stake Center', description: 'Paint touch-up in cultural hall. Scuffs and marks from activities.', estimatedAmount: 500, status: 'inbox', bidAmount: null, completedSummary: null, photo: null, timestamp: new Date().toISOString() },
-    { id: genId(), number: 'WO-2026-0142', date: '2026-10-04', location: 'Star Idaho Ward Building', description: 'Drywall replacement in storage room. Moisture damage on lower 4ft of wall.', estimatedAmount: 1850, status: 'inbox', bidAmount: null, completedSummary: null, photo: null, timestamp: new Date().toISOString() },
-    { id: genId(), number: 'WO-2026-0141', date: '2026-10-04', location: 'Meridian Idaho Temple', description: 'Full repaint of bride\'s room. Walls and ceiling, one coat primer two coats paint.', estimatedAmount: 2400, status: 'inbox', bidAmount: null, completedSummary: null, photo: null, timestamp: new Date().toISOString() },
-    { id: genId(), number: 'WO-2026-0140', date: '2026-10-03', location: 'Kuna Idaho Stake Center', description: 'Patch and texture 3 holes in classroom walls where shelves were removed.', estimatedAmount: 350, status: 'inbox', bidAmount: null, completedSummary: null, photo: null, timestamp: new Date().toISOString() },
-    { id: genId(), number: 'WO-2026-0139', date: '2026-10-03', location: 'Emmett Idaho Ward Building', description: 'Repaint men\'s and women\'s restroom stalls. Walls only.', estimatedAmount: 480, status: 'inbox', bidAmount: null, completedSummary: null, photo: null, timestamp: new Date().toISOString() },
-  ];
+      // Only add work orders we don't already have (avoid duplicates)
+      let added = 0;
+      newOrders.forEach(wo => {
+        if (!existing.has(wo.number)) {
+          inbox.unshift(wo);
+          added++;
+        }
+      });
 
-  saveData('corrigo_inbox', apiWorkOrders);
+      if (added > 0) {
+        saveData('corrigo_inbox', inbox);
+        updateAllCounts();
+        renderInbox();
+        showToast('📋 ' + added + ' new work order' + (added > 1 ? 's' : '') + ' loaded!');
+      }
+    })
+    .catch(e => {
+      console.log('No work-orders.json found or failed to load:', e);
+    });
 }
 
 // ============ INIT ============
-// Seed API work order data on first load
-seedApiData();
+// Load real work orders from JSON file
+loadWorkOrders();
 
 // Set today's date as default on Completed Work Order form
 document.getElementById('woDate').valueAsDate = new Date();
