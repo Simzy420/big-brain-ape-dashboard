@@ -563,6 +563,22 @@ body {
   font-family: inherit;
 }
 
+/* CORRIGO BUTTON */
+.corrigo-btn {
+  display: block;
+  width: 100%;
+  background: rgba(0,204,102,0.15);
+  border: 1px solid var(--green);
+  color: var(--green);
+  font-size: 18px;
+  padding: 10px;
+  border-radius: 12px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
 /* ALMOST DUE BANNER */
 .almost-due-banner {
   border-radius: 12px;
@@ -1256,6 +1272,11 @@ function renderWoCard(wo, tab) {
     html += '<button class="email-btn" onclick="viewEmail(\'' + wo.id + '\',\'' + tab + '\')">📧 View Original Email</button>';
   }
 
+  // CorrigoPro button (show if we have a corrigoUrl)
+  if (wo.corrigoUrl) {
+    html += '<button class="corrigo-btn" onclick="openCorrigo(\'' + wo.corrigoUrl + '\')">🔗 Open in CorrigoPro</button>';
+  }
+
   // Date
   html += '<div class="wo-field"><div class="wo-field-label">📅 Date</div><div class="wo-field-value">' + dateDisplay + '</div></div>';
 
@@ -1935,6 +1956,10 @@ function viewEmail(woId, tab) {
 
 function closeEmailModal() {
   document.getElementById('emailModal').classList.remove('show');
+}
+
+function openCorrigo(url) {
+  window.open(url, '_blank');
 }
 
 // ============ TOAST ============
