@@ -563,6 +563,26 @@ body {
   font-family: inherit;
 }
 
+/* ALMOST DUE BANNER */
+.almost-due-banner {
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 12px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+.almost-due-normal {
+  background: rgba(255,149,0,0.15);
+  border: 1px solid var(--orange);
+  color: var(--orange);
+}
+.almost-due-urgent {
+  background: rgba(255,59,48,0.15);
+  border: 1px solid var(--red);
+  color: var(--red);
+}
+
 /* MODAL (for bid amount input) */
 .modal-overlay {
   position: fixed;
@@ -1202,6 +1222,23 @@ function renderDeclined() {
   document.getElementById('declinedList').innerHTML = html;
 }
 
+// ============ DATE PARSER (shared helper) ============
+function parseDueDateHelper(dateStr) {
+  if (!dateStr) return null;
+  if (dateStr.includes('-')) {
+    return new Date(dateStr.split('T')[0] + 'T23:59:59');
+  }
+  let parts = dateStr.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2})\s*(AM|PM))?/);
+  if (parts) {
+    let h = parseInt(parts[4] || '23');
+    let m = parseInt(parts[5] || '59');
+    if (parts[6] && parts[6].toUpperCase() === 'PM' && h < 12) h += 12;
+    if (parts[6] && parts[6].toUpperCase() === 'AM' && h === 12) h = 0;
+    return new Date(parts[3], parts[1]-1, parts[2], h, m, 59);
+  }
+  return null;
+}
+
 // ============ RENDER: WO CARD (generic for all tabs) ============
 function renderWoCard(wo, tab) {
   const dateDisplay = wo.date ? new Date(wo.date + 'T00:00:00').toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : 'No date';
@@ -1235,6 +1272,24 @@ function renderWoCard(wo, tab) {
   // Bid amount (bidding tab)
   if (tab === 'bidding' && wo.bidAmount) {
     html += '<div class="bid-amount-box">🔨 Bid Amount: $' + wo.bidAmount.toFixed(2) + '</div>';
+  }
+
+  // Almost due banner: due date + days remaining
+  if (tab === 'almostdue') {
+    let dueStr = wo.completeBy || wo.onSiteBy || wo.date;
+    if (dueStr) {
+      let dueDate = parseDueDateHelper(dueStr);
+      if (dueDate) {
+        let now = new Date();
+        let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        let dueDay = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate());
+        let daysLeft = Math.ceil((dueDay - today) / (1000 * 60 * 60 * 24));
+        let dueDisplay = dueDate.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+        let urgency = daysLeft <= 2 ? 'almost-due-urgent' : 'almost-due-normal';
+        let dayWord = daysLeft === 1 ? '1 day' : daysLeft + ' days';
+        html += '<div class="almost-due-banner ' + urgency + '">⏰ Due: ' + dueDisplay + ' — ' + dayWord + ' remaining</div>';
+      }
+    }
   }
 
   // Completed badge + summary
@@ -1992,6 +2047,20 @@ updateTitleBadge();
 
 // Check for overdue every 5 minutes
 setInterval(checkOverdue, 300000);
+
+// Refresh almost-due days remaining at midnight
+function scheduleMidnightRefresh() {
+  let now = new Date();
+  let midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
+  let msUntilMidnight = midnight - now;
+  setTimeout(function() {
+    checkOverdue();
+    let active = document.querySelector('.section.active');
+    if (active && active.id === 'sectionAlmostDue') renderAlmostDue();
+    scheduleMidnightRefresh(); // schedule next midnight
+  }, msUntilMidnight + 1000);
+}
+scheduleMidnightRefresh();
 
 // Render inbox on load (default tab)
 renderInbox();
