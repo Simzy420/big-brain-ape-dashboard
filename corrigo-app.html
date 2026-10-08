@@ -614,6 +614,7 @@ body {
 <div class="tab-bar">
   <div class="tab active" id="tabInbox" onclick="showSection('inbox')">📋 Inbox <span class="tab-count" id="inboxCount">0</span></div>
   <div class="tab" id="tabAccepted" onclick="showSection('accepted')">✅ Accepted <span class="tab-count" id="acceptedCount">0</span></div>
+  <div class="tab" id="tabAlmostDue" onclick="showSection('almostdue')">⚠️ Almost Due <span class="tab-count" id="almostDueCount">0</span></div>
   <div class="tab" id="tabOverdue" onclick="showSection('overdue')">⏰ Overdue <span class="tab-count" id="overdueCount">0</span></div>
   <div class="tab" id="tabBidding" onclick="showSection('bidding')">🔨 Bidding <span class="tab-count" id="biddingCount">0</span></div>
   <div class="tab" id="tabDeclined" onclick="showSection('declined')">❌ Declined <span class="tab-count" id="declinedCount">0</span></div>
@@ -679,6 +680,11 @@ body {
   <!-- ===== ACCEPTED SECTION ===== -->
   <div class="section" id="sectionAccepted">
     <div id="acceptedList"></div>
+  </div>
+
+  <!-- ===== ALMOST DUE SECTION ===== -->
+  <div class="section" id="sectionAlmostDue">
+    <div id="almostDueList"></div>
   </div>
 
   <!-- ===== OVERDUE SECTION ===== -->
@@ -860,6 +866,10 @@ function showSection(name) {
     document.getElementById('sectionAccepted').classList.add('active');
     document.getElementById('tabAccepted').classList.add('active');
     renderAccepted();
+  } else if (name === 'almostdue') {
+    document.getElementById('sectionAlmostDue').classList.add('active');
+    document.getElementById('tabAlmostDue').classList.add('active');
+    renderAlmostDue();
   } else if (name === 'overdue') {
     document.getElementById('sectionOverdue').classList.add('active');
     document.getElementById('tabOverdue').classList.add('active');
@@ -884,6 +894,7 @@ function showSection(name) {
 function updateAllCounts() {
   document.getElementById('inboxCount').textContent = getData('corrigo_inbox').length;
   document.getElementById('acceptedCount').textContent = getData('corrigo_accepted').length;
+  document.getElementById('almostDueCount').textContent = getData('corrigo_almostdue').length;
   document.getElementById('overdueCount').textContent = getData('corrigo_overdue').length;
   document.getElementById('biddingCount').textContent = getData('corrigo_bidding').length;
   document.getElementById('declinedCount').textContent = getData('corrigo_declined').length;
@@ -895,9 +906,11 @@ function updateAllCounts() {
 function checkOverdue() {
   let accepted = getData('corrigo_accepted');
   let inbox = getData('corrigo_inbox');
+  let almostDue = getData('corrigo_almostdue');
   let overdue = getData('corrigo_overdue');
   let now = new Date();
-  let moved = 0;
+  let oneWeek = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+  let moved = false;
 
   // Parse a date string (YYYY-MM-DD or MM/DD/YYYY with optional time) into a Date
   function parseDueDate(dateStr) {
@@ -916,6 +929,23 @@ function checkOverdue() {
     return null;
   }
 
+  // Helper to check if a WO number exists in a list
+  function inList(list, wo) { return list.some(o => o.number === wo.number); }
+
+  // Promote almost-due items that have gone past due
+  for (let i = almostDue.length - 1; i >= 0; i--) {
+    let wo = almostDue[i];
+    let dateStr = wo.completeBy || wo.onSiteBy || wo.date;
+    let dueDate = parseDueDate(dateStr);
+    if (!dueDate) continue;
+    if (now > dueDate && wo.status !== 'completed') {
+      wo.status = 'overdue';
+      overdue.unshift(wo);
+      almostDue.splice(i, 1);
+      moved = true;
+    }
+  }
+
   // Check accepted work orders
   for (let i = accepted.length - 1; i >= 0; i--) {
     let wo = accepted[i];
@@ -927,36 +957,66 @@ function checkOverdue() {
       wo.status = 'overdue';
       overdue.unshift(wo);
       accepted.splice(i, 1);
-      moved++;
+      moved = true;
+    } else if (dueDate <= oneWeek && wo.status !== 'completed' && !inList(almostDue, wo)) {
+      wo.status = 'almostdue';
+      almostDue.unshift(wo);
+      accepted.splice(i, 1);
+      moved = true;
     }
   }
 
-  // Also check inbox work orders (they can be overdue too!)
+  // Also check inbox work orders
   for (let i = inbox.length - 1; i >= 0; i--) {
     let wo = inbox[i];
     let dateStr = wo.completeBy || wo.onSiteBy || wo.date;
     let dueDate = parseDueDate(dateStr);
     if (!dueDate) continue;
 
-    // Skip if already in overdue list (avoid duplicates)
-    if (overdue.some(o => o.number === wo.number)) continue;
+    if (inList(overdue, wo) || inList(almostDue, wo)) continue;
 
     if (now > dueDate && wo.status !== 'completed') {
       wo.status = 'overdue';
       overdue.unshift(wo);
       inbox.splice(i, 1);
-      moved++;
+      moved = true;
+    } else if (dueDate <= oneWeek && wo.status !== 'completed') {
+      wo.status = 'almostdue';
+      almostDue.unshift(wo);
+      inbox.splice(i, 1);
+      moved = true;
     }
   }
 
-  if (moved > 0) {
+  if (moved) {
     saveData('corrigo_accepted', accepted);
     saveData('corrigo_inbox', inbox);
+    saveData('corrigo_almostdue', almostDue);
     saveData('corrigo_overdue', overdue);
     updateAllCounts();
     renderInbox();
+    renderAlmostDue();
     renderOverdue();
   }
+}
+
+// ============ RENDER: ALMOST DUE ============
+function renderAlmostDue() {
+  let almostDue = getData('corrigo_almostdue');
+  updateAllCounts();
+  if (almostDue.length === 0) {
+    document.getElementById('almostDueList').innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">⚠️</div>
+        <p>Nothing due soon.<br>Jobs within 7 days of their Complete By date show here.</p>
+      </div>`;
+    return;
+  }
+  let html = '';
+  almostDue.forEach(wo => {
+    html += renderWoCard(wo, 'almostdue');
+  });
+  document.getElementById('almostDueList').innerHTML = html;
 }
 
 // ============ RENDER: OVERDUE ============
@@ -1161,11 +1221,12 @@ function renderWoCard(wo, tab) {
     html += '<button class="action-btn decline" onclick="declineWo(\'' + wo.id + '\')">❌ Decline</button>';
     html += '</div>';
     html += '<button class="delete-btn" onclick="deleteWo(\'' + wo.id + '\',\'corrigo_inbox\')">🗑️ Delete</button>';
-  } else if (tab === 'accepted' || tab === 'bidding') {
+  } else if (tab === 'accepted' || tab === 'bidding' || tab === 'almostdue') {
     if (wo.status !== 'completed') {
       html += '<button class="complete-btn" onclick="completeJob(\'' + wo.id + '\',\'' + tab + '\')">📝 Complete Job</button>';
     }
-    html += '<button class="delete-btn" onclick="deleteWo(\'' + wo.id + '\',\'' + (tab === 'accepted' ? 'corrigo_accepted' : 'corrigo_bidding') + '\')">🗑️ Delete</button>';
+    let sk = tab === 'accepted' ? 'corrigo_accepted' : (tab === 'almostdue' ? 'corrigo_almostdue' : 'corrigo_bidding');
+    html += '<button class="delete-btn" onclick="deleteWo(\'' + wo.id + '\',\'' + sk + '\')">🗑️ Delete</button>';
   } else if (tab === 'overdue') {
     if (wo.status !== 'completed') {
       html += '<button class="complete-btn" onclick="completeJob(\'' + wo.id + '\',\'overdue\')">📝 Complete Job</button>';
@@ -1267,6 +1328,7 @@ function deleteWo(id, storageKey) {
   // Re-render current tab
   if (storageKey === 'corrigo_inbox') renderInbox();
   else if (storageKey === 'corrigo_accepted') renderAccepted();
+  else if (storageKey === 'corrigo_almostdue') renderAlmostDue();
   else if (storageKey === 'corrigo_overdue') renderOverdue();
   else if (storageKey === 'corrigo_bidding') renderBidding();
   else if (storageKey === 'corrigo_declined') renderDeclined();
@@ -1275,7 +1337,7 @@ function deleteWo(id, storageKey) {
 
 // ============ COMPLETE JOB (prefill New Entry form) ============
 function completeJob(id, sourceTab) {
-  let storageKey = sourceTab === 'accepted' ? 'corrigo_accepted' : (sourceTab === 'overdue' ? 'corrigo_overdue' : 'corrigo_bidding');
+  let storageKey = sourceTab === 'accepted' ? 'corrigo_accepted' : (sourceTab === 'almostdue' ? 'corrigo_almostdue' : (sourceTab === 'overdue' ? 'corrigo_overdue' : 'corrigo_bidding'));
   let arr = getData(storageKey);
   const wo = arr.find(w => w.id === id);
   if (!wo) return;
@@ -1304,7 +1366,7 @@ function completeJob(id, sourceTab) {
   // Show prefill banner
   const banner = document.getElementById('prefillBanner');
   banner.style.display = 'block';
-  banner.innerHTML = '📝 Completing Work Order #' + escapeHtml(wo.number || '?') + ' from ' + (sourceTab === 'accepted' ? 'Accepted' : (sourceTab === 'overdue' ? 'Overdue' : 'Bidding')) + ' tab.<br>Fill in hours, materials, and photo below, then Generate Summary & Save.<br><button class="clear-prefill" onclick="clearPrefill()">Cancel Pre-fill</button>';
+  banner.innerHTML = '📝 Completing Work Order #' + escapeHtml(wo.number || '?') + ' from ' + (sourceTab === 'accepted' ? 'Accepted' : (sourceTab === 'almostdue' ? 'Almost Due' : (sourceTab === 'overdue' ? 'Overdue' : 'Bidding'))) + ' tab.<br>Fill in hours, materials, and photo below, then Generate Summary & Save.<br><button class="clear-prefill" onclick="clearPrefill()">Cancel Pre-fill</button>';
 
   showSection('new');
   showToast('📝 Form pre-filled! Add hours & materials below.');
@@ -1637,9 +1699,13 @@ function saveWorkOrder() {
   saved.unshift(currentSummary);
   localStorage.setItem('bba_work_orders', JSON.stringify(saved));
 
-  // If this was a pre-filled job from Accepted/Bidding, mark it as completed
+  // If this was a pre-filled job from Accepted/Almost Due/Overdue/Bidding, mark it as completed
   if (prefillWoId && prefillSourceTab) {
-    const storageKey = prefillSourceTab === 'accepted' ? 'corrigo_accepted' : 'corrigo_bidding';
+    let storageKey;
+    if (prefillSourceTab === 'accepted') storageKey = 'corrigo_accepted';
+    else if (prefillSourceTab === 'almostdue') storageKey = 'corrigo_almostdue';
+    else if (prefillSourceTab === 'overdue') storageKey = 'corrigo_overdue';
+    else storageKey = 'corrigo_bidding';
     let arr = getData(storageKey);
     const idx = arr.findIndex(w => w.id === prefillWoId);
     if (idx !== -1) {
