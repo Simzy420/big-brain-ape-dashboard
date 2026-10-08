@@ -547,6 +547,22 @@ body {
 .api-badge.connected { background: rgba(0,204,102,0.2); color: var(--green); }
 .api-badge.manual { background: rgba(255,149,0,0.2); color: var(--orange); }
 
+/* EMAIL BUTTON */
+.email-btn {
+  display: block;
+  width: 100%;
+  background: rgba(0,153,255,0.15);
+  border: 1px solid var(--blue);
+  color: var(--blue);
+  font-size: 18px;
+  padding: 10px;
+  border-radius: 12px;
+  margin-top: 12px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
 /* MODAL (for bid amount input) */
 .modal-overlay {
   position: fixed;
@@ -822,6 +838,18 @@ body {
     <button class="btn btn-primary" onclick="confirmBid()">✅ Submit Bid</button>
     <div style="height:10px"></div>
     <button class="btn btn-secondary" onclick="cancelBid()">Cancel</button>
+  </div>
+</div>
+
+<!-- MODAL: Email Viewer -->
+<div class="modal-overlay" id="emailModal" onclick="if(event.target===this)closeEmailModal()">
+  <div class="modal" style="max-width:600px; max-height:85vh; display:flex; flex-direction:column;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <h2 style="margin:0;">📧 Original Email</h2>
+      <button onclick="closeEmailModal()" style="background:var(--border);border:none;color:#fff;font-size:28px;width:44px;height:44px;border-radius:50%;cursor:pointer;">✕</button>
+    </div>
+    <div id="emailModalSubject" style="color:var(--muted);font-size:20px;margin-bottom:12px;border-bottom:1px solid var(--border);padding-bottom:12px;"></div>
+    <div id="emailModalBody" style="white-space:pre-wrap;font-size:18px;line-height:1.6;overflow-y:auto;flex:1;color:var(--text);"></div>
   </div>
 </div>
 
@@ -1185,6 +1213,11 @@ function renderWoCard(wo, tab) {
   html += '<h3>#' + escapeHtml(wo.number || 'No #') + '</h3>';
   html += '<div class="wo-est">' + estDisplay + '</div>';
   html += '</div>';
+
+  // Email button (show if we have the original email content)
+  if (wo.emailContent) {
+    html += '<button class="email-btn" onclick="viewEmail(\'' + wo.id + '\',\'' + tab + '\')">📧 View Original Email</button>';
+  }
 
   // Date
   html += '<div class="wo-field"><div class="wo-field-label">📅 Date</div><div class="wo-field-value">' + dateDisplay + '</div></div>';
@@ -1816,6 +1849,37 @@ function clearForm() {
   addLineItem('Labor');
   document.getElementById('woDate').valueAsDate = new Date();
   showToast('🗑️ Form cleared');
+}
+
+// ============ EMAIL VIEWER ============
+function viewEmail(woId, tab) {
+  let storageKey;
+  if (tab === 'inbox') storageKey = 'corrigo_inbox';
+  else if (tab === 'accepted') storageKey = 'corrigo_accepted';
+  else if (tab === 'almostdue') storageKey = 'corrigo_almostdue';
+  else if (tab === 'overdue') storageKey = 'corrigo_overdue';
+  else if (tab === 'bidding') storageKey = 'corrigo_bidding';
+  else if (tab === 'declined') storageKey = 'corrigo_declined';
+  else return;
+
+  let arr = getData(storageKey);
+  let wo = arr.find(w => w.id === woId);
+  if (!wo) {
+    showToast('⚠️ Could not find work order');
+    return;
+  }
+  if (!wo.emailContent) {
+    showToast('⚠️ No email saved for this work order');
+    return;
+  }
+
+  document.getElementById('emailModalSubject').textContent = wo.emailSubject || '(no subject)';
+  document.getElementById('emailModalBody').textContent = wo.emailContent;
+  document.getElementById('emailModal').classList.add('show');
+}
+
+function closeEmailModal() {
+  document.getElementById('emailModal').classList.remove('show');
 }
 
 // ============ TOAST ============
