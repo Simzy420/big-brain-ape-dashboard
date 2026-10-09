@@ -2050,6 +2050,83 @@ document.addEventListener('visibilitychange', function() {
   }
 });
 
+// ============ EXPORT COMPLETED WORK ORDERS FOR CORRIGOPRO AUTOMATION ============
+function exportCompletedWorkOrders() {
+  const completed = [];
+  
+  // Check all tabs for completed work orders
+  const tabs = ['corrigo_accepted', 'corrigo_almostdue', 'corrigo_overdue', 'corrigo_bidding'];
+  
+  tabs.forEach(tabKey => {
+    const tabData = getData(tabKey);
+    tabData.forEach(wo => {
+      if (wo.status === 'completed' && wo.completedSummary) {
+        // Determine action based on original tab
+        let action = 'unknown';
+        if (tabKey === 'corrigo_accepted') action = 'accept';
+        else if (tabKey === 'corrigo_declined') action = 'decline';
+        else if (tabKey === 'corrigo_bidding') action = 'bid';
+        
+        completed.push({
+          id: wo.id,
+          number: wo.number,
+          action: action,
+          bidAmount: wo.bidAmount || null,
+          completedSummary: wo.completedSummary,
+          timestamp: wo.completedSummary.timestamp || new Date().toISOString()
+        });
+      }
+    });
+  });
+  
+  // Check declined tab
+  const declined = getData('corrigo_declined');
+  declined.forEach(wo => {
+    if (wo.status === 'completed') {
+      completed.push({
+        id: wo.id,
+        number: wo.number,
+        action: 'decline',
+        bidAmount: null,
+        completedSummary: wo.completedSummary,
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+  
+  // Export to GitHub Pages
+  const exportData = {
+    completed: completed,
+    exportedAt: new Date().toISOString(),
+    count: completed.length
+  };
+  
+  // Fetch API to write to GitHub
+  const GITHUB_TOKEN = localStorage.getItem('github_token');
+  if (!GITHUB_TOKEN) {
+    console.log('No GitHub token, skipping export');
+    return;
+  }
+  
+  fetch('https://api.github.com/repos/Simzy420/big-brain-ape-dashboard/contents/corrigo-completed.json', {
+    method: 'PUT',
+    headers: {
+      'Authorization': `token ${GITHUB_TOKEN}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      message: `Export ${completed.length} completed work orders for CorrigoPro automation [${new Date().toISOString()}]`,
+      content: btoa(JSON.stringify(exportData, null, 2))
+    })
+  }).then(r => {
+    if (r.ok) {
+      console.log(`✅ Exported ${completed.length} completed work orders to corrigo-completed.json`);
+    } else {
+      console.error('Failed to export:', r.statusText);
+    }
+  }).catch(e => console.error('Export error:', e));
+}
+
 // ============ INIT ============
 // Load real work orders from JSON file
 loadWorkOrders(true);
@@ -2072,6 +2149,10 @@ updateTitleBadge();
 
 // Check for overdue every 5 minutes
 setInterval(checkOverdue, 300000);
+
+// Export completed work orders for CorrigoPro automation (every 2 min)
+setInterval(exportCompletedWorkOrders, 120000);
+exportCompletedWorkOrders(); // Initial export on load
 
 // Refresh almost-due days remaining at midnight
 function scheduleMidnightRefresh() {
