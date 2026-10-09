@@ -25,11 +25,15 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
+  <button class="tab" onclick="show('declined')">Declined <span id="declinedCount">0</span></button>
+  <button class="tab" onclick="show('bidding')">Bidding <span id="biddingCount">0</span></button>
   <button class="tab" onclick="show('settings')">Settings</button>
 </div>
 <div class="wrap">
   <div id="inbox"></div>
   <div id="accepted" style="display:none"></div>
+  <div id="declined" style="display:none"></div>
+  <div id="bidding" style="display:none"></div>
   <div id="settings" style="display:none">
     <div class="card">
       <p class="muted">Paste the GitHub token once. It stays on this phone.</p>
@@ -37,6 +41,18 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
       <button class="big save" onclick="saveToken()">Save Token</button>
       <p id="status" class="muted"></p>
     </div>
+  </div>
+</div>
+
+<!-- BID MODAL -->
+<div id="bidModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:999; align-items:center; justify-content:center;">
+  <div class="card" style="max-width:400px; margin:auto;">
+    <h2 style="margin:0 0 12px 0;">🔨 Enter Bid Amount</h2>
+    <p class="muted">How much will you quote for this job?</p>
+    <input id="bidAmount" type="number" placeholder="0.00" step="0.01" inputmode="decimal">
+    <input id="bidWoId" type="hidden">
+    <button class="big accept" onclick="submitBid()">✅ Submit Bid</button>
+    <button class="big decline" onclick="closeBidModal()" style="margin-top:8px;">Cancel</button>
   </div>
 </div>
 <script>
@@ -48,22 +64,30 @@ function handled(){
   return nums;
 }
 function show(name){
-  ['inbox','accepted','settings'].forEach(id => document.getElementById(id).style.display = id===name ? 'block' : 'none');
+  ['inbox','accepted','declined','bidding','settings'].forEach(id => document.getElementById(id).style.display = id===name ? 'block' : 'none');
   if (name==='inbox') render();
   if (name==='accepted') render();
+  if (name==='declined') render();
+  if (name==='bidding') render();
 }
 function render(){
   const inbox = getData('corrigo_inbox');
   const accepted = getData('corrigo_accepted');
+  const declined = getData('corrigo_declined');
+  const bidding = getData('corrigo_bidding');
   document.getElementById('inboxCount').textContent = inbox.length;
   document.getElementById('acceptedCount').textContent = accepted.length;
+  document.getElementById('declinedCount').textContent = declined.length;
+  document.getElementById('biddingCount').textContent = bidding.length;
   document.getElementById('inbox').innerHTML = inbox.map(w => card(w,true)).join('') || '<div class="card">No jobs in inbox.</div>';
   document.getElementById('accepted').innerHTML = accepted.map(w => card(w,false)).join('') || '<div class="card">Nothing accepted yet.</div>';
+  document.getElementById('declined').innerHTML = declined.map(w => card(w,false)).join('') || '<div class="card">Nothing declined.</div>';
+  document.getElementById('bidding').innerHTML = bidding.map(w => card(w,false)).join('') || '<div class="card">No bids submitted.</div>';
   const token = localStorage.getItem('github_token');
   document.getElementById('status').textContent = token ? 'Token saved on this phone.' : 'No token saved yet.';
 }
 function card(w, canAct){
-  const buttons = canAct ? `<button class="big accept" onclick="choose('${w.id}','accept')">Accept</button><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button>` : '<p class="muted">Waiting for Corrigo pickup</p>';
+  const buttons = canAct ? `<button class="big accept" onclick="choose('${w.id}','accept')">Accept</button><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button><button class="big save" onclick="openBidModal('${w.id}')" style="margin-top:8px;">🔨 Bid</button>` : '<p class="muted">Waiting for Corrigo pickup</p>';
   return `<div class="card"><strong>${w.number||''}</strong><p>${w.location||''}</p><p>${w.description||''}</p>${buttons}</div>`;
 }
 function choose(id, action){
@@ -79,7 +103,41 @@ function choose(id, action){
   arr.unshift(wo);
   saveData(key, arr);
   render();
-  show(action==='accept' ? 'accepted' : 'inbox');
+  show(action==='accept' ? 'accepted' : 'declined');
+  sendPickup();
+}
+
+function openBidModal(id){
+  document.getElementById('bidWoId').value = id;
+  document.getElementById('bidAmount').value = '';
+  document.getElementById('bidModal').style.display = 'flex';
+}
+
+function closeBidModal(){
+  document.getElementById('bidModal').style.display = 'none';
+}
+
+function submitBid(){
+  const id = document.getElementById('bidWoId').value;
+  const amount = document.getElementById('bidAmount').value.trim();
+  if (!amount || parseFloat(amount) <= 0){
+    alert('Enter a valid bid amount.');
+    return;
+  }
+  let inbox = getData('corrigo_inbox');
+  const idx = inbox.findIndex(w => w.id===id);
+  if (idx<0) return;
+  const wo = inbox[idx];
+  wo.status = 'bidding';
+  wo.bidAmount = parseFloat(amount);
+  inbox.splice(idx,1);
+  saveData('corrigo_inbox', inbox);
+  const arr = getData('corrigo_bidding');
+  arr.unshift(wo);
+  saveData('corrigo_bidding', arr);
+  closeBidModal();
+  render();
+  show('bidding');
   sendPickup();
 }
 async function sendPickup(){
@@ -88,6 +146,7 @@ async function sendPickup(){
   const actions = [];
   getData('corrigo_accepted').forEach(w => actions.push({number:w.number, action:'accept', location:w.location||'', description:w.description||''}));
   getData('corrigo_declined').forEach(w => actions.push({number:w.number, action:'decline', location:w.location||'', description:w.description||''}));
+  getData('corrigo_bidding').forEach(w => actions.push({number:w.number, action:'bid', bidAmount:w.bidAmount||0, location:w.location||'', description:w.description||''}));
   const body = { message:'Pickup from phone app', content: btoa(unescape(encodeURIComponent(JSON.stringify({pendingActions:actions, exportedAt:new Date().toISOString()}, null, 2)))) };
   const cur = await fetch('https://api.github.com/repos/Simzy420/big-brain-ape-dashboard/contents/corrigo-actions.json', { headers:{ Authorization:'token '+token } });
   if (cur.ok) { const info = await cur.json(); if (info.sha) body.sha = info.sha; }
