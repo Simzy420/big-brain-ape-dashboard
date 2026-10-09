@@ -16,6 +16,17 @@ button.big { width:100%; border:0; border-radius:12px; padding:16px; font-size:2
 .accept { background:#00cc66; }
 .decline { background:#ff3b30; }
 .card strong { font-size: 25px; }
+.card .wo-est {
+  font-size: 26px;
+  font-weight: 800;
+  color: #00cc66;
+  white-space: nowrap;
+}
+.card .wo-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .card p { font-size: 23px; line-height: 1.4; }
 .email-btn {
   display: block;
@@ -274,8 +285,10 @@ function render(){
 }
 function card(w, canAct){
   const buttons = canAct ? `<button class="big accept" onclick="choose('${w.id}','accept')">Accept</button><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button><button class="big save" onclick="openBidModal('${w.id}')" style="margin-top:8px;">🔨 Bid</button>` : '<p class="muted">Waiting for Corrigo pickup</p>';
+  const estDisplay = w.estimatedAmount ? '$' + parseFloat(w.estimatedAmount).toFixed(2) : '';
+  const estHtml = estDisplay ? `<div class="wo-est">${estDisplay}</div>` : '';
   const emailBtn = w.emailContent ? `<button class="email-btn" onclick="viewEmail('${w.id}')">📧 View Original Email</button>` : '';
-  return `<div class="card"><strong>${w.number||''}</strong><p>${w.location||''}</p><p>${w.description||''}</p>${buttons}${emailBtn}</div>`;
+  return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div><p>${w.location||''}</p><p>${w.description||''}</p>${buttons}${emailBtn}</div>`;
 }
 function choose(id, action){
   let inbox = getData('corrigo_inbox');
