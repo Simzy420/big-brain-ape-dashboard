@@ -27,6 +27,8 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
   <button class="tab" onclick="show('declined')">Declined <span id="declinedCount">0</span></button>
   <button class="tab" onclick="show('bidding')">Bidding <span id="biddingCount">0</span></button>
+  <button class="tab" onclick="show('almostdue')">⚠️ Almost Due <span id="almostDueCount">0</span></button>
+  <button class="tab" onclick="show('overdue')">⏰ Overdue <span id="overdueCount">0</span></button>
   <button class="tab" onclick="show('settings')">Settings</button>
 </div>
 <div class="wrap">
@@ -34,6 +36,8 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
   <div id="accepted" style="display:none"></div>
   <div id="declined" style="display:none"></div>
   <div id="bidding" style="display:none"></div>
+  <div id="almostdue" style="display:none"></div>
+  <div id="overdue" style="display:none"></div>
   <div id="settings" style="display:none">
     <div class="card">
       <p class="muted">Paste the GitHub token once. It stays on this phone.</p>
@@ -64,11 +68,13 @@ function handled(){
   return nums;
 }
 function show(name){
-  ['inbox','accepted','declined','bidding','settings'].forEach(id => document.getElementById(id).style.display = id===name ? 'block' : 'none');
+  ['inbox','accepted','declined','bidding','almostdue','overdue','settings'].forEach(id => document.getElementById(id).style.display = id===name ? 'block' : 'none');
   if (name==='inbox') render();
   if (name==='accepted') render();
   if (name==='declined') render();
   if (name==='bidding') render();
+  if (name==='almostdue') render();
+  if (name==='overdue') render();
 }
 function render(){
   const inbox = getData('corrigo_inbox');
@@ -83,6 +89,29 @@ function render(){
   document.getElementById('accepted').innerHTML = accepted.map(w => card(w,false)).join('') || '<div class="card">Nothing accepted yet.</div>';
   document.getElementById('declined').innerHTML = declined.map(w => card(w,false)).join('') || '<div class="card">Nothing declined.</div>';
   document.getElementById('bidding').innerHTML = bidding.map(w => card(w,false)).join('') || '<div class="card">No bids submitted.</div>';
+  const now = new Date();
+  const sevenDays = new Date(now.getTime() + 7*24*60*60*1000);
+  const overdueList = [];
+  const almostDueList = [];
+  accepted.forEach(w => {
+    if (w.dueDate) {
+      const due = new Date(w.dueDate);
+      if (due < now) overdueList.push(w);
+      else if (due <= sevenDays) almostDueList.push(w);
+    }
+  });
+  // Also check inbox items
+  inbox.forEach(w => {
+    if (w.dueDate) {
+      const due = new Date(w.dueDate);
+      if (due < now) overdueList.push(w);
+      else if (due <= sevenDays) almostDueList.push(w);
+    }
+  });
+  document.getElementById('overdueCount').textContent = overdueList.length;
+  document.getElementById('almostDueCount').textContent = almostDueList.length;
+  document.getElementById('overdue').innerHTML = overdueList.map(w => card(w,false)).join('') || '<div class="card">Nothing overdue. ✅</div>';
+  document.getElementById('almostdue').innerHTML = almostDueList.map(w => card(w,false)).join('') || '<div class="card">Nothing due in the next 7 days.</div>';
   const token = localStorage.getItem('github_token');
   document.getElementById('status').textContent = token ? 'Token saved on this phone.' : 'No token saved yet.';
 }
