@@ -2086,7 +2086,17 @@ function exportCorrigoActions() {
   };
   
   // Fetch API to write to GitHub
-  const GITHUB_TOKEN = localStorage.getItem('github_token');
+  // Try localStorage first, then fetch from config file
+  let GITHUB_TOKEN = localStorage.getItem('github_token');
+  if (!GITHUB_TOKEN) {
+    try {
+      const configResp = await fetch('corrigo-config.json?t=' + Date.now());
+      if (configResp.ok) {
+        const config = await configResp.json();
+        GITHUB_TOKEN = config.github_token || '';
+      }
+    } catch(e) { console.log('No config file'); }
+  }
   if (!GITHUB_TOKEN) {
     console.log('No GitHub token, skipping export');
     return;

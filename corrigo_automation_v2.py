@@ -15,9 +15,9 @@ CORRIGO_URL = "https://login.corrigo.com"
 ACTIONS_FILE = "corrigo-actions.json"
 WORK_ORDERS_FILE = "work-orders.json"
 GITHUB_REPO = "Simzy420/big-brain-ape-dashboard"
-GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
-CORRIGO_USERNAME = os.environ.get("CORRIGO_USERNAME")
-CORRIGO_PASSWORD = os.environ.get("CORRIGO_PASSWORD")
+GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
+CORRIGO_USERNAME = os.environ.get("CORRIGO_USERNAME", "")
+CORRIGO_PASSWORD = os.environ.get("CORRIGO_PASSWORD", "")
 
 # Log file
 LOG_FILE = "/workspace/corrigo_automation.log"
