@@ -41,6 +41,92 @@ button.big { width:100%; border:0; border-radius:12px; padding:16px; font-size:2
   justify-content: center;
 }
 .email-modal.show { display: flex; }
+
+/* FIELD ROW */
+.field-row { display: flex; gap: 12px; }
+.field-row .field { flex: 1; }
+
+/* LINE ITEMS */
+.line-item {
+  background: #1c1c2e;
+  border: 2px solid #333;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.line-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.line-item-header h4 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0099ff;
+  margin: 0;
+}
+.line-item-remove {
+  background: #ff3b30;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.line-item .field { margin-bottom: 10px; }
+.line-item .field label { font-size: 16px; }
+.line-item .field input { font-size: 20px; padding: 12px; }
+.line-item .field select { font-size: 20px; padding: 12px; width: 100%; box-sizing: border-box; border-radius: 12px; border: 0; }
+
+/* ADD ITEM BUTTON */
+.add-item-btn {
+  background: transparent;
+  border: 2px dashed #0099ff;
+  color: #0099ff;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* PHOTO BUTTONS */
+.photo-buttons { display: flex; gap: 12px; }
+.photo-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: #1c1c2e;
+  border: 3px solid #333;
+  border-radius: 14px;
+  padding: 24px 12px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+}
+.photo-btn:active { border-color: #0099ff; background: rgba(0,153,255,0.1); }
+.photo-btn-icon { font-size: 40px; }
+.photo-preview {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 12px;
+  display: none;
+}
+.photo-preview.show { display: block; }
+.photo-filename {
+  font-size: 18px;
+  color: #00cc66;
+  margin-top: 8px;
+}
+
 .save { background:#0099ff; }
 input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-radius:12px; border:0; }
 .muted { color:#aaa; font-size:16px; }
@@ -55,6 +141,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
   <button class="tab" onclick="show('bidding')">Bidding <span id="biddingCount">0</span></button>
   <button class="tab" onclick="show('almostdue')">⚠️ Almost Due <span id="almostDueCount">0</span></button>
   <button class="tab" onclick="show('overdue')">⏰ Overdue <span id="overdueCount">0</span></button>
+  <button class="tab" onclick="show('new')">💰 Complete</button>
   <button class="tab" onclick="show('settings')">Settings</button>
 </div>
 <div class="wrap">
@@ -64,6 +151,36 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
   <div id="bidding" style="display:none"></div>
   <div id="almostdue" style="display:none"></div>
   <div id="overdue" style="display:none"></div>
+  <div id="new" style="display:none">
+    <div class="card">
+      <h2 style="margin:0 0 8px 0;">💵 Labor & Materials</h2>
+      <div id="lineItems"></div>
+      <button class="add-item-btn" onclick="addLineItem()">+ Add Labor or Material</button>
+    </div>
+
+    <div class="card">
+      <h2 style="margin:0 0 8px 0;">📸 Job Photo</h2>
+      <div class="photo-buttons">
+        <button class="photo-btn" onclick="document.getElementById('photoInputCamera').click()">
+          <span class="photo-btn-icon">📷</span>
+          <span>Take Photo</span>
+        </button>
+        <button class="photo-btn" onclick="document.getElementById('photoInputGallery').click()">
+          <span class="photo-btn-icon">🖼️</span>
+          <span>Choose from Photos</span>
+        </button>
+      </div>
+      <input type="file" id="photoInputCamera" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(this)">
+      <input type="file" id="photoInputGallery" accept="image/*" style="display:none" onchange="handlePhoto(this)">
+      <img class="photo-preview" id="photoPreview">
+      <div class="photo-filename" id="photoFilename"></div>
+    </div>
+
+    <button class="big save" onclick="generateSummary()">✅ Generate Summary</button>
+    <div style="height:12px"></div>
+    <button class="big decline" onclick="clearForm()">🗑️ Clear Form</button>
+  </div>
+
   <div id="settings" style="display:none">
     <div class="card">
       <p class="muted">Paste the GitHub token once. It stays on this phone.</p>
@@ -98,6 +215,8 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
+let currentPhoto = null;
+let lineItemCount = 0;
 function getData(k){ try { return JSON.parse(localStorage.getItem(k)||'[]'); } catch(e){ return []; } }
 function saveData(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
 function handled(){
@@ -106,7 +225,7 @@ function handled(){
   return nums;
 }
 function show(name){
-  ['inbox','accepted','declined','bidding','almostdue','overdue','settings'].forEach(id => document.getElementById(id).style.display = id===name ? 'block' : 'none');
+  ['inbox','accepted','declined','bidding','almostdue','overdue','new','settings'].forEach(id => document.getElementById(id).style.display = id===name ? 'block' : 'none');
   if (name==='inbox') render();
   if (name==='accepted') render();
   if (name==='declined') render();
@@ -222,6 +341,96 @@ async function sendPickup(){
   if (!res.ok) alert('Saved on the phone. GitHub did not take the pickup file.');
   else alert('Sent for Corrigo pickup.');
 }
+
+// ============ LINE ITEMS ============
+function addLineItem(type) {
+  lineItemCount++;
+  const div = document.createElement('div');
+  div.className = 'line-item';
+  div.id = 'item' + lineItemCount;
+  div.innerHTML = `
+    <div class="line-item-header">
+      <h4 id="item${lineItemCount}Title">${type || 'Labor'} Item</h4>
+      <button class="line-item-remove" onclick="removeLineItem(${lineItemCount})">✕ Remove</button>
+    </div>
+    <div class="field">
+      <label>Type</label>
+      <select id="item${lineItemCount}Type" onchange="updateItemTitle(${lineItemCount})">
+        <option value="Labor" ${type==='Labor'?'selected':''}>Labor (Hours)</option>
+        <option value="Material" ${type==='Material'?'selected':''}>Material</option>
+      </select>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label id="item${lineItemCount}QtyLabel">Hours</label>
+        <input type="number" id="item${lineItemCount}Qty" placeholder="0" step="0.5" inputmode="decimal">
+      </div>
+      <div class="field">
+        <label>Rate / Price</label>
+        <input type="number" id="item${lineItemCount}Rate" placeholder="0.00" step="0.01" inputmode="decimal">
+      </div>
+    </div>
+  `;
+  document.getElementById('lineItems').appendChild(div);
+  updateItemTitle(lineItemCount);
+}
+
+function updateItemTitle(id) {
+  const type = document.getElementById('item' + id + 'Type').value;
+  document.getElementById('item' + id + 'Title').textContent = type + ' Item';
+  document.getElementById('item' + id + 'QtyLabel').textContent = type === 'Labor' ? 'Hours' : 'Quantity';
+}
+
+function removeLineItem(id) {
+  document.getElementById('item' + id).remove();
+}
+
+// ============ PHOTO ============
+function handlePhoto(input) {
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('photoPreview').src = e.target.result;
+      document.getElementById('photoPreview').classList.add('show');
+      document.getElementById('photoFilename').textContent = '✅ Photo attached: ' + file.name;
+      currentPhoto = { name: file.name, data: e.target.result };
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+// ============ GENERATE SUMMARY ============
+function generateSummary() {
+  let summary = '';
+  let total = 0;
+  for (let i = 1; i <= lineItemCount; i++) {
+    const el = document.getElementById('item' + i);
+    if (!el) continue;
+    const type = document.getElementById('item' + i + 'Type').value;
+    const qty = parseFloat(document.getElementById('item' + i + 'Qty').value) || 0;
+    const rate = parseFloat(document.getElementById('item' + i + 'Rate').value) || 0;
+    const lineTotal = qty * rate;
+    total += lineTotal;
+    const qtyLabel = type === 'Labor' ? 'hrs' : 'qty';
+    summary += `${type}: ${qty} ${qtyLabel} x $${rate.toFixed(2)} = $${lineTotal.toFixed(2)}\n`;
+  }
+  summary += `\nTOTAL: $${total.toFixed(2)}`;
+  if (currentPhoto) summary += `\nPhoto: ${currentPhoto.name}`;
+  alert(summary);
+}
+
+// ============ CLEAR FORM ============
+function clearForm() {
+  document.getElementById('lineItems').innerHTML = '';
+  lineItemCount = 0;
+  currentPhoto = null;
+  document.getElementById('photoPreview').classList.remove('show');
+  document.getElementById('photoPreview').src = '';
+  document.getElementById('photoFilename').textContent = '';
+  addLineItem('Labor');
+}
+
 function viewEmail(id){
   const allWos = [].concat(
     getData('corrigo_inbox'),
