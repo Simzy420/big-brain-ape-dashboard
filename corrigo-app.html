@@ -245,6 +245,7 @@ function show(name){
   if (name==='bidding') render();
   if (name==='almostdue') render();
   if (name==='overdue') render();
+  if (name==='saved') render();
 }
 function render(){
   const inbox = getData('corrigo_inbox');
@@ -259,6 +260,9 @@ function render(){
   document.getElementById('accepted').innerHTML = accepted.map(w => card(w,false)).join('') || '<div class="card">Nothing accepted yet.</div>';
   document.getElementById('declined').innerHTML = declined.map(w => card(w,false)).join('') || '<div class="card">Nothing declined.</div>';
   document.getElementById('bidding').innerHTML = bidding.map(w => card(w,false)).join('') || '<div class="card">No bids submitted.</div>';
+  const saved = getData('corrigo_saved');
+  document.getElementById('savedCount').textContent = saved.length;
+  document.getElementById('saved').innerHTML = saved.map(w => card(w,true)).join('') || '<div class="card">Nothing saved yet.</div>';
   const now = new Date();
   const sevenDays = new Date(now.getTime() + 7*24*60*60*1000);
   const overdueList = [];
@@ -286,7 +290,7 @@ function render(){
   document.getElementById('status').textContent = token ? 'Token saved on this phone.' : 'No token saved yet.';
 }
 function card(w, canAct){
-  const buttons = canAct ? `<button class="big accept" onclick="choose('${w.id}','accept')">Accept</button><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button><button class="big save" onclick="openBidModal('${w.id}')" style="margin-top:8px;">🔨 Bid</button>` : '<p class="muted">Waiting for Corrigo pickup</p>';
+  const buttons = canAct ? `<button class="big accept" onclick="choose('${w.id}','accept')">Accept</button><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button><button class="big save" onclick="openBidModal('${w.id}')" style="margin-top:8px;">🔨 Bid</button><button class="big save" onclick="saveWo('${w.id}')" style="margin-top:8px;background:#666;">💾 Save for Later</button>` : '<p class="muted">Waiting for Corrigo pickup</p>';
   const estDisplay = w.estimatedAmount ? '$' + parseFloat(w.estimatedAmount).toFixed(2) : '';
   const estHtml = estDisplay ? `<div class="wo-est">${estDisplay}</div>` : '';
   const emailBtn = w.emailContent ? `<button class="email-btn" onclick="viewEmail('${w.id}')">📧 View Original Email</button>` : '';
@@ -444,6 +448,27 @@ function clearForm() {
   document.getElementById('photoPreview').src = '';
   document.getElementById('photoFilename').textContent = '';
   addLineItem('Labor');
+}
+
+function saveWo(id){
+  // Check all tabs for this work order
+  const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved'];
+  for (const tab of allTabs) {
+    const arr = getData(tab);
+    const idx = arr.findIndex(w => w.id === id);
+    if (idx >= 0) {
+      const wo = arr[idx];
+      wo.status = 'saved';
+      arr.splice(idx, 1);
+      saveData(tab, arr);
+      const saved = getData('corrigo_saved');
+      saved.unshift(wo);
+      saveData('corrigo_saved', saved);
+      render();
+      show('saved');
+      return;
+    }
+  }
 }
 
 function viewEmail(id){
