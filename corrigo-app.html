@@ -15,6 +15,30 @@ h1 { margin:0; font-size:24px; }
 button.big { width:100%; border:0; border-radius:12px; padding:16px; font-size:22px; font-weight:800; color:#fff; margin-top:8px; }
 .accept { background:#00cc66; }
 .decline { background:#ff3b30; }
+.email-btn {
+  display: block;
+  width: 100%;
+  background: rgba(0,153,255,0.15);
+  border: 1px solid #0099ff;
+  color: #0099ff;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 8px;
+  cursor: pointer;
+}
+.email-btn:active { background: rgba(0,153,255,0.3); }
+.email-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+}
+.email-modal.show { display: flex; }
 .save { background:#0099ff; }
 input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-radius:12px; border:0; }
 .muted { color:#aaa; font-size:16px; }
@@ -59,6 +83,18 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
     <button class="big decline" onclick="closeBidModal()" style="margin-top:8px;">Cancel</button>
   </div>
 </div>
+<!-- EMAIL MODAL -->
+<div class="email-modal" id="emailModal" onclick="if(event.target===this)closeEmailModal()">
+  <div class="card" style="max-width:600px;max-height:85vh;display:flex;flex-direction:column;margin:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <h2 style="margin:0;">📧 Original Email</h2>
+      <button onclick="closeEmailModal()" style="background:#1c1c2e;border:none;color:#fff;font-size:28px;width:44px;height:44px;border-radius:50%;cursor:pointer;">✕</button>
+    </div>
+    <div id="emailModalSubject" style="color:#aaa;font-size:20px;margin-bottom:12px;border-bottom:1px solid #1c1c2e;padding-bottom:12px;"></div>
+    <div id="emailModalBody" style="white-space:pre-wrap;font-size:18px;line-height:1.6;overflow-y:auto;flex:1;color:#fff;"></div>
+  </div>
+</div>
+
 <script>
 function getData(k){ try { return JSON.parse(localStorage.getItem(k)||'[]'); } catch(e){ return []; } }
 function saveData(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
@@ -117,7 +153,8 @@ function render(){
 }
 function card(w, canAct){
   const buttons = canAct ? `<button class="big accept" onclick="choose('${w.id}','accept')">Accept</button><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button><button class="big save" onclick="openBidModal('${w.id}')" style="margin-top:8px;">🔨 Bid</button>` : '<p class="muted">Waiting for Corrigo pickup</p>';
-  return `<div class="card"><strong>${w.number||''}</strong><p>${w.location||''}</p><p>${w.description||''}</p>${buttons}</div>`;
+  const emailBtn = w.emailContent ? `<button class="email-btn" onclick="viewEmail('${w.id}')">📧 View Original Email</button>` : '';
+  return `<div class="card"><strong>${w.number||''}</strong><p>${w.location||''}</p><p>${w.description||''}</p>${buttons}${emailBtn}</div>`;
 }
 function choose(id, action){
   let inbox = getData('corrigo_inbox');
@@ -183,6 +220,25 @@ async function sendPickup(){
   if (!res.ok) alert('Saved on the phone. GitHub did not take the pickup file.');
   else alert('Sent for Corrigo pickup.');
 }
+function viewEmail(id){
+  const allWos = [].concat(
+    getData('corrigo_inbox'),
+    getData('corrigo_accepted'),
+    getData('corrigo_declined'),
+    getData('corrigo_bidding')
+  );
+  const wo = allWos.find(w => w.id === id);
+  if (!wo) { alert('Could not find work order'); return; }
+  if (!wo.emailContent) { alert('No email saved for this work order'); return; }
+  document.getElementById('emailModalSubject').textContent = wo.emailSubject || '(no subject)';
+  document.getElementById('emailModalBody').textContent = wo.emailContent;
+  document.getElementById('emailModal').classList.add('show');
+}
+
+function closeEmailModal(){
+  document.getElementById('emailModal').classList.remove('show');
+}
+
 function saveToken(){
   const token = document.getElementById('token').value.trim();
   if (!token) return;
