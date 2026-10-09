@@ -672,6 +672,7 @@ body {
   <div class="tab" id="tabDeclined" onclick="showSection('declined')">❌ Declined <span class="tab-count" id="declinedCount">0</span></div>
   <div class="tab" id="tabNew" onclick="showSection('new')">💰 Enter Completed</div>
   <div class="tab" id="tabSaved" onclick="showSection('saved')">💾 Saved <span class="tab-count" id="savedCount">0</span></div>
+  <div class="tab" id="tabSettings" onclick="showSection('settings')">⚙️ Settings</div>
 </div>
 
 <div class="container">
@@ -857,6 +858,25 @@ body {
     </div>
   </div>
 
+  <!-- ===== SETTINGS SECTION ===== -->
+  <div class="section" id="sectionSettings">
+    <div class="card">
+      <h2>⚙️ Settings</h2>
+      <p style="color:var(--muted);font-size:20px;margin-bottom:16px">
+        Paste the GitHub token below. This lets the app send Gary's decisions to the agent automatically. You only need to do this once.
+      </p>
+      <div class="field">
+        <label>GitHub Token</label>
+        <input type="password" id="githubTokenInput" placeholder="ghp_..." autocomplete="off">
+      </div>
+      <button class="btn btn-primary" onclick="saveGitHubToken()">💾 Save Token</button>
+      <div style="height:12px"></div>
+      <button class="btn btn-secondary" onclick="clearGitHubToken()">🗑️ Clear Token</button>
+      <div style="height:16px"></div>
+      <p id="tokenStatus" style="font-size:18px;color:var(--muted)"></p>
+    </div>
+  </div>
+
 </div>
 
 <!-- TOAST -->
@@ -911,6 +931,36 @@ function genId() {
 }
 
 // ============ TAB / SECTION NAVIGATION ============
+function saveGitHubToken() {
+  const token = document.getElementById('githubTokenInput').value.trim();
+  if (!token) {
+    showToast('Please enter a token');
+    return;
+  }
+  localStorage.setItem('github_token', token);
+  document.getElementById('githubTokenInput').value = '';
+  showToast('✅ Token saved!');
+  updateTokenStatus();
+}
+
+function clearGitHubToken() {
+  localStorage.removeItem('github_token');
+  showToast('🗑️ Token cleared');
+  updateTokenStatus();
+}
+
+function updateTokenStatus() {
+  const token = localStorage.getItem('github_token');
+  const status = document.getElementById('tokenStatus');
+  if (token) {
+    status.textContent = '✅ Token is set (hidden for security)';
+    status.style.color = '#00cc66';
+  } else {
+    status.textContent = '⚠️ No token set. Gary\'s decisions won\'t be sent to the agent.';
+    status.style.color = '#cc6600';
+  }
+}
+
 function showSection(name) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -946,6 +996,10 @@ function showSection(name) {
     document.getElementById('sectionDeclined').classList.add('active');
     document.getElementById('tabDeclined').classList.add('active');
     renderDeclined();
+  } else if (name === 'settings') {
+    document.getElementById('sectionSettings').classList.add('active');
+    document.getElementById('tabSettings').classList.add('active');
+    updateTokenStatus();
   } else {
     // 'new'
     document.getElementById('sectionNew').classList.add('active');
