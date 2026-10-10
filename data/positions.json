@@ -1,70 +1,48 @@
 {
-  "timestamp": 1789887025,
-  "generatedAt": "2026-09-20 06:50 UTC",
-  "accountValue": 1510.15,
-  "withdrawable": 557.53,
-  "portfolioValue": 1510.15,
-  "totalUnrealizedPnl": 47.5,
-  "totalMarginUsed": 905.12,
-  "availableCash": 557.53,
+  "timestamp": 1791590717,
+  "generatedAt": "2026-10-10 00:06 UTC",
+  "accountValue": 1332.06,
+  "withdrawable": 619.48,
+  "portfolioValue": 1332.06,
+  "totalUnrealizedPnl": 10.87,
+  "totalMarginUsed": 712.58,
+  "availableCash": 619.48,
   "positions": [
     {
       "symbol": "GOLD",
       "rawToken": "xyz:GOLD",
       "side": "LONG",
-      "size": 0.516,
-      "entryPrice": 4280.23,
-      "currentPrice": 4370.7,
-      "unrealizedPnl": 46.68,
-      "pnlPercent": 6.3,
-      "marginUsed": 751.76,
-      "leverage": 3,
-      "marginType": "cross",
-      "positionValue": 2255.28,
-      "tvSymbol": "TVC:GOLD"
-    },
-    {
-      "symbol": "SP500",
-      "rawToken": "xyz:SP500",
-      "side": "SHORT",
-      "size": 0.06,
-      "entryPrice": 7647.42,
-      "currentPrice": 7633.7,
-      "unrealizedPnl": 0.82,
-      "pnlPercent": 0.5,
-      "marginUsed": 153.35,
+      "size": 0.51,
+      "entryPrice": 4169.08,
+      "currentPrice": 4190.45,
+      "unrealizedPnl": 10.87,
+      "pnlPercent": 3.1,
+      "marginUsed": 712.58,
       "leverage": 3,
       "marginType": "isolated",
-      "positionValue": 458.02,
-      "tvSymbol": "SP:SPX"
+      "positionValue": 2137.13,
+      "stopLoss": 4000,
+      "tvSymbol": "TVC:GOLD"
     }
   ],
   "pieValueSlices": [
     {
       "label": "GOLD",
-      "value": 2255.28
-    },
-    {
-      "label": "SP500",
-      "value": 458.02
+      "value": 2137.13
     },
     {
       "label": "Cash",
-      "value": 557.53
+      "value": 619.48
     }
   ],
   "pieMarginSlices": [
     {
       "label": "GOLD",
-      "value": 751.76
-    },
-    {
-      "label": "SP500",
-      "value": 153.35
+      "value": 712.58
     },
     {
       "label": "Available",
-      "value": 557.53
+      "value": 619.48
     }
   ]
 }
