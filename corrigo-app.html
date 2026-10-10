@@ -306,9 +306,20 @@ function render(){
   document.getElementById('status').textContent = token ? 'Token saved on this phone.' : 'No token saved yet.';
 }
 function card(w, canAct){
-  const buttons = canAct ? `<button class="big accept" onclick="choose('${w.id}','accept')">Accept</button><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button><button class="big save" onclick="openBidModal('${w.id}')" style="margin-top:8px;">🔨 Bid</button><button class="big save" onclick="saveWo('${w.id}')" style="margin-top:8px;background:#666;">💾 Save for Later</button>` : '<p class="muted">Waiting for Corrigo pickup</p>';
+  const buttons = canAct ? `<div class="btn-row"><button class="big accept" onclick="choose('${w.id}','accept')">Accept</button><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button></div><div class="btn-row"><button class="big save" onclick="openBidModal('${w.id}')" style="margin-top:0;">🔨 Bid</button><button class="big save" onclick="saveWo('${w.id}')" style="margin-top:0;background:#666;">💾 Save for Later</button></div>` : '<p class="muted">Waiting for Corrigo pickup</p>';
   const estDisplay = w.estimatedAmount ? '$' + parseFloat(w.estimatedAmount).toFixed(2) : '';
   const estHtml = estDisplay ? `<div class="wo-est">${estDisplay}</div>` : '';
+  // Pull description and location from emailContent if missing
+  let loc = w.location || '';
+  let desc = w.description || '';
+  if (!loc && w.emailContent) {
+    const m = w.emailContent.match(/([\d]+\s+[^,]+,\s+[A-Z]+,?\s+\d{5}[^\n]*)/);
+    if (m) loc = m[1].trim();
+  }
+  if (!desc && w.emailContent) {
+    const lines = w.emailContent.split('\n').filter(l => l.trim() && !l.includes('CorrigoPro') && !l.includes('mailto:') && !l.includes('Sims Construction') && !l.includes('alerts@') && !l.includes('garysims'));
+    desc = lines.slice(0, 3).join(' ').substring(0, 200);
+  }
   const workDescBtn = `<button class="email-btn" style="border-color:#ff9500;color:#ff9500;background:rgba(255,149,0,0.15);" onclick="openWorkDesc('${w.id}')">📝 Add Work Description</button>`;
   const emailBtn = w.emailContent ? `<button class="email-btn" onclick="viewEmail('${w.id}')">📧 View Original Email</button>` : '';
   return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div><p>${w.location||''}</p><p>${w.description||''}</p>${buttons}${workDescBtn}${emailBtn}</div>`;
