@@ -311,12 +311,20 @@ function card(w, canAct){
   let loc = w.location || '';
   let desc = w.description || '';
   if (!loc && w.emailContent) {
-    const m = w.emailContent.match(/([\d]+\s+[^,]+,\s+[A-Z]+,?\s+\d{5}[^\n]*)/);
-    if (m) loc = m[1].trim();
+    // Only try to extract from real work order emails, not invoice emails
+    if (!w.emailContent.toLowerCase().includes('invoice') || !w.emailContent.includes('has been Authorized')) {
+      const m = w.emailContent.match(/([\d]+\s+[^,]+,\s+[A-Z]+,?\s+\d{5}[^\n]*)/);
+      if (m) loc = m[1].trim();
+    }
   }
   if (!desc && w.emailContent) {
-    const lines = w.emailContent.split('\n').filter(l => l.trim() && !l.includes('CorrigoPro') && !l.includes('mailto:') && !l.includes('Sims Construction') && !l.includes('alerts@') && !l.includes('garysims'));
-    desc = lines.slice(0, 3).join(' ').substring(0, 200);
+    // Skip invoice emails - they have no job description
+    if (w.emailContent.toLowerCase().includes('invoice') && w.emailContent.includes('has been Authorized')) {
+      desc = 'Invoice authorized - no job description available';
+    } else {
+      const lines = w.emailContent.split('\n').filter(l => l.trim() && !l.includes('CorrigoPro') && !l.includes('mailto:') && !l.includes('Sims Construction') && !l.includes('alerts@') && !l.includes('garysims') && !l.includes('Sent:') && !l.includes('From:') && !l.includes('To:') && !l.includes('Subject:') && !l.includes('Monrovia') && !l.includes('Reykjavik'));
+      desc = lines.slice(0, 3).join(' ').substring(0, 200);
+    }
   }
   const actionBtns = canAct ? `<div class="btn-row"><button class="big accept" onclick="choose('${w.id}','accept')">Accept</button><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button></div><div class="btn-row"><button class="big save" onclick="openBidModal('${w.id}')" style="margin-top:0;">🔨 Bid</button><button class="big save" onclick="saveWo('${w.id}')" style="margin-top:0;background:#666;">💾 Save for Later</button></div>` : '<p class="muted">Waiting for Corrigo pickup</p>';
   const workDescBtn = `<button class="email-btn" style="border-color:#ff9500;color:#ff9500;background:rgba(255,149,0,0.15);" onclick="openWorkDesc('${w.id}')">📝 Add Work Description</button>`;
