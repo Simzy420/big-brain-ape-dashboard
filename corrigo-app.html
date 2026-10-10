@@ -215,6 +215,20 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
     <button class="big decline" onclick="closeBidModal()" style="margin-top:8px;">Cancel</button>
   </div>
 </div>
+<!-- WORK DESCRIPTION MODAL -->
+<div class="email-modal" id="workDescModal" onclick="if(event.target===this)closeWorkDescModal()">
+  <div class="card" style="width:90%;max-width:600px;max-height:80vh;display:flex;flex-direction:column;margin:auto;overflow:hidden;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-shrink:0;">
+      <h2 style="margin:0;">📝 Work Description</h2>
+      <button onclick="closeWorkDescModal()" style="background:#1c1c2e;border:none;color:#fff;font-size:28px;width:44px;height:44px;border-radius:50%;cursor:pointer;flex-shrink:0;">✕</button>
+    </div>
+    <p style="color:#aaa;font-size:20px;margin-bottom:12px;flex-shrink:0;">What did you do at this job?</p>
+    <input id="workDescWoId" type="hidden">
+    <textarea id="workDescText" style="width:100%;font-size:22px;padding:14px;border-radius:12px;border:0;background:#0f0f17;color:#fff;min-height:200px;flex:1;resize:none;-webkit-overflow-scrolling:touch;" placeholder="Describe the work you did..."></textarea>
+    <button class="big save" onclick="saveWorkDesc()" style="margin-top:12px;flex-shrink:0;">💾 Save Description</button>
+  </div>
+</div>
+
 <!-- EMAIL MODAL -->
 <div class="email-modal" id="emailModal" onclick="if(event.target===this)closeEmailModal()">
   <div class="card" style="width:90%;max-width:600px;max-height:80vh;display:flex;flex-direction:column;margin:auto;overflow:hidden;">
@@ -293,6 +307,7 @@ function card(w, canAct){
   const buttons = canAct ? `<button class="big accept" onclick="choose('${w.id}','accept')">Accept</button><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button><button class="big save" onclick="openBidModal('${w.id}')" style="margin-top:8px;">🔨 Bid</button><button class="big save" onclick="saveWo('${w.id}')" style="margin-top:8px;background:#666;">💾 Save for Later</button>` : '<p class="muted">Waiting for Corrigo pickup</p>';
   const estDisplay = w.estimatedAmount ? '$' + parseFloat(w.estimatedAmount).toFixed(2) : '';
   const estHtml = estDisplay ? `<div class="wo-est">${estDisplay}</div>` : '';
+  const workDescBtn = `<button class="email-btn" style="border-color:#ff9500;color:#ff9500;background:rgba(255,149,0,0.15);" onclick="openWorkDesc('${w.id}')">📝 Work Description</button>`;
   const emailBtn = w.emailContent ? `<button class="email-btn" onclick="viewEmail('${w.id}')">📧 View Original Email</button>` : '';
   return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div><p>${w.location||''}</p><p>${w.description||''}</p>${buttons}${emailBtn}</div>`;
 }
@@ -352,7 +367,10 @@ async function sendPickup(){
   const actions = [];
   getData('corrigo_accepted').forEach(w => actions.push({number:w.number, action:'accept', location:w.location||'', description:w.description||''}));
   getData('corrigo_declined').forEach(w => actions.push({number:w.number, action:'decline', location:w.location||'', description:w.description||''}));
+  getData('corrigo_accepted').forEach(w => actions.push({number:w.number, action:'accept', location:w.location||'', description:w.description||'', workDescription:w.workDescription||''}));
+  getData('corrigo_declined').forEach(w => actions.push({number:w.number, action:'decline', location:w.location||'', description:w.description||''}));
   getData('corrigo_bidding').forEach(w => actions.push({number:w.number, action:'bid', bidAmount:w.bidAmount||0, location:w.location||'', description:w.description||''}));
+  getData('corrigo_saved').forEach(w => { if (w.workDescription) actions.push({number:w.number, action:'update', workDescription:w.workDescription, location:w.location||'', description:w.description||''}); });
   const body = { message:'Pickup from phone app', content: btoa(unescape(encodeURIComponent(JSON.stringify({pendingActions:actions, exportedAt:new Date().toISOString()}, null, 2)))) };
   const cur = await fetch('https://api.github.com/repos/Simzy420/big-brain-ape-dashboard/contents/corrigo-actions.json', { headers:{ Authorization:'token '+token } });
   if (cur.ok) { const info = await cur.json(); if (info.sha) body.sha = info.sha; }
@@ -448,6 +466,43 @@ function clearForm() {
   document.getElementById('photoPreview').src = '';
   document.getElementById('photoFilename').textContent = '';
   addLineItem('Labor');
+}
+
+function openWorkDesc(id){
+  document.getElementById('workDescWoId').value = id;
+  // Load existing description if any
+  const allWos = [].concat(
+    getData('corrigo_inbox'),
+    getData('corrigo_accepted'),
+    getData('corrigo_declined'),
+    getData('corrigo_bidding'),
+    getData('corrigo_saved')
+  );
+  const wo = allWos.find(w => w.id === id);
+  document.getElementById('workDescText').value = (wo && wo.workDescription) || '';
+  document.getElementById('workDescModal').classList.add('show');
+}
+
+function closeWorkDescModal(){
+  document.getElementById('workDescModal').classList.remove('show');
+}
+
+function saveWorkDesc(){
+  const id = document.getElementById('workDescWoId').value;
+  const desc = document.getElementById('workDescText').value.trim();
+  // Find the work order in all tabs and save the description
+  const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved'];
+  for (const tab of allTabs) {
+    const arr = getData(tab);
+    const idx = arr.findIndex(w => w.id === id);
+    if (idx >= 0) {
+      arr[idx].workDescription = desc;
+      saveData(tab, arr);
+      break;
+    }
+  }
+  closeWorkDescModal();
+  alert('✅ Work description saved!');
 }
 
 function saveWo(id){
