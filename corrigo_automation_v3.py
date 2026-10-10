@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
 CorrigoPro Automation - Playwright-based
-1. Read Gary's accept/decline/bid actions from GitHub (corrigo-actions.json)
+1. Read Gary's accept/decline/bid/update actions from GitHub (corrigo-actions.json)
 2. Log into CorrigoPro
 3. Filter to "Waiting for Acceptance" work orders
-4. Find each work order Gary decided on
-5. Click the button Gary chose (Accept/Decline/Bid)
+4. For accept/decline/bid: Find work order and click the button Gary chose
+5. For update: Find work order, open completion details, paste work description
 6. Leave immediately - do nothing else
 """
 import asyncio
@@ -235,6 +235,48 @@ async def process_action(page, action):
             log(f"No Accept button found for {wo_number}")
             return False
 
+        # After accept/decline, if there's a work description, add it to completion details
+        if action_type in ['accept', 'update'] and action.get('workDescription'):
+            work_description = action['workDescription']
+            log(f"Adding work description to {wo_number}")
+
+            # Look for "Specify completion details" button
+            specify_btn = await page.query_selector('a:has-text("Specify completion details"), button:has-text("Specify completion details"), a:has-text("completion"), button:has-text("completion")')
+            if specify_btn:
+                await specify_btn.click()
+                await asyncio.sleep(5)
+                log("Opened completion details page")
+
+                # Find the WORK DONE DESCRIPTION textarea
+                desc_field = None
+                textareas = await page.query_selector_all('textarea')
+                for ta in textareas:
+                    ta_id = await ta.get_attribute('id') or ''
+                    ta_name = await ta.get_attribute('name') or ''
+                    ta_ph = await ta.get_attribute('placeholder') or ''
+                    if any(k in (ta_id + ta_name + ta_ph).lower() for k in ['desc', 'work', 'done', 'completion']):
+                        desc_field = ta
+                        break
+                if not desc_field and textareas:
+                    desc_field = textareas[-1]
+
+                if desc_field:
+                    await desc_field.fill('')
+                    await desc_field.fill(work_description)
+                    log(f"Entered work description for {wo_number}")
+
+                    save_btn = await page.query_selector('button:has-text("Save"), button:has-text("Submit"), input[type="submit"], button:has-text("Update")')
+                    if save_btn:
+                        await save_btn.click()
+                        await asyncio.sleep(3)
+                        log(f"Saved work description for {wo_number}")
+                    else:
+                        log(f"Could not find save button")
+                else:
+                    log(f"Could not find description field")
+            else:
+                log(f"No completion details button found for {wo_number}")
+
         elif action_type == 'decline':
             # Look for Decline/Reject button
             buttons = await page.query_selector_all('button, a, input[type="submit"], input[type="button"]')
@@ -282,6 +324,88 @@ async def process_action(page, action):
                         return False
             log(f"No Bid button found for {wo_number}")
             return False
+
+
+        elif action_type == 'update':
+            # Work description update - go to completion details and paste description
+            work_description = action.get('workDescription', '')
+            if not work_description:
+                log(f"No work description for {wo_number}")
+                return False
+
+            log(f"Adding work description to {wo_number}")
+
+            # Search for the work order
+            search_box = await page.wait_for_selector('#header-search', timeout=10000)
+            await search_box.fill('')
+            await search_box.fill(wo_number)
+            await asyncio.sleep(1)
+            await page.keyboard.press('Enter')
+            await asyncio.sleep(8)
+
+            # Click on the work order
+            wo_link = await page.query_selector(f'text="{wo_number}"')
+            if wo_link:
+                await wo_link.click()
+                await asyncio.sleep(5)
+                log(f"Opened work order {wo_number}")
+            else:
+                log(f"Could not find work order {wo_number}")
+                return False
+
+            # Look for "Specify completion details" button or link
+            specify_btn = await page.query_selector('a:has-text("Specify completion details"), button:has-text("Specify completion details"), a:has-text("completion"), button:has-text("completion")')
+            if specify_btn:
+                await specify_btn.click()
+                await asyncio.sleep(5)
+                log("Opened completion details page")
+            else:
+                # Try clicking any link that contains "completion"
+                links = await page.query_selector_all('a, button')
+                for link in links:
+                    text = await link.inner_text()
+                    if text and 'completion' in text.strip().lower():
+                        await link.click()
+                        await asyncio.sleep(5)
+                        log(f"Clicked completion link: {text}")
+                        break
+
+            # Find the "WORK DONE DESCRIPTION" textarea
+            desc_field = await page.query_selector('textarea[name*="description" i], textarea[name*="work" i], textarea[placeholder*="description" i], textarea[placeholder*="work" i]')
+            if not desc_field:
+                # Try by label text
+                desc_field = await page.query_selector('#workDoneDescription, textarea[id*="description" i], textarea[id*="work" i]')
+            if not desc_field:
+                # Try any textarea on the page
+                textareas = await page.query_selector_all('textarea')
+                for ta in textareas:
+                    ta_id = await ta.get_attribute('id') or ''
+                    ta_name = await ta.get_attribute('name') or ''
+                    ta_ph = await ta.get_attribute('placeholder') or ''
+                    if 'desc' in ta_id.lower() or 'desc' in ta_name.lower() or 'desc' in ta_ph.lower() or 'work' in ta_id.lower() or 'work' in ta_name.lower():
+                        desc_field = ta
+                        break
+                if not desc_field and len(textareas) > 0:
+                    desc_field = textareas[-1]  # last textarea as fallback
+
+            if desc_field:
+                await desc_field.fill('')
+                await desc_field.fill(work_description)
+                log(f"Entered work description for {wo_number}")
+
+                # Look for Save/Submit button
+                save_btn = await page.query_selector('button:has-text("Save"), button:has-text("Submit"), input[type="submit"], button:has-text("Update")')
+                if save_btn:
+                    await save_btn.click()
+                    await asyncio.sleep(3)
+                    log(f"Saved work description for {wo_number}")
+                    return True
+                else:
+                    log(f"Could not find save button for {wo_number}")
+                    return False
+            else:
+                log(f"Could not find WORK DONE DESCRIPTION field for {wo_number}")
+                return False
 
         return False
 
