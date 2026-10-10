@@ -307,7 +307,7 @@ function card(w, canAct){
   const buttons = canAct ? `<button class="big accept" onclick="choose('${w.id}','accept')">Accept</button><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button><button class="big save" onclick="openBidModal('${w.id}')" style="margin-top:8px;">🔨 Bid</button><button class="big save" onclick="saveWo('${w.id}')" style="margin-top:8px;background:#666;">💾 Save for Later</button>` : '<p class="muted">Waiting for Corrigo pickup</p>';
   const estDisplay = w.estimatedAmount ? '$' + parseFloat(w.estimatedAmount).toFixed(2) : '';
   const estHtml = estDisplay ? `<div class="wo-est">${estDisplay}</div>` : '';
-  const workDescBtn = `<button class="email-btn" style="border-color:#ff9500;color:#ff9500;background:rgba(255,149,0,0.15);" onclick="openWorkDesc('${w.id}')">📝 Work Description</button>`;
+  const workDescBtn = `<button class="email-btn" style="border-color:#ff9500;color:#ff9500;background:rgba(255,149,0,0.15);" onclick="openWorkDesc('${w.id}')">📝 Add Work Description</button>`;
   const emailBtn = w.emailContent ? `<button class="email-btn" onclick="viewEmail('${w.id}')">📧 View Original Email</button>` : '';
   return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div><p>${w.location||''}</p><p>${w.description||''}</p>${buttons}${emailBtn}</div>`;
 }
