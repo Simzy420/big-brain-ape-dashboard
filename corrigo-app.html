@@ -326,7 +326,7 @@ function card(w, canAct){
       desc = lines.slice(0, 3).join(' ').substring(0, 200);
     }
   }
-  const actionBtns = canAct ? `<div class="btn-row"><button class="big accept" onclick="choose('${w.id}','accept')">Accept</button><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button></div><div class="btn-row"><button class="big save" onclick="openBidModal('${w.id}')" style="margin-top:0;">🔨 Bid</button><button class="big save" onclick="saveWo('${w.id}')" style="margin-top:0;background:#666;">💾 Save for Later</button></div>` : '<p class="muted">Waiting for Corrigo pickup</p>';
+  const actionBtns = canAct ? `<div class="btn-row"><button class="big accept" onclick="choose('${w.id}','accept')">Accept</button><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button></div><div class="btn-row"><button class="big save" onclick="openBidModal('${w.id}')" style="margin-top:0;">🔨 Bid</button><button class="big save" onclick="saveWo('${w.id}')" style="margin-top:0;background:#666;">💾 Save for Later</button></div>` : `<div class="btn-row"><button class="big decline" onclick="unaccept('${w.id}')" style="background:#f44336;">↩ Unaccept</button></div><p class="muted">Waiting for Corrigo pickup</p>`;
   const workDescBtn = `<button class="email-btn" style="border-color:#ff9500;color:#ff9500;background:rgba(255,149,0,0.15);" onclick="openWorkDesc('${w.id}')">📝 Add Work Description</button>`;
   const emailBtn = w.emailContent ? `<button class="email-btn" onclick="viewEmail('${w.id}')">📧 View Original Email</button>` : '';
   const extraBtns = `<div class="btn-row">${workDescBtn}${emailBtn}</div>`;
@@ -346,6 +346,22 @@ function choose(id, action){
   saveData(key, arr);
   render();
   show(action==='accept' ? 'accepted' : 'declined');
+  sendPickup();
+}
+
+function unaccept(id){
+  let accepted = getData('corrigo_accepted');
+  const idx = accepted.findIndex(w => w.id===id);
+  if (idx<0) return;
+  const wo = accepted[idx];
+  wo.status = 'inbox';
+  accepted.splice(idx,1);
+  saveData('corrigo_accepted', accepted);
+  let inbox = getData('corrigo_inbox');
+  inbox.unshift(wo);
+  saveData('corrigo_inbox', inbox);
+  render();
+  show('inbox');
   sendPickup();
 }
 
