@@ -189,6 +189,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
     </div>
   </div>
   <div id="new" style="display:none">
+    <div id="completedList"></div>
     <div class="card">
       <h2 style="margin:0 0 8px 0;">💵 Labor & Materials</h2>
       <div id="lineItems"></div>
@@ -332,7 +333,7 @@ function render(){
   document.getElementById('almostdue').innerHTML = almostDueList.map(w => card(w,false)).join('') || '<div class="card">Nothing due in the next 7 days.</div>';
   // Render completed work orders in the Complete tab
   const completed = getData('corrigo_completed');
-  document.getElementById('new').innerHTML = completed.length > 0
+  document.getElementById('completedList').innerHTML = completed.length > 0
     ? completed.map(w => `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${w.description ? '<p>'+w.description+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}<div class="btn-row"><button class="big save" onclick="openCompleteForm('${w.id}')">📋 Enter Hours, Rate & Submit</button></div></div>`).join('')
     : '<div class="card">No completed work orders yet.</div>';
   const token = localStorage.getItem('github_token');
