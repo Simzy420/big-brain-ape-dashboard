@@ -289,6 +289,7 @@ function show(name){
   if (name==='almostdue') render();
   if (name==='overdue') render();
   if (name==='saved') render();
+  if (name==='new') render();
 }
 function render(){
   const inbox = getData('corrigo_inbox');
@@ -329,6 +330,11 @@ function render(){
   document.getElementById('almostDueCount').textContent = almostDueList.length;
   document.getElementById('overdue').innerHTML = overdueList.map(w => card(w,false)).join('') || '<div class="card">Nothing overdue. ✅</div>';
   document.getElementById('almostdue').innerHTML = almostDueList.map(w => card(w,false)).join('') || '<div class="card">Nothing due in the next 7 days.</div>';
+  // Render completed work orders in the Complete tab
+  const completed = getData('corrigo_completed');
+  document.getElementById('new').innerHTML = completed.length > 0
+    ? completed.map(w => `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${w.description ? '<p>'+w.description+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}<div class="btn-row"><button class="big save" onclick="openCompleteForm('${w.id}')">📋 Enter Hours, Rate & Submit</button></div></div>`).join('')
+    : '<div class="card">No completed work orders yet.</div>';
   const token = localStorage.getItem('github_token');
   document.getElementById('status').textContent = token ? 'Token saved on this phone.' : 'No token saved yet.';
 }
@@ -432,13 +438,14 @@ async function sendPickup(){
   getData('corrigo_accepted').forEach(w => actions.push({number:w.number, action:'accept', location:w.location||'', description:w.description||''}));
   getData('corrigo_declined').forEach(w => actions.push({number:w.number, action:'decline', location:w.location||'', description:w.description||''}));
   getData('corrigo_bidding').forEach(w => actions.push({number:w.number, action:'bid', bidAmount:w.bidAmount||0, location:w.location||'', description:w.description||''}));
-  // Update actions for any work order that has a work description (completion data)
+  // Update actions for any work order that has completion data
   const allWos = [].concat(
     getData('corrigo_accepted'),
     getData('corrigo_declined'),
     getData('corrigo_bidding'),
     getData('corrigo_saved'),
-    getData('corrigo_inbox')
+    getData('corrigo_inbox'),
+    getData('corrigo_completed')
   );
   allWos.forEach(w => {
     if (w.workDescription) {
@@ -574,13 +581,22 @@ function closeWorkDescModal(){
 function saveWorkDesc(){
   const id = document.getElementById('workDescWoId').value;
   const desc = document.getElementById('workDescText').value.trim();
+  // Find the work order in all tabs, save description, and move to Complete
   const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved'];
   for (const tab of allTabs) {
     const arr = getData(tab);
     const idx = arr.findIndex(w => w.id === id);
     if (idx >= 0) {
-      arr[idx].workDescription = desc;
+      const wo = arr[idx];
+      wo.workDescription = desc;
+      wo.status = 'completed';
+      // Remove from current tab
+      arr.splice(idx, 1);
       saveData(tab, arr);
+      // Add to Complete tab
+      let completed = getData('corrigo_completed');
+      completed.unshift(wo);
+      saveData('corrigo_completed', completed);
       break;
     }
   }
@@ -656,6 +672,32 @@ function deleteWo(id){
   }
   alert('Could not find work order to delete.');
 }
+// Complete form for Casey to enter hours, rate, dates, invoice
+function openCompleteForm(id){
+  const completed = getData('corrigo_completed');
+  const wo = completed.find(w => w.id === id);
+  if (!wo) { alert('Work order not found'); return; }
+  const hours = prompt('Hours worked:', wo.hours || '');
+  if (hours === null) return;
+  const rate = prompt('Rate ($):', wo.rate || '');
+  if (rate === null) return;
+  const dateStarted = prompt('Date started (YYYY-MM-DD):', wo.dateStarted || '');
+  if (dateStarted === null) return;
+  const dateCompleted = prompt('Date completed (YYYY-MM-DD):', wo.dateCompleted || '');
+  if (dateCompleted === null) return;
+  const invoiceNumber = prompt('Invoice number:', wo.invoiceNumber || '');
+  if (invoiceNumber === null) return;
+  wo.hours = hours;
+  wo.rate = rate;
+  wo.dateStarted = dateStarted;
+  wo.dateCompleted = dateCompleted;
+  wo.invoiceNumber = invoiceNumber;
+  saveData('corrigo_completed', completed);
+  render();
+  sendPickup();
+  alert('Saved! Data will be submitted to Corrigo.');
+}
+
 function addManualWo(){
   const num = document.getElementById('manualWoNumber').value.trim();
   const desc = document.getElementById('manualWoDesc').value.trim();
