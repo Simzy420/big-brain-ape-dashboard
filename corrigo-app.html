@@ -732,8 +732,8 @@ async function loadJobs(){
   jobs.forEach(w => {
     // Force-add if JSON says it should be in inbox
     if (w.status === 'inbox') {
-      // Remove from any tab first
-      ['corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved'].forEach(tab => {
+      // Remove from any tab first (including completed)
+      ['corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed'].forEach(tab => {
         let arr = getData(tab);
         let idx = arr.findIndex(x => x.number === w.number);
         if (idx >= 0) { arr.splice(idx,1); saveData(tab, arr); }
