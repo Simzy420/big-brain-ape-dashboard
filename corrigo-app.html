@@ -214,6 +214,11 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
       <button class="big save" onclick="saveToken()">Save Token</button>
       <p id="status" class="muted"></p>
     </div>
+    <div class="card">
+      <h2 style="margin:0 0 8px 0;">Reset App</h2>
+      <p class="muted">Clear all local data and reload work orders from scratch.</p>
+      <button class="big decline" onclick="if(confirm('Clear all data? This will reset the app.')){localStorage.clear();location.reload();}">🗑️ Clear All Data & Reload</button>
+    </div>
   </div>
 </div>
 
