@@ -168,6 +168,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
   <button class="tab" onclick="show('almostdue')">⚠️ Almost Due <span id="almostDueCount">0</span></button>
   <button class="tab" onclick="show('overdue')">⏰ Overdue <span id="overdueCount">0</span></button>
   <button class="tab" onclick="show('new')">💰 Complete</button>
+  <button class="tab" onclick="show('addwo')">➕ Add WO</button>
   <button class="tab" onclick="show('settings')">Settings</button>
 </div>
 <div class="wrap">
@@ -177,6 +178,16 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
   <div id="bidding" style="display:none"></div>
   <div id="almostdue" style="display:none"></div>
   <div id="overdue" style="display:none"></div>
+  <div id="addwo" style="display:none">
+    <div class="card">
+      <h2 style="margin:0 0 8px 0;">➕ Add Work Order</h2>
+      <p class="muted">Manually add a work order to the inbox.</p>
+      <input id="manualWoNumber" type="text" placeholder="Work Order Number (e.g. 15013259-00415)" style="margin-bottom:10px;">
+      <input id="manualWoDesc" type="text" placeholder="Description" style="margin-bottom:10px;">
+      <input id="manualWoLoc" type="text" placeholder="Location (optional)" style="margin-bottom:10px;">
+      <button class="big accept" onclick="addManualWo()">➕ Add to Inbox</button>
+    </div>
+  </div>
   <div id="new" style="display:none">
     <div class="card">
       <h2 style="margin:0 0 8px 0;">💵 Labor & Materials</h2>
@@ -294,7 +305,7 @@ function handled(){
   return nums;
 }
 function show(name){
-  ['inbox','accepted','declined','bidding','almostdue','overdue','new','settings'].forEach(id => document.getElementById(id).style.display = id===name ? 'block' : 'none');
+  ['inbox','accepted','declined','bidding','almostdue','overdue','new','addwo','settings'].forEach(id => document.getElementById(id).style.display = id===name ? 'block' : 'none');
   if (name==='inbox') render();
   if (name==='accepted') render();
   if (name==='declined') render();
@@ -687,6 +698,31 @@ function deleteWo(id){
   }
   alert('Could not find work order to delete.');
 }
+function addManualWo(){
+  const num = document.getElementById('manualWoNumber').value.trim();
+  const desc = document.getElementById('manualWoDesc').value.trim();
+  const loc = document.getElementById('manualWoLoc').value.trim();
+  if (!num) { alert('Enter a work order number.'); return; }
+  let inbox = getData('corrigo_inbox');
+  // Remove if already exists
+  inbox = inbox.filter(w => w.number !== num);
+  // Add to front
+  inbox.unshift({
+    id: 'manual_' + Date.now(),
+    number: num,
+    status: 'inbox',
+    description: desc || '',
+    location: loc || ''
+  });
+  saveData('corrigo_inbox', inbox);
+  document.getElementById('manualWoNumber').value = '';
+  document.getElementById('manualWoDesc').value = '';
+  document.getElementById('manualWoLoc').value = '';
+  render();
+  show('inbox');
+  alert('Added to inbox!');
+}
+
 async function loadJobs(){
   const res = await fetch('work-orders.json?v=' + Date.now());
   const jobs = await res.json();
