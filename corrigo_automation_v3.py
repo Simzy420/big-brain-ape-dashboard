@@ -327,13 +327,19 @@ async def process_action(page, action):
 
 
         elif action_type == 'update':
-            # Work description update - go to completion details and paste description
+            # Work order completion - fill in all completion details and submit
             work_description = action.get('workDescription', '')
-            if not work_description:
-                log(f"No work description for {wo_number}")
+            hours = action.get('hours', '')
+            rate = action.get('rate', '')
+            date_started = action.get('dateStarted', '')
+            date_completed = action.get('dateCompleted', '')
+            invoice_number = action.get('invoiceNumber', '')
+            
+            if not work_description and not hours:
+                log(f"No work data for {wo_number}")
                 return False
 
-            log(f"Adding work description to {wo_number}")
+            log(f"Adding completion details to {wo_number}: desc={work_description[:40]}... hours={hours} rate={rate}")
 
             # Search for the work order
             search_box = await page.wait_for_selector('#header-search', timeout=10000)
@@ -370,13 +376,11 @@ async def process_action(page, action):
                         log(f"Clicked completion link: {text}")
                         break
 
-            # Find the "WORK DONE DESCRIPTION" textarea
+            # Fill in WORK DONE DESCRIPTION textarea
             desc_field = await page.query_selector('textarea[name*="description" i], textarea[name*="work" i], textarea[placeholder*="description" i], textarea[placeholder*="work" i]')
             if not desc_field:
-                # Try by label text
                 desc_field = await page.query_selector('#workDoneDescription, textarea[id*="description" i], textarea[id*="work" i]')
             if not desc_field:
-                # Try any textarea on the page
                 textareas = await page.query_selector_all('textarea')
                 for ta in textareas:
                     ta_id = await ta.get_attribute('id') or ''
@@ -386,25 +390,117 @@ async def process_action(page, action):
                         desc_field = ta
                         break
                 if not desc_field and len(textareas) > 0:
-                    desc_field = textareas[-1]  # last textarea as fallback
+                    desc_field = textareas[-1]
 
-            if desc_field:
+            if desc_field and work_description:
                 await desc_field.fill('')
                 await desc_field.fill(work_description)
                 log(f"Entered work description for {wo_number}")
-
-                # Look for Save/Submit button
-                save_btn = await page.query_selector('button:has-text("Save"), button:has-text("Submit"), input[type="submit"], button:has-text("Update")')
-                if save_btn:
-                    await save_btn.click()
-                    await asyncio.sleep(3)
-                    log(f"Saved work description for {wo_number}")
-                    return True
-                else:
-                    log(f"Could not find save button for {wo_number}")
-                    return False
             else:
                 log(f"Could not find WORK DONE DESCRIPTION field for {wo_number}")
+
+            # Fill in HOURS field
+            if hours:
+                hours_field = await page.query_selector('input[name*="hour" i], input[id*="hour" i], input[name*="time" i], input[placeholder*="hour" i]')
+                if not hours_field:
+                    # Try number inputs
+                    number_inputs = await page.query_selector_all('input[type="number"], input[type="text"]')
+                    for ni in number_inputs:
+                        ni_name = await ni.get_attribute('name') or ''
+                        ni_id = await ni.get_attribute('id') or ''
+                        ni_ph = await ni.get_attribute('placeholder') or ''
+                        ni_label = ni_name + ni_id + ni_ph
+                        if any(k in ni_label.lower() for k in ['hour', 'time', 'labor', 'duration']):
+                            hours_field = ni
+                            break
+                if hours_field:
+                    await hours_field.fill('')
+                    await hours_field.fill(str(hours))
+                    log(f"Entered hours: {hours}")
+                else:
+                    log(f"Could not find hours field")
+
+            # Fill in RATE field
+            if rate:
+                rate_field = await page.query_selector('input[name*="rate" i], input[id*="rate" i], input[name*="cost" i], input[placeholder*="rate" i]')
+                if not rate_field:
+                    number_inputs = await page.query_selector_all('input[type="number"], input[type="text"]')
+                    for ni in number_inputs:
+                        ni_name = await ni.get_attribute('name') or ''
+                        ni_id = await ni.get_attribute('id') or ''
+                        ni_ph = await ni.get_attribute('placeholder') or ''
+                        ni_label = ni_name + ni_id + ni_ph
+                        if any(k in ni_label.lower() for k in ['rate', 'cost', 'price']):
+                            rate_field = ni
+                            break
+                if rate_field:
+                    await rate_field.fill('')
+                    await rate_field.fill(str(rate))
+                    log(f"Entered rate: {rate}")
+                else:
+                    log(f"Could not find rate field")
+
+            # Fill in DATE STARTED field
+            if date_started:
+                date_start_field = await page.query_selector('input[name*="start" i], input[id*="start" i], input[type="date"]:nth-of-type(1), input[placeholder*="start" i]')
+                if not date_start_field:
+                    date_inputs = await page.query_selector_all('input[type="date"], input[placeholder*="date" i], input[name*="date" i]')
+                    if len(date_inputs) >= 1:
+                        date_start_field = date_inputs[0]
+                if date_start_field:
+                    await date_start_field.fill('')
+                    await date_start_field.fill(date_started)
+                    log(f"Entered date started: {date_started}")
+
+            # Fill in DATE COMPLETED field
+            if date_completed:
+                date_comp_field = await page.query_selector('input[name*="complete" i], input[id*="complete" i], input[name*="end" i], input[placeholder*="complete" i]')
+                if not date_comp_field:
+                    date_inputs = await page.query_selector_all('input[type="date"], input[placeholder*="date" i], input[name*="date" i]')
+                    if len(date_inputs) >= 2:
+                        date_comp_field = date_inputs[1]
+                    elif len(date_inputs) == 1:
+                        date_comp_field = date_inputs[0]
+                if date_comp_field:
+                    await date_comp_field.fill('')
+                    await date_comp_field.fill(date_completed)
+                    log(f"Entered date completed: {date_completed}")
+
+            # Fill in INVOICE NUMBER field
+            if invoice_number:
+                invoice_field = await page.query_selector('input[name*="invoice" i], input[id*="invoice" i], input[placeholder*="invoice" i]')
+                if not invoice_field:
+                    text_inputs = await page.query_selector_all('input[type="text"]')
+                    for ti in text_inputs:
+                        ti_name = await ti.get_attribute('name') or ''
+                        ti_id = await ti.get_attribute('id') or ''
+                        if 'invoice' in ti_name.lower() or 'invoice' in ti_id.lower():
+                            invoice_field = ti
+                            break
+                if invoice_field:
+                    await invoice_field.fill('')
+                    await invoice_field.fill(invoice_number)
+                    log(f"Entered invoice number: {invoice_number}")
+
+            # Look for Save/Submit button
+            save_btn = await page.query_selector('button:has-text("Save"), button:has-text("Submit"), input[type="submit"], button:has-text("Update"), button:has-text("Complete")')
+            if save_btn:
+                await save_btn.click()
+                await asyncio.sleep(3)
+                log(f"Saved completion details for {wo_number}")
+                
+                # Look for a final Submit/Confirm button if one appears
+                final_submit = await page.query_selector('button:has-text("Submit"), button:has-text("Confirm"), button:has-text("OK"), button:has-text("Yes")')
+                if final_submit:
+                    final_class = await final_submit.get_attribute('class') or ''
+                    if 'cookie' not in final_class:
+                        await final_submit.click()
+                        await asyncio.sleep(3)
+                        log(f"Final submission confirmed for {wo_number}")
+                
+                return True
+            else:
+                log(f"Could not find save button for {wo_number}")
                 return False
 
         return False
@@ -454,8 +550,12 @@ async def main_async():
         # Wait for dashboard
         await asyncio.sleep(5)
 
-        # Filter to Waiting for Acceptance
-        await filter_waiting_for_acceptance(page)
+        # Only filter to Waiting for Acceptance if all actions are accept/decline/bid
+        action_types = [a.get('action', '').lower() for a in pending]
+        needs_acceptance_filter = all(t in ['accept', 'decline', 'bid'] for t in action_types)
+        
+        if needs_acceptance_filter:
+            await filter_waiting_for_acceptance(page)
 
         # Process each action
         for action in pending:
