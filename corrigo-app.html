@@ -380,6 +380,15 @@ function choose(id, action){
   saveData(key, arr);
   render();
   show(action==='accept' ? 'accepted' : 'declined');
+  if (action==='accept') {
+    // Vibrate
+    if (navigator.vibrate) navigator.vibrate([100,50,100,50,200]);
+    // Show popup
+    alert('✅ You Accepted the Job!');
+  } else {
+    if (navigator.vibrate) navigator.vibrate(200);
+    alert('❌ Job Declined.');
+  }
   sendPickup();
 }
 
