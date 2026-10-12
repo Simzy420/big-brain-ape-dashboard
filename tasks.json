@@ -88,6 +88,33 @@
       ]
     },
     {
+      "id": "druck-live-book-confirm",
+      "priority": "high",
+      "title": "Confirm the Druck cycle live Hyperliquid book is OK",
+      "subtitle": "Dashboard shows mainnet BTC + GOLD + SILVER at 3x isolated (acct ~$1,332) · outside the paper-only / no-leverage rule",
+      "steps": [
+        "Open the positions file below and look at the current book (BTC long, GOLD pyramided, SILVER added, EUR hedge closed on 10/11).",
+        "Decide: is the daily Druckenmiller cycle (agent commits ~6 PM Boise) allowed to trade live with 3x leverage?",
+        "If YES: tell Chief of Staff it's intended, and we'll stop flagging it in the nightly.",
+        "If NO: tell Chief of Staff to pause the Druck cycle and flatten or move it to paper. A bot will do the technical steps.",
+        "Tap the checkbox here once you've answered."
+      ],
+      "links": [
+        {
+          "label": "positions.json (live book)",
+          "url": "https://github.com/Simzy420/big-brain-ape-dashboard/blob/main/positions.json"
+        },
+        {
+          "label": "10/11 Druck commit",
+          "url": "https://github.com/Simzy420/big-brain-ape-dashboard/commit/49734339"
+        },
+        {
+          "label": "Tasks dashboard",
+          "url": "https://simzy420.github.io/big-brain-ape-dashboard/tasks.html"
+        }
+      ]
+    },
+    {
       "id": "wan22-hf-space-sync",
       "priority": "high",
       "title": "Push Wan templates space/ to Hugging Face Space",
@@ -115,34 +142,6 @@
         {
           "label": "GitHub main space/",
           "url": "https://github.com/Simzy420/wan22-templates/tree/main/space"
-        }
-      ]
-    },
-    {
-      "id": "cc-webhook-url-desktop",
-      "priority": "high",
-      "title": "Copy Command Center chat webhook URL (desktop)",
-      "subtitle": "Phone can’t open “When a webhook fires” — do this on Mac/PC for instant chat wake",
-      "steps": [
-        "On a computer, open the Grok Bot app (not Google/Safari search — grokbot:// links are in-app only)",
-        "Open Chief of Staff chat → click the name in the header → Routines → Command Center chat",
-        "Click When a webhook fires",
-        "Copy Webhook URL — must start with https:// and must NOT be huggingface.co, github.io, or grokbot://",
-        "Tell Chief of Staff you have it (or paste into the secure field when asked) so it can be set as GROK_WEBHOOK_URL on the Space",
-        "Until then: hard-refresh https://simzy420.github.io/command-center/ and use Chat → Chief of Staff (replies via 5-minute poll backup)"
-      ],
-      "links": [
-        {
-          "label": "Command Center (phone)",
-          "url": "https://simzy420.github.io/command-center/"
-        },
-        {
-          "label": "HF chat bridge Space settings",
-          "url": "https://huggingface.co/spaces/Simzy/command-center-chat/settings"
-        },
-        {
-          "label": "Tasks dashboard",
-          "url": "https://simzy420.github.io/big-brain-ape-dashboard/tasks.html"
         }
       ]
     },
