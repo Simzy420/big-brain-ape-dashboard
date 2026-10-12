@@ -246,39 +246,15 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 <!-- WORK DESCRIPTION MODAL -->
 <div class="email-modal" id="workDescModal" onclick="if(event.target===this)closeWorkDescModal()">
-  <div class="card" style="width:90%;max-width:600px;max-height:85vh;display:flex;flex-direction:column;margin:auto;overflow:hidden;">
+  <div class="card" style="width:90%;max-width:600px;max-height:80vh;display:flex;flex-direction:column;margin:auto;overflow:hidden;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-shrink:0;">
-      <h2 style="margin:0;">📝 Complete Work Order</h2>
+      <h2 style="margin:0;">📝 Work Description</h2>
       <button onclick="closeWorkDescModal()" style="background:#1c1c2e;border:none;color:#fff;font-size:28px;width:44px;height:44px;border-radius:50%;cursor:pointer;flex-shrink:0;">✕</button>
     </div>
     <p style="color:#aaa;font-size:20px;margin-bottom:12px;flex-shrink:0;">What did you do at this job?</p>
     <input id="workDescWoId" type="hidden">
-    <textarea id="workDescText" style="width:100%;font-size:22px;padding:14px;border-radius:12px;border:0;background:#0f0f17;color:#fff;min-height:120px;flex-shrink:0;resize:none;-webkit-overflow-scrolling:touch;" placeholder="Describe the work you did..."></textarea>
-    <div style="display:flex;gap:10px;margin-top:12px;flex-shrink:0;">
-      <div style="flex:1;">
-        <label style="color:#aaa;font-size:16px;">Hours</label>
-        <input id="workDescHours" type="number" step="0.5" inputmode="decimal" style="width:100%;font-size:22px;padding:14px;border-radius:12px;border:0;background:#0f0f17;color:#fff;" placeholder="0">
-      </div>
-      <div style="flex:1;">
-        <label style="color:#aaa;font-size:16px;">Rate ($)</label>
-        <input id="workDescRate" type="number" step="0.01" inputmode="decimal" style="width:100%;font-size:22px;padding:14px;border-radius:12px;border:0;background:#0f0f17;color:#fff;" placeholder="0.00">
-      </div>
-    </div>
-    <div style="display:flex;gap:10px;margin-top:10px;flex-shrink:0;">
-      <div style="flex:1;">
-        <label style="color:#aaa;font-size:16px;">Date Started</label>
-        <input id="workDescDateStart" type="date" style="width:100%;font-size:20px;padding:14px;border-radius:12px;border:0;background:#0f0f17;color:#fff;">
-      </div>
-      <div style="flex:1;">
-        <label style="color:#aaa;font-size:16px;">Date Completed</label>
-        <input id="workDescDateEnd" type="date" style="width:100%;font-size:20px;padding:14px;border-radius:12px;border:0;background:#0f0f17;color:#fff;">
-      </div>
-    </div>
-    <div style="margin-top:10px;flex-shrink:0;">
-      <label style="color:#aaa;font-size:16px;">Invoice Number</label>
-      <input id="workDescInvoice" type="text" style="width:100%;font-size:22px;padding:14px;border-radius:12px;border:0;background:#0f0f17;color:#fff;" placeholder="INV-000">
-    </div>
-    <button class="big save" onclick="saveWorkDesc()" style="margin-top:12px;flex-shrink:0;">💾 Save & Submit</button>
+    <textarea id="workDescText" style="width:100%;font-size:22px;padding:14px;border-radius:12px;border:0;background:#0f0f17;color:#fff;min-height:200px;flex:1;resize:none;-webkit-overflow-scrolling:touch;" placeholder="Describe the work you did..."></textarea>
+    <button class="big save" onclick="saveWorkDesc()" style="margin-top:12px;flex-shrink:0;">💾 Save Description</button>
   </div>
 </div>
 
@@ -579,7 +555,6 @@ function clearForm() {
 
 function openWorkDesc(id){
   document.getElementById('workDescWoId').value = id;
-  // Load existing values if any
   const allWos = [].concat(
     getData('corrigo_inbox'),
     getData('corrigo_accepted'),
@@ -589,11 +564,6 @@ function openWorkDesc(id){
   );
   const wo = allWos.find(w => w.id === id);
   document.getElementById('workDescText').value = (wo && wo.workDescription) || '';
-  document.getElementById('workDescHours').value = (wo && wo.hours) || '';
-  document.getElementById('workDescRate').value = (wo && wo.rate) || '';
-  document.getElementById('workDescDateStart').value = (wo && wo.dateStarted) || '';
-  document.getElementById('workDescDateEnd').value = (wo && wo.dateCompleted) || '';
-  document.getElementById('workDescInvoice').value = (wo && wo.invoiceNumber) || '';
   document.getElementById('workDescModal').classList.add('show');
 }
 
@@ -604,24 +574,12 @@ function closeWorkDescModal(){
 function saveWorkDesc(){
   const id = document.getElementById('workDescWoId').value;
   const desc = document.getElementById('workDescText').value.trim();
-  const hours = document.getElementById('workDescHours').value.trim();
-  const rate = document.getElementById('workDescRate').value.trim();
-  const dateStarted = document.getElementById('workDescDateStart').value.trim();
-  const dateCompleted = document.getElementById('workDescDateEnd').value.trim();
-  const invoiceNumber = document.getElementById('workDescInvoice').value.trim();
-  // Find the work order in all tabs and save all fields
   const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved'];
   for (const tab of allTabs) {
     const arr = getData(tab);
     const idx = arr.findIndex(w => w.id === id);
     if (idx >= 0) {
       arr[idx].workDescription = desc;
-      arr[idx].hours = hours;
-      arr[idx].rate = rate;
-      arr[idx].dateStarted = dateStarted;
-      arr[idx].dateCompleted = dateCompleted;
-      arr[idx].invoiceNumber = invoiceNumber;
-      arr[idx].status = 'completed';
       saveData(tab, arr);
       break;
     }
