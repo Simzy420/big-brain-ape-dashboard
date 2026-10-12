@@ -91,6 +91,17 @@ button.big { width:100%; border:0; border-radius:12px; padding:16px; font-size:2
   font-weight: 700;
   cursor: pointer;
 }
+.wo-delete {
+  background: #ff3b30;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-left: 8px;
+}
 .line-item .field { margin-bottom: 10px; }
 .line-item .field label { font-size: 16px; }
 .line-item .field input { font-size: 20px; padding: 12px; }
@@ -313,7 +324,7 @@ function card(w, canAct){
   if (!loc && w.emailContent) {
     // Only try to extract from real work order emails, not invoice emails
     if (!w.emailContent.toLowerCase().includes('invoice') || !w.emailContent.includes('has been Authorized')) {
-      const m = w.emailContent.match(/([\d]+\s+[^,]+,\s+[A-Z]+,?\s+\d{5}[^\n]*)/);
+      const m = w.emailContent.match(/([\\d]+\\s+[^,]+,\\s+[A-Z]+,?\\s+\\d{5}[^\\n]*)/);
       if (m) loc = m[1].trim();
     }
   }
@@ -322,11 +333,11 @@ function card(w, canAct){
     if (w.emailContent.toLowerCase().includes('invoice') && w.emailContent.includes('has been Authorized')) {
       desc = 'Invoice authorized - no job description available';
     } else {
-      const lines = w.emailContent.split('\n').filter(l => l.trim() && !l.includes('CorrigoPro') && !l.includes('mailto:') && !l.includes('Sims Construction') && !l.includes('alerts@') && !l.includes('garysims') && !l.includes('Sent:') && !l.includes('From:') && !l.includes('To:') && !l.includes('Subject:') && !l.includes('Monrovia') && !l.includes('Reykjavik'));
+      const lines = w.emailContent.split('\\n').filter(l => l.trim() && !l.includes('CorrigoPro') && !l.includes('mailto:') && !l.includes('Sims Construction') && !l.includes('alerts@') && !l.includes('garysims') && !l.includes('Sent:') && !l.includes('From:') && !l.includes('To:') && !l.includes('Subject:') && !l.includes('Monrovia') && !l.includes('Reykjavik'));
       desc = lines.slice(0, 3).join(' ').substring(0, 200);
     }
   }
-  const actionBtns = canAct ? `<div class="btn-row"><button class="big accept" onclick="choose('${w.id}','accept')">Accept</button><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button></div><div class="btn-row"><button class="big save" onclick="openBidModal('${w.id}')" style="margin-top:0;">🔨 Bid</button><button class="big save" onclick="saveWo('${w.id}')" style="margin-top:0;background:#666;">💾 Save for Later</button></div>` : `<div class="btn-row"><button class="big decline" onclick="unaccept('${w.id}')" style="background:#f44336;">↩ Unaccept</button></div><p class="muted">Waiting for Corrigo pickup</p>`;
+  const actionBtns = canAct ? \`<div class="btn-row"><button class="big accept" onclick="choose('${w.id}','accept')">Accept</button><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button></div><div class="btn-row"><button class="big save" onclick="openBidModal('${w.id}')" style="margin-top:0;">🔨 Bid</button><button class="big save" onclick="saveWo('${w.id}')" style="margin-top:0;background:#666;">💾 Save for Later</button></div><div class="btn-row"><button class="wo-delete" onclick="deleteWo('${w.id}')" style="width:100%;margin-top:0;">🗑️ Delete Work Order</button></div>\` : `<div class="btn-row"><button class="big decline" onclick="unaccept('${w.id}')" style="background:#f44336;">↩ Unaccept</button><button class="wo-delete" onclick="deleteWo('${w.id}')">🗑️ Delete</button></div><p class="muted">Waiting for Corrigo pickup</p>`;
   const workDescBtn = `<button class="email-btn" style="border-color:#ff9500;color:#ff9500;background:rgba(255,149,0,0.15);" onclick="openWorkDesc('${w.id}')">📝 Add Work Description</button>`;
   const emailBtn = w.emailContent ? `<button class="email-btn" onclick="viewEmail('${w.id}')">📧 View Original Email</button>` : '';
   const extraBtns = `<div class="btn-row">${workDescBtn}${emailBtn}</div>`;
@@ -487,10 +498,10 @@ function generateSummary() {
     const lineTotal = qty * rate;
     total += lineTotal;
     const qtyLabel = type === 'Labor' ? 'hrs' : 'qty';
-    summary += `${type}: ${qty} ${qtyLabel} x $${rate.toFixed(2)} = $${lineTotal.toFixed(2)}\n`;
+    summary += `${type}: ${qty} ${qtyLabel} x $${rate.toFixed(2)} = $${lineTotal.toFixed(2)}\\n`;
   }
-  summary += `\nTOTAL: $${total.toFixed(2)}`;
-  if (currentPhoto) summary += `\nPhoto: ${currentPhoto.name}`;
+  summary += `\\nTOTAL: $${total.toFixed(2)}`;
+  if (currentPhoto) summary += `\\nPhoto: ${currentPhoto.name}`;
   alert(summary);
 }
 
@@ -589,6 +600,25 @@ function saveToken(){
   document.getElementById('token').value = '';
   render();
   alert('Token saved on this phone.');
+}
+
+function deleteWo(id){
+  if (!confirm('Are you sure you want to delete this work order? This cannot be undone.')) return;
+  
+  // Check all tabs for this work order and delete it
+  const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved'];
+  for (const tab of allTabs) {
+    const arr = getData(tab);
+    const idx = arr.findIndex(w => w.id === id);
+    if (idx >= 0) {
+      arr.splice(idx, 1);
+      saveData(tab, arr);
+      render();
+      alert('Work order deleted.');
+      return;
+    }
+  }
+  alert('Could not find work order to delete.');
 }
 async function loadJobs(){
   const res = await fetch('work-orders.json?v=' + Date.now());
