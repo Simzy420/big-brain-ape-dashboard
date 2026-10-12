@@ -278,7 +278,7 @@ function getData(k){ try { return JSON.parse(localStorage.getItem(k)||'[]'); } c
 function saveData(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
 function handled(){
   const nums = new Set();
-  ['corrigo_inbox','corrigo_accepted','corrigo_declined'].forEach(k => getData(k).forEach(w => nums.add(String(w.number))));
+  ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_completed','corrigo_bidding','corrigo_saved'].forEach(k => getData(k).forEach(w => nums.add(String(w.number))));
   return nums;
 }
 function show(name){
