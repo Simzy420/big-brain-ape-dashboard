@@ -366,6 +366,22 @@ function card(w, canAct){
   const extraBtns = `<div class="btn-row">${workDescBtn}${emailBtn}</div>`;
   return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>${loc ? '<p>'+loc+'</p>' : ''}${desc ? '<p>'+desc+'</p>' : ''}${actionBtns}${extraBtns}</div>`;
 }
+function playSound(){
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value = 880;
+    osc.type = 'sine';
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.5);
+  } catch(e) {}
+}
+
 function choose(id, action){
   let inbox = getData('corrigo_inbox');
   const idx = inbox.findIndex(w => w.id===id);
@@ -380,13 +396,10 @@ function choose(id, action){
   saveData(key, arr);
   render();
   show(action==='accept' ? 'accepted' : 'declined');
+  playSound();
   if (action==='accept') {
-    // Vibrate
-    if (navigator.vibrate) navigator.vibrate([100,50,100,50,200]);
-    // Show popup
     alert('✅ You Accepted the Job!');
   } else {
-    if (navigator.vibrate) navigator.vibrate(200);
     alert('❌ Job Declined.');
   }
   sendPickup();
@@ -591,7 +604,8 @@ function closeWorkDescModal(){
 function saveWorkDesc(){
   const id = document.getElementById('workDescWoId').value;
   const desc = document.getElementById('workDescText').value.trim();
-  // Find the work order in all tabs, save description, and move to Complete
+  playSound();
+  let found = false;
   const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved'];
   for (const tab of allTabs) {
     const arr = getData(tab);
@@ -600,19 +614,32 @@ function saveWorkDesc(){
       const wo = arr[idx];
       wo.workDescription = desc;
       wo.status = 'completed';
-      // Remove from current tab
       arr.splice(idx, 1);
       saveData(tab, arr);
-      // Add to Complete tab
       let completed = getData('corrigo_completed');
       completed.unshift(wo);
       saveData('corrigo_completed', completed);
+      found = true;
       break;
     }
   }
   closeWorkDescModal();
   render();
+  // Force render the Complete tab
+  const completedCount = getData('corrigo_completed').length;
+  document.getElementById('completedList').innerHTML = getData('corrigo_completed').map(w => 
+    '<div class="card"><div class="wo-card-header"><strong>'+w.number+'</strong></div>'+
+    (w.description ? '<p>'+w.description+'</p>' : '')+
+    (w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : '')+
+    '<div class="btn-row"><button class="big save" onclick="openCompleteForm(\''+w.id+'\')">📋 Enter Hours, Rate & Submit</button></div></div>'
+  ).join('');
   sendPickup();
+  if (found) {
+    alert('✅ Job Description Saved! Moved to Complete tab.');
+    show('new');
+  } else {
+    alert('ERROR: Could not find work order. ID: ' + id);
+  }
 }
 
 function saveWo(id){
