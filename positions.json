@@ -2,52 +2,82 @@
   "address": "0x37a8023762c69f7150d878733fd9f635f1070fc6",
   "network": "mainnet",
   "abstraction": "unifiedAccount",
-  "accountValue": "1331.99",
-  "withdrawable": "133.58",
+  "accountValue": "1302.601151",
+  "withdrawable": "612.47",
   "positions": [
     {
       "token": "BTC",
       "size": "0.0025",
       "entryPx": "82960.0",
-      "unrealizedPnl": "1.94",
-      "marginUsed": "70.78",
+      "unrealizedPnl": "-3.43",
+      "marginUsed": "65.369653",
       "leverage": {
         "type": "isolated",
         "value": 3,
-        "rawUsd": "-138.56"
+        "rawUsd": "-138.600347"
       }
     },
     {
       "token": "xyz:GOLD",
-      "size": "0.75",
+      "size": "0.35",
       "entryPx": "4176.63",
-      "unrealizedPnl": "11.97",
-      "marginUsed": "1046.57",
+      "unrealizedPnl": "-3.373533",
+      "marginUsed": "478.479666",
       "leverage": {
         "type": "isolated",
         "value": 3,
-        "rawUsd": "-2097.88"
+        "rawUsd": "-979.970334"
       }
     },
     {
       "token": "xyz:SILVER",
       "size": "4.0",
       "entryPx": "60.981",
-      "unrealizedPnl": "0.0",
-      "marginUsed": "81.06",
+      "unrealizedPnl": "-3.256",
+      "marginUsed": "77.759566",
       "leverage": {
         "type": "isolated",
         "value": 3,
-        "rawUsd": "-162.87"
+        "rawUsd": "-162.908434"
+      }
+    },
+    {
+      "token": "xyz:BRENTOIL",
+      "size": "2.0",
+      "entryPx": "103.05",
+      "unrealizedPnl": "0.04",
+      "marginUsed": "68.515351",
+      "leverage": {
+        "type": "isolated",
+        "value": 3,
+        "rawUsd": "-137.624649"
       }
     }
   ],
   "spotBalances": [
     {
       "token": "USDC",
-      "total": "1331.99",
-      "hold": "1198.41",
-      "usdValue": "1331.99"
+      "total": "1302.601151",
+      "hold": "690.124236",
+      "usdValue": "1302.601151"
+    },
+    {
+      "token": "USDE",
+      "total": "0.0",
+      "hold": "0.0",
+      "usdValue": "0.000000"
+    },
+    {
+      "token": "USDT0",
+      "total": "0.0",
+      "hold": "0.0",
+      "usdValue": "0.000000"
+    },
+    {
+      "token": "USDH",
+      "total": "0.0",
+      "hold": "0.0",
+      "usdValue": "0.000000"
     }
   ]
 }
