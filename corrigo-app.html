@@ -167,7 +167,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
   <button class="tab" onclick="show('bidding')">Bidding <span id="biddingCount">0</span></button>
   <button class="tab" onclick="show('almostdue')">⚠️ Almost Due <span id="almostDueCount">0</span></button>
   <button class="tab" onclick="show('overdue')">⏰ Overdue <span id="overdueCount">0</span></button>
-  <button class="tab" onclick="show('new')">💰 Complete</button>
+  <button class="tab" onclick="show('finalize')">📋 Finalize <span id="finalizeCount">0</span></button>
   <button class="tab" onclick="show('addwo')">➕ Add WO</button>
   <button class="tab" onclick="show('settings')">Settings</button>
 </div>
@@ -187,6 +187,9 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
       <input id="manualWoLoc" type="text" placeholder="Location (optional)" style="margin-bottom:10px;">
       <button class="big accept" onclick="addManualWo()">➕ Add to Inbox</button>
     </div>
+  </div>
+  <div id="finalize" style="display:none">
+    <div id="finalizeList"></div>
   </div>
   <div id="new" style="display:none">
     <div id="completedList"></div>
@@ -282,7 +285,7 @@ function handled(){
   return nums;
 }
 function show(name){
-  ['inbox','accepted','declined','bidding','almostdue','overdue','new','addwo','settings'].forEach(id => document.getElementById(id).style.display = id===name ? 'block' : 'none');
+  ['inbox','accepted','declined','bidding','almostdue','overdue','finalize','new','addwo','settings'].forEach(id => document.getElementById(id).style.display = id===name ? 'block' : 'none');
   if (name==='inbox') render();
   if (name==='accepted') render();
   if (name==='declined') render();
@@ -291,6 +294,7 @@ function show(name){
   if (name==='overdue') render();
   if (name==='saved') render();
   if (name==='new') render();
+  if (name==='finalize') render();
 }
 function render(){
   const inbox = getData('corrigo_inbox');
@@ -331,11 +335,14 @@ function render(){
   document.getElementById('almostDueCount').textContent = almostDueList.length;
   document.getElementById('overdue').innerHTML = overdueList.map(w => card(w,false)).join('') || '<div class="card">Nothing overdue. ✅</div>';
   document.getElementById('almostdue').innerHTML = almostDueList.map(w => card(w,false)).join('') || '<div class="card">Nothing due in the next 7 days.</div>';
-  // Render completed work orders in the Complete tab
+  // Render completed work orders in the Finalize tab
   const completed = getData('corrigo_completed');
-  document.getElementById('completedList').innerHTML = completed.length > 0
+  const finalizeCount = completed.length;
+  const finalizeEl = document.getElementById('finalizeCount');
+  if (finalizeEl) finalizeEl.textContent = finalizeCount;
+  document.getElementById('finalizeList').innerHTML = completed.length > 0
     ? completed.map(w => `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${w.description ? '<p>'+w.description+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}<div class="btn-row"><button class="big save" onclick="openCompleteForm('${w.id}')">📋 Enter Hours, Rate & Submit</button></div></div>`).join('')
-    : '<div class="card">No completed work orders yet.</div>';
+    : '<div class="card">No work orders ready to finalize.</div>';
   const token = localStorage.getItem('github_token');
   document.getElementById('status').textContent = token ? 'Token saved on this phone.' : 'No token saved yet.';
 }
@@ -604,7 +611,6 @@ function closeWorkDescModal(){
 function saveWorkDesc(){
   const id = document.getElementById('workDescWoId').value;
   const desc = document.getElementById('workDescText').value.trim();
-  playSound();
   let found = false;
   const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved'];
   for (const tab of allTabs) {
@@ -625,18 +631,10 @@ function saveWorkDesc(){
   }
   closeWorkDescModal();
   render();
-  // Force render the Complete tab
-  const completedCount = getData('corrigo_completed').length;
-  document.getElementById('completedList').innerHTML = getData('corrigo_completed').map(w => 
-    '<div class="card"><div class="wo-card-header"><strong>'+w.number+'</strong></div>'+
-    (w.description ? '<p>'+w.description+'</p>' : '')+
-    (w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : '')+
-    '<div class="btn-row"><button class="big save" onclick="openCompleteForm(\''+w.id+'\')">📋 Enter Hours, Rate & Submit</button></div></div>'
-  ).join('');
   sendPickup();
   if (found) {
-    alert('✅ Job Description Saved! Moved to Complete tab.');
-    show('new');
+    alert('✅ Saved! Check the 📋 Finalize tab.');
+    show('finalize');
   } else {
     alert('ERROR: Could not find work order. ID: ' + id);
   }
@@ -709,30 +707,43 @@ function deleteWo(id){
   }
   alert('Could not find work order to delete.');
 }
-// Complete form for Casey to enter hours, rate, dates, invoice
+// Complete form for Casey to enter hours, rate, dates, invoice - rendered inline in finalize tab
 function openCompleteForm(id){
   const completed = getData('corrigo_completed');
   const wo = completed.find(w => w.id === id);
   if (!wo) { alert('Work order not found'); return; }
-  const hours = prompt('Hours worked:', wo.hours || '');
-  if (hours === null) return;
-  const rate = prompt('Rate ($):', wo.rate || '');
-  if (rate === null) return;
-  const dateStarted = prompt('Date started (YYYY-MM-DD):', wo.dateStarted || '');
-  if (dateStarted === null) return;
-  const dateCompleted = prompt('Date completed (YYYY-MM-DD):', wo.dateCompleted || '');
-  if (dateCompleted === null) return;
-  const invoiceNumber = prompt('Invoice number:', wo.invoiceNumber || '');
-  if (invoiceNumber === null) return;
-  wo.hours = hours;
-  wo.rate = rate;
-  wo.dateStarted = dateStarted;
-  wo.dateCompleted = dateCompleted;
-  wo.invoiceNumber = invoiceNumber;
+  document.getElementById('finalizeList').innerHTML = `
+    <div class="card">
+      <div class="wo-card-header"><strong>${wo.number}</strong></div>
+      ${wo.description ? '<p>'+wo.description+'</p>' : ''}
+      ${wo.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+wo.workDescription+'</p>' : ''}
+      <input id="cf_hours" type="number" step="0.5" inputmode="decimal" placeholder="Hours worked" style="margin-bottom:10px;" value="${wo.hours||''}">
+      <input id="cf_rate" type="number" step="0.01" inputmode="decimal" placeholder="Rate ($)" style="margin-bottom:10px;" value="${wo.rate||''}">
+      <input id="cf_dateStart" type="date" placeholder="Date started" style="margin-bottom:10px;" value="${wo.dateStarted||''}">
+      <input id="cf_dateEnd" type="date" placeholder="Date completed" style="margin-bottom:10px;" value="${wo.dateCompleted||''}">
+      <input id="cf_invoice" type="text" placeholder="Invoice number" style="margin-bottom:10px;" value="${wo.invoiceNumber||''}">
+      <label style="color:#aaa;font-size:16px;">Job Photo</label>
+      <input type="file" id="cf_photo" accept="image/*" capture="environment" style="margin-bottom:10px;width:100%;font-size:16px;">
+      <div class="btn-row">
+        <button class="big accept" onclick="saveCompleteForm('${id}')">✅ Submit</button>
+        <button class="big decline" onclick="render();show('finalize');">Cancel</button>
+      </div>
+    </div>`;
+}
+
+function saveCompleteForm(id){
+  const completed = getData('corrigo_completed');
+  const wo = completed.find(w => w.id === id);
+  if (!wo) { alert('Work order not found'); return; }
+  wo.hours = document.getElementById('cf_hours').value;
+  wo.rate = document.getElementById('cf_rate').value;
+  wo.dateStarted = document.getElementById('cf_dateStart').value;
+  wo.dateCompleted = document.getElementById('cf_dateEnd').value;
+  wo.invoiceNumber = document.getElementById('cf_invoice').value;
   saveData('corrigo_completed', completed);
   render();
   sendPickup();
-  alert('Saved! Data will be submitted to Corrigo.');
+  alert('✅ Data saved! Will be submitted to Corrigo.');
 }
 
 function addManualWo(){
