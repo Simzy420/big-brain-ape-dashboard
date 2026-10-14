@@ -1,19 +1,22 @@
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BBA Backtests, explained</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
-<style>body{font-family:system-ui;background:#0f1220;color:#eee;margin:0;padding:16px;max-width:900px;margin:auto}h1{font-size:22px}.card{background:#1a1f35;border-radius:12px;padding:14px;margin:12px 0}.big{font-size:28px;font-weight:700}.good{color:#4ade80}.bad{color:#f87171}.warn{color:#fbbf24}li{margin:6px 0}small{color:#aaa}</style></head><body>
+<style>body{font-family:system-ui;background:#0f1220;color:#eee;padding:16px;max-width:900px;margin:auto}h1{font-size:22px}.card{background:#1a1f35;border-radius:12px;padding:14px;margin:12px 0}.big{font-size:28px;font-weight:700}.good{color:#4ade80}.bad{color:#f87171}.warn{color:#fbbf24}li{margin:6px 0}small{color:#aaa}</style></head><body>
 <h1>🦍 Big Brain Ape Backtests, explained simply</h1><small id="upd"></small>
+<div class="card"><h3>🧠 The short version</h3><p class="big warn" style="font-size:20px" id="head"></p></div>
 <div class="card" id="live"></div>
-<div class="card"><h3>📊 Profit or loss on every $1,000 (pretend money, 1 year)</h3><canvas id="ret"></canvas></div>
+<div class="card"><h3>📈 What $1,000 would have become (2022 to today, pretend money)</h3><canvas id="eq"></canvas></div>
+<div class="card"><h3>📊 Money made per $1,000</h3><canvas id="ret"></canvas></div>
+<div class="card"><h3>📉 Worst dip along the way (it has to stay below the dashed 20% line)</h3><canvas id="dd"></canvas></div>
 <div class="card"><h3>What each plan means</h3><ul id="kid"></ul></div>
-<div class="card"><h3>🎚️ How picky the main plan should be (ATR setting)</h3><p>Green bars are profit and red bars are the worst dip along the way. The main plan does well in the middle of the range and does worse at both ends.</p><canvas id="atr"></canvas></div>
 <div class="card"><h3>📝 Good to know</h3><ul id="notes"></ul></div>
 <script>
 fetch('backtest-data.json?'+Date.now()).then(r=>r.json()).then(d=>{
-upd.textContent='Updated '+d.updated;
-const L=d.live;live.innerHTML=`<h3>💵 Real-money bot</h3><div class="big">$${L.account.toFixed(2)}</div><p class="warn">It bets ${L.leverage} the money in the account, using rules that haven't been tested yet.</p><p>Your call: <b>${L.decision}</b><br>Status: ${L.status}</p>`;
-const s=d.strategies.filter(x=>x.ret!==null);
-new Chart(ret,{type:'bar',data:{labels:s.map(x=>x.name),datasets:[{label:'$ gained or lost per $1,000',data:s.map(x=>x.ret*10),backgroundColor:s.map(x=>x.ret>=0?'#4ade80':'#f87171')}]},options:{indexAxis:'y',plugins:{legend:{display:false}}}});
-kid.innerHTML=d.strategies.map(x=>`<li><b>${x.name}</b>: <span class="${x.verdict=='Keep using'?'good':'bad'}">${x.verdict}</span>. ${x.kid}</li>`).join('');
-new Chart(atr,{type:'bar',data:{labels:d.atr.map(x=>x.x),datasets:[{label:'Profit %',data:d.atr.map(x=>x.ret),backgroundColor:'#4ade80'},{label:'Worst dip %',data:d.atr.map(x=>x.dd),backgroundColor:'#f87171'}]}});
+upd.textContent='Updated '+d.updated;head.textContent=d.headline;
+const L=d.live;live.innerHTML=`<h3>💵 Real-money bot</h3><div class="big">$${L.account.toFixed(2)}</div><p class="warn">It bets ${L.leverage} the money in the account.</p><p>Your call: <b>${L.decision}</b><br>Rules: ${L.status}</p>`;
+const s=d.long,lab=s.map(x=>x.name),C=['#60a5fa','#f87171','#a78bfa','#f472b6','#4ade80','#fbbf24','#9ca3af'];
+new Chart(eq,{type:'line',data:{datasets:Object.entries(d.equity).map(([n,p],i)=>({label:n,data:p.map(([x,y])=>({x,y})),borderColor:C[i],pointRadius:0,borderWidth:n.includes('Breakout')?3:1.5}))},options:{parsing:false,scales:{x:{type:'category',labels:Object.values(d.equity)[0].map(p=>p[0]),ticks:{maxTicksLimit:6}}}}});
+new Chart(ret,{type:'bar',data:{labels:lab,datasets:[{data:s.map(x=>Math.round(x.ret*10)),backgroundColor:s.map(x=>x.ret>=0?'#4ade80':'#f87171')}]},options:{indexAxis:'y',plugins:{legend:{display:false}}}});
+new Chart(dd,{type:'bar',data:{labels:lab,datasets:[{label:'Worst dip %',data:s.map(x=>x.dd),backgroundColor:s.map(x=>x.dd<=d.limit?'#4ade80':'#f87171')},{type:'line',label:'20% limit',data:lab.map(()=>d.limit),borderColor:'#fff',borderDash:[6,4],pointRadius:0}]},options:{indexAxis:'y'}});
+kid.innerHTML=s.map(x=>`<li><b>${x.name}</b>: <span class="${x.ret>0&&x.dd<=d.limit?'good':'bad'}">${x.ret>0?'+':''}${x.ret}%, worst dip ${x.dd}%, ${x.trades} trades</span>. ${x.kid}</li>`).join('');
 notes.innerHTML=d.notes.map(n=>`<li>${n}</li>`).join('');});
 </script></body></html>
