@@ -1,0 +1,10 @@
+{"updated":"2026-10-14","baseline":"R4-C",
+"strategies":[
+{"name":"R4-C (our main plan)","ret":15.05,"dd":8.49,"trades":10,"verdict":"Keep using","kid":"Our best plan. Over a year of pretend trading it grew $1,000 to about $1,150, and the worst dip along the way was about 8%."},
+{"name":"R3 (no chop filter)","ret":-14.11,"dd":18.7,"trades":null,"verdict":"Loses money","kid":"The same plan without its safety filter. It lost about $140 on every $1,000. The real-money bot uses rules close to this one."},
+{"name":"Test A","ret":-14,"dd":null,"trades":null,"verdict":"Rejected","kid":"Lost money, about the same as R3."},
+{"name":"Test D","ret":null,"dd":null,"trades":32,"verdict":"Rejected","kid":"Its dips were small, but it traded about 32 times a year, which is far more than your limit of about 15."},
+{"name":"Test R1","ret":-14.11,"dd":18.7,"trades":null,"verdict":"Rejected","kid":"Came out exactly the same as R3, so its extra rule never actually did anything."}],
+"atr":[{"x":"0.8×","ret":5.62,"dd":12.81},{"x":"0.9×","ret":9.32,"dd":9.81},{"x":"1.0×","ret":9.46,"dd":8.60},{"x":"1.1×","ret":12.75,"dd":8.25},{"x":"1.2×","ret":3.24,"dd":null}],
+"live":{"account":1302.60,"leverage":"3x","decision":"Leave as is (Casey, 10/14)","status":"Checking which rules it uses against its real trades"},
+"notes":["The testing tool had a bug that faked some losses. It's fixed, and every test was re-run.","Every test here uses pretend money. Only the live bot uses real money.","Next up is a fairer test: tune each plan on older data, then check it on data it has never seen."]}
