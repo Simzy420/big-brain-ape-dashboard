@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-BBA Dashboard Data Updater â Master Script
+BBA Dashboard Data Updater — Master Script
 ============================================
 Updates all JSON data files for the Big Brain Ape dashboard.
 Pushes to GitHub Pages repo automatically.
@@ -9,11 +9,11 @@ Usage:
   python3 dashboard-update.py [mode]
 
 Modes:
-  full     â all data files (default, for 12h cron)
-  markets  â just markets.json (for 5-min cron)
-  news     â just news.json (for 2h cron)
-  compute  â just compute-balance.json (for 12h cron)
-  positions â just positions.json (for 12h cron)
+  full     — all data files (default, for 12h cron)
+  markets  — just markets.json (for 5-min cron)
+  news     — just news.json (for 2h cron)
+  compute  — just compute-balance.json (for 12h cron)
+  positions — just positions.json (for 12h cron)
 """
 import json, os, sys, time, subprocess, requests
 from datetime import datetime, timezone
@@ -88,7 +88,7 @@ def local_save(filename, content_str):
         f.write(content_str)
     return path
 
-# âââââââââââ POSITIONS âââââââââââ
+# ─────────── POSITIONS ───────────
 
 def update_positions():
     """Get live positions from Hyperliquid via ACP CLI."""
@@ -105,13 +105,13 @@ def update_positions():
             local_save("positions.json", content)
             if not github_push("positions.json", content, f"Auto-update positions {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}"):
                 return False
-            print("  â positions.json updated")
+            print("  ✓ positions.json updated")
             return True
     except Exception as e:
-        print(f"  â positions.json failed: {e}")
+        print(f"  ✗ positions.json failed: {e}")
     return False
 
-# âââââââââââ COMPUTE BALANCE âââââââââââ
+# ─────────── COMPUTE BALANCE ───────────
 
 def update_compute():
     """Get compute balance from ACP CLI."""
@@ -138,13 +138,13 @@ def update_compute():
                     f.write(content)
             if not github_push("compute-balance.json", content, f"Auto-update compute balance {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}"):
                 return False
-            print("  â compute-balance.json updated")
+            print("  ✓ compute-balance.json updated")
             return True
     except Exception as e:
-        print(f"  â compute-balance.json failed: {e}")
+        print(f"  ✗ compute-balance.json failed: {e}")
     return False
 
-# âââââââââââ MARKETS (XYZ perps + crypto) âââââââââââ
+# ─────────── MARKETS (XYZ perps + crypto) ───────────
 
 def update_markets():
     """Fetch XYZ perps prices and crypto prices from free APIs."""
@@ -205,13 +205,13 @@ def update_markets():
         local_save("markets.json", content)
         if not github_push("markets.json", content, f"Auto-update markets {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}"):
             return False
-        print(f"  â markets.json updated ({len(markets)} symbols)")
+        print(f"  ✓ markets.json updated ({len(markets)} symbols)")
         return True
     except Exception as e:
-        print(f"  â markets.json failed: {e}")
+        print(f"  ✗ markets.json failed: {e}")
     return False
 
-# âââââââââââ SNAPSHOT âââââââââââ
+# ─────────── SNAPSHOT ───────────
 
 def update_snapshot():
     """Run snapshot-gen.py which fetches market data and pushes to GitHub."""
@@ -223,15 +223,15 @@ def update_snapshot():
             cwd=REPO_DIR
         )
         if result.returncode == 0:
-            print("  â snapshot.json updated")
+            print("  ✓ snapshot.json updated")
             return True
         else:
-            print(f"  â snapshot.json failed: {result.stderr[:200]}")
+            print(f"  ✗ snapshot.json failed: {result.stderr[:200]}")
     except Exception as e:
-        print(f"  â snapshot.json failed: {e}")
+        print(f"  ✗ snapshot.json failed: {e}")
     return False
 
-# âââââââââââ STOCK DATA âââââââââââ
+# ─────────── STOCK DATA ───────────
 
 def update_stock_data():
     """Run fmp-data-fetch.py for stock analysis data."""
@@ -243,15 +243,15 @@ def update_stock_data():
             cwd=REPO_DIR
         )
         if result.returncode == 0:
-            print("  â stock-data.json updated")
+            print("  ✓ stock-data.json updated")
             return True
         else:
-            print(f"  â stock-data.json failed: {result.stderr[:200]}")
+            print(f"  ✗ stock-data.json failed: {result.stderr[:200]}")
     except Exception as e:
-        print(f"  â stock-data.json failed: {e}")
+        print(f"  ✗ stock-data.json failed: {e}")
     return False
 
-# âââââââââââ ANALYST RATINGS âââââââââââ
+# ─────────── ANALYST RATINGS ───────────
 
 def update_analyst_ratings():
     """Run fetch-analyst-ratings.py."""
@@ -263,15 +263,15 @@ def update_analyst_ratings():
             cwd=REPO_DIR
         )
         if result.returncode == 0:
-            print("  â analyst-ratings.json updated")
+            print("  ✓ analyst-ratings.json updated")
             return True
         else:
-            print(f"  â analyst-ratings.json failed: {result.stderr[:200]}")
+            print(f"  ✗ analyst-ratings.json failed: {result.stderr[:200]}")
     except Exception as e:
-        print(f"  â analyst-ratings.json failed: {e}")
+        print(f"  ✗ analyst-ratings.json failed: {e}")
     return False
 
-# âââââââââââ NEWS âââââââââââ
+# ─────────── NEWS ───────────
 
 def update_news():
     """Run the Jina scraper and publish the file it actually generated."""
@@ -313,15 +313,15 @@ def update_trading_posts():
             cwd=REPO_DIR
         )
         if result.returncode == 0:
-            print("  â trading-posts.json updated")
+            print("  ✓ trading-posts.json updated")
             return True
         else:
-            print(f"  â trading-posts.json failed: {result.stderr[:200]}")
+            print(f"  ✗ trading-posts.json failed: {result.stderr[:200]}")
     except Exception as e:
-        print(f"  â trading-posts.json failed: {e}")
+        print(f"  ✗ trading-posts.json failed: {e}")
     return False
 
-# âââââââââââ MAIN âââââââââââ
+# ─────────── MAIN ───────────
 
 def main():
     mode = sys.argv[1] if len(sys.argv) > 1 else "full"
