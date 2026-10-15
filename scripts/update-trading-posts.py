@@ -7,9 +7,11 @@ extracts the assistant's trading report, and pushes trading-posts.json to GitHub
 Silent on success.
 """
 import json, os, sys, glob, time, base64, urllib.request, re
+from urllib.error import HTTPError
 
-REPO = "Big-Brain-Ape-Trading-Bot/Big-Brain-Ape-Trading-Bot"
+REPO = "Simzy420/big-brain-ape-dashboard"
 BRANCH = "main"
+REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CRON_OUTPUT_DIR = "/home/hermes/.hermes/cron/output/9fd990c76ee7"
 
 def extract_trading_report(filepath):
@@ -90,21 +92,27 @@ def build_trading_posts():
     }
 
 def push_to_github(data_json, filename="trading-posts.json"):
-    """Push to GitHub Pages. Silent on success."""
+    """Push the generated feed to this dashboard repository."""
     env_file = "/workspace/.github.env"
     if not os.path.exists(env_file):
-        #SILENT_print_("ERROR: .github.env not found", file=sys.stderr)
+        print("ERROR: /workspace/.github.env not found", file=sys.stderr)
         return False
 
     token = None
-    with open(env_file) as f:
-        for line in f:
-            if line.strip().startswith("GITHUB_TOKEN="):
-                token = line.strip().split("=", 1)[1].strip('"').strip("'")
-                break
+    try:
+        with open(env_file) as f:
+            for line in f:
+                name, separator, value = line.strip().partition("=")
+                if separator and name in ("GITHUB_TOKEN", "GITHUB_TOKEN_SIMZY"):
+                    token = value.strip().strip('"').strip("'")
+                    if token:
+                        break
+    except OSError as e:
+        print(f"ERROR: could not read GitHub token file: {e}", file=sys.stderr)
+        return False
 
     if not token:
-        #SILENT_print_("ERROR: GITHUB_TOKEN not found", file=sys.stderr)
+        print("ERROR: GITHUB_TOKEN is not configured in /workspace/.github.env", file=sys.stderr)
         return False
 
     api_url = f"https://api.github.com/repos/{REPO}/contents/{filename}"
@@ -116,12 +124,17 @@ def push_to_github(data_json, filename="trading-posts.json"):
     try:
         with urllib.request.urlopen(req, timeout=10) as resp:
             sha = json.loads(resp.read()).get("sha")
-    except:
-        pass
+    except HTTPError as e:
+        if e.code != 404:
+            detail = e.read().decode("utf-8", errors="replace")[:250]
+            print(f"ERROR: GitHub lookup failed (HTTP {e.code}): {detail}", file=sys.stderr)
+            return False
+    except Exception as e:
+        print(f"ERROR: GitHub lookup failed: {e}", file=sys.stderr)
+        return False
 
     content = json.dumps(data_json, indent=2)
     content_b64 = base64.b64encode(content.encode()).decode()
-
     payload = {
         "message": f"Auto-update trading-posts.json {time.strftime('%Y-%m-%d %H:%M UTC', time.gmtime())}",
         "content": content_b64,
@@ -138,31 +151,36 @@ def push_to_github(data_json, filename="trading-posts.json"):
 
     try:
         with urllib.request.urlopen(req, timeout=15) as resp:
-            return True
+            if resp.status in (200, 201):
+                return True
+            print(f"ERROR: GitHub write returned unexpected HTTP {resp.status}", file=sys.stderr)
+    except HTTPError as e:
+        detail = e.read().decode("utf-8", errors="replace")[:250]
+        print(f"ERROR: GitHub write failed (HTTP {e.code}): {detail}", file=sys.stderr)
     except Exception as e:
-        #SILENT_print_(f"ERROR: {e}", file=sys.stderr)
-        return False
+        print(f"ERROR: GitHub write failed: {e}", file=sys.stderr)
+    return False
 
 def main():
     if not os.path.exists(CRON_OUTPUT_DIR):
-        #SILENT_print_("FAILED: cron output dir not found", file=sys.stderr)
+        print(f"FAILED: cron output dir not found: {CRON_OUTPUT_DIR}", file=sys.stderr)
         sys.exit(1)
 
     posts_json = build_trading_posts()
     
     if not posts_json["posts"]:
-        #SILENT_print_("FAILED: no posts found", file=sys.stderr)
+        print("FAILED: no trading reports found in the cron output directory", file=sys.stderr)
         sys.exit(1)
 
     # Save locally
-    local_path = "/workspace/mini-app/trading-posts.json"
+    local_path = os.path.join(REPO_DIR, "trading-posts.json")
     with open(local_path, "w") as f:
         json.dump(posts_json, f, indent=2)
 
     # Push to GitHub
     success = push_to_github(posts_json)
     if not success:
-        #SILENT_print_("FAILED: GitHub push error", file=sys.stderr)
+        print("FAILED: could not publish trading-posts.json; see the GitHub error above", file=sys.stderr)
         sys.exit(1)
 
 if __name__ == "__main__":
