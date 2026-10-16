@@ -356,9 +356,10 @@ function render(){
       const photosHtml = w.photos && w.photos.length > 0
         ? `<div style="margin-top:8px;"><p style="color:#aaa;font-size:16px;">📸 ${w.photos.length} photo(s) attached</p></div>`
         : '';
+      const matPart = w.materialsCost ? ' | Materials: $'+w.materialsCost : '';
       const invoiceHtml = (w.hours || w.rate || w.invoiceNumber)
-        ? `<div style="margin-top:8px;color:#00cc66;font-size:16px;">✅ Hours: ${w.hours||'-'} | Rate: $${w.rate||'-'}/hr | Invoice: ${w.invoiceNumber||'-'}</div>`
-        : '';
+        ? `<div style="margin-top:8px;color:#00cc66;font-size:16px;">✅ Hours: ${w.hours||'-'} | Rate: $${w.rate||'-'}/hr | Invoice: ${w.invoiceNumber||'-'}${matPart}</div>`
+        : (w.materialsCost ? `<div style="margin-top:8px;color:#00cc66;font-size:16px;">✅ Materials: $${w.materialsCost}</div>` : '');
       return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${w.description ? '<p>'+w.description+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}${w.disputeResolved ? '<p style="color:#00cc66;font-size:16px;">✅ Dispute resolved</p>' : ''}${invoiceHtml}${photosHtml}<div class="btn-row"><button class="big save" onclick="openCompleteForm('${w.id}')">📋 Enter Hours, Rate & Submit</button></div></div>`;
     }).join('')
     : '<div class="card">No work orders ready to finalize.</div>';
@@ -906,6 +907,7 @@ function openCompleteForm(id){
         <div class="field"><label style="color:#aaa;font-size:16px;">End Date</label><input id="cf_dateEnd" type="date" value="${wo.dateCompleted||''}" style="margin-top:4px;"></div>
       </div>
       <input id="cf_invoice" type="text" placeholder="Invoice Number" style="margin-bottom:10px;" value="${wo.invoiceNumber||''}">
+      <input id="cf_materials" type="number" step="0.01" inputmode="decimal" placeholder="Materials Cost ($)" style="margin-bottom:10px;" value="${wo.materialsCost||''}">
       <h2 style="margin:8px 0;font-size:22px;">📸 Upload Photos</h2>
       <input type="file" id="cf_photo" accept="image/*" multiple style="margin-bottom:10px;width:100%;font-size:16px;" onchange="handleCompletePhoto(this)">
       <div id="cf_photoPreview" style="display:none;"></div>
@@ -958,6 +960,7 @@ function saveCompleteForm(id){
   wo.dateStarted = document.getElementById('cf_dateStart').value;
   wo.dateCompleted = document.getElementById('cf_dateEnd').value;
   wo.invoiceNumber = document.getElementById('cf_invoice').value;
+  wo.materialsCost = document.getElementById('cf_materials').value;
   if (completePhotos.length > 0) {
     if (!wo.photos) wo.photos = [];
     wo.photos = wo.photos.concat(completePhotos);
