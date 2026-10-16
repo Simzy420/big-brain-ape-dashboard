@@ -313,8 +313,10 @@ function render(){
   document.getElementById('declined').innerHTML = declined.map(w => card(w,false)).join('') || '<div class="card">Nothing declined.</div>';
   document.getElementById('bidding').innerHTML = bidding.map(w => card(w,false)).join('') || '<div class="card">No bids submitted.</div>';
   const saved = getData('corrigo_saved');
-  document.getElementById('savedCount').textContent = saved.length;
-  document.getElementById('saved').innerHTML = saved.map(w => card(w,true)).join('') || '<div class="card">Nothing saved yet.</div>';
+  const savedCountEl = document.getElementById('savedCount');
+  if (savedCountEl) savedCountEl.textContent = saved.length;
+  const savedEl = document.getElementById('saved');
+  if (savedEl) savedEl.innerHTML = saved.map(w => card(w,true)).join('') || '<div class="card">Nothing saved yet.</div>';
   const now = new Date();
   const sevenDays = new Date(now.getTime() + 7*24*60*60*1000);
   const overdueList = [];
