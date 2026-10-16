@@ -168,6 +168,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
   <button class="tab" onclick="show('almostdue')">⚠️ Almost Due <span id="almostDueCount">0</span></button>
   <button class="tab" onclick="show('overdue')">⏰ Overdue <span id="overdueCount">0</span></button>
   <button class="tab" onclick="show('disputed')">⚠️ Disputed <span id="disputedCount">0</span></button>
+  <button class="tab" onclick="show('resolved')">✅ Resolved <span id="resolvedCount">0</span></button>
   <button class="tab" onclick="show('finalize')">📋 Finalize <span id="finalizeCount">0</span></button>
   <button class="tab" onclick="show('addwo')">➕ Add WO</button>
   <button class="tab" onclick="show('settings')">Settings</button>
@@ -180,6 +181,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
   <div id="almostdue" style="display:none"></div>
   <div id="overdue" style="display:none"></div>
   <div id="disputed" style="display:none"></div>
+  <div id="resolved" style="display:none"></div>
   <div id="addwo" style="display:none">
     <div class="card">
       <h2 style="margin:0 0 8px 0;">➕ Add Work Order</h2>
@@ -283,11 +285,11 @@ function getData(k){ try { return JSON.parse(localStorage.getItem(k)||'[]'); } c
 function saveData(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
 function handled(){
   const nums = new Set();
-  ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_completed','corrigo_bidding','corrigo_saved','corrigo_disputed'].forEach(k => getData(k).forEach(w => nums.add(String(w.number))));
+  ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_completed','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_resolved'].forEach(k => getData(k).forEach(w => nums.add(String(w.number))));
   return nums;
 }
 function show(name){
-  ['inbox','accepted','declined','bidding','almostdue','overdue','disputed','finalize','new','addwo','settings'].forEach(id => document.getElementById(id).style.display = id===name ? 'block' : 'none');
+  ['inbox','accepted','declined','bidding','almostdue','overdue','disputed','resolved','finalize','new','addwo','settings'].forEach(id => document.getElementById(id).style.display = id===name ? 'block' : 'none');
   if (name==='inbox') render();
   if (name==='accepted') render();
   if (name==='declined') render();
@@ -295,6 +297,7 @@ function show(name){
   if (name==='almostdue') render();
   if (name==='overdue') render();
   if (name==='disputed') render();
+  if (name==='resolved') render();
   if (name==='saved') render();
   if (name==='new') render();
   if (name==='finalize') render();
@@ -346,6 +349,14 @@ function render(){
   document.getElementById('disputed').innerHTML = disputed.length > 0
     ? disputed.map(w => disputedCard(w)).join('')
     : '<div class="card">No disputed work orders.</div>';
+  // Render resolved work orders
+  const resolved = getData('corrigo_resolved');
+  const resolvedCountEl = document.getElementById('resolvedCount');
+  if (resolvedCountEl) resolvedCountEl.textContent = resolved.length;
+  const resolvedEl = document.getElementById('resolved');
+  if (resolvedEl) resolvedEl.innerHTML = resolved.length > 0
+    ? resolved.map(w => resolvedCard(w)).join('')
+    : '<div class="card">No resolved work orders.</div>';
   // Render completed work orders in the Finalize tab
   const completed = getData('corrigo_completed');
   const finalizeCount = completed.length;
@@ -417,12 +428,14 @@ function disputedCard(w){
   const photosHtml = w.photos && w.photos.length > 0
     ? `<div style="margin-top:12px;"><p style="color:#aaa;font-size:16px;margin-bottom:6px;">📸 Photos (${w.photos.length}):</p>${w.photos.map((p,i) => `<img src="${p.data}" style="width:100%;border-radius:12px;margin-bottom:8px;" onclick="this.style.width=this.style.width==='100%'?'50%':'100%'">`).join('')}</div>`
     : '';
+  const uploadBtn = `<button class="email-btn" style="border-color:#ff9500;color:#ff9500;background:rgba(255,149,0,0.15);" onclick="openDisputePhotoUpload('${w.id}')">📸 Upload Dispute Photo</button>`;
   return `<div class="card" style="border:2px solid #ff3b30;">
     <div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>
     ${loc ? '<p>'+loc+'</p>' : ''}
     ${desc ? '<p>'+desc+'</p>' : ''}
     ${disputeReason ? '<p style="color:#ff3b30;font-size:16px;">⚠️ Dispute Reason: '+disputeReason+'</p>' : ''}
     ${photosHtml}
+    ${uploadBtn}
     ${disputeEmailBtn}
     ${finalizeBtn}
     ${resolveBtn}
@@ -458,22 +471,114 @@ function moveToDisputed(id){
 }
 
 function resolveDispute(id){
-  if (!confirm('Mark this dispute as resolved? It will move to the Finalize tab.')) return;
+  if (!confirm('Mark this dispute as resolved? It will move to the Resolved tab.')) return;
   const disputed = getData('corrigo_disputed');
   const idx = disputed.findIndex(w => w.id === id);
   if (idx < 0) return;
   const wo = disputed[idx];
-  wo.status = 'completed';
+  wo.status = 'resolved';
   wo.disputeResolved = true;
   disputed.splice(idx, 1);
   saveData('corrigo_disputed', disputed);
-  const completed = getData('corrigo_completed');
-  completed.unshift(wo);
-  saveData('corrigo_completed', completed);
+  const resolved = getData('corrigo_resolved');
+  resolved.unshift(wo);
+  saveData('corrigo_resolved', resolved);
   render();
-  show('finalize');
+  show('resolved');
   sendPickup();
-  alert('✅ Dispute resolved! Moved to Finalize tab.');
+  alert('✅ Dispute resolved! Moved to Resolved tab.');
+}
+
+function openDisputePhotoUpload(id){
+  const disputed = getData('corrigo_disputed');
+  const wo = disputed.find(w => w.id === id);
+  if (!wo) { alert('Work order not found'); return; }
+  document.getElementById('disputed').innerHTML = `
+    <div class="card" style="border:2px solid #ff3b30;">
+      <div class="wo-card-header"><strong>${wo.number}</strong></div>
+      ${wo.description ? '<p>'+wo.description+'</p>' : ''}
+      ${wo.disputeReason ? '<p style="color:#ff3b30;font-size:16px;">⚠️ '+wo.disputeReason+'</p>' : ''}
+      <h2 style="margin:8px 0;font-size:22px;">📸 Upload Dispute Photo</h2>
+      <input type="file" id="dp_photo" accept="image/*" multiple style="margin-bottom:10px;width:100%;font-size:16px;" onchange="handleDisputePhoto2(this)">
+      <div id="dp_photoPreview" style="display:none;"></div>
+      <div class="btn-row" style="margin-top:12px;">
+        <button class="big accept" onclick="saveDisputePhoto('${id}')">✅ Save Photo</button>
+        <button class="big decline" onclick="render();show('disputed');">Cancel</button>
+      </div>
+    </div>`;
+  if (wo.photos && wo.photos.length > 0) {
+    const previewDiv = document.getElementById('dp_photoPreview');
+    previewDiv.style.display = 'block';
+    previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Existing photos:</p>' + wo.photos.map((p,i) => `<img src="${p.data}" style="width:100%;border-radius:12px;margin-bottom:8px;">`).join('');
+  }
+}
+
+let disputePhotos2 = [];
+function handleDisputePhoto2(input) {
+  if (!input.files || input.files.length === 0) return;
+  const previewDiv = document.getElementById('dp_photoPreview');
+  previewDiv.style.display = 'block';
+  let html = '';
+  const remaining = Array.from(input.files);
+  let loaded = 0;
+  remaining.forEach((file) => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      disputePhotos2.push({ name: file.name, data: e.target.result });
+      loaded++;
+      html += `<div style="margin-bottom:8px;"><img src="${e.target.result}" style="width:100%;border-radius:12px;"><p style="color:#00cc66;font-size:16px;">✅ ${file.name}</p></div>`;
+      if (loaded === remaining.length) {
+        const existing = previewDiv.querySelector('p');
+        if (existing && (existing.textContent.includes('Existing') || existing.textContent.includes('selected'))) {
+          previewDiv.innerHTML += html;
+        } else {
+          previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Photos selected:</p>' + html;
+        }
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function saveDisputePhoto(id){
+  const disputed = getData('corrigo_disputed');
+  const wo = disputed.find(w => w.id === id);
+  if (!wo) { alert('Work order not found'); return; }
+  if (disputePhotos2.length > 0) {
+    if (!wo.photos) wo.photos = [];
+    wo.photos = wo.photos.concat(disputePhotos2);
+  }
+  saveData('corrigo_disputed', disputed);
+  disputePhotos2 = [];
+  render();
+  show('disputed');
+  sendPickup();
+  alert('✅ Photo saved to dispute!');
+}
+
+function resolvedCard(w){
+  const estDisplay = w.estimatedAmount ? '$' + parseFloat(w.estimatedAmount).toFixed(2) : (w.disputedAmount ? '$' + parseFloat(w.disputedAmount).toFixed(2) : '');
+  const estHtml = estDisplay ? `<div class="wo-est" style="color:#00cc66;">${estDisplay}</div>` : '';
+  let loc = w.location || '';
+  let desc = w.description || w.workDescription || '';
+  const disputeReason = w.disputeReason || '';
+  const photosHtml = w.photos && w.photos.length > 0
+    ? `<div style="margin-top:12px;"><p style="color:#aaa;font-size:16px;margin-bottom:6px;">📸 Photos (${w.photos.length}):</p>${w.photos.map((p,i) => `<img src="${p.data}" style="width:100%;border-radius:12px;margin-bottom:8px;" onclick="this.style.width=this.style.width==='100%'?'50%':'100%'">`).join('')}</div>`
+    : '';
+  const invoiceHtml = (w.hours || w.rate || w.invoiceNumber)
+    ? `<div style="margin-top:8px;color:#00cc66;font-size:16px;">✅ Hours: ${w.hours||'-'} | Rate: $${w.rate||'-'}/hr | Invoice: ${w.invoiceNumber||'-'}</div>`
+    : '';
+  const deleteBtn = `<button class="wo-delete" onclick="deleteWo('${w.id}')" style="width:100%;margin-top:8px;">🗑️ Delete</button>`;
+  return `<div class="card" style="border:2px solid #00cc66;">
+    <div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>
+    ${loc ? '<p>'+loc+'</p>' : ''}
+    ${desc ? '<p>'+desc+'</p>' : ''}
+    ${disputeReason ? '<p style="color:#ff3b30;font-size:16px;">⚠️ Was Disputed: '+disputeReason+'</p>' : ''}
+    <p style="color:#00cc66;font-size:16px;">✅ Dispute resolved</p>
+    ${invoiceHtml}
+    ${photosHtml}
+    ${deleteBtn}
+  </div>`;
 }
 
 function openDisputeForm(id){
@@ -661,13 +766,14 @@ async function sendPickup(){
     getData('corrigo_saved'),
     getData('corrigo_inbox'),
     getData('corrigo_completed'),
-    getData('corrigo_disputed')
+    getData('corrigo_disputed'),
+    getData('corrigo_resolved')
   );
   allWos.forEach(w => {
-    if (w.workDescription || w.status === 'disputed') {
+    if (w.workDescription || w.status === 'disputed' || w.status === 'resolved') {
       actions.push({
         number: w.number,
-        action: w.status === 'disputed' ? 'dispute' : 'update',
+        action: w.status === 'disputed' ? 'dispute' : (w.status === 'resolved' ? 'resolve' : 'update'),
         workDescription: w.workDescription || '',
         hours: w.hours || '',
         rate: w.rate || '',
@@ -885,7 +991,7 @@ function deleteWo(id){
   if (!confirm('Are you sure you want to delete this work order? This cannot be undone.')) return;
   
   // Check all tabs for this work order and delete it
-  const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_disputed'];
+  const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_completed','corrigo_resolved'];
   for (const tab of allTabs) {
     const arr = getData(tab);
     const idx = arr.findIndex(w => w.id === id);
