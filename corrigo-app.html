@@ -360,7 +360,7 @@ function render(){
       const invoiceHtml = (w.hours || w.rate || w.invoiceNumber)
         ? `<div style="margin-top:8px;color:#00cc66;font-size:16px;">✅ Hours: ${w.hours||'-'} | Rate: $${w.rate||'-'}/hr | Invoice: ${w.invoiceNumber||'-'}${matPart}</div>`
         : (w.materialsCost ? `<div style="margin-top:8px;color:#00cc66;font-size:16px;">✅ Materials: $${w.materialsCost}</div>` : '');
-      return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${w.description ? '<p>'+w.description+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}${w.disputeResolved ? '<p style="color:#00cc66;font-size:16px;">✅ Dispute resolved</p>' : ''}${invoiceHtml}${photosHtml}<div class="btn-row"><button class="big save" onclick="openCompleteForm('${w.id}')">📋 Enter Hours, Rate & Submit</button></div></div>`;
+      return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${w.description ? '<p>'+w.description+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}${w.disputeResolved ? '<p style="color:#00cc66;font-size:16px;">✅ Dispute resolved</p>' : ''}${invoiceHtml}${photosHtml}<div class="btn-row"><button class="big save" onclick="openCompleteForm('${w.id}')">📋 Enter Hours, Rate & Submit</button></div><div class="btn-row"><button class="wo-delete" onclick="deleteWo('${w.id}')" style="width:100%;margin-top:0;">🗑️ Delete Work Order</button></div></div>`;
     }).join('')
     : '<div class="card">No work orders ready to finalize.</div>';
   const token = localStorage.getItem('github_token');
