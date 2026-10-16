@@ -994,30 +994,119 @@ function addManualWo(){
 }
 
 async function loadJobs(){
+  // 1. Load new work orders from work-orders.json
   const res = await fetch('work-orders.json?v=' + Date.now());
   const jobs = await res.json();
   let inbox = getData('corrigo_inbox');
   let disputed = getData('corrigo_disputed');
   const seen = handled();
   jobs.forEach(w => {
-    // If the user has already acted on this WO (accepted, completed, etc),
-    // do NOT overwrite their local state. Only add NEW WOs the user hasn't seen.
     if (seen.has(String(w.number))) return;
-    // Force-add if JSON says it should be in disputed
     if (w.status === 'disputed') {
       disputed.unshift(w);
     } else if (w.status === 'completed') {
-      // Server says completed — respect it, put in completed
       let completed = getData('corrigo_completed');
       completed.unshift(w);
       saveData('corrigo_completed', completed);
     } else {
-      // New WO — add to inbox
       inbox.unshift(w);
     }
   });
   saveData('corrigo_inbox', inbox);
   saveData('corrigo_disputed', disputed);
+
+  // 2. Sync actions from other phones via corrigo-actions.json on GitHub
+  try {
+    const actRes = await fetch('https://raw.githubusercontent.com/Simzy420/big-brain-ape-dashboard/main/corrigo-actions.json?v=' + Date.now());
+    if (actRes.ok) {
+      const actData = await actRes.json();
+      const actions = actData.pendingActions || [];
+      let changed = false;
+      actions.forEach(act => {
+        const num = String(act.number);
+        // Check all tabs for this WO
+        const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_disputed'];
+        let foundWo = null;
+        let foundTab = null;
+        for (const tab of allTabs) {
+          const arr = getData(tab);
+          const idx = arr.findIndex(w => String(w.number) === num);
+          if (idx >= 0) { foundWo = arr[idx]; foundTab = tab; break; }
+        }
+        if (!foundWo) return; // WO not on this phone, skip
+
+        // Apply action
+        if (act.action === 'accept' && foundTab !== 'corrigo_accepted') {
+          // Move to accepted
+          const arr = getData(foundTab);
+          arr.splice(arr.findIndex(w => String(w.number) === num), 1);
+          saveData(foundTab, arr);
+          foundWo.status = 'accepted';
+          let accepted = getData('corrigo_accepted');
+          accepted.unshift(foundWo);
+          saveData('corrigo_accepted', accepted);
+          changed = true;
+        } else if (act.action === 'decline' && foundTab !== 'corrigo_declined') {
+          const arr = getData(foundTab);
+          arr.splice(arr.findIndex(w => String(w.number) === num), 1);
+          saveData(foundTab, arr);
+          foundWo.status = 'declined';
+          let declined = getData('corrigo_declined');
+          declined.unshift(foundWo);
+          saveData('corrigo_declined', declined);
+          changed = true;
+        } else if (act.action === 'update' || act.action === 'dispute') {
+          // Gary saved work description or Casey entered invoice data
+          if (act.workDescription) foundWo.workDescription = act.workDescription;
+          if (act.hours) foundWo.hours = act.hours;
+          if (act.rate) foundWo.rate = act.rate;
+          if (act.dateStarted) foundWo.dateStarted = act.dateStarted;
+          if (act.dateCompleted) foundWo.dateCompleted = act.dateCompleted;
+          if (act.invoiceNumber) foundWo.invoiceNumber = act.invoiceNumber;
+          if (act.photos && act.photos.length > 0) foundWo.photos = act.photos;
+          if (act.disputeReason) foundWo.disputeReason = act.disputeReason;
+          // If action says update and WO is in accepted, move to completed (Finalize)
+          if (act.action === 'update' && act.workDescription && foundTab === 'corrigo_accepted') {
+            const arr = getData(foundTab);
+            arr.splice(arr.findIndex(w => String(w.number) === num), 1);
+            saveData(foundTab, arr);
+            foundWo.status = 'completed';
+            let completed = getData('corrigo_completed');
+            // Don't duplicate if already there
+            if (!completed.find(w => String(w.number) === num)) {
+              completed.unshift(foundWo);
+              saveData('corrigo_completed', completed);
+            }
+            changed = true;
+          } else if (act.action === 'dispute' && foundTab !== 'corrigo_disputed') {
+            const arr = getData(foundTab);
+            arr.splice(arr.findIndex(w => String(w.number) === num), 1);
+            saveData(foundTab, arr);
+            foundWo.status = 'disputed';
+            let disp = getData('corrigo_disputed');
+            if (!disp.find(w => String(w.number) === num)) {
+              disp.unshift(foundWo);
+              saveData('corrigo_disputed', disp);
+            }
+            changed = true;
+          } else {
+            // Just update the WO in its current tab
+            const arr = getData(foundTab);
+            const idx = arr.findIndex(w => String(w.number) === num);
+            if (idx >= 0) { arr[idx] = foundWo; saveData(foundTab, arr); }
+            changed = true;
+          }
+        }
+      });
+      if (changed) {
+        // Save the sync timestamp
+        localStorage.setItem('last_sync', new Date().toISOString());
+      }
+    }
+  } catch(e) {
+    // Ignore sync errors — can still use app offline
+  }
+
   render();
 }
 loadJobs();
