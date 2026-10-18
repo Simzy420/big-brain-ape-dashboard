@@ -4,9 +4,9 @@
       "id": "druck-live-book-confirm",
       "priority": "high",
       "title": "Confirm the Druck cycle live Hyperliquid book is OK",
-      "subtitle": "No new cycle 10/16 \u00b7 last cycle ~6:04 PM Boise 10/15 (e0842ebc) \u00b7 positions.json still BTC 0.0025 / GOLD 0.35 / SILVER 4.0 / BRENTOIL 2.0 \u00b7 3x isolated \u00b7 acct ~$1,278 \u00b7 outside paper-only / no-leverage rule",
+      "subtitle": "Cycle ran ~6:02 PM Boise 10/17 (a00f2b59): closed gold short, added 7 Brent \u00b7 positions.json now only BRENTOIL 11.0 @ $105.97 \u00b7 3x isolated \u00b7 acct ~$1,295 \u00b7 outside paper-only / no-leverage rule",
       "steps": [
-        "Open the positions file below and look at the current book (10/15 cycle commit; sizes still BTC/GOLD/SILVER/BRENTOIL as listed).",
+        "Open the positions file below and look at the current book (10/17 cycle commit; now a single 11-contract Brent oil long at 3x).",
         "Decide: is the daily Druckenmiller cycle (agent commits ~6 PM Boise) allowed to trade live with 3x leverage?",
         "If YES: tell Chief of Staff it's intended, and we'll stop flagging it in the nightly.",
         "If NO: tell Chief of Staff to pause the Druck cycle and flatten or move it to paper. A bot will do the technical steps.",
@@ -18,12 +18,8 @@
           "url": "https://github.com/Simzy420/big-brain-ape-dashboard/blob/main/positions.json"
         },
         {
-          "label": "10/15 Druck cycle commit",
-          "url": "https://github.com/Simzy420/big-brain-ape-dashboard/commit/e0842ebc"
-        },
-        {
-          "label": "10/12 Druck commit",
-          "url": "https://github.com/Simzy420/big-brain-ape-dashboard/commit/3f7994fc"
+          "label": "10/17 Druck cycle commit",
+          "url": "https://github.com/Simzy420/big-brain-ape-dashboard/commit/a00f2b59"
         },
         {
           "label": "Tasks dashboard",
