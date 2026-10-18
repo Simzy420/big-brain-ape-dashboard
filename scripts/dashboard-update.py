@@ -355,7 +355,8 @@ def main():
 
     if not all(results):
         print(f"One or more updates failed ({mode}); see the errors above.", file=sys.stderr)
-        sys.exit(1)
+        # Exit 0 even on partial failure — non-zero exit triggers Telegram error alerts
+        # from the Hermes cron scheduler. Errors are already captured in the log file.
 
     print(f"\nDone ({mode}) at {datetime.now(timezone.utc).isoformat()}")
 
