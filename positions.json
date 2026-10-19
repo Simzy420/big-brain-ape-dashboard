@@ -1,48 +1,47 @@
 {
-  "address": "0x37a802376c69f7150d878733fd9f635f1070fc6",
+  "address": "0x37a8023762c69f7150d878733fd9f635f1070fc6",
   "network": "mainnet",
   "abstraction": "unifiedAccount",
-  "accountValue": "1295.037443",
-  "withdrawable": "900.06",
+  "accountValue": "1279.592253",
+  "withdrawable": "900.069719",
   "positions": [
     {
       "token": "xyz:BRENTOIL",
       "size": "11.0",
       "entryPx": "105.9736",
-      "unrealizedPnl": "6.89",
-      "marginUsed": "394.967724",
+      "unrealizedPnl": "-9.06",
+      "marginUsed": "378.862534",
       "leverage": {
         "type": "isolated",
         "value": 3,
-        "rawUsd": "-660.052276"
+        "rawUsd": "-777.787466"
       }
     }
   ],
   "spotBalances": [
     {
       "token": "USDC",
-      "total": "1295.037443",
-      "hold": "394.967724",
-      "usdValue": "1295.037443"
-    }
-  ],
-  "lastUpdated": "2026-10-18T00:01:00Z",
-  "tradesThisCycle": [
-    {
-      "action": "CLOSE",
-      "token": "xyz:GOLD",
-      "side": "long (reduce-only to close short)",
-      "size": "0.3",
-      "price": "4151.1",
-      "reason": "Closed gold short - gold failing to rally despite worst Middle East crisis in years, Fed hawkish, strong dollar. Thesis wrong, cut immediately."
+      "total": "1279.592253",
+      "hold": "379.522534",
+      "usdValue": "1279.592253"
     },
     {
-      "action": "ADD",
-      "token": "xyz:BRENTOIL",
-      "side": "long",
-      "size": "7.0",
-      "price": "106.61",
-      "reason": "Doubled down on oil long - Middle East supply shock intensifying, Brent at $110, Iran blockading Hormuz, Russia refinery attacks. This is a real supply crisis."
+      "token": "USDE",
+      "total": "0.0",
+      "hold": "0.0",
+      "usdValue": "0.000000"
+    },
+    {
+      "token": "USDT0",
+      "total": "0.0",
+      "hold": "0.0",
+      "usdValue": "0.000000"
+    },
+    {
+      "token": "USDH",
+      "total": "0.0",
+      "hold": "0.0",
+      "usdValue": "0.000000"
     }
   ]
 }
