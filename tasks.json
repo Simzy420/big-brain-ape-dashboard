@@ -3,18 +3,18 @@
     {
       "id": "scam-wallet-sweep-okx",
       "priority": "high",
-      "title": "URGENT: Withdraw Hyperliquid balance off burned wallet 0x37a8\u20260fc6",
-      "subtitle": "Base was swept on 10/16, but the Hyperliquid step never ran. About $1,296 is still on the burned main account, with a live 3x Brent long (11 contracts). Reopened 10/17 by Chief of Staff's check.",
+      "title": "URGENT: Withdraw Hyperliquid balance off burned wallet 0x37a8…0fc6",
+      "subtitle": "Base was swept on 10/16, but the Hyperliquid step never ran. As of the 10/18 6 PM snapshot about $1,279 is still on the burned main account (~$900 withdrawable), with a live 3x Brent long (11 contracts). Reopened 10/17 by Chief of Staff's check.",
       "steps": [
         "Block/report Discord Support @Virtual_protocol. Do NOT open rpcmultinode.blockchain or any Update RPC / beta connect links.",
         "Open official OKX app from home screen (or https://web3.okx.com/download). Web3 Wallet only.",
-        "Add wallet \u2192 Create wallet (NOT Import). Write new seed on paper only. Confirm words. Never paste seed in chat/Discord/Trust/sites.",
+        "Add wallet → Create wallet (NOT Import). Write new seed on paper only. Confirm words. Never paste seed in chat/Discord/Trust/sites.",
         "With NEW wallet selected + Base network: copy Receive address into Notes as NEW SAFE. Check first/last 6 chars.",
-        "Switch to OLD wallet \u2192 Base \u2192 Send USDC (~$181) to NEW SAFE address \u2192 triple-check \u2192 Send.",
-        "Same wallet \u2192 Send VIRTUAL (~$12). Leave a little ETH for gas; then send rest of ETH if you want.",
-        "Hyperliquid / HyperCore: withdraw ~$1,400 USDC from the OLD account to the NEW address (match the withdraw network shown). Biggest pile \u2014 do carefully but soon.",
-        "After value is out: open https://revoke.cash (type it) \u2192 connect OLD OKX \u2192 Base \u2192 Revoke unknown approvals. Repeat Ethereum/BNB if needed.",
-        "Trust Wallet \u2192 Settings \u2192 Wallets \u2192 delete the imported burned wallet. Never re-import that phrase.",
+        "Switch to OLD wallet → Base → Send USDC (~$181) to NEW SAFE address → triple-check → Send.",
+        "Same wallet → Send VIRTUAL (~$12). Leave a little ETH for gas; then send rest of ETH if you want.",
+        "Hyperliquid / HyperCore: withdraw ~$1,400 USDC from the OLD account to the NEW address (match the withdraw network shown). Biggest pile — do carefully but soon.",
+        "After value is out: open https://revoke.cash (type it) → connect OLD OKX → Base → Revoke unknown approvals. Repeat Ethereum/BNB if needed.",
+        "Trust Wallet → Settings → Wallets → delete the imported burned wallet. Never re-import that phrase.",
         "Later: https://app.virtuals.io with NEW wallet only. Leave Robinhood alone.",
         "Reply Chief of Staff with remaining Base USDC/ETH amounts only (no seed, no full address) when stuck or done."
       ],
@@ -45,7 +45,7 @@
       "id": "druck-live-book-confirm",
       "priority": "high",
       "title": "Confirm the Druck cycle live Hyperliquid book is OK",
-      "subtitle": "Cycle ran ~6:02 PM Boise 10/17 (a00f2b59): closed gold short, added 7 Brent \u00b7 positions.json now only BRENTOIL 11.0 @ $105.97 \u00b7 3x isolated \u00b7 acct ~$1,295 \u00b7 outside paper-only / no-leverage rule",
+      "subtitle": "Last cycle ~6:02 PM Boise 10/17 (a00f2b59); no new cycle 10/18 · positions.json (10/18 6 PM snapshot) only BRENTOIL 11.0 @ $105.97, uPnL −$8.51 · 3x isolated · acct ~$1,279 · outside paper-only / no-leverage rule",
       "steps": [
         "Open the positions file below and look at the current book (10/17 cycle commit; now a single 11-contract Brent oil long at 3x).",
         "Decide: is the daily Druckenmiller cycle (agent commits ~6 PM Boise) allowed to trade live with 3x leverage?",
@@ -72,12 +72,12 @@
       "id": "wan22-hf-space-sync",
       "priority": "high",
       "title": "Push Wan templates space/ to Hugging Face Space",
-      "subtitle": "PR #1 merged on GitHub \u00b7 live HF Space is separate git \u2014 gallery won\u2019t update until you push",
+      "subtitle": "PR #1 merged on GitHub · live HF Space is separate git — gallery won’t update until you push",
       "steps": [
         "Open https://huggingface.co/spaces/Simzy/Wan-2.2-templates/tree/main",
         "Replace space files with the merged repo copies: space/app.py, space/requirements.txt, space/README.md (from Simzy420/wan22-templates main)",
         "Commit + push on the HF Space repo (or use huggingface-cli upload)",
-        "Hard-refresh https://simzy-wan-2-2-templates.hf.space \u2014 confirm autoplay gallery + How to use & create templates",
+        "Hard-refresh https://simzy-wan-2-2-templates.hf.space — confirm autoplay gallery + How to use & create templates",
         "Reply done in Chief of Staff or Command Center"
       ],
       "links": [
@@ -106,7 +106,7 @@
       "subtitle": "CC Files pack for 2026-09-22 has daily print; hourly artifact not found",
       "steps": [
         "Decide where hourly prints live (desk bot export, Hyperliquid tape, Buffer, other)",
-        "Reply with path, repo, or export link \u2014 or say \u201cno hourly print\u201d so we close the gap",
+        "Reply with path, repo, or export link — or say “no hourly print” so we close the gap",
         "Optional: drop a sample file into the board pack folder"
       ],
       "links": [
@@ -128,11 +128,11 @@
       "id": "gmail-identity-filters",
       "priority": "medium",
       "title": "Create Gmail filters for Identity labels",
-      "subtitle": "API scopes block us from creating filters \u2014 2 min in Gmail UI",
+      "subtitle": "API scopes block us from creating filters — 2 min in Gmail UI",
       "steps": [
-        "Open Gmail Settings \u2192 Filters and Blocked Addresses (link below)",
-        "Create filter: To has caseylsims@gmail.com \u2192 Apply label Identity/Gmail",
-        "Create filter: To has caseysims463@yahoo.com \u2192 Apply label Identity/Yahoo",
+        "Open Gmail Settings → Filters and Blocked Addresses (link below)",
+        "Create filter: To has caseylsims@gmail.com → Apply label Identity/Gmail",
+        "Create filter: To has caseysims463@yahoo.com → Apply label Identity/Yahoo",
         "Optionally check 'Also apply to matching conversations'",
         "Save both filters"
       ],
@@ -147,9 +147,9 @@
       "id": "bitly-finish-signup",
       "priority": "low",
       "title": "Finish Bitly free signup (password step)",
-      "subtitle": "Only if you still want short links \u2014 signup was stuck on password",
+      "subtitle": "Only if you still want short links — signup was stuck on password",
       "steps": [
-        "Open the Bitly signup link below (or bitly.com \u2192 Sign up)",
+        "Open the Bitly signup link below (or bitly.com → Sign up)",
         "Complete email + password",
         "Verify email if asked",
         "Tell Chief of Staff when done so we can connect the connector"
@@ -170,7 +170,7 @@
         "Go to GitHub Settings (link below)",
         "Click Change username (once every 30 days)",
         "Type: Big-Brain-Ape (check availability first)",
-        "Confirm \u2014 repos/stars/followers move automatically",
+        "Confirm — repos/stars/followers move automatically",
         "Tell Chief of Staff when done so links get updated"
       ],
       "links": [
@@ -184,7 +184,7 @@
       "id": "virtuals-review",
       "priority": "low",
       "title": "Submit Virtuals Builder Review",
-      "subtitle": "Unlock Elite tier \u2014 compute credits (5 min form)",
+      "subtitle": "Unlock Elite tier — compute credits (5 min form)",
       "steps": [
         "Open the Virtuals Builder Review form",
         "Fill in Big Brain Ape project details",
