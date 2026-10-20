@@ -187,7 +187,11 @@ async def process_action(page, action):
     log(f"Processing {wo_number} - Action: {action_type}")
 
     try:
-        # Search for the work order
+        # Navigate back to main dashboard before each search
+        await page.goto(CORRIGO_URL, timeout=60000)
+        await asyncio.sleep(3)
+        
+        # Search for the work order - try multiple search methods
         search_box = await page.wait_for_selector('#header-search', timeout=10000)
         await search_box.fill('')
         await search_box.fill(wo_number)
@@ -197,6 +201,12 @@ async def process_action(page, action):
 
         # Click on the work order in search results
         wo_link = await page.query_selector(f'text="{wo_number}"')
+        if not wo_link:
+            # Try partial match - sometimes CorrigoPro formats numbers differently
+            # e.g. the dash might be different or there's a prefix
+            partial = wo_number.split('-')[0]
+            wo_link = await page.query_selector(f'text="{partial}"')
+        
         if wo_link:
             await wo_link.click()
             await asyncio.sleep(5)
@@ -240,9 +250,28 @@ async def process_action(page, action):
             work_description = action['workDescription']
             log(f"Adding work description to {wo_number}")
 
-            # Look for "Specify completion details" button
+            # Look for "Specify completion details" button - scroll to find it
             specify_btn = await page.query_selector('a:has-text("Specify completion details"), button:has-text("Specify completion details"), a:has-text("completion"), button:has-text("completion")')
+            
+            if not specify_btn:
+                # Button might be below the fold - scroll down to find it
+                for scroll_attempt in range(5):
+                    await page.evaluate(f'window.scrollBy(0, 500)')
+                    await asyncio.sleep(1)
+                    specify_btn = await page.query_selector('a:has-text("Specify completion details"), button:has-text("Specify completion details"), a:has-text("completion"), button:has-text("completion")')
+                    if specify_btn:
+                        break
+                
+                # Also try scrolling within any scrollable containers
+                if not specify_btn:
+                    await page.evaluate('document.querySelectorAll(".tab-content, .panel-body, .card-body, [style*=\"overflow\"]").forEach(el => el.scrollTop = el.scrollHeight)')
+                    await asyncio.sleep(2)
+                    specify_btn = await page.query_selector('a:has-text("Specify completion details"), button:has-text("Specify completion details"), a:has-text("completion"), button:has-text("completion")')
+            
             if specify_btn:
+                # Scroll the button into view before clicking
+                await specify_btn.scroll_into_view_if_needed()
+                await asyncio.sleep(1)
                 await specify_btn.click()
                 await asyncio.sleep(5)
                 log("Opened completion details page")
@@ -359,9 +388,27 @@ async def process_action(page, action):
                 log(f"Could not find work order {wo_number}")
                 return False
 
-            # Look for "Specify completion details" button or link
+            # Look for "Specify completion details" button or link - scroll to find it
             specify_btn = await page.query_selector('a:has-text("Specify completion details"), button:has-text("Specify completion details"), a:has-text("completion"), button:has-text("completion")')
+            
+            if not specify_btn:
+                # Button might be below the fold - scroll down to find it
+                for scroll_attempt in range(5):
+                    await page.evaluate(f'window.scrollBy(0, 500)')
+                    await asyncio.sleep(1)
+                    specify_btn = await page.query_selector('a:has-text("Specify completion details"), button:has-text("Specify completion details"), a:has-text("completion"), button:has-text("completion")')
+                    if specify_btn:
+                        break
+                
+                # Also try scrolling within scrollable containers
+                if not specify_btn:
+                    await page.evaluate('document.querySelectorAll(".tab-content, .panel-body, .card-body, [style*=\"overflow\"]").forEach(el => el.scrollTop = el.scrollHeight)')
+                    await asyncio.sleep(2)
+                    specify_btn = await page.query_selector('a:has-text("Specify completion details"), button:has-text("Specify completion details"), a:has-text("completion"), button:has-text("completion")')
+            
             if specify_btn:
+                await specify_btn.scroll_into_view_if_needed()
+                await asyncio.sleep(1)
                 await specify_btn.click()
                 await asyncio.sleep(5)
                 log("Opened completion details page")
@@ -556,6 +603,19 @@ async def main_async():
         
         if needs_acceptance_filter:
             await filter_waiting_for_acceptance(page)
+        else:
+            # For update/dispute/resolve actions, work orders are already accepted
+            # Need to clear any default filters so search can find them
+            log("Skipping Waiting for Acceptance filter (update/dispute actions)")
+            # Try to clear filters - look for a "Clear" or "Reset" button
+            try:
+                clear_btn = await page.query_selector('button:has-text("Clear"), button:has-text("Reset"), a:has-text("Clear"), a:has-text("Reset")')
+                if clear_btn:
+                    await clear_btn.click()
+                    await asyncio.sleep(2)
+                    log("Cleared filters")
+            except:
+                pass
 
         # Process each action
         for action in pending:

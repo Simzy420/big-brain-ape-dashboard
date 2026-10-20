@@ -770,7 +770,10 @@ async function sendPickup(){
     getData('corrigo_resolved')
   );
   allWos.forEach(w => {
-    if (w.workDescription || w.status === 'disputed' || w.status === 'resolved') {
+    // Only export update actions if they have ACTUAL finalize data (hours/rate/invoice)
+    // Don't export just because they have a work description - that's not enough to submit
+    const hasFinalizeData = w.hours || w.rate || w.invoiceNumber;
+    if (hasFinalizeData || w.status === 'disputed' || w.status === 'resolved') {
       actions.push({
         number: w.number,
         action: w.status === 'disputed' ? 'dispute' : (w.status === 'resolved' ? 'resolve' : 'update'),
