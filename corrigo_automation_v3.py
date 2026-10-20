@@ -181,6 +181,8 @@ async def process_action(page, action):
     5. Leave
     """
     wo_number = action['number']
+    # Fix common encoding issues - replace en-dash/em-dash with regular hyphen
+    wo_number = wo_number.replace('\u2013', '-').replace('\u2014', '-').replace('\u2010', '-').replace('\u2011', '-')
     action_type = action['action'].lower()
     bid_amount = action.get('bidAmount')
 
