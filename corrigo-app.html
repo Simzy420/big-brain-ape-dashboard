@@ -170,6 +170,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
   <button class="tab" onclick="show('disputed')">⚠️ Disputed <span id="disputedCount">0</span></button>
   <button class="tab" onclick="show('resolved')">✅ Resolved <span id="resolvedCount">0</span></button>
   <button class="tab" onclick="show('finalize')">📋 Finalize <span id="finalizeCount">0</span></button>
+  <button class="tab" onclick="show('completedtab')">✅ Completed <span id="completedTabCount">0</span></button>
   <button class="tab" onclick="show('addwo')">➕ Add WO</button>
   <button class="tab" onclick="show('settings')">Settings</button>
 </div>
@@ -194,6 +195,9 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
   </div>
   <div id="finalize" style="display:none">
     <div id="finalizeList"></div>
+  </div>
+  <div id="completedtab" style="display:none">
+    <div id="completedTabList"></div>
   </div>
   <div id="new" style="display:none">
     <div id="completedList"></div>
@@ -285,11 +289,11 @@ function getData(k){ try { return JSON.parse(localStorage.getItem(k)||'[]'); } c
 function saveData(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
 function handled(){
   const nums = new Set();
-  ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_completed','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_resolved'].forEach(k => getData(k).forEach(w => nums.add(String(w.number))));
+  ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_completed','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_resolved','corrigo_submitted'].forEach(k => getData(k).forEach(w => nums.add(String(w.number))));
   return nums;
 }
 function show(name){
-  ['inbox','accepted','declined','bidding','almostdue','overdue','disputed','resolved','finalize','new','addwo','settings'].forEach(id => document.getElementById(id).style.display = id===name ? 'block' : 'none');
+  ['inbox','accepted','declined','bidding','almostdue','overdue','disputed','resolved','finalize','completedtab','new','addwo','settings'].forEach(id => document.getElementById(id).style.display = id===name ? 'block' : 'none');
   if (name==='inbox') render();
   if (name==='accepted') render();
   if (name==='declined') render();
@@ -301,6 +305,7 @@ function show(name){
   if (name==='saved') render();
   if (name==='new') render();
   if (name==='finalize') render();
+  if (name==='completedtab') render();
 }
 function render(){
   const inbox = getData('corrigo_inbox');
@@ -384,6 +389,31 @@ function render(){
       return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${w.description ? '<p>'+w.description+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}${w.disputeResolved ? '<p style="color:#00cc66;font-size:16px;">✅ Dispute resolved</p>' : ''}${invoiceHtml}${totalHtml}${photosHtml}<div class="btn-row"><button class="big save" onclick="openCompleteForm('${w.id}')">📋 Enter Hours, Rate & Submit</button></div><div class="btn-row"><button class="wo-delete" onclick="deleteWo('${w.id}')" style="width:100%;margin-top:0;">🗑️ Delete Work Order</button></div></div>`;
     }).join('')
     : '<div class="card">No work orders ready to finalize.</div>';
+
+  // Render Submitted/Completed tab (WOs with finalize data entered, waiting for Corrigo submission)
+  const submitted = getData('corrigo_submitted');
+  const completedTabCountEl = document.getElementById('completedTabCount');
+  if (completedTabCountEl) completedTabCountEl.textContent = submitted.length;
+  document.getElementById('completedTabList').innerHTML = submitted.length > 0
+    ? submitted.map(w => {
+      const photosHtml = w.photos && w.photos.length > 0
+        ? `<div style="margin-top:8px;"><p style="color:#aaa;font-size:16px;">📸 ${w.photos.length} photo(s) attached</p></div>`
+        : '';
+      const matPart = w.materialsCost ? ' | Materials: $'+w.materialsCost : '';
+      const invoiceHtml = `<div style="margin-top:8px;color:#00cc66;font-size:16px;">✅ Hours: ${w.hours||'-'} | Rate: $${w.rate||'-'}/hr | Invoice: ${w.invoiceNumber||'-'}${matPart}</div>`;
+      const laborTotal = (parseFloat(w.hours)||0) * (parseFloat(w.rate)||0);
+      const matTotal = parseFloat(w.materialsCost)||0;
+      const grandTotal = laborTotal + matTotal;
+      const totalHtml = `<div style="margin-top:8px;background:#0f0f17;border:1px solid #00cc66;border-radius:12px;padding:12px;">
+             <p style="margin:0 0 4px 0;color:#aaa;font-size:16px;">Labor: $${laborTotal.toFixed(2)}</p>
+             ${matTotal > 0 ? `<p style="margin:0 0 4px 0;color:#aaa;font-size:16px;">Materials: $${matTotal.toFixed(2)}</p>` : ''}
+             <p style="margin:0;color:#00cc66;font-size:22px;font-weight:800;">TOTAL: $${grandTotal.toFixed(2)}</p>
+           </div>`;
+      const submittedStatus = w.corrigoSubmitted ? '<p style="color:#00cc66;font-size:16px;">✅ Submitted to Corrigo</p>' : '<p style="color:#ff9500;font-size:16px;">⏳ Waiting to be submitted to Corrigo</p>';
+      return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${w.description ? '<p>'+w.description+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}${invoiceHtml}${totalHtml}${photosHtml}${submittedStatus}</div>`;
+    }).join('')
+    : '<div class="card">No completed work orders waiting for Corrigo.</div>';
+
   const token = localStorage.getItem('github_token');
   document.getElementById('status').textContent = token ? 'Token saved on this phone.' : 'No token saved yet.';
 }
@@ -769,26 +799,52 @@ async function sendPickup(){
     getData('corrigo_disputed'),
     getData('corrigo_resolved')
   );
-  allWos.forEach(w => {
-    // Only export update actions if they have ACTUAL finalize data (hours/rate/invoice)
-    // Don't export just because they have a work description - that's not enough to submit
-    const hasFinalizeData = w.hours || w.rate || w.invoiceNumber;
-    if (hasFinalizeData || w.status === 'disputed' || w.status === 'resolved') {
+  // Only export WOs from the Completed tab (corrigo_submitted) - these have finalize data
+  const submitted = getData('corrigo_submitted');
+  submitted.forEach(w => {
+    actions.push({
+      number: w.number,
+      action: 'update',
+      workDescription: w.workDescription || '',
+      hours: w.hours || '',
+      rate: w.rate || '',
+      dateStarted: w.dateStarted || '',
+      dateCompleted: w.dateCompleted || '',
+      invoiceNumber: w.invoiceNumber || '',
+      location: w.location || '',
+      description: w.description || '',
+      status: 'submitted',
+      disputeReason: w.disputeReason || '',
+      disputedAmount: w.disputedAmount || '',
+      photos: w.photos || []
+    });
+  });
+  // Also export dispute/resolve actions
+  const allOthers = getData('corrigo_disputed').concat(getData('corrigo_resolved'));
+  allOthers.forEach(w => {
+    if (w.status === 'disputed') {
       actions.push({
         number: w.number,
-        action: w.status === 'disputed' ? 'dispute' : (w.status === 'resolved' ? 'resolve' : 'update'),
+        action: 'dispute',
         workDescription: w.workDescription || '',
-        hours: w.hours || '',
-        rate: w.rate || '',
-        dateStarted: w.dateStarted || '',
-        dateCompleted: w.dateCompleted || '',
-        invoiceNumber: w.invoiceNumber || '',
-        location: w.location || '',
-        description: w.description || '',
-        status: w.status || '',
         disputeReason: w.disputeReason || '',
         disputedAmount: w.disputedAmount || '',
-        photos: w.photos || []
+        hours: w.hours || '', rate: w.rate || '',
+        dateStarted: w.dateStarted || '', dateCompleted: w.dateCompleted || '',
+        invoiceNumber: w.invoiceNumber || '',
+        location: w.location || '', description: w.description || '',
+        status: w.status, photos: w.photos || []
+      });
+    } else if (w.status === 'resolved') {
+      actions.push({
+        number: w.number,
+        action: 'resolve',
+        workDescription: w.workDescription || '',
+        hours: w.hours || '', rate: w.rate || '',
+        dateStarted: w.dateStarted || '', dateCompleted: w.dateCompleted || '',
+        invoiceNumber: w.invoiceNumber || '',
+        location: w.location || '', description: w.description || '',
+        status: w.status, photos: w.photos || []
       });
     }
   });
@@ -1084,12 +1140,20 @@ function saveCompleteForm(id){
     if (!wo.photos) wo.photos = [];
     wo.photos = wo.photos.concat(completePhotos);
   }
+  // Move from Finalize (corrigo_completed) to Completed tab (corrigo_submitted)
+  const idx = completed.findIndex(w => w.id === id);
+  if (idx >= 0) completed.splice(idx, 1);
   saveData('corrigo_completed', completed);
+  let submitted = getData('corrigo_submitted');
+  if (!submitted.find(w => String(w.number) === String(wo.number))) {
+    submitted.unshift(wo);
+  }
+  saveData('corrigo_submitted', submitted);
   completePhotos = [];
   render();
-  show('finalize');
+  show('completedtab');
   sendPickup();
-  alert('✅ Data saved! Will be submitted to Corrigo.');
+  alert('✅ Moved to Completed tab! Will be submitted to Corrigo automatically.');
 }
 
 function addManualWo(){
@@ -1149,7 +1213,7 @@ async function loadJobs(){
       actions.forEach(act => {
         const num = String(act.number);
         // Check all tabs for this WO
-        const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_disputed'];
+        const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_submitted','corrigo_disputed'];
         let foundWo = null;
         let foundTab = null;
         for (const tab of allTabs) {
