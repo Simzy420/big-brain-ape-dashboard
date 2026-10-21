@@ -171,6 +171,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
   <button class="tab" onclick="show('resolved')">✅ Resolved <span id="resolvedCount">0</span></button>
   <button class="tab" onclick="show('finalize')">📋 Finalize <span id="finalizeCount">0</span></button>
   <button class="tab" onclick="show('completedtab')">✅ Completed <span id="completedTabCount">0</span></button>
+  <button class="tab" onclick="show('senttocorrigo')">📤 Sent In to Corrigo <span id="sentToCorrigoCount">0</span></button>
   <button class="tab" onclick="show('addwo')">➕ Add WO</button>
   <button class="tab" onclick="show('settings')">Settings</button>
 </div>
@@ -198,6 +199,9 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
   </div>
   <div id="completedtab" style="display:none">
     <div id="completedTabList"></div>
+  </div>
+  <div id="senttocorrigo" style="display:none">
+    <div id="sentToCorrigoList"></div>
   </div>
   <div id="new" style="display:none">
     <div id="completedList"></div>
@@ -289,11 +293,11 @@ function getData(k){ try { return JSON.parse(localStorage.getItem(k)||'[]'); } c
 function saveData(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
 function handled(){
   const nums = new Set();
-  ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_completed','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_resolved','corrigo_submitted'].forEach(k => getData(k).forEach(w => nums.add(String(w.number))));
+  ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_completed','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_resolved','corrigo_submitted','corrigo_sent_to_corrigo'].forEach(k => getData(k).forEach(w => nums.add(String(w.number))));
   return nums;
 }
 function show(name){
-  ['inbox','accepted','declined','bidding','almostdue','overdue','disputed','resolved','finalize','completedtab','new','addwo','settings'].forEach(id => document.getElementById(id).style.display = id===name ? 'block' : 'none');
+  ['inbox','accepted','declined','bidding','almostdue','overdue','disputed','resolved','finalize','completedtab','senttocorrigo','new','addwo','settings'].forEach(id => document.getElementById(id).style.display = id===name ? 'block' : 'none');
   if (name==='inbox') render();
   if (name==='accepted') render();
   if (name==='declined') render();
@@ -306,6 +310,7 @@ function show(name){
   if (name==='new') render();
   if (name==='finalize') render();
   if (name==='completedtab') render();
+  if (name==='senttocorrigo') render();
 }
 function render(){
   const inbox = getData('corrigo_inbox');
@@ -362,7 +367,18 @@ function render(){
   if (resolvedEl) resolvedEl.innerHTML = resolved.length > 0
     ? resolved.map(w => resolvedCard(w)).join('')
     : '<div class="card">No resolved work orders.</div>';
-  // Render completed work orders in the Finalize tab
+  // Render Sent In to Corrigo tab
+  const sentToCorrigo = getData('corrigo_sent_to_corrigo');
+  const sentCountEl = document.getElementById('sentToCorrigoCount');
+  if (sentCountEl) sentCountEl.textContent = sentToCorrigo.length;
+  const sentListEl = document.getElementById('sentToCorrigoList');
+  if (sentListEl) {
+    sentListEl.innerHTML = sentToCorrigo.length > 0
+      ? sentToCorrigo.map(w => card(w, false)).join('')
+      : '<div class="card">No work orders sent to Corrigo yet.</div>';
+  }
+
+    // Render completed work orders in the Finalize tab
   const completed = getData('corrigo_completed');
   const finalizeCount = completed.length;
   const finalizeEl = document.getElementById('finalizeCount');
@@ -1252,7 +1268,25 @@ function addManualWo(){
   alert('Added to inbox!');
 }
 
-async function loadJobs(){
+async 
+function moveToSentToCorrigo(woNumber) {
+  const completed = getData('corrigo_completed');
+  const idx = completed.findIndex(w => String(w.number) === String(woNumber));
+  if (idx < 0) return false;
+  const wo = completed.splice(idx, 1)[0];
+  wo.status = 'sent_to_corrigo';
+  wo.sentAt = new Date().toISOString();
+  saveData('corrigo_completed', completed);
+  let sent = getData('corrigo_sent_to_corrigo');
+  if (!sent.find(w => String(w.number) === String(woNumber))) {
+    sent.unshift(wo);
+  }
+  saveData('corrigo_sent_to_corrigo', sent);
+  render();
+  return true;
+}
+
+function loadJobs(){
   // 1. Load new work orders from work-orders.json
   const res = await fetch('work-orders.json?v=' + Date.now());
   const jobs = await res.json();
