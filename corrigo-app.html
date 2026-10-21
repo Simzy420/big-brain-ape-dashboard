@@ -410,7 +410,7 @@ function render(){
              <p style="margin:0;color:#00cc66;font-size:22px;font-weight:800;">TOTAL: $${grandTotal.toFixed(2)}</p>
            </div>`;
       const submittedStatus = w.corrigoSubmitted ? '<p style="color:#00cc66;font-size:16px;">✅ Submitted to Corrigo</p>' : '<p style="color:#ff9500;font-size:16px;">⏳ Waiting to be submitted to Corrigo</p>';
-      return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${w.description ? '<p>'+w.description+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}${invoiceHtml}${totalHtml}${photosHtml}${submittedStatus}</div>`;
+      return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${w.description ? '<p>'+w.description+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}${invoiceHtml}${totalHtml}${photosHtml}${submittedStatus}<div class="btn-row" style="margin-top:12px;"><button class="big save" onclick="editSubmittedForm('${w.id}')">✏️ Edit Invoice Details</button></div></div>`;
     }).join('')
     : '<div class="card">No completed work orders waiting for Corrigo.</div>';
 
@@ -1147,8 +1147,16 @@ function handleCompletePhoto(input) {
 }
 
 function saveCompleteForm(id){
-  const completed = getData('corrigo_completed');
-  const wo = completed.find(w => w.id === id);
+  // Check corrigo_completed first (Finalize tab)
+  let completed = getData('corrigo_completed');
+  let wo = completed.find(w => w.id === id);
+  let fromTab = 'corrigo_completed';
+  if (!wo) {
+    // Check corrigo_submitted (Completed tab - editing existing)
+    let submitted = getData('corrigo_submitted');
+    wo = submitted.find(w => w.id === id);
+    fromTab = 'corrigo_submitted';
+  }
   if (!wo) { alert('Work order not found'); return; }
   wo.hours = document.getElementById('cf_hours').value;
   wo.rate = document.getElementById('cf_rate').value;
@@ -1160,20 +1168,63 @@ function saveCompleteForm(id){
     if (!wo.photos) wo.photos = [];
     wo.photos = wo.photos.concat(completePhotos);
   }
-  // Move from Finalize (corrigo_completed) to Completed tab (corrigo_submitted)
-  const idx = completed.findIndex(w => w.id === id);
-  if (idx >= 0) completed.splice(idx, 1);
-  saveData('corrigo_completed', completed);
-  let submitted = getData('corrigo_submitted');
-  if (!submitted.find(w => String(w.number) === String(wo.number))) {
-    submitted.unshift(wo);
+  if (fromTab === 'corrigo_completed') {
+    // Move from Finalize to Completed tab
+    const idx = completed.findIndex(w => w.id === id);
+    if (idx >= 0) completed.splice(idx, 1);
+    saveData('corrigo_completed', completed);
+    let submitted = getData('corrigo_submitted');
+    if (!submitted.find(w => String(w.number) === String(wo.number))) {
+      submitted.unshift(wo);
+    }
+    saveData('corrigo_submitted', submitted);
+  } else {
+    // Already in Submitted - update in place
+    let submitted = getData('corrigo_submitted');
+    const idx = submitted.findIndex(w => w.id === id);
+    if (idx >= 0) {
+      submitted[idx] = wo;
+      saveData('corrigo_submitted', submitted);
+    }
   }
-  saveData('corrigo_submitted', submitted);
   completePhotos = [];
   render();
   show('completedtab');
   sendPickup();
-  alert('✅ Moved to Completed tab! Will be submitted to Corrigo automatically.');
+  alert('✅ Invoice details saved! Will be submitted to Corrigo automatically.');
+}
+
+function editSubmittedForm(id){
+  const submitted = getData('corrigo_submitted');
+  const wo = submitted.find(w => w.id === id);
+  if (!wo) { alert('Work order not found'); return; }
+  document.getElementById('completedTabList').innerHTML = `
+    <div class="card">
+      <div class="wo-card-header"><strong>${wo.number}</strong></div>
+      ${wo.description ? '<p>'+wo.description+'</p>' : ''}
+      ${wo.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+wo.workDescription+'</p>' : ''}
+      <h2 style="margin:8px 0;font-size:22px;">✏️ Edit Invoice Details</h2>
+      <input id="cf_hours" type="number" step="0.5" inputmode="decimal" placeholder="Hours worked" style="margin-bottom:10px;" value="${wo.hours||''}">
+      <input id="cf_rate" type="number" step="0.01" inputmode="decimal" placeholder="Hourly Rate ($)" style="margin-bottom:10px;" value="${wo.rate||''}">
+      <div class="field-row" style="margin-bottom:10px;">
+        <div class="field"><label style="color:#aaa;font-size:16px;">Start Date</label><input id="cf_dateStart" type="date" value="${wo.dateStarted||''}" style="margin-top:4px;"></div>
+        <div class="field"><label style="color:#aaa;font-size:16px;">End Date</label><input id="cf_dateEnd" type="date" value="${wo.dateCompleted||''}" style="margin-top:4px;"></div>
+      </div>
+      <input id="cf_invoice" type="text" placeholder="Invoice Number" style="margin-bottom:10px;" value="${wo.invoiceNumber||''}">
+      <input id="cf_materials" type="number" step="0.01" inputmode="decimal" placeholder="Materials Cost ($)" style="margin-bottom:10px;" value="${wo.materialsCost||''}">
+      <h2 style="margin:8px 0;font-size:22px;">📸 Upload Photos</h2>
+      <input type="file" id="cf_photo" accept="image/*" multiple style="margin-bottom:10px;width:100%;font-size:16px;" onchange="handleCompletePhoto(this)">
+      <div id="cf_photoPreview" style="display:none;"></div>
+      <div class="btn-row" style="margin-top:12px;">
+        <button class="big accept" onclick="saveCompleteForm('${id}')">✅ Save Changes</button>
+        <button class="big decline" onclick="render();show('completedtab');">Cancel</button>
+      </div>
+    </div>`;
+  if (wo.photos && wo.photos.length > 0) {
+    const previewDiv = document.getElementById('cf_photoPreview');
+    previewDiv.style.display = 'block';
+    previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Existing photos:</p>' + wo.photos.map((p,i) => `<img src="${p.data}" style="width:100%;border-radius:12px;margin-bottom:8px;">`).join('');
+  }
 }
 
 function addManualWo(){
