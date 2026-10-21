@@ -799,7 +799,27 @@ async function sendPickup(){
     getData('corrigo_disputed'),
     getData('corrigo_resolved')
   );
-  // Only export WOs from the Completed tab (corrigo_submitted) - these have finalize data
+  // Export WOs from the Completed tab (corrigo_completed) - these have finalize data
+  const completed = getData('corrigo_completed');
+  completed.forEach(w => {
+    actions.push({
+      number: w.number,
+      action: 'update',
+      workDescription: w.workDescription || w.description || '',
+      hours: w.hours || '',
+      rate: w.rate || '',
+      dateStarted: w.dateStarted || '',
+      dateCompleted: w.dateCompleted || '',
+      invoiceNumber: w.invoiceNumber || '',
+      location: w.location || '',
+      description: w.description || '',
+      status: 'completed',
+      disputeReason: w.disputeReason || '',
+      disputedAmount: w.disputedAmount || '',
+      photos: w.photos || []
+    });
+  });
+  // Also export submitted WOs
   const submitted = getData('corrigo_submitted');
   submitted.forEach(w => {
     actions.push({
