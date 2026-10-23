@@ -14,8 +14,9 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 :root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#e6edf3;--text2:#8b949e;--blue:#58a6ff;--green:#3fb950;--red:#f85149;--orange:#f0883e;--yellow:#d29922}
+[data-theme="light"]{--bg:#f6f8fa;--card:#ffffff;--border:#d0d7de;--text:#1f2328;--text2:#656d76;--blue:#0969da;--green:#1a7f37;--red:#cf222e;--orange:#bc4c00;--yellow:#9a6700}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size: 17px;line-height:1.5;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size: 17px;line-height:1.5;-webkit-tap-highlight-color:transparent;transition:background .3s,color .3s}
 .app{max-width:500px;margin:0 auto;padding-bottom:calc(var(--bba-nav-h, 68px) + 12px)}
 .header{text-align:center;padding:16px 20px 10px 72px;position:relative}
 .header h1{font-size: 32px;font-weight:700}
@@ -23,6 +24,8 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .header p{color:var(--text2);font-size: 16px;margin-top:4px}
 .back-btn{position:absolute;left:12px;top:50%;transform:translateY(-50%);background:var(--card);border:1px solid var(--border);color:var(--blue);font-size: 17px;font-weight:600;cursor:pointer;padding:6px 12px;border-radius:8px;display:flex;align-items:center;gap:4px;white-space:nowrap}
 .back-btn:active{background:var(--border);opacity:.8}
+.theme-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:var(--card);border:1px solid var(--border);color:var(--text);font-size:20px;cursor:pointer;padding:6px 10px;border-radius:8px;line-height:1}
+.theme-toggle:active{background:var(--border);opacity:.8}
 
 /* NAV */
 .nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:500px;background:var(--card);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:6px 0 calc(6px + env(safe-area-inset-bottom, 0px));z-index:100}
@@ -438,6 +441,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <div id="view-home" class="view active">
 <div class="header">
 <button id="menuBtn" onclick="openSideMenu()" style="position:absolute;left:18px;top:16px;background:none;border:none;color:var(--text);font-size:26px;cursor:pointer;padding:8px;z-index:6;line-height:1">☰</button>
+<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
 <h1>Big Brain <span>Ape</span> 🦍</h1>
 </div>
 
@@ -754,6 +758,24 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 </div>
 
 <script>
+// ==============================
+// THEME TOGGLE
+// ==============================
+(function(){
+  var t=localStorage.getItem('bba-theme');
+  if(t==='light')document.documentElement.setAttribute('data-theme','light');
+})();
+function toggleTheme(){
+  var html=document.documentElement;
+  var isLight=html.getAttribute('data-theme')==='light';
+  if(isLight){html.removeAttribute('data-theme');localStorage.setItem('bba-theme','dark');document.getElementById('themeBtn').textContent='🌙';}
+  else{html.setAttribute('data-theme','light');localStorage.setItem('bba-theme','light');document.getElementById('themeBtn').textContent='☀️';}
+  // Re-render charts with new colors
+  if(typeof Chart!=='undefined'){Chart.defaults.color=getComputedStyle(document.body).getPropertyValue('--text2').trim();}
+}
+// Set initial icon
+if(localStorage.getItem('bba-theme')==='light'){document.addEventListener('DOMContentLoaded',function(){var b=document.getElementById('themeBtn');if(b)b.textContent='☀️';});}
+
 // ==============================
 // CONFIG
 // ==============================
