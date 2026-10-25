@@ -1308,22 +1308,29 @@ async function loadJobs(){
 
     let inbox = getData('corrigo_inbox');
     let disputed = getData('corrigo_disputed');
-    const seen = handled();
 
     if (Array.isArray(jobs)) {
-      // First, remove any WOs from localStorage that have a different status on GitHub
+      // Sync status changes from GitHub: if a WO's status changed, move it to the right tab
       jobs.forEach(w => {
-        const nums = [String(w.number)];
-        // Check if this WO is in corrigo_completed but should be elsewhere
+        const num = String(w.number);
         if (w.status === 'sent_to_corrigo') {
+          // Remove from corrigo_completed if it's there
           let completed = getData('corrigo_completed');
-          const idx = completed.findIndex(x => String(x.number) === nums[0]);
-          if (idx >= 0) {
-            completed.splice(idx, 1);
+          const cIdx = completed.findIndex(x => String(x.number) === num);
+          if (cIdx >= 0) {
+            completed.splice(cIdx, 1);
             saveData('corrigo_completed', completed);
+          }
+          // Add to corrigo_sent_to_corrigo if not already there
+          let sent = getData('corrigo_sent_to_corrigo');
+          if (!sent.find(x => String(x.number) === num)) {
+            sent.unshift(w);
+            saveData('corrigo_sent_to_corrigo', sent);
           }
         }
       });
+      // Rebuild seen AFTER status sync so moved WOs aren't skipped
+      const seen = handled();
       jobs.forEach(w => {
         if (seen.has(String(w.number))) return;
         if (w.status === 'disputed') {
