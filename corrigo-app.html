@@ -159,7 +159,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders</p></header>
+<header><h1>Sims Construction</h1><p>Work orders</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -291,6 +291,13 @@ let currentPhoto = null;
 let lineItemCount = 0;
 function getData(k){ try { return JSON.parse(localStorage.getItem(k)||'[]'); } catch(e){ return []; } }
 function saveData(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+async function forceReload(){
+  // Clear all WO arrays and re-fetch from GitHub
+  ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_completed','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_resolved','corrigo_submitted','corrigo_sent_to_corrigo'].forEach(k => localStorage.removeItem(k));
+  await loadJobs();
+  render();
+  alert('✅ Reloaded from server!');
+}
 function handled(){
   const nums = new Set();
   ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_completed','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_resolved','corrigo_submitted','corrigo_sent_to_corrigo'].forEach(k => getData(k).forEach(w => nums.add(String(w.number))));
