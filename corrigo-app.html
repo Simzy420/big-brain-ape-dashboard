@@ -1,1 +1,1515 @@
-PLACEHOLDER_REAL_CONTENT_NEXT
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sims Construction — Work Orders</title>
+<style>
+body { margin:0; background:#0f0f17; color:#fff; font-family:-apple-system,sans-serif; }
+header { padding:16px; background:linear-gradient(135deg,#0099ff,#00cc66); position:sticky; top:0; }
+h1 { margin:0; font-size:24px; }
+.tabs { display:flex; gap:8px; overflow:auto; padding:12px; }
+.tab { background:#1c1c2e; border:0; color:#fff; border-radius:12px; padding:12px 14px; font-size:18px; font-weight:700; }
+.wrap { padding:12px; }
+.card { background:#1c1c2e; border-radius:16px; padding:16px; margin-bottom:12px; }
+button.big { width:100%; border:0; border-radius:12px; padding:16px; font-size:22px; font-weight:800; color:#fff; margin-top:8px; }
+.accept { background:#00cc66; }
+.decline { background:#ff3b30; }
+.card strong { font-size: 25px; }
+.card .wo-est {
+  font-size: 26px;
+  font-weight: 800;
+  color: #00cc66;
+  white-space: nowrap;
+}
+.btn-row { display: flex; gap: 8px; margin-top: 8px; }
+.btn-row button { flex: 1; }
+.card .wo-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card p { font-size: 23px; line-height: 1.4; }
+.email-btn {
+  display: block;
+  width: 100%;
+  background: rgba(0,153,255,0.15);
+  border: 1px solid #0099ff;
+  color: #0099ff;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 8px;
+  cursor: pointer;
+}
+.email-btn:active { background: rgba(0,153,255,0.3); }
+.email-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 20px;
+}
+.email-modal.show { display: flex; }
+
+/* FIELD ROW */
+.field-row { display: flex; gap: 12px; }
+.field-row .field { flex: 1; }
+
+/* LINE ITEMS */
+.line-item {
+  background: #1c1c2e;
+  border: 2px solid #333;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.line-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.line-item-header h4 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0099ff;
+  margin: 0;
+}
+.line-item-remove {
+  background: #ff3b30;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.wo-delete {
+  background: #ff3b30;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-left: 8px;
+}
+.line-item .field { margin-bottom: 10px; }
+.line-item .field label { font-size: 16px; }
+.line-item .field input { font-size: 20px; padding: 12px; }
+.line-item .field select { font-size: 20px; padding: 12px; width: 100%; box-sizing: border-box; border-radius: 12px; border: 0; }
+
+/* ADD ITEM BUTTON */
+.add-item-btn {
+  background: transparent;
+  border: 2px dashed #0099ff;
+  color: #0099ff;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* PHOTO BUTTONS */
+.photo-buttons { display: flex; gap: 12px; }
+.photo-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: #1c1c2e;
+  border: 3px solid #333;
+  border-radius: 14px;
+  padding: 24px 12px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+}
+.photo-btn:active { border-color: #0099ff; background: rgba(0,153,255,0.1); }
+.photo-btn-icon { font-size: 40px; }
+.photo-preview {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 12px;
+  display: none;
+}
+.photo-preview.show { display: block; }
+.photo-filename {
+  font-size: 18px;
+  color: #00cc66;
+  margin-top: 8px;
+}
+
+.save { background:#0099ff; }
+input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-radius:12px; border:0; }
+.muted { color:#aaa; font-size:16px; }
+</style>
+</head>
+<body>
+<header><h1>Sims Construction</h1><p>Work orders</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<div class="tabs">
+  <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
+  <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
+  <button class="tab" onclick="show('declined')">Declined <span id="declinedCount">0</span></button>
+  <button class="tab" onclick="show('bidding')">Bidding <span id="biddingCount">0</span></button>
+  <button class="tab" onclick="show('almostdue')">⚠️ Almost Due <span id="almostDueCount">0</span></button>
+  <button class="tab" onclick="show('overdue')">⏰ Overdue <span id="overdueCount">0</span></button>
+  <button class="tab" onclick="show('disputed')">⚠️ Disputed <span id="disputedCount">0</span></button>
+  <button class="tab" onclick="show('resolved')">✅ Resolved <span id="resolvedCount">0</span></button>
+  <button class="tab" onclick="show('finalize')">📋 Finalize <span id="finalizeCount">0</span></button>
+  <button class="tab" onclick="show('completedtab')">✅ Completed <span id="completedTabCount">0</span></button>
+  <button class="tab" onclick="show('senttocorrigo')">📤 Sent In to Corrigo <span id="sentToCorrigoCount">0</span></button>
+  <button class="tab" onclick="show('addwo')">➕ Add WO</button>
+  <button class="tab" onclick="show('settings')">Settings</button>
+</div>
+<div class="wrap">
+  <div id="inbox"></div>
+  <div id="accepted" style="display:none"></div>
+  <div id="declined" style="display:none"></div>
+  <div id="bidding" style="display:none"></div>
+  <div id="almostdue" style="display:none"></div>
+  <div id="overdue" style="display:none"></div>
+  <div id="disputed" style="display:none"></div>
+  <div id="resolved" style="display:none"></div>
+  <div id="addwo" style="display:none">
+    <div class="card">
+      <h2 style="margin:0 0 8px 0;">➕ Add Work Order</h2>
+      <p class="muted">Manually add a work order to the inbox.</p>
+      <input id="manualWoNumber" type="text" placeholder="Work Order Number (e.g. 15013259-00415)" style="margin-bottom:10px;">
+      <input id="manualWoDesc" type="text" placeholder="Description" style="margin-bottom:10px;">
+      <input id="manualWoLoc" type="text" placeholder="Location (optional)" style="margin-bottom:10px;">
+      <button class="big accept" onclick="addManualWo()">➕ Add to Inbox</button>
+    </div>
+  </div>
+  <div id="finalize" style="display:none">
+    <div id="finalizeList"></div>
+  </div>
+  <div id="completedtab" style="display:none">
+    <div id="completedTabList"></div>
+  </div>
+  <div id="senttocorrigo" style="display:none">
+    <div id="sentToCorrigoList"></div>
+  </div>
+  <div id="new" style="display:none">
+    <div id="completedList"></div>
+    <div class="card">
+      <h2 style="margin:0 0 8px 0;">💵 Labor & Materials</h2>
+      <div id="lineItems"></div>
+      <button class="add-item-btn" onclick="addLineItem()">+ Add Labor or Material</button>
+    </div>
+
+    <div class="card">
+      <h2 style="margin:0 0 8px 0;">📸 Job Photo</h2>
+      <div class="photo-buttons">
+        <button class="photo-btn" onclick="document.getElementById('photoInputCamera').click()">
+          <span class="photo-btn-icon">📷</span>
+          <span>Take Photo</span>
+        </button>
+        <button class="photo-btn" onclick="document.getElementById('photoInputGallery').click()">
+          <span class="photo-btn-icon">🖼️</span>
+          <span>Choose from Photos</span>
+        </button>
+      </div>
+      <input type="file" id="photoInputCamera" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(this)">
+      <input type="file" id="photoInputGallery" accept="image/*" style="display:none" onchange="handlePhoto(this)">
+      <img class="photo-preview" id="photoPreview">
+      <div class="photo-filename" id="photoFilename"></div>
+    </div>
+
+    <button class="big save" onclick="generateSummary()">✅ Generate Summary</button>
+    <div style="height:12px"></div>
+    <button class="big decline" onclick="clearForm()">🗑️ Clear Form</button>
+  </div>
+
+  <div id="settings" style="display:none">
+    <div class="card">
+      <p class="muted">Paste the GitHub token once. It stays on this phone.</p>
+      <input id="token" type="password" placeholder="ghp_...">
+      <button class="big save" onclick="saveToken()">Save Token</button>
+      <p id="status" class="muted"></p>
+    </div>
+    <div class="card">
+      <h2 style="margin:0 0 8px 0;">Reset App</h2>
+      <p class="muted">Clear all local data and reload work orders from scratch.</p>
+      <button class="big decline" onclick="if(confirm('Clear all data? This will reset the app.')){localStorage.clear();location.reload();}">🗑️ Clear All Data & Reload</button>
+    </div>
+  </div>
+</div>
+
+<!-- BID MODAL -->
+<div id="bidModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:999; align-items:center; justify-content:center;">
+  <div class="card" style="max-width:400px; margin:auto;">
+    <h2 style="margin:0 0 12px 0;">🔨 Enter Bid Amount</h2>
+    <p class="muted">How much will you quote for this job?</p>
+    <input id="bidAmount" type="number" placeholder="0.00" step="0.01" inputmode="decimal">
+    <input id="bidWoId" type="hidden">
+    <button class="big accept" onclick="submitBid()">✅ Submit Bid</button>
+    <button class="big decline" onclick="closeBidModal()" style="margin-top:8px;">Cancel</button>
+  </div>
+</div>
+<!-- WORK DESCRIPTION MODAL -->
+<div class="email-modal" id="workDescModal" onclick="if(event.target===this)closeWorkDescModal()">
+  <div class="card" style="width:90%;max-width:600px;max-height:80vh;display:flex;flex-direction:column;margin:auto;overflow:hidden;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-shrink:0;">
+      <h2 style="margin:0;">📝 Work Description</h2>
+      <button onclick="closeWorkDescModal()" style="background:#1c1c2e;border:none;color:#fff;font-size:28px;width:44px;height:44px;border-radius:50%;cursor:pointer;flex-shrink:0;">✕</button>
+    </div>
+    <p style="color:#aaa;font-size:20px;margin-bottom:12px;flex-shrink:0;">What did you do at this job?</p>
+    <input id="workDescWoId" type="hidden">
+    <textarea id="workDescText" style="width:100%;font-size:22px;padding:14px;border-radius:12px;border:0;background:#0f0f17;color:#fff;min-height:200px;flex:1;resize:none;-webkit-overflow-scrolling:touch;" placeholder="Describe the work you did..."></textarea>
+    <button class="big save" onclick="saveWorkDesc()" style="margin-top:12px;flex-shrink:0;">💾 Save Description</button>
+  </div>
+</div>
+
+<!-- EMAIL MODAL -->
+<div class="email-modal" id="emailModal" onclick="if(event.target===this)closeEmailModal()">
+  <div class="card" style="width:90%;max-width:600px;max-height:80vh;display:flex;flex-direction:column;margin:auto;overflow:hidden;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-shrink:0;">
+      <h2 style="margin:0;">📧 Original Email</h2>
+      <button onclick="closeEmailModal()" style="background:#1c1c2e;border:none;color:#fff;font-size:28px;width:44px;height:44px;border-radius:50%;cursor:pointer;flex-shrink:0;">✕</button>
+    </div>
+    <div id="emailModalSubject" style="color:#aaa;font-size:20px;margin-bottom:12px;border-bottom:1px solid #1c1c2e;padding-bottom:12px;flex-shrink:0;"></div>
+    <div id="emailModalBody" style="white-space:pre-wrap;font-size:18px;line-height:1.6;overflow-y:auto;flex:1;color:#fff;-webkit-overflow-scrolling:touch;"></div>
+  </div>
+</div>
+
+<script>
+let currentPhoto = null;
+let lineItemCount = 0;
+function getData(k){ try { return JSON.parse(localStorage.getItem(k)||'[]'); } catch(e){ return []; } }
+function saveData(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+async function forceReload(){
+  // DO NOT wipe localStorage — only re-fetch from GitHub and sync
+  // This preserves all existing data (completed, submitted, etc.)
+  await loadJobs();
+  render();
+  alert('✅ Synced from server!');
+}
+function handled(){
+  const nums = new Set();
+  ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_completed','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_resolved','corrigo_submitted','corrigo_sent_to_corrigo'].forEach(k => getData(k).forEach(w => nums.add(String(w.number))));
+  return nums;
+}
+function show(name){
+  ['inbox','accepted','declined','bidding','almostdue','overdue','disputed','resolved','finalize','completedtab','senttocorrigo','new','addwo','settings'].forEach(id => document.getElementById(id).style.display = id===name ? 'block' : 'none');
+  if (name==='inbox') render();
+  if (name==='accepted') render();
+  if (name==='declined') render();
+  if (name==='bidding') render();
+  if (name==='almostdue') render();
+  if (name==='overdue') render();
+  if (name==='disputed') render();
+  if (name==='resolved') render();
+  if (name==='saved') render();
+  if (name==='new') render();
+  if (name==='finalize') render();
+  if (name==='completedtab') render();
+  if (name==='senttocorrigo') render();
+}
+function render(){
+  const inbox = getData('corrigo_inbox');
+  const accepted = getData('corrigo_accepted');
+  const declined = getData('corrigo_declined');
+  const bidding = getData('corrigo_bidding');
+  document.getElementById('inboxCount').textContent = inbox.length;
+  document.getElementById('acceptedCount').textContent = accepted.length;
+  document.getElementById('declinedCount').textContent = declined.length;
+  document.getElementById('biddingCount').textContent = bidding.length;
+  document.getElementById('inbox').innerHTML = inbox.map(w => card(w,true)).join('') || '<div class="card">No jobs in inbox.</div>';
+  document.getElementById('accepted').innerHTML = accepted.map(w => card(w,false)).join('') || '<div class="card">Nothing accepted yet.</div>';
+  document.getElementById('declined').innerHTML = declined.map(w => card(w,false)).join('') || '<div class="card">Nothing declined.</div>';
+  document.getElementById('bidding').innerHTML = bidding.map(w => card(w,false)).join('') || '<div class="card">No bids submitted.</div>';
+  const saved = getData('corrigo_saved');
+  const savedCountEl = document.getElementById('savedCount');
+  if (savedCountEl) savedCountEl.textContent = saved.length;
+  const savedEl = document.getElementById('saved');
+  if (savedEl) savedEl.innerHTML = saved.map(w => card(w,true)).join('') || '<div class="card">Nothing saved yet.</div>';
+  const now = new Date();
+  const sevenDays = new Date(now.getTime() + 7*24*60*60*1000);
+  const overdueList = [];
+  const almostDueList = [];
+  accepted.forEach(w => {
+    if (w.dueDate) {
+      const due = new Date(w.dueDate);
+      if (due < now) overdueList.push(w);
+      else if (due <= sevenDays) almostDueList.push(w);
+    }
+  });
+  // Also check inbox items
+  inbox.forEach(w => {
+    if (w.dueDate) {
+      const due = new Date(w.dueDate);
+      if (due < now) overdueList.push(w);
+      else if (due <= sevenDays) almostDueList.push(w);
+    }
+  });
+  document.getElementById('overdueCount').textContent = overdueList.length;
+  document.getElementById('almostDueCount').textContent = almostDueList.length;
+  document.getElementById('overdue').innerHTML = overdueList.map(w => card(w,false)).join('') || '<div class="card">Nothing overdue. ✅</div>';
+  document.getElementById('almostdue').innerHTML = almostDueList.map(w => card(w,false)).join('') || '<div class="card">Nothing due in the next 7 days.</div>';
+  // Render disputed work orders
+  const disputed = getData('corrigo_disputed');
+  document.getElementById('disputedCount').textContent = disputed.length;
+  document.getElementById('disputed').innerHTML = disputed.length > 0
+    ? disputed.map(w => disputedCard(w)).join('')
+    : '<div class="card">No disputed work orders.</div>';
+  // Render resolved work orders
+  const resolved = getData('corrigo_resolved');
+  const resolvedCountEl = document.getElementById('resolvedCount');
+  if (resolvedCountEl) resolvedCountEl.textContent = resolved.length;
+  const resolvedEl = document.getElementById('resolved');
+  if (resolvedEl) resolvedEl.innerHTML = resolved.length > 0
+    ? resolved.map(w => resolvedCard(w)).join('')
+    : '<div class="card">No resolved work orders.</div>';
+  // Render Sent In to Corrigo tab
+  const sentToCorrigo = getData('corrigo_sent_to_corrigo');
+  const sentCountEl = document.getElementById('sentToCorrigoCount');
+  if (sentCountEl) sentCountEl.textContent = sentToCorrigo.length;
+  const sentListEl = document.getElementById('sentToCorrigoList');
+  if (sentListEl) {
+    sentListEl.innerHTML = sentToCorrigo.length > 0
+      ? sentToCorrigo.map(w => card(w, false)).join('')
+      : '<div class="card">No work orders sent to Corrigo yet.</div>';
+  }
+
+    // Render completed work orders in the Finalize tab
+  const completed = getData('corrigo_completed');
+  const finalizeCount = completed.length;
+  const finalizeEl = document.getElementById('finalizeCount');
+  if (finalizeEl) finalizeEl.textContent = finalizeCount;
+  document.getElementById('finalizeList').innerHTML = completed.length > 0
+    ? completed.map(w => {
+      const photosHtml = w.photos && w.photos.length > 0
+        ? `<div style="margin-top:8px;"><p style="color:#aaa;font-size:16px;">📸 ${w.photos.length} photo(s) attached</p></div>`
+        : '';
+      const matPart = w.materialsCost ? ' | Materials: $'+w.materialsCost : '';
+      const invoiceHtml = (w.hours || w.rate || w.invoiceNumber)
+        ? `<div style="margin-top:8px;color:#00cc66;font-size:16px;">✅ Hours: ${w.hours||'-'} | Rate: $${w.rate||'-'}/hr | Invoice: ${w.invoiceNumber||'-'}${matPart}</div>`
+        : (w.materialsCost ? `<div style="margin-top:8px;color:#00cc66;font-size:16px;">✅ Materials: $${w.materialsCost}</div>` : '');
+      const laborTotal = (parseFloat(w.hours)||0) * (parseFloat(w.rate)||0);
+      const matTotal = parseFloat(w.materialsCost)||0;
+      const grandTotal = laborTotal + matTotal;
+      const totalHtml = (w.hours || w.rate || w.materialsCost)
+        ? `<div style="margin-top:8px;background:#0f0f17;border:1px solid #00cc66;border-radius:12px;padding:12px;">
+             <p style="margin:0 0 4px 0;color:#aaa;font-size:16px;">Labor: $${laborTotal.toFixed(2)}</p>
+             ${matTotal > 0 ? `<p style="margin:0 0 4px 0;color:#aaa;font-size:16px;">Materials: $${matTotal.toFixed(2)}</p>` : ''}
+             <p style="margin:0;color:#00cc66;font-size:22px;font-weight:800;">TOTAL: $${grandTotal.toFixed(2)}</p>
+           </div>`
+        : '';
+      return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${w.description ? '<p>'+w.description+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}${w.disputeResolved ? '<p style="color:#00cc66;font-size:16px;">✅ Dispute resolved</p>' : ''}${invoiceHtml}${totalHtml}${photosHtml}<div class="btn-row"><button class="big save" onclick="openCompleteForm('${w.id}')">📋 Enter Hours, Rate & Submit</button></div><div class="btn-row"><button class="wo-delete" onclick="deleteWo('${w.id}')" style="width:100%;margin-top:0;">🗑️ Delete Work Order</button></div></div>`;
+    }).join('')
+    : '<div class="card">No work orders ready to finalize.</div>';
+
+  // Render Submitted/Completed tab (WOs with finalize data entered, waiting for Corrigo submission)
+  const submitted = getData('corrigo_submitted');
+  const completedTabCountEl = document.getElementById('completedTabCount');
+  if (completedTabCountEl) completedTabCountEl.textContent = submitted.length;
+  document.getElementById('completedTabList').innerHTML = submitted.length > 0
+    ? submitted.map(w => {
+      const photosHtml = w.photos && w.photos.length > 0
+        ? `<div style="margin-top:8px;"><p style="color:#aaa;font-size:16px;">📸 ${w.photos.length} photo(s) attached</p></div>`
+        : '';
+      const matPart = w.materialsCost ? ' | Materials: $'+w.materialsCost : '';
+      const invoiceHtml = `<div style="margin-top:8px;color:#00cc66;font-size:16px;">✅ Hours: ${w.hours||'-'} | Rate: $${w.rate||'-'}/hr | Invoice: ${w.invoiceNumber||'-'}${matPart}</div>`;
+      const laborTotal = (parseFloat(w.hours)||0) * (parseFloat(w.rate)||0);
+      const matTotal = parseFloat(w.materialsCost)||0;
+      const grandTotal = laborTotal + matTotal;
+      const totalHtml = `<div style="margin-top:8px;background:#0f0f17;border:1px solid #00cc66;border-radius:12px;padding:12px;">
+             <p style="margin:0 0 4px 0;color:#aaa;font-size:16px;">Labor: $${laborTotal.toFixed(2)}</p>
+             ${matTotal > 0 ? `<p style="margin:0 0 4px 0;color:#aaa;font-size:16px;">Materials: $${matTotal.toFixed(2)}</p>` : ''}
+             <p style="margin:0;color:#00cc66;font-size:22px;font-weight:800;">TOTAL: $${grandTotal.toFixed(2)}</p>
+           </div>`;
+      const submittedStatus = w.corrigoSubmitted ? '<p style="color:#00cc66;font-size:16px;">✅ Submitted to Corrigo</p>' : '<p style="color:#ff9500;font-size:16px;">⏳ Waiting to be submitted to Corrigo</p>';
+      return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${w.description ? '<p>'+w.description+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}${invoiceHtml}${totalHtml}${photosHtml}${submittedStatus}<div class="btn-row" style="margin-top:12px;"><button class="big save" onclick="editSubmittedForm('${w.id}')">✏️ Edit Invoice Details</button></div></div>`;
+    }).join('')
+    : '<div class="card">No completed work orders waiting for Corrigo.</div>';
+
+  const token = localStorage.getItem('github_token');
+  document.getElementById('status').textContent = token ? 'Token saved on this phone.' : 'No token saved yet.';
+}
+function card(w, canAct){
+  const estDisplay = w.estimatedAmount ? '$' + parseFloat(w.estimatedAmount).toFixed(2) : '';
+  const estHtml = estDisplay ? `<div class="wo-est">${estDisplay}</div>` : '';
+  let loc = w.location || '';
+  let desc = w.description || '';
+  if (!loc && w.emailContent) {
+    // Only try to extract from real work order emails, not invoice emails
+    if (!w.emailContent.toLowerCase().includes('invoice') || !w.emailContent.includes('has been Authorized')) {
+      const m = w.emailContent.match(/([\\d]+\\s+[^,]+,\\s+[A-Z]+,?\\s+\\d{5}[^\\n]*)/);
+      if (m) loc = m[1].trim();
+    }
+  }
+  if (!desc && w.emailContent) {
+    // Skip invoice emails - they have no job description
+    if (w.emailContent.toLowerCase().includes('invoice') && w.emailContent.includes('has been Authorized')) {
+      desc = 'Invoice authorized - no job description available';
+    } else {
+      const lines = w.emailContent.split('\\n').filter(l => l.trim() && !l.includes('CorrigoPro') && !l.includes('mailto:') && !l.includes('Sims Construction') && !l.includes('alerts@') && !l.includes('garysims') && !l.includes('Sent:') && !l.includes('From:') && !l.includes('To:') && !l.includes('Subject:') && !l.includes('Monrovia') && !l.includes('Reykjavik'));
+      desc = lines.slice(0, 3).join(' ').substring(0, 200);
+    }
+  }
+  const actionBtns = canAct ? `<div class="btn-row"><button class="big accept" onclick="choose('${w.id}','accept')">Accept</button><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button></div><div class="btn-row"><button class="big save" onclick="openBidModal('${w.id}')" style="margin-top:0;">🔨 Bid</button><button class="big save" onclick="saveWo('${w.id}')" style="margin-top:0;background:#666;">💾 Save for Later</button></div><div class="btn-row"><button class="wo-delete" onclick="deleteWo('${w.id}')" style="width:100%;margin-top:0;">🗑️ Delete Work Order</button></div>` : `<div class="btn-row"><button class="big decline" onclick="unaccept('${w.id}')" style="background:#f44336;">↩ Unaccept</button><button class="wo-delete" onclick="deleteWo('${w.id}')">🗑️ Delete</button></div><p class="muted">Waiting for Corrigo pickup</p>`;
+  const workDescBtn = `<button class="email-btn" style="border-color:#ff9500;color:#ff9500;background:rgba(255,149,0,0.15);" onclick="openWorkDesc('${w.id}')">📝 Add Work Description</button>`;
+  const emailBtn = w.emailContent ? `<button class="email-btn" onclick="viewEmail('${w.id}')">📧 View Original Email</button>` : '';
+  const extraBtns = `<div class="btn-row">${workDescBtn}${emailBtn}</div>`;
+  return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>${loc ? '<p>'+loc+'</p>' : ''}${desc ? '<p>'+desc+'</p>' : ''}${actionBtns}${extraBtns}</div>`;
+}
+
+function disputedCard(w){
+  const estDisplay = w.estimatedAmount ? '$' + parseFloat(w.estimatedAmount).toFixed(2) : (w.disputedAmount ? '$' + parseFloat(w.disputedAmount).toFixed(2) : '');
+  const estHtml = estDisplay ? `<div class="wo-est" style="color:#ff3b30;">${estDisplay}</div>` : '';
+  let loc = w.location || '';
+  let desc = w.description || w.workDescription || '';
+  const disputeReason = w.disputeReason || '';
+  const disputeEmailBtn = (w.disputeEmailContent || w.emailContent) ? `<button class="email-btn" onclick="viewEmail('${w.id}')">📧 View Dispute Email</button>` : '';
+  const finalizeBtn = `<button class="big save" onclick="openDisputeForm('${w.id}')" style="margin-top:8px;">📋 Enter Hours, Rate, Dates & Invoice</button>`;
+  const resolveBtn = `<button class="big accept" onclick="resolveDispute('${w.id}')" style="margin-top:8px;">✅ Mark Resolved</button>`;
+  const deleteBtn = `<button class="wo-delete" onclick="deleteWo('${w.id}')" style="width:100%;margin-top:8px;">🗑️ Delete</button>`;
+  const photosHtml = w.photos && w.photos.length > 0
+    ? `<div style="margin-top:12px;"><p style="color:#aaa;font-size:16px;margin-bottom:6px;">📸 Photos (${w.photos.length}):</p>${w.photos.map((p,i) => `<img src="${p.data}" style="width:100%;border-radius:12px;margin-bottom:8px;" onclick="this.style.width=this.style.width==='100%'?'50%':'100%'">`).join('')}</div>`
+    : '';
+  const uploadBtn = `<button class="email-btn" style="border-color:#ff9500;color:#ff9500;background:rgba(255,149,0,0.15);" onclick="openDisputePhotoUpload('${w.id}')">📸 Upload Dispute Photo</button>`;
+  return `<div class="card" style="border:2px solid #ff3b30;">
+    <div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>
+    ${loc ? '<p>'+loc+'</p>' : ''}
+    ${desc ? '<p>'+desc+'</p>' : ''}
+    ${disputeReason ? '<p style="color:#ff3b30;font-size:16px;">⚠️ Dispute Reason: '+disputeReason+'</p>' : ''}
+    ${photosHtml}
+    ${uploadBtn}
+    ${disputeEmailBtn}
+    ${finalizeBtn}
+    ${resolveBtn}
+    ${deleteBtn}
+  </div>`;
+}
+
+function moveToDisputed(id){
+  const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved'];
+  for (const tab of allTabs) {
+    const arr = getData(tab);
+    const idx = arr.findIndex(w => w.id === id);
+    if (idx >= 0) {
+      const wo = arr[idx];
+      wo.status = 'disputed';
+      wo.disputeReason = wo.disputeReason || '';
+      arr.splice(idx, 1);
+      saveData(tab, arr);
+      const disputed = getData('corrigo_disputed');
+      // Remove if already exists
+      const existing = disputed.findIndex(d => d.number === wo.number);
+      if (existing >= 0) disputed.splice(existing, 1);
+      disputed.unshift(wo);
+      saveData('corrigo_disputed', disputed);
+      render();
+      show('disputed');
+      sendPickup();
+      alert('⚠️ Moved to Disputed tab.');
+      return;
+    }
+  }
+  alert('Could not find work order.');
+}
+
+function resolveDispute(id){
+  if (!confirm('Mark this dispute as resolved? It will move to the Resolved tab.')) return;
+  const disputed = getData('corrigo_disputed');
+  const idx = disputed.findIndex(w => w.id === id);
+  if (idx < 0) return;
+  const wo = disputed[idx];
+  wo.status = 'resolved';
+  wo.disputeResolved = true;
+  disputed.splice(idx, 1);
+  saveData('corrigo_disputed', disputed);
+  const resolved = getData('corrigo_resolved');
+  resolved.unshift(wo);
+  saveData('corrigo_resolved', resolved);
+  render();
+  show('resolved');
+  sendPickup();
+  alert('✅ Dispute resolved! Moved to Resolved tab.');
+}
+
+function openDisputePhotoUpload(id){
+  const disputed = getData('corrigo_disputed');
+  const wo = disputed.find(w => w.id === id);
+  if (!wo) { alert('Work order not found'); return; }
+  document.getElementById('disputed').innerHTML = `
+    <div class="card" style="border:2px solid #ff3b30;">
+      <div class="wo-card-header"><strong>${wo.number}</strong></div>
+      ${wo.description ? '<p>'+wo.description+'</p>' : ''}
+      ${wo.disputeReason ? '<p style="color:#ff3b30;font-size:16px;">⚠️ '+wo.disputeReason+'</p>' : ''}
+      <h2 style="margin:8px 0;font-size:22px;">📸 Upload Dispute Photo</h2>
+      <input type="file" id="dp_photo" accept="image/*" multiple style="margin-bottom:10px;width:100%;font-size:16px;" onchange="handleDisputePhoto2(this)">
+      <div id="dp_photoPreview" style="display:none;"></div>
+      <div class="btn-row" style="margin-top:12px;">
+        <button class="big accept" onclick="saveDisputePhoto('${id}')">✅ Save Photo</button>
+        <button class="big decline" onclick="render();show('disputed');">Cancel</button>
+      </div>
+    </div>`;
+  if (wo.photos && wo.photos.length > 0) {
+    const previewDiv = document.getElementById('dp_photoPreview');
+    previewDiv.style.display = 'block';
+    previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Existing photos:</p>' + wo.photos.map((p,i) => `<img src="${p.data}" style="width:100%;border-radius:12px;margin-bottom:8px;">`).join('');
+  }
+}
+
+let disputePhotos2 = [];
+function handleDisputePhoto2(input) {
+  if (!input.files || input.files.length === 0) return;
+  const previewDiv = document.getElementById('dp_photoPreview');
+  previewDiv.style.display = 'block';
+  let html = '';
+  const remaining = Array.from(input.files);
+  let loaded = 0;
+  remaining.forEach((file) => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      disputePhotos2.push({ name: file.name, data: e.target.result });
+      loaded++;
+      html += `<div style="margin-bottom:8px;"><img src="${e.target.result}" style="width:100%;border-radius:12px;"><p style="color:#00cc66;font-size:16px;">✅ ${file.name}</p></div>`;
+      if (loaded === remaining.length) {
+        const existing = previewDiv.querySelector('p');
+        if (existing && (existing.textContent.includes('Existing') || existing.textContent.includes('selected'))) {
+          previewDiv.innerHTML += html;
+        } else {
+          previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Photos selected:</p>' + html;
+        }
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function saveDisputePhoto(id){
+  const disputed = getData('corrigo_disputed');
+  const wo = disputed.find(w => w.id === id);
+  if (!wo) { alert('Work order not found'); return; }
+  if (disputePhotos2.length > 0) {
+    if (!wo.photos) wo.photos = [];
+    wo.photos = wo.photos.concat(disputePhotos2);
+  }
+  saveData('corrigo_disputed', disputed);
+  disputePhotos2 = [];
+  render();
+  show('disputed');
+  sendPickup();
+  alert('✅ Photo saved to dispute!');
+}
+
+function resolvedCard(w){
+  const estDisplay = w.estimatedAmount ? '$' + parseFloat(w.estimatedAmount).toFixed(2) : (w.disputedAmount ? '$' + parseFloat(w.disputedAmount).toFixed(2) : '');
+  const estHtml = estDisplay ? `<div class="wo-est" style="color:#00cc66;">${estDisplay}</div>` : '';
+  let loc = w.location || '';
+  let desc = w.description || w.workDescription || '';
+  const disputeReason = w.disputeReason || '';
+  const photosHtml = w.photos && w.photos.length > 0
+    ? `<div style="margin-top:12px;"><p style="color:#aaa;font-size:16px;margin-bottom:6px;">📸 Photos (${w.photos.length}):</p>${w.photos.map((p,i) => `<img src="${p.data}" style="width:100%;border-radius:12px;margin-bottom:8px;" onclick="this.style.width=this.style.width==='100%'?'50%':'100%'">`).join('')}</div>`
+    : '';
+  const invoiceHtml = (w.hours || w.rate || w.invoiceNumber)
+    ? `<div style="margin-top:8px;color:#00cc66;font-size:16px;">✅ Hours: ${w.hours||'-'} | Rate: $${w.rate||'-'}/hr | Invoice: ${w.invoiceNumber||'-'}</div>`
+    : '';
+  const deleteBtn = `<button class="wo-delete" onclick="deleteWo('${w.id}')" style="width:100%;margin-top:8px;">🗑️ Delete</button>`;
+  return `<div class="card" style="border:2px solid #00cc66;">
+    <div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>
+    ${loc ? '<p>'+loc+'</p>' : ''}
+    ${desc ? '<p>'+desc+'</p>' : ''}
+    ${disputeReason ? '<p style="color:#ff3b30;font-size:16px;">⚠️ Was Disputed: '+disputeReason+'</p>' : ''}
+    <p style="color:#00cc66;font-size:16px;">✅ Dispute resolved</p>
+    ${invoiceHtml}
+    ${photosHtml}
+    ${deleteBtn}
+  </div>`;
+}
+
+function openDisputeForm(id){
+  const disputed = getData('corrigo_disputed');
+  const wo = disputed.find(w => w.id === id);
+  if (!wo) { alert('Work order not found'); return; }
+  document.getElementById('disputed').innerHTML = `
+    <div class="card" style="border:2px solid #ff3b30;">
+      <div class="wo-card-header"><strong>${wo.number}</strong></div>
+      ${wo.description ? '<p>'+wo.description+'</p>' : ''}
+      ${wo.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+wo.workDescription+'</p>' : ''}
+      ${wo.disputeReason ? '<p style="color:#ff3b30;font-size:16px;">⚠️ '+wo.disputeReason+'</p>' : ''}
+      <h2 style="margin:8px 0;font-size:22px;">📋 Invoice Details</h2>
+      <input id="df_hours" type="number" step="0.5" inputmode="decimal" placeholder="Hours worked" style="margin-bottom:10px;" value="${wo.hours||''}">
+      <input id="df_rate" type="number" step="0.01" inputmode="decimal" placeholder="Hourly Rate ($)" style="margin-bottom:10px;" value="${wo.rate||''}">
+      <div class="field-row" style="margin-bottom:10px;">
+        <div class="field"><label style="color:#aaa;font-size:16px;">Start Date</label><input id="df_dateStart" type="date" value="${wo.dateStarted||''}" style="margin-top:4px;"></div>
+        <div class="field"><label style="color:#aaa;font-size:16px;">End Date</label><input id="df_dateEnd" type="date" value="${wo.dateCompleted||''}" style="margin-top:4px;"></div>
+      </div>
+      <input id="df_invoice" type="text" placeholder="Invoice Number" style="margin-bottom:10px;" value="${wo.invoiceNumber||''}">
+      <h2 style="margin:8px 0;font-size:22px;">📸 Upload Photos</h2>
+      <input type="file" id="df_photo" accept="image/*" multiple style="margin-bottom:10px;width:100%;font-size:16px;" onchange="handleDisputePhoto(this)">
+      <div id="df_photoPreview" style="display:none;"></div>
+      <div class="btn-row" style="margin-top:12px;">
+        <button class="big accept" onclick="saveDisputeForm('${id}')">✅ Save Details</button>
+        <button class="big decline" onclick="render();show('disputed');">Cancel</button>
+      </div>
+    </div>`;
+  // Pre-fill existing photos
+  if (wo.photos && wo.photos.length > 0) {
+    const previewDiv = document.getElementById('df_photoPreview');
+    previewDiv.style.display = 'block';
+    previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Existing photos:</p>' + wo.photos.map((p,i) => `<img src="${p.data}" style="width:100%;border-radius:12px;margin-bottom:8px;">`).join('');
+  }
+}
+
+let disputePhotos = [];
+function handleDisputePhoto(input) {
+  if (!input.files || input.files.length === 0) return;
+  const previewDiv = document.getElementById('df_photoPreview');
+  previewDiv.style.display = 'block';
+  let html = '';
+  const remaining = Array.from(input.files);
+  let loaded = 0;
+  remaining.forEach((file, idx) => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      disputePhotos.push({ name: file.name, data: e.target.result });
+      loaded++;
+      html += `<div style="margin-bottom:8px;"><img src="${e.target.result}" style="width:100%;border-radius:12px;"><p style="color:#00cc66;font-size:16px;">✅ ${file.name}</p></div>`;
+      if (loaded === remaining.length) {
+        // Append to existing preview
+        const existing = previewDiv.querySelector('p');
+        if (existing && existing.textContent.includes('Existing')) {
+          previewDiv.innerHTML += html;
+        } else {
+          previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Photos selected:</p>' + html;
+        }
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function saveDisputeForm(id){
+  const disputed = getData('corrigo_disputed');
+  const wo = disputed.find(w => w.id === id);
+  if (!wo) { alert('Work order not found'); return; }
+  wo.hours = document.getElementById('df_hours').value;
+  wo.rate = document.getElementById('df_rate').value;
+  wo.dateStarted = document.getElementById('df_dateStart').value;
+  wo.dateCompleted = document.getElementById('df_dateEnd').value;
+  wo.invoiceNumber = document.getElementById('df_invoice').value;
+  if (disputePhotos.length > 0) {
+    if (!wo.photos) wo.photos = [];
+    wo.photos = wo.photos.concat(disputePhotos);
+  }
+  saveData('corrigo_disputed', disputed);
+  disputePhotos = [];
+  render();
+  show('disputed');
+  sendPickup();
+  alert('✅ Details saved!');
+}
+function playSound(){
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value = 880;
+    osc.type = 'sine';
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.5);
+  } catch(e) {}
+}
+
+function choose(id, action){
+  let inbox = getData('corrigo_inbox');
+  const idx = inbox.findIndex(w => w.id===id);
+  if (idx<0) return;
+  const wo = inbox[idx];
+  wo.status = action==='accept' ? 'accepted' : 'declined';
+  inbox.splice(idx,1);
+  saveData('corrigo_inbox', inbox);
+  const key = action==='accept' ? 'corrigo_accepted' : 'corrigo_declined';
+  const arr = getData(key);
+  arr.unshift(wo);
+  saveData(key, arr);
+  render();
+  show(action==='accept' ? 'accepted' : 'declined');
+  playSound();
+  if (action==='accept') {
+    alert('✅ You Accepted the Job!');
+  } else {
+    alert('❌ Job Declined.');
+  }
+  sendPickup();
+}
+
+function unaccept(id){
+  let accepted = getData('corrigo_accepted');
+  const idx = accepted.findIndex(w => w.id===id);
+  if (idx<0) return;
+  const wo = accepted[idx];
+  wo.status = 'inbox';
+  accepted.splice(idx,1);
+  saveData('corrigo_accepted', accepted);
+  let inbox = getData('corrigo_inbox');
+  inbox.unshift(wo);
+  saveData('corrigo_inbox', inbox);
+  render();
+  show('inbox');
+  sendPickup();
+}
+
+function openBidModal(id){
+  document.getElementById('bidWoId').value = id;
+  document.getElementById('bidAmount').value = '';
+  document.getElementById('bidModal').style.display = 'flex';
+}
+
+function closeBidModal(){
+  document.getElementById('bidModal').style.display = 'none';
+}
+
+function submitBid(){
+  const id = document.getElementById('bidWoId').value;
+  const amount = document.getElementById('bidAmount').value.trim();
+  if (!amount || parseFloat(amount) <= 0){
+    alert('Enter a valid bid amount.');
+    return;
+  }
+  let inbox = getData('corrigo_inbox');
+  const idx = inbox.findIndex(w => w.id===id);
+  if (idx<0) return;
+  const wo = inbox[idx];
+  wo.status = 'bidding';
+  wo.bidAmount = parseFloat(amount);
+  inbox.splice(idx,1);
+  saveData('corrigo_inbox', inbox);
+  const arr = getData('corrigo_bidding');
+  arr.unshift(wo);
+  saveData('corrigo_bidding', arr);
+  closeBidModal();
+  render();
+  show('bidding');
+  sendPickup();
+}
+async function sendPickup(){
+  const token = localStorage.getItem('github_token');
+  if (!token) { alert('Saved on this phone. Paste the token in Settings so it can be picked up.'); return; }
+  const actions = [];
+  getData('corrigo_accepted').forEach(w => actions.push({number:w.number, action:'accept', location:w.location||'', description:w.description||''}));
+  getData('corrigo_declined').forEach(w => actions.push({number:w.number, action:'decline', location:w.location||'', description:w.description||''}));
+  getData('corrigo_bidding').forEach(w => actions.push({number:w.number, action:'bid', bidAmount:w.bidAmount||0, location:w.location||'', description:w.description||''}));
+  // Update actions for any work order that has completion data
+  const allWos = [].concat(
+    getData('corrigo_accepted'),
+    getData('corrigo_declined'),
+    getData('corrigo_bidding'),
+    getData('corrigo_saved'),
+    getData('corrigo_inbox'),
+    getData('corrigo_completed'),
+    getData('corrigo_disputed'),
+    getData('corrigo_resolved')
+  );
+  // Export WOs from the Completed tab (corrigo_completed) - these have finalize data
+  const completed = getData('corrigo_completed');
+  completed.forEach(w => {
+    actions.push({
+      number: w.number,
+      action: 'update',
+      workDescription: w.workDescription || w.description || '',
+      hours: w.hours || '',
+      rate: w.rate || '',
+      dateStarted: w.dateStarted || '',
+      dateCompleted: w.dateCompleted || '',
+      invoiceNumber: w.invoiceNumber || '',
+      location: w.location || '',
+      description: w.description || '',
+      status: 'completed',
+      disputeReason: w.disputeReason || '',
+      disputedAmount: w.disputedAmount || '',
+      photos: w.photos || []
+    });
+  });
+  // Also export submitted WOs
+  const submitted = getData('corrigo_submitted');
+  submitted.forEach(w => {
+    actions.push({
+      number: w.number,
+      action: 'update',
+      workDescription: w.workDescription || '',
+      hours: w.hours || '',
+      rate: w.rate || '',
+      dateStarted: w.dateStarted || '',
+      dateCompleted: w.dateCompleted || '',
+      invoiceNumber: w.invoiceNumber || '',
+      location: w.location || '',
+      description: w.description || '',
+      status: 'submitted',
+      disputeReason: w.disputeReason || '',
+      disputedAmount: w.disputedAmount || '',
+      photos: w.photos || []
+    });
+  });
+  // Also export dispute/resolve actions
+  const allOthers = getData('corrigo_disputed').concat(getData('corrigo_resolved'));
+  allOthers.forEach(w => {
+    if (w.status === 'disputed') {
+      actions.push({
+        number: w.number,
+        action: 'dispute',
+        workDescription: w.workDescription || '',
+        disputeReason: w.disputeReason || '',
+        disputedAmount: w.disputedAmount || '',
+        hours: w.hours || '', rate: w.rate || '',
+        dateStarted: w.dateStarted || '', dateCompleted: w.dateCompleted || '',
+        invoiceNumber: w.invoiceNumber || '',
+        location: w.location || '', description: w.description || '',
+        status: w.status, photos: w.photos || []
+      });
+    } else if (w.status === 'resolved') {
+      actions.push({
+        number: w.number,
+        action: 'resolve',
+        workDescription: w.workDescription || '',
+        hours: w.hours || '', rate: w.rate || '',
+        dateStarted: w.dateStarted || '', dateCompleted: w.dateCompleted || '',
+        invoiceNumber: w.invoiceNumber || '',
+        location: w.location || '', description: w.description || '',
+        status: w.status, photos: w.photos || []
+      });
+    }
+  });
+  const body = { message:'Pickup from phone app', content: btoa(unescape(encodeURIComponent(JSON.stringify({pendingActions:actions, exportedAt:new Date().toISOString()}, null, 2)))) };
+  const cur = await fetch('https://api.github.com/repos/Simzy420/big-brain-ape-dashboard/contents/corrigo-actions.json', { headers:{ Authorization:'token '+token } });
+  if (cur.ok) { const info = await cur.json(); if (info.sha) body.sha = info.sha; }
+  const res = await fetch('https://api.github.com/repos/Simzy420/big-brain-ape-dashboard/contents/corrigo-actions.json', { method:'PUT', headers:{ Authorization:'token '+token, 'Content-Type':'application/json' }, body: JSON.stringify(body) });
+  if (!res.ok) alert('Saved on the phone. GitHub did not take the pickup file.');
+  else alert('Sent for Corrigo pickup.');
+}
+
+// ============ LINE ITEMS ============
+function addLineItem(type) {
+  lineItemCount++;
+  const div = document.createElement('div');
+  div.className = 'line-item';
+  div.id = 'item' + lineItemCount;
+  div.innerHTML = `
+    <div class="line-item-header">
+      <h4 id="item${lineItemCount}Title">${type || 'Labor'} Item</h4>
+      <button class="line-item-remove" onclick="removeLineItem(${lineItemCount})">✕ Remove</button>
+    </div>
+    <div class="field">
+      <label>Type</label>
+      <select id="item${lineItemCount}Type" onchange="updateItemTitle(${lineItemCount})">
+        <option value="Labor" ${type==='Labor'?'selected':''}>Labor (Hours)</option>
+        <option value="Material" ${type==='Material'?'selected':''}>Material</option>
+      </select>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label id="item${lineItemCount}QtyLabel">Hours</label>
+        <input type="number" id="item${lineItemCount}Qty" placeholder="0" step="0.5" inputmode="decimal">
+      </div>
+      <div class="field">
+        <label>Rate / Price</label>
+        <input type="number" id="item${lineItemCount}Rate" placeholder="0.00" step="0.01" inputmode="decimal">
+      </div>
+    </div>
+  `;
+  document.getElementById('lineItems').appendChild(div);
+  updateItemTitle(lineItemCount);
+}
+
+function updateItemTitle(id) {
+  const type = document.getElementById('item' + id + 'Type').value;
+  document.getElementById('item' + id + 'Title').textContent = type + ' Item';
+  document.getElementById('item' + id + 'QtyLabel').textContent = type === 'Labor' ? 'Hours' : 'Quantity';
+}
+
+function removeLineItem(id) {
+  document.getElementById('item' + id).remove();
+}
+
+// ============ PHOTO ============
+function handlePhoto(input) {
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('photoPreview').src = e.target.result;
+      document.getElementById('photoPreview').classList.add('show');
+      document.getElementById('photoFilename').textContent = '✅ Photo attached: ' + file.name;
+      currentPhoto = { name: file.name, data: e.target.result };
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+// ============ GENERATE SUMMARY ============
+function generateSummary() {
+  let summary = '';
+  let total = 0;
+  for (let i = 1; i <= lineItemCount; i++) {
+    const el = document.getElementById('item' + i);
+    if (!el) continue;
+    const type = document.getElementById('item' + i + 'Type').value;
+    const qty = parseFloat(document.getElementById('item' + i + 'Qty').value) || 0;
+    const rate = parseFloat(document.getElementById('item' + i + 'Rate').value) || 0;
+    const lineTotal = qty * rate;
+    total += lineTotal;
+    const qtyLabel = type === 'Labor' ? 'hrs' : 'qty';
+    summary += `${type}: ${qty} ${qtyLabel} x $${rate.toFixed(2)} = $${lineTotal.toFixed(2)}\\n`;
+  }
+  summary += `\\nTOTAL: $${total.toFixed(2)}`;
+  if (currentPhoto) summary += `\\nPhoto: ${currentPhoto.name}`;
+  alert(summary);
+}
+
+// ============ CLEAR FORM ============
+function clearForm() {
+  document.getElementById('lineItems').innerHTML = '';
+  lineItemCount = 0;
+  currentPhoto = null;
+  document.getElementById('photoPreview').classList.remove('show');
+  document.getElementById('photoPreview').src = '';
+  document.getElementById('photoFilename').textContent = '';
+  addLineItem('Labor');
+}
+
+function openWorkDesc(id){
+  document.getElementById('workDescWoId').value = id;
+  const allWos = [].concat(
+    getData('corrigo_inbox'),
+    getData('corrigo_accepted'),
+    getData('corrigo_declined'),
+    getData('corrigo_bidding'),
+    getData('corrigo_saved'),
+    getData('corrigo_disputed')
+  );
+  const wo = allWos.find(w => w.id === id);
+  document.getElementById('workDescText').value = (wo && wo.workDescription) || '';
+  document.getElementById('workDescModal').classList.add('show');
+}
+
+function closeWorkDescModal(){
+  document.getElementById('workDescModal').classList.remove('show');
+}
+
+function saveWorkDesc(){
+  const id = document.getElementById('workDescWoId').value;
+  const desc = document.getElementById('workDescText').value.trim();
+  let found = false;
+  const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved'];
+  for (const tab of allTabs) {
+    const arr = getData(tab);
+    const idx = arr.findIndex(w => w.id === id);
+    if (idx >= 0) {
+      const wo = arr[idx];
+      wo.workDescription = desc;
+      wo.status = 'completed';
+      arr.splice(idx, 1);
+      saveData(tab, arr);
+      let completed = getData('corrigo_completed');
+      completed.unshift(wo);
+      saveData('corrigo_completed', completed);
+      found = true;
+      break;
+    }
+  }
+  closeWorkDescModal();
+  render();
+  sendPickup();
+  if (found) {
+    alert('✅ Saved! Check the 📋 Finalize tab.');
+    show('finalize');
+  } else {
+    alert('ERROR: Could not find work order. ID: ' + id);
+  }
+}
+
+function saveWo(id){
+  // Check all tabs for this work order
+  const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved'];
+  for (const tab of allTabs) {
+    const arr = getData(tab);
+    const idx = arr.findIndex(w => w.id === id);
+    if (idx >= 0) {
+      const wo = arr[idx];
+      wo.status = 'saved';
+      arr.splice(idx, 1);
+      saveData(tab, arr);
+      const saved = getData('corrigo_saved');
+      saved.unshift(wo);
+      saveData('corrigo_saved', saved);
+      render();
+      show('saved');
+      return;
+    }
+  }
+}
+
+function viewEmail(id){
+  const allWos = [].concat(
+    getData('corrigo_inbox'),
+    getData('corrigo_accepted'),
+    getData('corrigo_declined'),
+    getData('corrigo_bidding'),
+    getData('corrigo_disputed')
+  );
+  const wo = allWos.find(w => w.id === id);
+  if (!wo) { alert('Could not find work order'); return; }
+  if (!wo.emailContent) { alert('No email saved for this work order'); return; }
+  document.getElementById('emailModalSubject').textContent = wo.emailSubject || '(no subject)';
+  document.getElementById('emailModalBody').textContent = wo.emailContent;
+  document.getElementById('emailModal').classList.add('show');
+}
+
+function closeEmailModal(){
+  document.getElementById('emailModal').classList.remove('show');
+}
+
+function saveToken(){
+  const token = document.getElementById('token').value.trim();
+  if (!token) return;
+  localStorage.setItem('github_token', token);
+  document.getElementById('token').value = '';
+  render();
+  alert('Token saved on this phone.');
+}
+
+function deleteWo(id){
+  if (!confirm('Are you sure you want to delete this work order? This cannot be undone.')) return;
+  
+  // Check all tabs for this work order and delete it
+  const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_completed','corrigo_resolved'];
+  for (const tab of allTabs) {
+    const arr = getData(tab);
+    const idx = arr.findIndex(w => w.id === id);
+    if (idx >= 0) {
+      arr.splice(idx, 1);
+      saveData(tab, arr);
+      render();
+      alert('Work order deleted.');
+      return;
+    }
+  }
+  alert('Could not find work order to delete.');
+}
+function openCompleteForm(id){
+  const completed = getData('corrigo_completed');
+  const wo = completed.find(w => w.id === id);
+  if (!wo) { alert('Work order not found'); return; }
+  document.getElementById('finalizeList').innerHTML = `
+    <div class="card">
+      <div class="wo-card-header"><strong>${wo.number}</strong></div>
+      ${wo.description ? '<p>'+wo.description+'</p>' : ''}
+      ${wo.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+wo.workDescription+'</p>' : ''}
+      ${wo.disputeResolved ? '<p style="color:#00cc66;font-size:16px;">✅ Dispute resolved</p>' : ''}
+      <h2 style="margin:8px 0;font-size:22px;">📋 Invoice Details</h2>
+      <input id="cf_hours" type="number" step="0.5" inputmode="decimal" placeholder="Hours worked" style="margin-bottom:10px;" value="${wo.hours||''}">
+      <input id="cf_rate" type="number" step="0.01" inputmode="decimal" placeholder="Hourly Rate ($)" style="margin-bottom:10px;" value="${wo.rate||''}">
+      <div class="field-row" style="margin-bottom:10px;">
+        <div class="field"><label style="color:#aaa;font-size:16px;">Start Date</label><input id="cf_dateStart" type="date" value="${wo.dateStarted||''}" style="margin-top:4px;"></div>
+        <div class="field"><label style="color:#aaa;font-size:16px;">End Date</label><input id="cf_dateEnd" type="date" value="${wo.dateCompleted||''}" style="margin-top:4px;"></div>
+      </div>
+      <input id="cf_invoice" type="text" placeholder="Invoice Number" style="margin-bottom:10px;" value="${wo.invoiceNumber||''}">
+      <input id="cf_materials" type="number" step="0.01" inputmode="decimal" placeholder="Materials Cost ($)" style="margin-bottom:10px;" value="${wo.materialsCost||''}">
+      <h2 style="margin:8px 0;font-size:22px;">📸 Upload Photos</h2>
+      <input type="file" id="cf_photo" accept="image/*" multiple style="margin-bottom:10px;width:100%;font-size:16px;" onchange="handleCompletePhoto(this)">
+      <div id="cf_photoPreview" style="display:none;"></div>
+      <div class="btn-row" style="margin-top:12px;">
+        <button class="big accept" onclick="saveCompleteForm('${id}')">✅ Submit</button>
+        <button class="big decline" onclick="render();show('finalize');">Cancel</button>
+      </div>
+    </div>`;
+  // Pre-fill existing photos
+  if (wo.photos && wo.photos.length > 0) {
+    const previewDiv = document.getElementById('cf_photoPreview');
+    previewDiv.style.display = 'block';
+    previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Existing photos:</p>' + wo.photos.map((p,i) => `<img src="${p.data}" style="width:100%;border-radius:12px;margin-bottom:8px;">`).join('');
+  }
+}
+
+let completePhotos = [];
+function handleCompletePhoto(input) {
+  if (!input.files || input.files.length === 0) return;
+  const previewDiv = document.getElementById('cf_photoPreview');
+  previewDiv.style.display = 'block';
+  let html = '';
+  const remaining = Array.from(input.files);
+  let loaded = 0;
+  remaining.forEach((file, idx) => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      completePhotos.push({ name: file.name, data: e.target.result });
+      loaded++;
+      html += `<div style="margin-bottom:8px;"><img src="${e.target.result}" style="width:100%;border-radius:12px;"><p style="color:#00cc66;font-size:16px;">✅ ${file.name}</p></div>`;
+      if (loaded === remaining.length) {
+        const existing = previewDiv.querySelector('p');
+        if (existing && existing.textContent.includes('Existing')) {
+          previewDiv.innerHTML += html;
+        } else {
+          previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Photos selected:</p>' + html;
+        }
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function saveCompleteForm(id){
+  // Check corrigo_completed first (Finalize tab)
+  let completed = getData('corrigo_completed');
+  let wo = completed.find(w => w.id === id);
+  let fromTab = 'corrigo_completed';
+  if (!wo) {
+    // Check corrigo_submitted (Completed tab - editing existing)
+    let submitted = getData('corrigo_submitted');
+    wo = submitted.find(w => w.id === id);
+    fromTab = 'corrigo_submitted';
+  }
+  if (!wo) { alert('Work order not found'); return; }
+  wo.hours = document.getElementById('cf_hours').value;
+  wo.rate = document.getElementById('cf_rate').value;
+  wo.dateStarted = document.getElementById('cf_dateStart').value;
+  wo.dateCompleted = document.getElementById('cf_dateEnd').value;
+  wo.invoiceNumber = document.getElementById('cf_invoice').value;
+  wo.materialsCost = document.getElementById('cf_materials').value;
+  if (completePhotos.length > 0) {
+    if (!wo.photos) wo.photos = [];
+    wo.photos = wo.photos.concat(completePhotos);
+  }
+  if (fromTab === 'corrigo_completed') {
+    // Move from Finalize to Completed tab
+    const idx = completed.findIndex(w => w.id === id);
+    if (idx >= 0) completed.splice(idx, 1);
+    saveData('corrigo_completed', completed);
+    let submitted = getData('corrigo_submitted');
+    if (!submitted.find(w => String(w.number) === String(wo.number))) {
+      submitted.unshift(wo);
+    }
+    saveData('corrigo_submitted', submitted);
+  } else {
+    // Already in Submitted - update in place
+    let submitted = getData('corrigo_submitted');
+    const idx = submitted.findIndex(w => w.id === id);
+    if (idx >= 0) {
+      submitted[idx] = wo;
+      saveData('corrigo_submitted', submitted);
+    }
+  }
+  completePhotos = [];
+  render();
+  show('completedtab');
+  sendPickup();
+  alert('✅ Invoice details saved! Will be submitted to Corrigo automatically.');
+}
+
+function editSubmittedForm(id){
+  const submitted = getData('corrigo_submitted');
+  const wo = submitted.find(w => w.id === id);
+  if (!wo) { alert('Work order not found'); return; }
+  document.getElementById('completedTabList').innerHTML = `
+    <div class="card">
+      <div class="wo-card-header"><strong>${wo.number}</strong></div>
+      ${wo.description ? '<p>'+wo.description+'</p>' : ''}
+      ${wo.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+wo.workDescription+'</p>' : ''}
+      <h2 style="margin:8px 0;font-size:22px;">✏️ Edit Invoice Details</h2>
+      <input id="cf_hours" type="number" step="0.5" inputmode="decimal" placeholder="Hours worked" style="margin-bottom:10px;" value="${wo.hours||''}">
+      <input id="cf_rate" type="number" step="0.01" inputmode="decimal" placeholder="Hourly Rate ($)" style="margin-bottom:10px;" value="${wo.rate||''}">
+      <div class="field-row" style="margin-bottom:10px;">
+        <div class="field"><label style="color:#aaa;font-size:16px;">Start Date</label><input id="cf_dateStart" type="date" value="${wo.dateStarted||''}" style="margin-top:4px;"></div>
+        <div class="field"><label style="color:#aaa;font-size:16px;">End Date</label><input id="cf_dateEnd" type="date" value="${wo.dateCompleted||''}" style="margin-top:4px;"></div>
+      </div>
+      <input id="cf_invoice" type="text" placeholder="Invoice Number" style="margin-bottom:10px;" value="${wo.invoiceNumber||''}">
+      <input id="cf_materials" type="number" step="0.01" inputmode="decimal" placeholder="Materials Cost ($)" style="margin-bottom:10px;" value="${wo.materialsCost||''}">
+      <h2 style="margin:8px 0;font-size:22px;">📸 Upload Photos</h2>
+      <input type="file" id="cf_photo" accept="image/*" multiple style="margin-bottom:10px;width:100%;font-size:16px;" onchange="handleCompletePhoto(this)">
+      <div id="cf_photoPreview" style="display:none;"></div>
+      <div class="btn-row" style="margin-top:12px;">
+        <button class="big accept" onclick="saveCompleteForm('${id}')">✅ Save Changes</button>
+        <button class="big decline" onclick="render();show('completedtab');">Cancel</button>
+      </div>
+    </div>`;
+  if (wo.photos && wo.photos.length > 0) {
+    const previewDiv = document.getElementById('cf_photoPreview');
+    previewDiv.style.display = 'block';
+    previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Existing photos:</p>' + wo.photos.map((p,i) => `<img src="${p.data}" style="width:100%;border-radius:12px;margin-bottom:8px;">`).join('');
+  }
+}
+
+function addManualWo(){
+  const num = document.getElementById('manualWoNumber').value.trim();
+  const desc = document.getElementById('manualWoDesc').value.trim();
+  const loc = document.getElementById('manualWoLoc').value.trim();
+  if (!num) { alert('Enter a work order number.'); return; }
+  let inbox = getData('corrigo_inbox');
+  // Remove if already exists
+  inbox = inbox.filter(w => w.number !== num);
+  // Add to front
+  inbox.unshift({
+    id: 'manual_' + Date.now(),
+    number: num,
+    status: 'inbox',
+    description: desc || '',
+    location: loc || ''
+  });
+  saveData('corrigo_inbox', inbox);
+  document.getElementById('manualWoNumber').value = '';
+  document.getElementById('manualWoDesc').value = '';
+  document.getElementById('manualWoLoc').value = '';
+  render();
+  show('inbox');
+  alert('Added to inbox!');
+}
+
+async 
+function moveToSentToCorrigo(woNumber) {
+  const completed = getData('corrigo_completed');
+  const idx = completed.findIndex(w => String(w.number) === String(woNumber));
+  if (idx < 0) return false;
+  const wo = completed.splice(idx, 1)[0];
+  wo.status = 'sent_to_corrigo';
+  wo.sentAt = new Date().toISOString();
+  saveData('corrigo_completed', completed);
+  let sent = getData('corrigo_sent_to_corrigo');
+  if (!sent.find(w => String(w.number) === String(woNumber))) {
+    sent.unshift(wo);
+  }
+  saveData('corrigo_sent_to_corrigo', sent);
+  render();
+  return true;
+}
+
+async function loadJobs(){
+  try {
+    // 1. Load new work orders from work-orders.json
+    let jobs = [];
+    try {
+      // Try GitHub Pages URL first, then raw GitHub as fallback
+      let res;
+      try {
+        res = await fetch('https://simzy420.github.io/big-brain-ape-dashboard/work-orders.json?v=' + Date.now());
+      } catch(e1) {
+        res = await fetch('https://raw.githubusercontent.com/Simzy420/big-brain-ape-dashboard/main/work-orders.json?v=' + Date.now());
+      }
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      jobs = await res.json();
+      console.log('[loadJobs] Fetched ' + (Array.isArray(jobs) ? jobs.length : 0) + ' work orders');
+    } catch(fetchErr) {
+      console.warn('Could not load work-orders.json:', fetchErr.message);
+    }
+
+    let inbox = getData('corrigo_inbox');
+    let disputed = getData('corrigo_disputed');
+
+    if (Array.isArray(jobs)) {
+      // Sync status changes from GitHub: if a WO's status changed, move it to the right tab
+      jobs.forEach(w => {
+        const num = String(w.number);
+        if (w.status === 'sent_to_corrigo') {
+          // Remove from corrigo_completed (Finalize tab) if it's there
+          let completed = getData('corrigo_completed');
+          const cIdx = completed.findIndex(x => String(x.number) === num);
+          if (cIdx >= 0) {
+            completed.splice(cIdx, 1);
+            saveData('corrigo_completed', completed);
+          }
+          // Remove from corrigo_submitted (Completed tab) if it's there
+          let submitted = getData('corrigo_submitted');
+          const sIdx = submitted.findIndex(x => String(x.number) === num);
+          if (sIdx >= 0) {
+            submitted.splice(sIdx, 1);
+            saveData('corrigo_submitted', submitted);
+          }
+          // Add to corrigo_sent_to_corrigo if not already there
+          let sent = getData('corrigo_sent_to_corrigo');
+          if (!sent.find(x => String(x.number) === num)) {
+            sent.unshift(w);
+            saveData('corrigo_sent_to_corrigo', sent);
+          }
+        }
+      });
+      // Rebuild seen AFTER status sync so moved WOs aren't skipped
+      const seen = handled();
+      jobs.forEach(w => {
+        if (seen.has(String(w.number))) return;
+        if (w.status === 'disputed') {
+          disputed.unshift(w);
+        } else if (w.status === 'sent_to_corrigo') {
+          let sent = getData('corrigo_sent_to_corrigo');
+          if (!sent.find(x => String(x.number) === String(w.number))) {
+            sent.unshift(w);
+          }
+          saveData('corrigo_sent_to_corrigo', sent);
+        } else if (w.status === 'completed') {
+          let completed = getData('corrigo_completed');
+          completed.unshift(w);
+          saveData('corrigo_completed', completed);
+        } else {
+          inbox.unshift(w);
+        }
+      });
+      saveData('corrigo_inbox', inbox);
+      saveData('corrigo_disputed', disputed);
+    }
+
+    // 2. Sync actions from other phones via corrigo-actions.json on GitHub
+    try {
+      const actRes = await fetch('https://raw.githubusercontent.com/Simzy420/big-brain-ape-dashboard/main/corrigo-actions.json?v=' + Date.now());
+      if (actRes.ok) {
+        const actData = await actRes.json();
+        const actions = actData.pendingActions || [];
+        let changed = false;
+        actions.forEach(act => {
+          const num = String(act.number);
+          // Check all tabs for this WO
+          const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_submitted','corrigo_disputed'];
+          let foundWo = null;
+          let foundTab = null;
+          for (const tab of allTabs) {
+            const arr = getData(tab);
+            const idx = arr.findIndex(w => String(w.number) === num);
+            if (idx >= 0) { foundWo = arr[idx]; foundTab = tab; break; }
+          }
+          // If WO is not in localStorage yet (fresh browser / automation), create it from the action if it looks completed/submitted
+          if (!foundWo) {
+            const isSubmitted = (act.status === 'submitted') || (act.hours && act.invoiceNumber);
+            if (isSubmitted) {
+              const newWo = {
+                number: act.number,
+                description: act.description || '',
+                location: act.location || '',
+                workDescription: act.workDescription || '',
+                hours: act.hours || '',
+                rate: act.rate || '',
+                dateStarted: act.dateStarted || '',
+                dateCompleted: act.dateCompleted || '',
+                invoiceNumber: act.invoiceNumber || '',
+                materialsCost: act.materialsCost || '',
+                photos: act.photos || [],
+                status: 'submitted',
+                corrigoSubmitted: false
+              };
+              let submitted = getData('corrigo_submitted');
+              if (!submitted.find(w => String(w.number) === num)) {
+                submitted.unshift(newWo);
+                saveData('corrigo_submitted', submitted);
+                changed = true;
+              }
+            }
+            return; // done for this action
+          }
+
+          // Apply action
+          if (act.action === 'accept' && foundTab !== 'corrigo_accepted') {
+            // Move to accepted
+            const arr = getData(foundTab);
+            arr.splice(arr.findIndex(w => String(w.number) === num), 1);
+            saveData(foundTab, arr);
+            foundWo.status = 'accepted';
+            let accepted = getData('corrigo_accepted');
+            accepted.unshift(foundWo);
+            saveData('corrigo_accepted', accepted);
+            changed = true;
+          } else if (act.action === 'decline' && foundTab !== 'corrigo_declined') {
+            const arr = getData(foundTab);
+            arr.splice(arr.findIndex(w => String(w.number) === num), 1);
+            saveData(foundTab, arr);
+            foundWo.status = 'declined';
+            let declined = getData('corrigo_declined');
+            declined.unshift(foundWo);
+            saveData('corrigo_declined', declined);
+            changed = true;
+          } else if (act.action === 'update' || act.action === 'dispute') {
+            // Gary saved work description or Casey entered invoice data
+            if (act.workDescription) foundWo.workDescription = act.workDescription;
+            if (act.hours) foundWo.hours = act.hours;
+            if (act.rate) foundWo.rate = act.rate;
+            if (act.dateStarted) foundWo.dateStarted = act.dateStarted;
+            if (act.dateCompleted) foundWo.dateCompleted = act.dateCompleted;
+            if (act.invoiceNumber) foundWo.invoiceNumber = act.invoiceNumber;
+            if (act.photos && act.photos.length > 0) foundWo.photos = act.photos;
+            if (act.disputeReason) foundWo.disputeReason = act.disputeReason;
+            // If action says update and WO is in accepted, move to completed (Finalize)
+            if (act.action === 'update' && act.workDescription && foundTab === 'corrigo_accepted') {
+              const arr = getData(foundTab);
+              arr.splice(arr.findIndex(w => String(w.number) === num), 1);
+              saveData(foundTab, arr);
+              foundWo.status = 'completed';
+              let completed = getData('corrigo_completed');
+              // Don't duplicate if already there
+              if (!completed.find(w => String(w.number) === num)) {
+                completed.unshift(foundWo);
+                saveData('corrigo_completed', completed);
+              }
+              changed = true;
+            } else if (act.action === 'dispute' && foundTab !== 'corrigo_disputed') {
+              const arr = getData(foundTab);
+              arr.splice(arr.findIndex(w => String(w.number) === num), 1);
+              saveData(foundTab, arr);
+              foundWo.status = 'disputed';
+              let disp = getData('corrigo_disputed');
+              if (!disp.find(w => String(w.number) === num)) {
+                disp.unshift(foundWo);
+                saveData('corrigo_disputed', disp);
+              }
+              changed = true;
+            } else {
+              // Just update the WO in its current tab
+              const arr = getData(foundTab);
+              const idx = arr.findIndex(w => String(w.number) === num);
+              if (idx >= 0) { arr[idx] = foundWo; saveData(foundTab, arr); }
+              changed = true;
+            }
+          }
+        });
+        if (changed) {
+          localStorage.setItem('last_sync', new Date().toISOString());
+        }
+      }
+    } catch(syncErr) {
+      console.warn('Could not sync from GitHub:', syncErr.message);
+    }
+
+    render();
+  } catch(e) {
+    console.error('loadJobs error:', e);
+    // Show error message in the app so it's not just zeros silently
+    const inboxEl = document.getElementById('inbox');
+    if (inboxEl) inboxEl.innerHTML = '<div class="card" style="text-align:center;color:#ff3b30;font-size:18px;">⚠️ Error loading work orders: ' + e.message + '<br><br>Push 🔄 Reload to try again.</div>';
+    try { render(); } catch(re) {}
+  }
+}
+// Render immediately with localStorage data or show loading
+try {
+  render();
+  // Only show loading if ALL tabs are empty (first visit)
+  const totalWos = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_completed','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_submitted','corrigo_sent_to_corrigo'].reduce((sum, k) => sum + getData(k).length, 0);
+  if (totalWos === 0) {
+    const inboxEl = document.getElementById('inbox');
+    if (inboxEl) inboxEl.innerHTML = '<div class="card" style="text-align:center;color:#aaa;font-size:18px;">⏳ Loading work orders from server...</div>';
+  }
+} catch(e) {}
+// Wrap in try/catch so the page never goes blank
+try {
+  loadJobs();
+} catch(e) {
+  console.error('Failed to start:', e);
+  try { render(); } catch(re) {}
+}
+</script>
+</body>
+</html>
