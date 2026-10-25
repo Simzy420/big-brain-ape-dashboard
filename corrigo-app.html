@@ -292,11 +292,11 @@ let lineItemCount = 0;
 function getData(k){ try { return JSON.parse(localStorage.getItem(k)||'[]'); } catch(e){ return []; } }
 function saveData(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
 async function forceReload(){
-  // Clear all WO arrays and re-fetch from GitHub
-  ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_completed','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_resolved','corrigo_submitted','corrigo_sent_to_corrigo'].forEach(k => localStorage.removeItem(k));
+  // DO NOT wipe localStorage — only re-fetch from GitHub and sync
+  // This preserves all existing data (completed, submitted, etc.)
   await loadJobs();
   render();
-  alert('✅ Reloaded from server!');
+  alert('✅ Synced from server!');
 }
 function handled(){
   const nums = new Set();
@@ -1461,9 +1461,9 @@ async function loadJobs(){
 // Render immediately with localStorage data or show loading
 try {
   render();
-  // If everything is zero, show loading message
-  const inbox = getData('corrigo_inbox');
-  if (inbox.length === 0) {
+  // Only show loading if ALL tabs are empty (first visit)
+  const totalWos = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_completed','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_submitted','corrigo_sent_to_corrigo'].reduce((sum, k) => sum + getData(k).length, 0);
+  if (totalWos === 0) {
     const inboxEl = document.getElementById('inbox');
     if (inboxEl) inboxEl.innerHTML = '<div class="card" style="text-align:center;color:#aaa;font-size:18px;">⏳ Loading work orders from server...</div>';
   }
