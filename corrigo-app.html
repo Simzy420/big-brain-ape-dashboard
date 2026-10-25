@@ -1298,12 +1298,18 @@ async function loadJobs(){
     // 1. Load new work orders from work-orders.json
     let jobs = [];
     try {
-      const res = await fetch('work-orders.json?v=' + Date.now());
+      // Try GitHub Pages URL first, then raw GitHub as fallback
+      let res;
+      try {
+        res = await fetch('https://simzy420.github.io/big-brain-ape-dashboard/work-orders.json?v=' + Date.now());
+      } catch(e1) {
+        res = await fetch('https://raw.githubusercontent.com/Simzy420/big-brain-ape-dashboard/main/work-orders.json?v=' + Date.now());
+      }
       if (!res.ok) throw new Error('HTTP ' + res.status);
       jobs = await res.json();
+      console.log('[loadJobs] Fetched ' + (Array.isArray(jobs) ? jobs.length : 0) + ' work orders');
     } catch(fetchErr) {
       console.warn('Could not load work-orders.json:', fetchErr.message);
-      // Continue with empty jobs — app still works with localStorage data
     }
 
     let inbox = getData('corrigo_inbox');
@@ -1454,7 +1460,9 @@ async function loadJobs(){
     render();
   } catch(e) {
     console.error('loadJobs error:', e);
-    // Still render even if loadJobs fails
+    // Show error message in the app so it's not just zeros silently
+    const inboxEl = document.getElementById('inbox');
+    if (inboxEl) inboxEl.innerHTML = '<div class="card" style="text-align:center;color:#ff3b30;font-size:18px;">⚠️ Error loading work orders: ' + e.message + '<br><br>Push 🔄 Reload to try again.</div>';
     try { render(); } catch(re) {}
   }
 }
