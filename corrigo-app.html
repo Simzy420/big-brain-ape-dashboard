@@ -1311,6 +1311,19 @@ async function loadJobs(){
     const seen = handled();
 
     if (Array.isArray(jobs)) {
+      // First, remove any WOs from localStorage that have a different status on GitHub
+      jobs.forEach(w => {
+        const nums = [String(w.number)];
+        // Check if this WO is in corrigo_completed but should be elsewhere
+        if (w.status === 'sent_to_corrigo') {
+          let completed = getData('corrigo_completed');
+          const idx = completed.findIndex(x => String(x.number) === nums[0]);
+          if (idx >= 0) {
+            completed.splice(idx, 1);
+            saveData('corrigo_completed', completed);
+          }
+        }
+      });
       jobs.forEach(w => {
         if (seen.has(String(w.number))) return;
         if (w.status === 'disputed') {
@@ -1431,8 +1444,16 @@ async function loadJobs(){
     try { render(); } catch(re) {}
   }
 }
-// Render immediately with localStorage data so page isn't blank
-try { render(); } catch(e) {}
+// Render immediately with localStorage data or show loading
+try {
+  render();
+  // If everything is zero, show loading message
+  const inbox = getData('corrigo_inbox');
+  if (inbox.length === 0) {
+    const inboxEl = document.getElementById('inbox');
+    if (inboxEl) inboxEl.innerHTML = '<div class="card" style="text-align:center;color:#aaa;font-size:18px;">⏳ Loading work orders from server...</div>';
+  }
+} catch(e) {}
 // Wrap in try/catch so the page never goes blank
 try {
   loadJobs();
