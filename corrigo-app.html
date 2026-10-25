@@ -1308,6 +1308,12 @@ async function loadJobs(){
         if (seen.has(String(w.number))) return;
         if (w.status === 'disputed') {
           disputed.unshift(w);
+        } else if (w.status === 'sent_to_corrigo') {
+          let sent = getData('corrigo_sent_to_corrigo');
+          if (!sent.find(x => String(x.number) === String(w.number))) {
+            sent.unshift(w);
+          }
+          saveData('corrigo_sent_to_corrigo', sent);
         } else if (w.status === 'completed') {
           let completed = getData('corrigo_completed');
           completed.unshift(w);
