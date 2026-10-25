@@ -1314,12 +1314,19 @@ async function loadJobs(){
       jobs.forEach(w => {
         const num = String(w.number);
         if (w.status === 'sent_to_corrigo') {
-          // Remove from corrigo_completed if it's there
+          // Remove from corrigo_completed (Finalize tab) if it's there
           let completed = getData('corrigo_completed');
           const cIdx = completed.findIndex(x => String(x.number) === num);
           if (cIdx >= 0) {
             completed.splice(cIdx, 1);
             saveData('corrigo_completed', completed);
+          }
+          // Remove from corrigo_submitted (Completed tab) if it's there
+          let submitted = getData('corrigo_submitted');
+          const sIdx = submitted.findIndex(x => String(x.number) === num);
+          if (sIdx >= 0) {
+            submitted.splice(sIdx, 1);
+            saveData('corrigo_submitted', submitted);
           }
           // Add to corrigo_sent_to_corrigo if not already there
           let sent = getData('corrigo_sent_to_corrigo');
