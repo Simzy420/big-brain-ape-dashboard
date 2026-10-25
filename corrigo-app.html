@@ -1408,9 +1408,11 @@ async function loadJobs(){
                 submitted.unshift(newWo);
                 saveData('corrigo_submitted', submitted);
                 changed = true;
+                console.log('[loadJobs] Created submitted WO', num, 'in Completed tab');
               }
             }
-            return; // done for this action
+            // Always continue to next action
+            return;
           }
 
           // Apply action
@@ -1478,6 +1480,7 @@ async function loadJobs(){
         });
         if (changed) {
           localStorage.setItem('last_sync', new Date().toISOString());
+          render();
         }
       }
     } catch(syncErr) {
