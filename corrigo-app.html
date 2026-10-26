@@ -1376,7 +1376,7 @@ async function loadJobs(){
         actions.forEach(act => {
           const num = String(act.number);
           // Check all tabs for this WO
-          const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_submitted','corrigo_disputed'];
+          const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_submitted','corrigo_disputed','corrigo_sent_to_corrigo'];
           let foundWo = null;
           let foundTab = null;
           for (const tab of allTabs) {
@@ -1458,7 +1458,7 @@ async function loadJobs(){
                 saveData('corrigo_completed', completed);
               }
               changed = true;
-            } else if (act.action === 'dispute' && foundTab !== 'corrigo_disputed') {
+            } else if (act.action === 'dispute' && foundTab !== 'corrigo_disputed' && foundTab !== 'corrigo_sent_to_corrigo') {
               const arr = getData(foundTab);
               arr.splice(arr.findIndex(w => String(w.number) === num), 1);
               saveData(foundTab, arr);
