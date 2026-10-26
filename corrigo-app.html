@@ -290,7 +290,40 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 let currentPhoto = null;
 let lineItemCount = 0;
 function getData(k){ try { return JSON.parse(localStorage.getItem(k)||'[]'); } catch(e){ return []; } }
-function saveData(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+function saveData(k,v){
+  try {
+    localStorage.setItem(k, JSON.stringify(v));
+  } catch(e) {
+    if (e.name === 'QuotaExceededError' || (e.message && e.message.includes('quota'))) {
+      // Strip photos from this save and retry
+      if (Array.isArray(v)) {
+        const slim = v.map(w => {
+          const copy = {...w};
+          if (copy.photos) copy.photos = copy.photos.map(p => ({ name: p.name, data: '' }));
+          return copy;
+        });
+        try { localStorage.setItem(k, JSON.stringify(slim)); return; } catch(e2) {}
+      }
+      // Last resort: clear old photos from other keys
+      ['corrigo_completed','corrigo_submitted','corrigo_inbox','corrigo_accepted'].forEach(key => {
+        try {
+          const arr = JSON.parse(localStorage.getItem(key)||'[]');
+          const slim = arr.map(w => {
+            const copy = {...w};
+            if (copy.photos) copy.photos = [];
+            return copy;
+          });
+          localStorage.setItem(key, JSON.stringify(slim));
+        } catch(ignore) {}
+      });
+      try { localStorage.setItem(k, JSON.stringify(v)); } catch(e3) {
+        console.warn('Still could not save after cleanup:', e3);
+      }
+    } else {
+      throw e;
+    }
+  }
+}
 async function forceReload(){
   // DO NOT wipe localStorage — only re-fetch from GitHub and sync
   // This preserves all existing data (completed, submitted, etc.)
