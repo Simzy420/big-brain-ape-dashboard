@@ -1108,8 +1108,12 @@ function deleteWo(id){
   alert('Could not find work order to delete.');
 }
 function openCompleteForm(id){
-  const completed = getData('corrigo_completed');
-  const wo = completed.find(w => w.id === id);
+  const tabs = ['corrigo_completed','corrigo_accepted','corrigo_submitted','corrigo_inbox'];
+  let wo = null;
+  for (const tab of tabs) {
+    wo = getData(tab).find(w => w.id === id);
+    if (wo) break;
+  }
   if (!wo) { alert('Work order not found'); return; }
   document.getElementById('finalizeList').innerHTML = `
     <div class="card">
@@ -1360,6 +1364,12 @@ async function loadJobs(){
       });
       // Rebuild seen AFTER status sync so moved WOs aren't skipped
       const seen = handled();
+      // Protect manual WOs (id starts with manual_) so a reload never deletes them
+      ['corrigo_inbox','corrigo_accepted','corrigo_completed','corrigo_submitted'].forEach(tab => {
+        getData(tab).forEach(w => {
+          if (w.id && String(w.id).startsWith('manual_')) seen.add(String(w.number));
+        });
+      });
       jobs.forEach(w => {
         if (seen.has(String(w.number))) return;
         if (w.status === 'disputed') {
