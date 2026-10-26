@@ -1108,12 +1108,8 @@ function deleteWo(id){
   alert('Could not find work order to delete.');
 }
 function openCompleteForm(id){
-  const tabs = ['corrigo_completed','corrigo_accepted','corrigo_submitted','corrigo_inbox'];
-  let wo = null;
-  for (const tab of tabs) {
-    wo = getData(tab).find(w => w.id === id);
-    if (wo) break;
-  }
+  const completed = getData('corrigo_completed');
+  const wo = completed.find(w => w.id === id);
   if (!wo) { alert('Work order not found'); return; }
   document.getElementById('finalizeList').innerHTML = `
     <div class="card">
@@ -1174,23 +1170,16 @@ function handleCompletePhoto(input) {
 }
 
 function saveCompleteForm(id){
-  // Check corrigo_completed first (Finalize tab)
-  let completed = getData('corrigo_completed');
-  let wo = completed.find(w => w.id === id);
-  let fromTab = 'corrigo_completed';
-  if (!wo) {
-    // Check corrigo_submitted (Completed tab - editing existing)
-    let submitted = getData('corrigo_submitted');
-    wo = submitted.find(w => w.id === id);
-    fromTab = 'corrigo_submitted';
-  }
-  if (!wo) {
-    // Also check accepted (manual WOs that were accepted)
-    let accepted = getData('corrigo_accepted');
-    wo = accepted.find(w => w.id === id);
-    if (wo) fromTab = 'corrigo_accepted';
+  const tabs = ['corrigo_completed','corrigo_submitted','corrigo_accepted','corrigo_inbox'];
+  let wo = null;
+  let fromTab = null;
+  for (const tab of tabs) {
+    const arr = getData(tab);
+    wo = arr.find(w => w.id === id);
+    if (wo) { fromTab = tab; break; }
   }
   if (!wo) { alert('Work order not found'); return; }
+
   wo.hours = document.getElementById('cf_hours').value;
   wo.rate = document.getElementById('cf_rate').value;
   wo.dateStarted = document.getElementById('cf_dateStart').value;
@@ -1201,41 +1190,32 @@ function saveCompleteForm(id){
     if (!wo.photos) wo.photos = [];
     wo.photos = wo.photos.concat(completePhotos);
   }
-  if (fromTab === 'corrigo_completed') {
-    // Move from Finalize to Completed tab
-    const idx = completed.findIndex(w => w.id === id);
-    if (idx >= 0) completed.splice(idx, 1);
-    saveData('corrigo_completed', completed);
-    let submitted = getData('corrigo_submitted');
-    if (!submitted.find(w => String(w.number) === String(wo.number))) {
-      submitted.unshift(wo);
-    }
-    saveData('corrigo_submitted', submitted);
-  } else if (fromTab === 'corrigo_accepted') {
-    // Move from Accepted to Completed tab
-    let accepted = getData('corrigo_accepted');
-    const idx = accepted.findIndex(w => w.id === id);
-    if (idx >= 0) accepted.splice(idx, 1);
-    saveData('corrigo_accepted', accepted);
-    let submitted = getData('corrigo_submitted');
-    if (!submitted.find(w => String(w.number) === String(wo.number))) {
-      submitted.unshift(wo);
-    }
-    saveData('corrigo_submitted', submitted);
+
+  // Add to Completed (corrigo_submitted) first
+  let submitted = getData('corrigo_submitted');
+  const existingIdx = submitted.findIndex(w => String(w.number) === String(wo.number));
+  if (existingIdx >= 0) {
+    submitted[existingIdx] = wo;
   } else {
-    // Already in Submitted - update in place
-    let submitted = getData('corrigo_submitted');
-    const idx = submitted.findIndex(w => w.id === id);
+    submitted.unshift(wo);
+  }
+  saveData('corrigo_submitted', submitted);
+
+  // Only remove from the source tab after it is safely in Completed
+  if (fromTab && fromTab !== 'corrigo_submitted') {
+    let source = getData(fromTab);
+    const idx = source.findIndex(w => w.id === id);
     if (idx >= 0) {
-      submitted[idx] = wo;
-      saveData('corrigo_submitted', submitted);
+      source.splice(idx, 1);
+      saveData(fromTab, source);
     }
   }
+
   completePhotos = [];
   render();
   show('completedtab');
   sendPickup();
-  alert('✅ Invoice details saved! Will be submitted to Corrigo automatically.');
+  alert('✅ Saved and moved to Completed tab!');
 }
 
 function editSubmittedForm(id){
@@ -1364,12 +1344,6 @@ async function loadJobs(){
       });
       // Rebuild seen AFTER status sync so moved WOs aren't skipped
       const seen = handled();
-      // Protect manual WOs (id starts with manual_) so a reload never deletes them
-      ['corrigo_inbox','corrigo_accepted','corrigo_completed','corrigo_submitted'].forEach(tab => {
-        getData(tab).forEach(w => {
-          if (w.id && String(w.id).startsWith('manual_')) seen.add(String(w.number));
-        });
-      });
       jobs.forEach(w => {
         if (seen.has(String(w.number))) return;
         if (w.status === 'disputed') {
