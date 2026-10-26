@@ -159,7 +159,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span style="font-size:12px;opacity:0.7;">v3</span></p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span style="font-size:12px;opacity:0.7;">v5</span></p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -1244,6 +1244,15 @@ function autoSaveComplete(id){
 }
 function saveCompleteForm(id){
   try {
+    // Free space first by clearing old photo data from other tabs
+    ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_resolved'].forEach(key => {
+      try {
+        const arr = JSON.parse(localStorage.getItem(key)||'[]');
+        const slim = arr.map(w => { const c = {...w}; if (c.photos) c.photos = []; return c; });
+        localStorage.setItem(key, JSON.stringify(slim));
+      } catch(ignore) {}
+    });
+
     const tabs = ['corrigo_completed','corrigo_submitted','corrigo_accepted','corrigo_inbox'];
     let wo = null;
     let fromTab = null;
@@ -1268,35 +1277,30 @@ function saveCompleteForm(id){
     if (invEl) wo.invoiceNumber = invEl.value;
     if (matEl) wo.materialsCost = matEl.value;
 
+    // Keep photo name but drop big data if storage is tight
     if (typeof completePhotos !== 'undefined' && completePhotos.length > 0) {
       if (!wo.photos) wo.photos = [];
-      wo.photos = wo.photos.concat(completePhotos);
+      wo.photos = wo.photos.concat(completePhotos.map(p => ({ name: p.name, data: p.data || '' })));
     }
 
-    // Add to Completed (corrigo_submitted) first
+    // Add to Completed first
     let submitted = getData('corrigo_submitted');
     const existingIdx = submitted.findIndex(w => String(w.number) === String(wo.number));
-    if (existingIdx >= 0) {
-      submitted[existingIdx] = wo;
-    } else {
-      submitted.unshift(wo);
-    }
+    if (existingIdx >= 0) submitted[existingIdx] = wo;
+    else submitted.unshift(wo);
     saveData('corrigo_submitted', submitted);
 
-    // Only remove from the source tab after it is safely in Completed
+    // Remove from source
     if (fromTab && fromTab !== 'corrigo_submitted') {
       let source = getData(fromTab);
       const idx = source.findIndex(w => w.id === id);
-      if (idx >= 0) {
-        source.splice(idx, 1);
-        saveData(fromTab, source);
-      }
+      if (idx >= 0) { source.splice(idx, 1); saveData(fromTab, source); }
     }
 
     if (typeof completePhotos !== 'undefined') completePhotos = [];
     render();
     show('completedtab');
-    sendPickup();
+    try { sendPickup(); } catch(e) { console.warn(e); }
     alert('✅ Saved successfully! Moved to Completed tab.');
   } catch(err) {
     alert('Save failed: ' + (err.message || err));
