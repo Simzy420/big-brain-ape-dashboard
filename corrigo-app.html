@@ -159,7 +159,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span style="font-size:12px;opacity:0.7;">v3</span></p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -1130,10 +1130,19 @@ function openCompleteForm(id){
       <input type="file" id="cf_photo" accept="image/*" multiple style="margin-bottom:10px;width:100%;font-size:16px;" onchange="handleCompletePhoto(this)">
       <div id="cf_photoPreview" style="display:none;"></div>
       <div class="btn-row" style="margin-top:12px;">
-        <button class="big accept" type="button" onclick="saveCompleteForm('${id}'); return false;">✅ Submit</button>
-        <button class="big decline" onclick="render();show('finalize');">Cancel</button>
+        <button class="big accept" type="button" id="cfSubmitBtn" data-wo-id="${id}">✅ Submit</button>
+        <button class="big decline" type="button" onclick="render();show('finalize');">Cancel</button>
       </div>
     </div>`;
+  const btn = document.getElementById('cfSubmitBtn');
+  if (btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const woId = this.getAttribute('data-wo-id');
+      saveCompleteForm(woId);
+    });
+  }
   // Pre-fill existing photos
   if (wo.photos && wo.photos.length > 0) {
     const previewDiv = document.getElementById('cf_photoPreview');
