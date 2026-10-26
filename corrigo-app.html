@@ -1255,24 +1255,32 @@ function addManualWo(){
   const desc = document.getElementById('manualWoDesc').value.trim();
   const loc = document.getElementById('manualWoLoc').value.trim();
   if (!num) { alert('Enter a work order number.'); return; }
-  let inbox = getData('corrigo_inbox');
-  // Remove if already exists
-  inbox = inbox.filter(w => w.number !== num);
-  // Add to front
-  inbox.unshift({
+  // Add to Finalize so the user can immediately enter hours/rate/photo and submit to Completed
+  let finalize = getData('corrigo_completed');
+  finalize = finalize.filter(w => String(w.number) !== num);
+  const newWo = {
     id: 'manual_' + Date.now(),
     number: num,
-    status: 'inbox',
+    status: 'completed',
     description: desc || '',
-    location: loc || ''
-  });
-  saveData('corrigo_inbox', inbox);
+    location: loc || '',
+    workDescription: desc || '',
+    hours: '',
+    rate: '30',
+    dateStarted: '',
+    dateCompleted: '',
+    invoiceNumber: '',
+    materialsCost: '',
+    photos: []
+  };
+  finalize.unshift(newWo);
+  saveData('corrigo_completed', finalize);
   document.getElementById('manualWoNumber').value = '';
   document.getElementById('manualWoDesc').value = '';
   document.getElementById('manualWoLoc').value = '';
   render();
-  show('inbox');
-  alert('Added to inbox!');
+  show('finalize');
+  alert('Added to Finalize! Enter hours, rate, and photo, then Submit to move it to Completed.');
 }
 
 async 
