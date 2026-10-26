@@ -1108,12 +1108,8 @@ function deleteWo(id){
   alert('Could not find work order to delete.');
 }
 function openCompleteForm(id){
-  const tabs = ['corrigo_completed','corrigo_accepted','corrigo_submitted','corrigo_inbox'];
-  let wo = null;
-  for (const tab of tabs) {
-    wo = getData(tab).find(w => w.id === id);
-    if (wo) break;
-  }
+  const completed = getData('corrigo_completed');
+  const wo = completed.find(w => w.id === id);
   if (!wo) { alert('Work order not found'); return; }
   document.getElementById('finalizeList').innerHTML = `
     <div class="card">
@@ -1122,14 +1118,14 @@ function openCompleteForm(id){
       ${wo.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+wo.workDescription+'</p>' : ''}
       ${wo.disputeResolved ? '<p style="color:#00cc66;font-size:16px;">✅ Dispute resolved</p>' : ''}
       <h2 style="margin:8px 0;font-size:22px;">📋 Invoice Details</h2>
-      <input id="cf_hours" type="number" step="0.5" inputmode="decimal" placeholder="Hours worked" style="margin-bottom:10px;" value="${wo.hours||''}">
-      <input id="cf_rate" type="number" step="0.01" inputmode="decimal" placeholder="Hourly Rate ($)" style="margin-bottom:10px;" value="${wo.rate||''}">
+      <input id="cf_hours" type="number" step="0.5" inputmode="decimal" placeholder="Hours worked" style="margin-bottom:10px;" value="${wo.hours||''}" oninput="autoSaveComplete('${id}')">
+      <input id="cf_rate" type="number" step="0.01" inputmode="decimal" placeholder="Hourly Rate ($)" style="margin-bottom:10px;" value="${wo.rate||''}" oninput="autoSaveComplete('${id}')">
       <div class="field-row" style="margin-bottom:10px;">
-        <div class="field"><label style="color:#aaa;font-size:16px;">Start Date</label><input id="cf_dateStart" type="date" value="${wo.dateStarted||''}" style="margin-top:4px;"></div>
-        <div class="field"><label style="color:#aaa;font-size:16px;">End Date</label><input id="cf_dateEnd" type="date" value="${wo.dateCompleted||''}" style="margin-top:4px;"></div>
+        <div class="field"><label style="color:#aaa;font-size:16px;">Start Date</label><input id="cf_dateStart" type="date" value="${wo.dateStarted||''}" style="margin-top:4px;" oninput="autoSaveComplete('${id}')"></div>
+        <div class="field"><label style="color:#aaa;font-size:16px;">End Date</label><input id="cf_dateEnd" type="date" value="${wo.dateCompleted||''}" style="margin-top:4px;" oninput="autoSaveComplete('${id}')"></div>
       </div>
-      <input id="cf_invoice" type="text" placeholder="Invoice Number" style="margin-bottom:10px;" value="${wo.invoiceNumber||''}">
-      <input id="cf_materials" type="number" step="0.01" inputmode="decimal" placeholder="Materials Cost ($)" style="margin-bottom:10px;" value="${wo.materialsCost||''}">
+      <input id="cf_invoice" type="text" placeholder="Invoice Number" style="margin-bottom:10px;" value="${wo.invoiceNumber||''}" oninput="autoSaveComplete('${id}')">
+      <input id="cf_materials" type="number" step="0.01" inputmode="decimal" placeholder="Materials Cost ($)" style="margin-bottom:10px;" value="${wo.materialsCost||''}" oninput="autoSaveComplete('${id}')">
       <h2 style="margin:8px 0;font-size:22px;">📸 Upload Photos</h2>
       <input type="file" id="cf_photo" accept="image/*" multiple style="margin-bottom:10px;width:100%;font-size:16px;" onchange="handleCompletePhoto(this)">
       <div id="cf_photoPreview" style="display:none;"></div>
@@ -1173,8 +1169,38 @@ function handleCompletePhoto(input) {
   });
 }
 
+function autoSaveComplete(id){
+  const tabs = ['corrigo_completed','corrigo_submitted','corrigo_accepted','corrigo_inbox'];
+  let wo = null;
+  let fromTab = null;
+  for (const tab of tabs) {
+    const arr = getData(tab);
+    wo = arr.find(w => w.id === id);
+    if (wo) { fromTab = tab; break; }
+  }
+  if (!wo) return;
+  const hoursEl = document.getElementById('cf_hours');
+  const rateEl = document.getElementById('cf_rate');
+  const startEl = document.getElementById('cf_dateStart');
+  const endEl = document.getElementById('cf_dateEnd');
+  const invEl = document.getElementById('cf_invoice');
+  const matEl = document.getElementById('cf_materials');
+  if (hoursEl) wo.hours = hoursEl.value;
+  if (rateEl) wo.rate = rateEl.value;
+  if (startEl) wo.dateStarted = startEl.value;
+  if (endEl) wo.dateCompleted = endEl.value;
+  if (invEl) wo.invoiceNumber = invEl.value;
+  if (matEl) wo.materialsCost = matEl.value;
+  if (fromTab) {
+    let arr = getData(fromTab);
+    const idx = arr.findIndex(w => w.id === id);
+    if (idx >= 0) {
+      arr[idx] = wo;
+      saveData(fromTab, arr);
+    }
+  }
+}
 function saveCompleteForm(id){
-  try {
   const tabs = ['corrigo_completed','corrigo_submitted','corrigo_accepted','corrigo_inbox'];
   let wo = null;
   let fromTab = null;
@@ -1185,20 +1211,12 @@ function saveCompleteForm(id){
   }
   if (!wo) { alert('Work order not found'); return; }
 
-  const hoursEl = document.getElementById('cf_hours');
-  const rateEl = document.getElementById('cf_rate');
-  const startEl = document.getElementById('cf_dateStart');
-  const endEl = document.getElementById('cf_dateEnd');
-  const invEl = document.getElementById('cf_invoice');
-  const matEl = document.getElementById('cf_materials');
-  if (!hoursEl || !rateEl) { alert('Form fields not found. Please reopen the form.'); return; }
-
-  wo.hours = hoursEl.value;
-  wo.rate = rateEl.value;
-  wo.dateStarted = startEl ? startEl.value : '';
-  wo.dateCompleted = endEl ? endEl.value : '';
-  wo.invoiceNumber = invEl ? invEl.value : '';
-  wo.materialsCost = matEl ? matEl.value : '';
+  wo.hours = document.getElementById('cf_hours').value;
+  wo.rate = document.getElementById('cf_rate').value;
+  wo.dateStarted = document.getElementById('cf_dateStart').value;
+  wo.dateCompleted = document.getElementById('cf_dateEnd').value;
+  wo.invoiceNumber = document.getElementById('cf_invoice').value;
+  wo.materialsCost = document.getElementById('cf_materials').value;
   if (completePhotos.length > 0) {
     if (!wo.photos) wo.photos = [];
     wo.photos = wo.photos.concat(completePhotos);
@@ -1229,10 +1247,6 @@ function saveCompleteForm(id){
   show('completedtab');
   sendPickup();
   alert('✅ Saved and moved to Completed tab!');
-  } catch(err) {
-    alert('Save failed: ' + err.message);
-    console.error(err);
-  }
 }
 
 function editSubmittedForm(id){
