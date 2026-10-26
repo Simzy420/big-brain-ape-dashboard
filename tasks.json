@@ -4,9 +4,9 @@
       "id": "druck-live-book-confirm",
       "priority": "high",
       "title": "Confirm the Druck cycle live Hyperliquid book is OK",
-      "subtitle": "Positions snapshot 8:17 AM Boise 10/23 (a4c42ace): GOLD 0.18 @ $4,111.80 + SP500 0.05 @ $7,690.50 · 3x isolated · Brent closed · acct ~$1,264 · 7:35 AM cycle HOLD (ca362149) · outside paper-only / no-leverage rule",
+      "subtitle": "Positions snapshot 6:01 PM Boise 10/25 (303a64f6): GOLD 0.05 @ $3,990.50 · EUR 300 short @ 1.1198 · BRENTOIL 5 @ $111.41 · 3x isolated · SP500 closed · acct ~$1,256 · 7:35 AM cycle (ff095b9b) logged no decision · outside paper-only / no-leverage rule",
       "steps": [
-        "Open the positions file below and look at the current book (10/23 snapshot: a 0.18 Gold long plus a 0.05 S&P 500 long, both at 3x; the Brent position is gone).",
+        "Open the positions file below and look at the current book (10/25 6 PM snapshot: a 0.05 Gold long, a 300 EUR short, and a 5 Brent oil long, all at 3x; the S&P 500 position is gone).",
         "Decide: is the daily trading cycle allowed to trade live with 3x leverage?",
         "If YES: tell Chief of Staff it's intended, and we'll stop flagging it in the nightly.",
         "If NO: tell Chief of Staff to pause the Druck cycle and flatten or move it to paper. A bot will do the technical steps.",
