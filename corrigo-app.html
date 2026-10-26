@@ -1180,6 +1180,12 @@ function saveCompleteForm(id){
     wo = submitted.find(w => w.id === id);
     fromTab = 'corrigo_submitted';
   }
+  if (!wo) {
+    // Also check accepted (manual WOs that were accepted)
+    let accepted = getData('corrigo_accepted');
+    wo = accepted.find(w => w.id === id);
+    if (wo) fromTab = 'corrigo_accepted';
+  }
   if (!wo) { alert('Work order not found'); return; }
   wo.hours = document.getElementById('cf_hours').value;
   wo.rate = document.getElementById('cf_rate').value;
@@ -1196,6 +1202,17 @@ function saveCompleteForm(id){
     const idx = completed.findIndex(w => w.id === id);
     if (idx >= 0) completed.splice(idx, 1);
     saveData('corrigo_completed', completed);
+    let submitted = getData('corrigo_submitted');
+    if (!submitted.find(w => String(w.number) === String(wo.number))) {
+      submitted.unshift(wo);
+    }
+    saveData('corrigo_submitted', submitted);
+  } else if (fromTab === 'corrigo_accepted') {
+    // Move from Accepted to Completed tab
+    let accepted = getData('corrigo_accepted');
+    const idx = accepted.findIndex(w => w.id === id);
+    if (idx >= 0) accepted.splice(idx, 1);
+    saveData('corrigo_accepted', accepted);
     let submitted = getData('corrigo_submitted');
     if (!submitted.find(w => String(w.number) === String(wo.number))) {
       submitted.unshift(wo);
@@ -1255,32 +1272,23 @@ function addManualWo(){
   const desc = document.getElementById('manualWoDesc').value.trim();
   const loc = document.getElementById('manualWoLoc').value.trim();
   if (!num) { alert('Enter a work order number.'); return; }
-  // Add to Finalize so the user can immediately enter hours/rate/photo and submit to Completed
-  let finalize = getData('corrigo_completed');
-  finalize = finalize.filter(w => String(w.number) !== num);
-  const newWo = {
+  let inbox = getData('corrigo_inbox');
+  inbox = inbox.filter(w => String(w.number) !== num);
+  inbox.unshift({
     id: 'manual_' + Date.now(),
     number: num,
-    status: 'completed',
+    status: 'inbox',
     description: desc || '',
     location: loc || '',
-    workDescription: desc || '',
-    hours: '',
-    rate: '30',
-    dateStarted: '',
-    dateCompleted: '',
-    invoiceNumber: '',
-    materialsCost: '',
-    photos: []
-  };
-  finalize.unshift(newWo);
-  saveData('corrigo_completed', finalize);
+    workDescription: desc || ''
+  });
+  saveData('corrigo_inbox', inbox);
   document.getElementById('manualWoNumber').value = '';
   document.getElementById('manualWoDesc').value = '';
   document.getElementById('manualWoLoc').value = '';
   render();
-  show('finalize');
-  alert('Added to Finalize! Enter hours, rate, and photo, then Submit to move it to Completed.');
+  show('inbox');
+  alert('Added to inbox!');
 }
 
 async 
