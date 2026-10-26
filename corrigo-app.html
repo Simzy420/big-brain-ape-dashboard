@@ -1130,7 +1130,7 @@ function openCompleteForm(id){
       <input type="file" id="cf_photo" accept="image/*" multiple style="margin-bottom:10px;width:100%;font-size:16px;" onchange="handleCompletePhoto(this)">
       <div id="cf_photoPreview" style="display:none;"></div>
       <div class="btn-row" style="margin-top:12px;">
-        <button class="big accept" onclick="saveCompleteForm('${id}')">✅ Submit</button>
+        <button class="big accept" type="button" onclick="saveCompleteForm('${id}'); return false;">✅ Submit</button>
         <button class="big decline" onclick="render();show('finalize');">Cancel</button>
       </div>
     </div>`;
@@ -1201,52 +1201,65 @@ function autoSaveComplete(id){
   }
 }
 function saveCompleteForm(id){
-  const tabs = ['corrigo_completed','corrigo_submitted','corrigo_accepted','corrigo_inbox'];
-  let wo = null;
-  let fromTab = null;
-  for (const tab of tabs) {
-    const arr = getData(tab);
-    wo = arr.find(w => w.id === id);
-    if (wo) { fromTab = tab; break; }
-  }
-  if (!wo) { alert('Work order not found'); return; }
-
-  wo.hours = document.getElementById('cf_hours').value;
-  wo.rate = document.getElementById('cf_rate').value;
-  wo.dateStarted = document.getElementById('cf_dateStart').value;
-  wo.dateCompleted = document.getElementById('cf_dateEnd').value;
-  wo.invoiceNumber = document.getElementById('cf_invoice').value;
-  wo.materialsCost = document.getElementById('cf_materials').value;
-  if (completePhotos.length > 0) {
-    if (!wo.photos) wo.photos = [];
-    wo.photos = wo.photos.concat(completePhotos);
-  }
-
-  // Add to Completed (corrigo_submitted) first
-  let submitted = getData('corrigo_submitted');
-  const existingIdx = submitted.findIndex(w => String(w.number) === String(wo.number));
-  if (existingIdx >= 0) {
-    submitted[existingIdx] = wo;
-  } else {
-    submitted.unshift(wo);
-  }
-  saveData('corrigo_submitted', submitted);
-
-  // Only remove from the source tab after it is safely in Completed
-  if (fromTab && fromTab !== 'corrigo_submitted') {
-    let source = getData(fromTab);
-    const idx = source.findIndex(w => w.id === id);
-    if (idx >= 0) {
-      source.splice(idx, 1);
-      saveData(fromTab, source);
+  try {
+    const tabs = ['corrigo_completed','corrigo_submitted','corrigo_accepted','corrigo_inbox'];
+    let wo = null;
+    let fromTab = null;
+    for (const tab of tabs) {
+      const arr = getData(tab);
+      wo = arr.find(w => w.id === id);
+      if (wo) { fromTab = tab; break; }
     }
-  }
+    if (!wo) { alert('Work order not found'); return; }
 
-  completePhotos = [];
-  render();
-  show('completedtab');
-  sendPickup();
-  alert('✅ Saved and moved to Completed tab!');
+    const hoursEl = document.getElementById('cf_hours');
+    const rateEl = document.getElementById('cf_rate');
+    const startEl = document.getElementById('cf_dateStart');
+    const endEl = document.getElementById('cf_dateEnd');
+    const invEl = document.getElementById('cf_invoice');
+    const matEl = document.getElementById('cf_materials');
+
+    if (hoursEl) wo.hours = hoursEl.value;
+    if (rateEl) wo.rate = rateEl.value;
+    if (startEl) wo.dateStarted = startEl.value;
+    if (endEl) wo.dateCompleted = endEl.value;
+    if (invEl) wo.invoiceNumber = invEl.value;
+    if (matEl) wo.materialsCost = matEl.value;
+
+    if (typeof completePhotos !== 'undefined' && completePhotos.length > 0) {
+      if (!wo.photos) wo.photos = [];
+      wo.photos = wo.photos.concat(completePhotos);
+    }
+
+    // Add to Completed (corrigo_submitted) first
+    let submitted = getData('corrigo_submitted');
+    const existingIdx = submitted.findIndex(w => String(w.number) === String(wo.number));
+    if (existingIdx >= 0) {
+      submitted[existingIdx] = wo;
+    } else {
+      submitted.unshift(wo);
+    }
+    saveData('corrigo_submitted', submitted);
+
+    // Only remove from the source tab after it is safely in Completed
+    if (fromTab && fromTab !== 'corrigo_submitted') {
+      let source = getData(fromTab);
+      const idx = source.findIndex(w => w.id === id);
+      if (idx >= 0) {
+        source.splice(idx, 1);
+        saveData(fromTab, source);
+      }
+    }
+
+    if (typeof completePhotos !== 'undefined') completePhotos = [];
+    render();
+    show('completedtab');
+    sendPickup();
+    alert('✅ Saved successfully! Moved to Completed tab.');
+  } catch(err) {
+    alert('Save failed: ' + (err.message || err));
+    console.error(err);
+  }
 }
 
 function editSubmittedForm(id){
