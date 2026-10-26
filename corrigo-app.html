@@ -1185,6 +1185,23 @@ function openCompleteForm(id){
 }
 
 let completePhotos = [];
+async function uploadPhotoToGitHub(name, dataUrl) {
+  const token = localStorage.getItem('github_token');
+  if (!token) return null;
+  try {
+    const filename = 'wo-photos/' + Date.now() + '-' + name.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const b64 = dataUrl.split(',')[1];
+    const body = { message: 'WO photo ' + name, content: b64 };
+    const res = await fetch('https://api.github.com/repos/Simzy420/big-brain-ape-dashboard/contents/' + filename, {
+      method: 'PUT',
+      headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) return null;
+    const info = await res.json();
+    return info.content && info.content.download_url ? info.content.download_url : null;
+  } catch(e) { return null; }
+}
 function compressImage(file, maxSize, quality, cb) {
   const reader = new FileReader();
   reader.onload = function(e) {
@@ -1214,10 +1231,14 @@ function handleCompletePhoto(input) {
   const remaining = Array.from(input.files);
   let loaded = 0;
   remaining.forEach((file) => {
-    compressImage(file, 1200, 0.6, function(compressed) {
-      completePhotos.push(compressed);
+    compressImage(file, 800, 0.5, async function(compressed) {
+      // Upload to GitHub so the automation can always get it
+      const url = await uploadPhotoToGitHub(compressed.name, compressed.data);
+      const photo = { name: compressed.name, data: compressed.data, url: url || '' };
+      completePhotos.push(photo);
       loaded++;
-      html += `<div style="margin-bottom:8px;"><img src="${compressed.data}" style="width:100%;border-radius:12px;"><p style="color:#00cc66;font-size:16px;">✅ ${compressed.name}</p></div>`;
+      const status = url ? '✅ uploaded' : '✅ local only';
+      html += `<div style="margin-bottom:8px;"><img src="${compressed.data}" style="width:100%;border-radius:12px;"><p style="color:#00cc66;font-size:16px;">${status} ${compressed.name}</p></div>`;
       if (loaded === remaining.length) {
         const existing = previewDiv.querySelector('p');
         if (existing && existing.textContent.includes('Existing')) {
