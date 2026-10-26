@@ -159,7 +159,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span style="font-size:12px;opacity:0.7;">v5</span></p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span style="font-size:12px;opacity:0.7;">v3</span></p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -1185,6 +1185,27 @@ function openCompleteForm(id){
 }
 
 let completePhotos = [];
+function compressImage(file, maxSize, quality, cb) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      let w = img.width, h = img.height;
+      if (w > maxSize || h > maxSize) {
+        if (w > h) { h = Math.round(h * maxSize / w); w = maxSize; }
+        else { w = Math.round(w * maxSize / h); h = maxSize; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      const data = canvas.toDataURL('image/jpeg', quality);
+      cb({ name: file.name, data: data });
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
 function handleCompletePhoto(input) {
   if (!input.files || input.files.length === 0) return;
   const previewDiv = document.getElementById('cf_photoPreview');
@@ -1192,12 +1213,11 @@ function handleCompletePhoto(input) {
   let html = '';
   const remaining = Array.from(input.files);
   let loaded = 0;
-  remaining.forEach((file, idx) => {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      completePhotos.push({ name: file.name, data: e.target.result });
+  remaining.forEach((file) => {
+    compressImage(file, 1200, 0.6, function(compressed) {
+      completePhotos.push(compressed);
       loaded++;
-      html += `<div style="margin-bottom:8px;"><img src="${e.target.result}" style="width:100%;border-radius:12px;"><p style="color:#00cc66;font-size:16px;">✅ ${file.name}</p></div>`;
+      html += `<div style="margin-bottom:8px;"><img src="${compressed.data}" style="width:100%;border-radius:12px;"><p style="color:#00cc66;font-size:16px;">✅ ${compressed.name}</p></div>`;
       if (loaded === remaining.length) {
         const existing = previewDiv.querySelector('p');
         if (existing && existing.textContent.includes('Existing')) {
@@ -1206,8 +1226,7 @@ function handleCompletePhoto(input) {
           previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Photos selected:</p>' + html;
         }
       }
-    };
-    reader.readAsDataURL(file);
+    });
   });
 }
 
@@ -1244,15 +1263,6 @@ function autoSaveComplete(id){
 }
 function saveCompleteForm(id){
   try {
-    // Free space first by clearing old photo data from other tabs
-    ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_resolved'].forEach(key => {
-      try {
-        const arr = JSON.parse(localStorage.getItem(key)||'[]');
-        const slim = arr.map(w => { const c = {...w}; if (c.photos) c.photos = []; return c; });
-        localStorage.setItem(key, JSON.stringify(slim));
-      } catch(ignore) {}
-    });
-
     const tabs = ['corrigo_completed','corrigo_submitted','corrigo_accepted','corrigo_inbox'];
     let wo = null;
     let fromTab = null;
@@ -1277,30 +1287,35 @@ function saveCompleteForm(id){
     if (invEl) wo.invoiceNumber = invEl.value;
     if (matEl) wo.materialsCost = matEl.value;
 
-    // Keep photo name but drop big data if storage is tight
     if (typeof completePhotos !== 'undefined' && completePhotos.length > 0) {
       if (!wo.photos) wo.photos = [];
-      wo.photos = wo.photos.concat(completePhotos.map(p => ({ name: p.name, data: p.data || '' })));
+      wo.photos = wo.photos.concat(completePhotos);
     }
 
-    // Add to Completed first
+    // Add to Completed (corrigo_submitted) first
     let submitted = getData('corrigo_submitted');
     const existingIdx = submitted.findIndex(w => String(w.number) === String(wo.number));
-    if (existingIdx >= 0) submitted[existingIdx] = wo;
-    else submitted.unshift(wo);
+    if (existingIdx >= 0) {
+      submitted[existingIdx] = wo;
+    } else {
+      submitted.unshift(wo);
+    }
     saveData('corrigo_submitted', submitted);
 
-    // Remove from source
+    // Only remove from the source tab after it is safely in Completed
     if (fromTab && fromTab !== 'corrigo_submitted') {
       let source = getData(fromTab);
       const idx = source.findIndex(w => w.id === id);
-      if (idx >= 0) { source.splice(idx, 1); saveData(fromTab, source); }
+      if (idx >= 0) {
+        source.splice(idx, 1);
+        saveData(fromTab, source);
+      }
     }
 
     if (typeof completePhotos !== 'undefined') completePhotos = [];
     render();
     show('completedtab');
-    try { sendPickup(); } catch(e) { console.warn(e); }
+    sendPickup();
     alert('✅ Saved successfully! Moved to Completed tab.');
   } catch(err) {
     alert('Save failed: ' + (err.message || err));
