@@ -2,40 +2,40 @@
   "address": "0x37a8023762c69f7150d878733fd9f635f1070fc6",
   "network": "mainnet",
   "abstraction": "unifiedAccount",
-  "accountValue": "1256.331077",
+  "accountValue": "1257.839462",
   "withdrawable": "1010.733826",
   "positions": [
     {
       "token": "xyz:GOLD",
       "size": "0.1",
       "entryPx": "3998.75",
-      "unrealizedPnl": "0.915",
-      "marginUsed": "133.313355",
+      "unrealizedPnl": "1.575",
+      "marginUsed": "133.908668",
       "leverage": {
         "type": "isolated",
         "value": 3,
-        "rawUsd": "-267.476645"
+        "rawUsd": "-267.541332"
       }
     },
     {
       "token": "xyz:EUR",
       "size": "-300.0",
       "entryPx": "1.1198",
-      "unrealizedPnl": "0.57",
-      "marginUsed": "112.283896",
+      "unrealizedPnl": "1.44",
+      "marginUsed": "113.186968",
       "leverage": {
         "type": "isolated",
         "value": 3,
-        "rawUsd": "447.653896"
+        "rawUsd": "447.686968"
       }
     }
   ],
   "spotBalances": [
     {
       "token": "USDC",
-      "total": "1256.331077",
-      "hold": "245.597251",
-      "usdValue": "1256.331077"
+      "total": "1257.839462",
+      "hold": "247.105636",
+      "usdValue": "1257.839462"
     }
   ]
 }
