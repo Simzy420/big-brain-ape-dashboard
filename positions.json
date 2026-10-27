@@ -2,61 +2,40 @@
   "address": "0x37a8023762c69f7150d878733fd9f635f1070fc6",
   "network": "mainnet",
   "abstraction": "unifiedAccount",
-  "accountValue": "1256.040041",
-  "withdrawable": "1010.73",
+  "accountValue": "1256.331077",
+  "withdrawable": "1010.733826",
   "positions": [
     {
       "token": "xyz:GOLD",
       "size": "0.1",
       "entryPx": "3998.75",
-      "unrealizedPnl": "0.825",
-      "marginUsed": "133.297288",
+      "unrealizedPnl": "0.915",
+      "marginUsed": "133.313355",
       "leverage": {
         "type": "isolated",
         "value": 3,
-        "rawUsd": "-266.697288"
+        "rawUsd": "-267.476645"
       }
     },
     {
       "token": "xyz:EUR",
       "size": "-300.0",
       "entryPx": "1.1198",
-      "unrealizedPnl": "0.33",
-      "marginUsed": "112.008927",
+      "unrealizedPnl": "0.57",
+      "marginUsed": "112.283896",
       "leverage": {
         "type": "isolated",
         "value": 3,
-        "rawUsd": "447.618927"
+        "rawUsd": "447.653896"
       }
     }
   ],
   "spotBalances": [
     {
       "token": "USDC",
-      "total": "1256.040041",
-      "hold": "245.31",
-      "usdValue": "1256.040041"
-    }
-  ],
-  "updated": "2026-10-26T13:38:00Z",
-  "tradesThisCycle": [
-    {
-      "action": "CLOSE",
-      "token": "xyz:BRENTOIL",
-      "side": "short",
-      "size": "5.0",
-      "reason": "Thesis invalidated — Saudi pipeline attack supply shock driving oil higher, not demand destruction. Cut loser fast.",
-      "timestamp": "2026-10-26T13:35:58Z",
-      "realizedPnl": "-5.14"
-    },
-    {
-      "action": "ADD",
-      "token": "xyz:GOLD",
-      "side": "long",
-      "size": "0.05",
-      "entryPx": "4007.0",
-      "reason": "Doubled gold position to conviction size. Central bank buying, Fed at pause point, structural dollar debasement. 18-month target $4,500-4,900.",
-      "timestamp": "2026-10-26T13:36:15Z"
+      "total": "1256.331077",
+      "hold": "245.597251",
+      "usdValue": "1256.331077"
     }
   ]
 }
