@@ -162,7 +162,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v8-202610280815</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v9-202610280900</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -242,6 +242,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
       <p class="muted">Paste the GitHub token once. It stays on this phone.</p>
       <input id="token" type="password" placeholder="ghp_...">
       <button class="big save" onclick="saveToken()">Save Token</button>
+      <p style="margin-top:12px;">This phone: <b id="deviceNameLabel"></b> <button class="big save" onclick="setDeviceName()" style="margin-top:4px;">📱 Name This Phone</button></p>
       <p id="status" class="muted"></p>
     </div>
     <div class="card">
@@ -290,7 +291,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v8-202610280815';
+const APP_VERSION = 'v9-202610280900';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -899,66 +900,139 @@ async function ensurePhotoUrls(tab){
   }
   if (changed) saveData(tab, arr);
 }
+// ---- Multi-phone sync (v9) ----
+// File shape of corrigo-actions.json:
+// { pendingActions:[ {number, action:'accept'|'decline'|'bid'|'update'|'dispute'|'resolve', deviceId, deviceName, updatedAt, ...fields} ],
+//   exportedAt, devices:{ <deviceId>:{ name, lastSync } }, schemaVersion:2 }
+// One entry per number+action (newest updatedAt wins). An accept from one phone and an update from another
+// for the same WO both stay. If an 'update' entry has no workDescription but another phone has one for that WO,
+// it is copied in and 'workDescriptionFrom' names the phone it came from — the bot reads workDescription off the update entry.
+const ACTIONS_API = 'https://api.github.com/repos/Simzy420/big-brain-ape-dashboard/contents/corrigo-actions.json';
+function getDeviceId(){
+  let id = localStorage.getItem('corrigo_device_id');
+  if (!id) { id = 'dev-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,8); localStorage.setItem('corrigo_device_id', id); }
+  return id;
+}
+function getDeviceName(){ return localStorage.getItem('corrigo_device_name') || ''; }
+function setDeviceName(){
+  const n = prompt('Name for this phone (e.g. Dad, Casey):', getDeviceName());
+  if (n !== null) { localStorage.setItem('corrigo_device_name', n.trim()); const el = document.getElementById('deviceNameLabel'); if (el) el.textContent = n.trim() || '(not set)'; }
+}
+function actKey(a){ return String(a.number) + '|' + a.action; }
+function actSig(a){ const c = Object.assign({}, a); ['deviceId','deviceName','updatedAt','workDescriptionFrom'].forEach(k => delete c[k]); return JSON.stringify(c, Object.keys(c).sort()); }
+function getMap(k){ try { return JSON.parse(localStorage.getItem(k) || '{}'); } catch(e){ return {}; } }
+function setMap(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
+function rawLocalActions(){
+  const actions = [];
+  getData('corrigo_accepted').forEach(w => actions.push({number:w.number, action:'accept', location:w.location||'', description:w.description||''}));
+  getData('corrigo_declined').forEach(w => actions.push({number:w.number, action:'decline', location:w.location||'', description:w.description||''}));
+  getData('corrigo_bidding').forEach(w => actions.push({number:w.number, action:'bid', bidAmount:w.bidAmount||0, location:w.location||'', description:w.description||''}));
+  getData('corrigo_completed').forEach(w => actions.push(buildWoExport(w, 'completed')));
+  getData('corrigo_submitted').forEach(w => actions.push(buildWoExport(w, 'submitted')));
+  getData('corrigo_disputed').concat(getData('corrigo_resolved')).forEach(w => {
+    if (w.status === 'disputed' || w.status === 'resolved') {
+      const a = { number:w.number, action: w.status === 'disputed' ? 'dispute' : 'resolve', workDescription:w.workDescription||'',
+        hours:w.hours||'', rate:w.rate||'', dateStarted:w.dateStarted||'', dateCompleted:w.dateCompleted||'',
+        invoiceNumber:w.invoiceNumber||'', location:w.location||'', description:w.description||'', status:w.status, photos:exportPhotos(w.photos) };
+      if (w.status === 'disputed') { a.disputeReason = w.disputeReason||''; a.disputedAmount = w.disputedAmount||''; }
+      actions.push(a);
+    }
+  });
+  return actions;
+}
+// After importing other phones' entries, remember how those WOs look here so they are not re-exported as ours
+function snapshotImported(incoming, myDev){
+  const ledger = getMap('corrigo_my_ledger'), imported = getMap('corrigo_imported_sigs');
+  const nums = new Set(), newest = {};
+  incoming.filter(a => a.deviceId !== myDev).forEach(a => { nums.add(String(a.number)); const k = actKey(a); if (!newest[k] || String(a.updatedAt||'') > newest[k]) newest[k] = String(a.updatedAt||''); });
+  // Another phone changed this entry after we did: its version wins, so stop claiming it as ours
+  Object.keys(ledger).forEach(k => { if (newest[k] && newest[k] > String(ledger[k].updatedAt||'')) delete ledger[k]; });
+  rawLocalActions().forEach(a => { const k = actKey(a); if (nums.has(String(a.number)) && !ledger[k]) imported[k] = actSig(a); });
+  setMap('corrigo_my_ledger', ledger);
+  setMap('corrigo_imported_sigs', imported);
+}
+function buildLocalActions(){
+  const actions = rawLocalActions();
+  // Ledger of this phone's own entries: keeps updatedAt stable and keeps an accept after the WO moves on to Finalize
+  const ledger = getMap('corrigo_my_ledger');
+  const imported = getMap('corrigo_imported_sigs');
+  const inInboxOrDeclined = new Set(getData('corrigo_inbox').concat(getData('corrigo_declined')).map(w => String(w.number)));
+  const now = new Date().toISOString();
+  const seen = {};
+  actions.forEach(a => {
+    const k = actKey(a), s = actSig(a);
+    if (seen[k]) return; seen[k] = true;
+    if (ledger[k] && ledger[k].sig === s) return; // unchanged, keep old updatedAt
+    if (!ledger[k] && imported[k] === s) return;  // just a copy of another phone's entry, not ours
+    ledger[k] = { sig: s, updatedAt: now, entry: a };
+  });
+  Object.keys(ledger).forEach(k => {
+    if (seen[k]) return;
+    const e = ledger[k].entry;
+    if (!(e.action === 'accept' && !inInboxOrDeclined.has(String(e.number)))) delete ledger[k];
+  });
+  setMap('corrigo_my_ledger', ledger);
+  const id = getDeviceId(), name = getDeviceName();
+  return Object.keys(ledger).map(k => Object.assign({}, ledger[k].entry, { deviceId:id, deviceName:name, updatedAt:ledger[k].updatedAt }));
+}
+function mergeActions(serverData, mine, myId){
+  const legacyTime = (serverData && serverData.exportedAt) || '1970-01-01T00:00:00Z';
+  const others = ((serverData && serverData.pendingActions) || []).filter(a => (a.deviceId || 'legacy') !== myId)
+    .map(a => a.deviceId ? a : Object.assign({}, a, { deviceId:'legacy', updatedAt: a.updatedAt || legacyTime }));
+  const byKey = {};
+  others.concat(mine).forEach(a => { const k = actKey(a); if (!byKey[k] || String(a.updatedAt||'') >= String(byKey[k].updatedAt||'')) byKey[k] = a; });
+  const out = Object.values(byKey);
+  // Carry a work description typed on one phone onto the update entry the bot invoices from
+  const all = others.concat(mine);
+  out.forEach(a => {
+    if (a.action === 'update' && !a.workDescription) {
+      const src = all.filter(b => String(b.number) === String(a.number) && b.workDescription).sort((x,y) => String(y.updatedAt||'').localeCompare(String(x.updatedAt||'')))[0];
+      if (src) { a.workDescription = src.workDescription; a.workDescriptionFrom = src.deviceName || src.deviceId; }
+    }
+  });
+  return out;
+}
+function b64decodeUtf8(c){ return decodeURIComponent(escape(atob(String(c).replace(/\s/g,'')))); }
+async function fetchActionsFile(token){
+  const res = await fetch(ACTIONS_API + '?ref=main&t=' + Date.now(), { headers:{ Authorization:'token '+token }, cache:'no-store' });
+  if (res.status === 404) return { data:{ pendingActions:[] }, sha:null };
+  if (!res.ok) throw new Error('read HTTP ' + res.status);
+  const info = await res.json();
+  let text = info.content ? b64decodeUtf8(info.content) : '';
+  if (!text) { const raw = await fetch(ACTIONS_API + '?ref=main&t=' + Date.now(), { headers:{ Authorization:'token '+token, Accept:'application/vnd.github.raw' }, cache:'no-store' }); text = await raw.text(); }
+  let data; try { data = JSON.parse(text); } catch(e) { data = { pendingActions:[] }; }
+  return { data, sha: info.sha };
+}
 async function sendPickup(silent){
   const token = localStorage.getItem('github_token');
   if (!token) { setSyncStatus('Not synced: no token in Settings', '#ff3b30'); if (!silent) alert('Saved on this phone. Paste the token in Settings so it can be picked up.'); return; }
   setSyncStatus('Syncing to bot…', '#ff9500');
   try {
-  try { await ensurePhotoUrls('corrigo_submitted'); await ensurePhotoUrls('corrigo_completed'); } catch(e) { console.error(e); }
-  const actions = [];
-  getData('corrigo_accepted').forEach(w => actions.push({number:w.number, action:'accept', location:w.location||'', description:w.description||''}));
-  getData('corrigo_declined').forEach(w => actions.push({number:w.number, action:'decline', location:w.location||'', description:w.description||''}));
-  getData('corrigo_bidding').forEach(w => actions.push({number:w.number, action:'bid', bidAmount:w.bidAmount||0, location:w.location||'', description:w.description||''}));
-  // Update actions for any work order that has completion data
-  const allWos = [].concat(
-    getData('corrigo_accepted'),
-    getData('corrigo_declined'),
-    getData('corrigo_bidding'),
-    getData('corrigo_saved'),
-    getData('corrigo_inbox'),
-    getData('corrigo_completed'),
-    getData('corrigo_disputed'),
-    getData('corrigo_resolved')
-  );
-  // Export WOs from the Completed tab (corrigo_completed) - these have finalize data
-  getData('corrigo_completed').forEach(w => actions.push(buildWoExport(w, 'completed')));
-  // Also export submitted WOs (the app's Completed tab)
-  getData('corrigo_submitted').forEach(w => actions.push(buildWoExport(w, 'submitted')));
-  // Also export dispute/resolve actions
-  const allOthers = getData('corrigo_disputed').concat(getData('corrigo_resolved'));
-  allOthers.forEach(w => {
-    if (w.status === 'disputed') {
-      actions.push({
-        number: w.number,
-        action: 'dispute',
-        workDescription: w.workDescription || '',
-        disputeReason: w.disputeReason || '',
-        disputedAmount: w.disputedAmount || '',
-        hours: w.hours || '', rate: w.rate || '',
-        dateStarted: w.dateStarted || '', dateCompleted: w.dateCompleted || '',
-        invoiceNumber: w.invoiceNumber || '',
-        location: w.location || '', description: w.description || '',
-        status: w.status, photos: w.photos || []
-      });
-    } else if (w.status === 'resolved') {
-      actions.push({
-        number: w.number,
-        action: 'resolve',
-        workDescription: w.workDescription || '',
-        hours: w.hours || '', rate: w.rate || '',
-        dateStarted: w.dateStarted || '', dateCompleted: w.dateCompleted || '',
-        invoiceNumber: w.invoiceNumber || '',
-        location: w.location || '', description: w.description || '',
-        status: w.status, photos: w.photos || []
-      });
+    try { await ensurePhotoUrls('corrigo_submitted'); await ensurePhotoUrls('corrigo_completed'); } catch(e) { console.error(e); }
+    const myId = getDeviceId(), myName = getDeviceName();
+    const mine = buildLocalActions();
+    let lastErr = '';
+    for (let attempt = 0; attempt < 4; attempt++) {
+      const { data, sha } = await fetchActionsFile(token);
+      const now = new Date().toISOString();
+      const devices = Object.assign({}, data.devices || {});
+      devices[myId] = { name: myName, lastSync: now };
+      const out = { schemaVersion:2, pendingActions: mergeActions(data, mine, myId), exportedAt: now, devices };
+      const body = { message:'Pickup from phone app (' + (myName || myId) + ')', content: btoa(unescape(encodeURIComponent(JSON.stringify(out, null, 2)))) };
+      if (sha) body.sha = sha;
+      const res = await fetch(ACTIONS_API, { method:'PUT', headers:{ Authorization:'token '+token, 'Content-Type':'application/json' }, body: JSON.stringify(body) });
+      if (res.ok) {
+        setSyncStatus('Synced to bot ✓ ' + nowTime() + ' from ' + (myName || 'this phone'), '#00cc66');
+        if (!silent) alert('Sent for Corrigo pickup.');
+        return;
+      }
+      let m = ''; try { m = (await res.json()).message || ''; } catch(e) {}
+      lastErr = 'HTTP ' + res.status + (m ? ' ' + m : '');
+      if (res.status !== 409 && res.status !== 422) break;
+      await new Promise(r => setTimeout(r, 400 + Math.random()*800));
     }
-  });
-  const body = { message:'Pickup from phone app', content: btoa(unescape(encodeURIComponent(JSON.stringify({pendingActions:actions, exportedAt:new Date().toISOString()}, null, 2)))) };
-  const cur = await fetch('https://api.github.com/repos/Simzy420/big-brain-ape-dashboard/contents/corrigo-actions.json', { headers:{ Authorization:'token '+token } });
-  if (cur.ok) { const info = await cur.json(); if (info.sha) body.sha = info.sha; }
-  const res = await fetch('https://api.github.com/repos/Simzy420/big-brain-ape-dashboard/contents/corrigo-actions.json', { method:'PUT', headers:{ Authorization:'token '+token, 'Content-Type':'application/json' }, body: JSON.stringify(body) });
-  if (!res.ok) { let m=''; try { m = (await res.json()).message || ''; } catch(e) {} setSyncStatus('Sync failed: HTTP ' + res.status + (m ? ' ' + m : ''), '#ff3b30'); if (!silent) alert('Saved on the phone. GitHub did not take the pickup file.'); }
-  else { setSyncStatus('Synced to bot ✓ ' + nowTime(), '#00cc66'); if (!silent) alert('Sent for Corrigo pickup.'); }
+    setSyncStatus('Sync failed: ' + lastErr, '#ff3b30');
+    if (!silent) alert('Saved on the phone. GitHub did not take the pickup file.');
   } catch(err) { setSyncStatus('Sync failed: ' + (err.message || err), '#ff3b30'); }
 }
 
@@ -1597,7 +1671,12 @@ async function loadJobs(){
         const actData = await actRes.json();
         const actions = actData.pendingActions || [];
         let changed = false;
+        const myDev = getDeviceId();
+        const impSigs = getMap('corrigo_imported_sigs');
+        actions.forEach(act => { if (act.deviceId !== myDev) impSigs[actKey(act)] = actSig(act); });
+        setMap('corrigo_imported_sigs', impSigs);
         actions.forEach(act => {
+          if (act.deviceId && act.deviceId === myDev) return; // our own entry
           const num = String(act.number);
           // Check all tabs for this WO
           const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_submitted','corrigo_disputed','corrigo_sent_to_corrigo'];
@@ -1709,6 +1788,7 @@ async function loadJobs(){
             }
           }
         });
+        try { snapshotImported(actions, myDev); } catch(e) { console.error(e); }
         if (changed) {
           localStorage.setItem('last_sync', new Date().toISOString());
           render();
@@ -1739,6 +1819,7 @@ try {
 } catch(e) {}
 // Wrap in try/catch so the page never goes blank
 try {
+  try { const el = document.getElementById('deviceNameLabel'); if (el) el.textContent = getDeviceName() || '(not set)'; } catch(e) {}
   const prev = localStorage.getItem('corrigo_last_sync_status'); if (prev) setSyncStatus('Last: ' + prev);
   loadJobs().catch(e => console.error(e)).then(() => { try { render(); } catch(e) {} return sendPickup(true); }).catch(e => setSyncStatus('Sync failed: ' + (e.message||e), '#ff3b30'));
 } catch(e) {
