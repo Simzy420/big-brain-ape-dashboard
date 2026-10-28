@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sims Construction — Work Orders</title>
 <style>
@@ -159,7 +162,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span style="font-size:12px;opacity:0.7;">v7</span></p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v8-202610280726</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -287,6 +290,25 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
+const APP_VERSION = 'v8-202610280726';
+function setSyncStatus(msg, color){
+  try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
+  const el = document.getElementById('syncStatus');
+  if (el) { el.textContent = msg; el.style.color = color || '#aaa'; }
+}
+function nowTime(){ return new Date().toLocaleTimeString([], {hour:'numeric', minute:'2-digit'}); }
+// If Safari served an old cached copy, reload once with a cache-busting URL
+(async function checkFreshVersion(){
+  try {
+    const r = await fetch('https://simzy420.github.io/big-brain-ape-dashboard/corrigo-version.json?v=' + Date.now(), {cache:'no-store'});
+    if (!r.ok) return;
+    const v = (await r.json()).version;
+    if (v && v !== APP_VERSION && sessionStorage.getItem('corrigo_reloaded_for') !== v) {
+      sessionStorage.setItem('corrigo_reloaded_for', v);
+      location.replace(location.pathname + '?v=' + encodeURIComponent(v) + '-' + Date.now());
+    }
+  } catch(e) {}
+})();
 let currentPhoto = null;
 let lineItemCount = 0;
 function getData(k){ try { return JSON.parse(localStorage.getItem(k)||'[]'); } catch(e){ return []; } }
@@ -879,7 +901,9 @@ async function ensurePhotoUrls(tab){
 }
 async function sendPickup(silent){
   const token = localStorage.getItem('github_token');
-  if (!token) { if (!silent) alert('Saved on this phone. Paste the token in Settings so it can be picked up.'); return; }
+  if (!token) { setSyncStatus('Not synced: no token in Settings', '#ff3b30'); if (!silent) alert('Saved on this phone. Paste the token in Settings so it can be picked up.'); return; }
+  setSyncStatus('Syncing to bot…', '#ff9500');
+  try {
   try { await ensurePhotoUrls('corrigo_submitted'); await ensurePhotoUrls('corrigo_completed'); } catch(e) { console.error(e); }
   const actions = [];
   getData('corrigo_accepted').forEach(w => actions.push({number:w.number, action:'accept', location:w.location||'', description:w.description||''}));
@@ -933,8 +957,9 @@ async function sendPickup(silent){
   const cur = await fetch('https://api.github.com/repos/Simzy420/big-brain-ape-dashboard/contents/corrigo-actions.json', { headers:{ Authorization:'token '+token } });
   if (cur.ok) { const info = await cur.json(); if (info.sha) body.sha = info.sha; }
   const res = await fetch('https://api.github.com/repos/Simzy420/big-brain-ape-dashboard/contents/corrigo-actions.json', { method:'PUT', headers:{ Authorization:'token '+token, 'Content-Type':'application/json' }, body: JSON.stringify(body) });
-  if (!res.ok) { if (!silent) alert('Saved on the phone. GitHub did not take the pickup file.'); }
-  else if (!silent) alert('Sent for Corrigo pickup.');
+  if (!res.ok) { let m=''; try { m = (await res.json()).message || ''; } catch(e) {} setSyncStatus('Sync failed: HTTP ' + res.status + (m ? ' ' + m : ''), '#ff3b30'); if (!silent) alert('Saved on the phone. GitHub did not take the pickup file.'); }
+  else { setSyncStatus('Synced to bot ✓ ' + nowTime(), '#00cc66'); if (!silent) alert('Sent for Corrigo pickup.'); }
+  } catch(err) { setSyncStatus('Sync failed: ' + (err.message || err), '#ff3b30'); }
 }
 
 // ============ LINE ITEMS ============
@@ -1164,9 +1189,6 @@ function openCompleteForm(id){
       </div>
       <input id="cf_invoice" type="text" placeholder="Invoice Number" style="margin-bottom:10px;" value="${wo.invoiceNumber||''}" oninput="autoSaveComplete('${id}')">
       <input id="cf_materials" type="number" step="0.01" inputmode="decimal" placeholder="Materials Cost ($)" style="margin-bottom:10px;" value="${wo.materialsCost||''}" oninput="autoSaveComplete('${id}')">
-      <input id="cf_repairCat" type="text" placeholder="Repair category" style="margin-bottom:10px;" value="${wo.repairCategory||''}" oninput="autoSaveComplete('${id}')">
-      <input id="cf_repairCode" type="text" placeholder="Repair code" style="margin-bottom:10px;" value="${wo.repairCode||''}" oninput="autoSaveComplete('${id}')">
-      <textarea id="cf_comment" placeholder="Comment / work done" style="margin-bottom:10px;width:100%;min-height:80px;font-size:16px;" oninput="autoSaveComplete('${id}')">${wo.comment||wo.workDescription||''}</textarea>
       <h2 style="margin:8px 0;font-size:22px;">📸 Upload Photos</h2>
       <input type="file" id="cf_photo" accept="image/*" multiple style="margin-bottom:10px;width:100%;font-size:16px;" onchange="handleCompletePhoto(this)">
       <div id="cf_photoPreview" style="display:none;"></div>
@@ -1281,9 +1303,6 @@ function autoSaveComplete(id){
   if (endEl) wo.dateCompleted = endEl.value;
   if (invEl) wo.invoiceNumber = invEl.value;
   if (matEl) wo.materialsCost = matEl.value;
-  const rcEl = document.getElementById('cf_repairCat'); if (rcEl) wo.repairCategory = rcEl.value;
-  const rcdEl = document.getElementById('cf_repairCode'); if (rcdEl) wo.repairCode = rcdEl.value;
-  const cmEl = document.getElementById('cf_comment'); if (cmEl) wo.comment = cmEl.value;
   if (fromTab) {
     let arr = getData(fromTab);
     const idx = arr.findIndex(w => w.id === id);
@@ -1318,9 +1337,6 @@ function saveCompleteForm(id){
     if (endEl) wo.dateCompleted = endEl.value;
     if (invEl) wo.invoiceNumber = invEl.value;
     if (matEl) wo.materialsCost = matEl.value;
-    const rcEl = document.getElementById('cf_repairCat'); if (rcEl) wo.repairCategory = rcEl.value;
-    const rcdEl = document.getElementById('cf_repairCode'); if (rcdEl) wo.repairCode = rcdEl.value;
-    const cmEl = document.getElementById('cf_comment'); if (cmEl) wo.comment = cmEl.value;
 
     if (typeof completePhotos !== 'undefined' && completePhotos.length > 0) {
       if (!wo.photos) wo.photos = [];
@@ -1376,9 +1392,6 @@ function editSubmittedForm(id){
       </div>
       <input id="cf_invoice" type="text" placeholder="Invoice Number" style="margin-bottom:10px;" value="${wo.invoiceNumber||''}">
       <input id="cf_materials" type="number" step="0.01" inputmode="decimal" placeholder="Materials Cost ($)" style="margin-bottom:10px;" value="${wo.materialsCost||''}">
-      <input id="cf_repairCat" type="text" placeholder="Repair category" style="margin-bottom:10px;" value="${wo.repairCategory||''}">
-      <input id="cf_repairCode" type="text" placeholder="Repair code" style="margin-bottom:10px;" value="${wo.repairCode||''}">
-      <textarea id="cf_comment" placeholder="Comment / work done" style="margin-bottom:10px;width:100%;min-height:80px;font-size:16px;">${wo.comment||wo.workDescription||''}</textarea>
       <h2 style="margin:8px 0;font-size:22px;">📸 Upload Photos</h2>
       <input type="file" id="cf_photo" accept="image/*" multiple style="margin-bottom:10px;width:100%;font-size:16px;" onchange="handleCompletePhoto(this)">
       <div id="cf_photoPreview" style="display:none;"></div>
@@ -1418,7 +1431,6 @@ function addManualWo(){
   alert('Added to inbox!');
 }
 
-async 
 function moveToSentToCorrigo(woNumber) {
   const completed = getData('corrigo_completed');
   const idx = completed.findIndex(w => String(w.number) === String(woNumber));
@@ -1658,7 +1670,8 @@ try {
 } catch(e) {}
 // Wrap in try/catch so the page never goes blank
 try {
-  loadJobs().then(() => sendPickup(true)).catch(e => console.error(e));
+  const prev = localStorage.getItem('corrigo_last_sync_status'); if (prev) setSyncStatus('Last: ' + prev);
+  loadJobs().catch(e => console.error(e)).then(() => { try { render(); } catch(e) {} return sendPickup(true); }).catch(e => setSyncStatus('Sync failed: ' + (e.message||e), '#ff3b30'));
 } catch(e) {
   console.error('Failed to start:', e);
   try { render(); } catch(re) {}
