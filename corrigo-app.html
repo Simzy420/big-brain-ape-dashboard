@@ -162,7 +162,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v8-202610280726</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v8-202610280815</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -290,7 +290,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v8-202610280726';
+const APP_VERSION = 'v8-202610280815';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -437,7 +437,7 @@ function render(){
   const sentListEl = document.getElementById('sentToCorrigoList');
   if (sentListEl) {
     sentListEl.innerHTML = sentToCorrigo.length > 0
-      ? sentToCorrigo.map(w => card(w, false)).join('')
+      ? sentToCorrigo.map((w,i) => sentCard(w,i)).join('')
       : '<div class="card">No work orders sent to Corrigo yet.</div>';
   }
 
@@ -1431,6 +1431,70 @@ function addManualWo(){
   alert('Added to inbox!');
 }
 
+// Merge: phone's own entry first, overlay status/sentAt/corrigo* from work-orders.json, fill any missing fields
+function mergeSentWo(phone, server){
+  const out = Object.assign({}, phone || {});
+  Object.keys(server || {}).forEach(k => {
+    const v = server[k];
+    const overlay = k === 'status' || k === 'sentAt' || k === 'submittedBy' || k.indexOf('corrigo') === 0;
+    const empty = out[k] === undefined || out[k] === null || out[k] === '' || (Array.isArray(out[k]) && out[k].length === 0);
+    if ((overlay && v !== undefined && v !== null && v !== '') || empty) out[k] = v;
+  });
+  return out;
+}
+
+function escHtml(t){ return String(t == null ? '' : t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function fmtMoney(v){ const n = parseFloat(v); return isNaN(n) ? '' : '$' + n.toFixed(2); }
+
+function fmtMountain(iso){
+  if (!iso) return '';
+  try { const d = new Date(iso); if (isNaN(d)) return String(iso);
+    return d.toLocaleString('en-US', { timeZone: 'America/Denver', month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }) + ' MT';
+  } catch(e) { return String(iso); }
+}
+
+function sentCard(w, i){
+  const hasMat = w.materialsCost !== undefined && w.materialsCost !== null && w.materialsCost !== '';
+  const labor = (parseFloat(w.hours)||0) * (parseFloat(w.rate)||0);
+  const total = w.corrigoTotal != null && w.corrigoTotal !== '' ? parseFloat(w.corrigoTotal) : (labor + (parseFloat(w.materialsCost)||0));
+  const line = (w.hours || w.invoiceNumber) ? `<div style="margin-top:8px;color:#00cc66;font-size:16px;">Invoice: ${escHtml(w.invoiceNumber||'-')} | Hours: ${escHtml(w.hours||'-')} | Materials: ${hasMat ? fmtMoney(w.materialsCost) : 'none'}${total ? ' | Total: ' + fmtMoney(total) : ''}</div>` : '';
+  return `<div class="card" style="cursor:pointer;" onclick="openSentDetail(${i})"><div class="wo-card-header"><strong>${escHtml(w.number||'')}</strong></div>${w.location ? '<p>'+escHtml(w.location)+'</p>' : ''}${line}<p class="muted" style="margin-top:8px;">Tap to see everything that was sent ›</p></div>`;
+}
+
+function openSentDetail(i){
+  const w = getData('corrigo_sent_to_corrigo')[i];
+  if (!w) return;
+  const row = (label, val) => (val === undefined || val === null || val === '') ? '' : `<div style="display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #333;font-size:17px;"><span style="color:#aaa;">${label}</span><span style="text-align:right;">${escHtml(val)}</span></div>`;
+  const hasMat = w.materialsCost !== undefined && w.materialsCost !== null && w.materialsCost !== '';
+  const labor = (parseFloat(w.hours)||0) * (parseFloat(w.rate)||0);
+  const total = labor + (parseFloat(w.materialsCost)||0);
+  const photos = (w.photos || []);
+  const photosHtml = photos.length ? `<p style="color:#aaa;font-size:16px;margin:12px 0 6px;">📸 Photos (${photos.length}):</p>` + photos.map(p => {
+      const src = (p && (p.data || p.url)) || '';
+      return src ? `<img src="${escHtml(src)}" style="width:100%;border-radius:12px;margin-bottom:8px;">` : `<p class="muted" style="font-size:15px;">${escHtml((p && p.name) || 'photo')} (no image saved)</p>`;
+    }).join('') : '<p class="muted" style="margin-top:12px;">No photos saved.</p>';
+  const hasCorrigo = ['corrigoTotal','corrigoStatus','corrigoMaterial','corrigoLabor','corrigoWoNumber','submittedBy'].some(k => w[k] !== undefined && w[k] !== null && w[k] !== '');
+  const corrigoHtml = hasCorrigo ? `<h3 style="margin:16px 0 4px;color:#00cc66;">In Corrigo</h3>${row('Corrigo WO #', w.corrigoWoNumber)}${row('Status', w.corrigoStatus)}${row('Labor', fmtMoney(w.corrigoLabor))}${row('Material', w.corrigoMaterial !== undefined && w.corrigoMaterial !== null && w.corrigoMaterial !== '' ? fmtMoney(w.corrigoMaterial) : '')}${row('Total', fmtMoney(w.corrigoTotal))}${row('Submitted by', w.submittedBy)}` : '';
+  const desc = w.workDescription || w.comment || '';
+  const html = `<div class="card" style="max-width:600px;margin:0 auto;">
+    <div class="wo-card-header"><strong>${escHtml(w.number||'')}</strong></div>
+    <h3 style="margin:8px 0 4px;">What was entered</h3>
+    ${row('Location', w.location)}${row('Date started', w.dateStarted)}${row('Date completed', w.dateCompleted)}${row('Invoice #', w.invoiceNumber)}${row('Hours', w.hours)}${row('Rate', w.rate ? '$' + w.rate + '/hr' : '')}${row('Labor total', labor ? fmtMoney(labor) : '')}${row('Materials', hasMat ? fmtMoney(w.materialsCost) : 'None entered')}${row('Total', total ? fmtMoney(total) : '')}${row('Sent', fmtMountain(w.sentAt))}
+    ${desc ? `<p style="color:#aaa;font-size:16px;margin:12px 0 4px;">Work description:</p><p style="white-space:pre-wrap;">${escHtml(desc)}</p>` : ''}
+    ${corrigoHtml}
+    ${photosHtml}
+    <button class="big save" style="margin-top:12px;width:100%;" onclick="closeSentDetail()">Close</button>
+  </div>`;
+  let m = document.getElementById('sentDetailModal');
+  if (!m) { m = document.createElement('div'); m.id = 'sentDetailModal'; m.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:1000;overflow-y:auto;padding:16px;-webkit-overflow-scrolling:touch;'; m.onclick = (e) => { if (e.target === m) closeSentDetail(); }; document.body.appendChild(m); }
+  m.innerHTML = html;
+  m.style.display = 'block';
+  m.scrollTop = 0;
+}
+
+function closeSentDetail(){ const m = document.getElementById('sentDetailModal'); if (m) { m.style.display = 'none'; m.innerHTML = ''; } }
+
 function moveToSentToCorrigo(woNumber) {
   const completed = getData('corrigo_completed');
   const idx = completed.findIndex(w => String(w.number) === String(woNumber));
@@ -1478,23 +1542,28 @@ async function loadJobs(){
           // Remove from corrigo_completed (Finalize tab) if it's there
           let completed = getData('corrigo_completed');
           const cIdx = completed.findIndex(x => String(x.number) === num);
+          let cRemoved = null, sRemoved = null;
           if (cIdx >= 0) {
-            completed.splice(cIdx, 1);
+            cRemoved = completed.splice(cIdx, 1)[0];
             saveData('corrigo_completed', completed);
           }
           // Remove from corrigo_submitted (Completed tab) if it's there
           let submitted = getData('corrigo_submitted');
           const sIdx = submitted.findIndex(x => String(x.number) === num);
           if (sIdx >= 0) {
-            submitted.splice(sIdx, 1);
+            sRemoved = submitted.splice(sIdx, 1)[0];
             saveData('corrigo_submitted', submitted);
           }
-          // Add to corrigo_sent_to_corrigo if not already there
+          // Add to corrigo_sent_to_corrigo, keeping the phone's own full entry data
           let sent = getData('corrigo_sent_to_corrigo');
-          if (!sent.find(x => String(x.number) === num)) {
-            sent.unshift(w);
-            saveData('corrigo_sent_to_corrigo', sent);
+          const phoneWo = (cIdx >= 0 ? cRemoved : null) || (sIdx >= 0 ? sRemoved : null);
+          const exIdx = sent.findIndex(x => String(x.number) === num);
+          if (exIdx < 0) {
+            sent.unshift(mergeSentWo(phoneWo || {}, w));
+          } else {
+            sent[exIdx] = mergeSentWo(sent[exIdx], w);
           }
+          saveData('corrigo_sent_to_corrigo', sent);
         }
       });
       // Rebuild seen AFTER status sync so moved WOs aren't skipped
