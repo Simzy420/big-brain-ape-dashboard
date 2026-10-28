@@ -329,6 +329,7 @@ async function forceReload(){
   // This preserves all existing data (completed, submitted, etc.)
   await loadJobs();
   render();
+  try { await sendPickup(true); } catch(e) { console.error(e); }
   alert('✅ Synced from server!');
 }
 function handled(){
@@ -512,7 +513,7 @@ function disputedCard(w){
   const resolveBtn = `<button class="big accept" onclick="resolveDispute('${w.id}')" style="margin-top:8px;">✅ Mark Resolved</button>`;
   const deleteBtn = `<button class="wo-delete" onclick="deleteWo('${w.id}')" style="width:100%;margin-top:8px;">🗑️ Delete</button>`;
   const photosHtml = w.photos && w.photos.length > 0
-    ? `<div style="margin-top:12px;"><p style="color:#aaa;font-size:16px;margin-bottom:6px;">📸 Photos (${w.photos.length}):</p>${w.photos.map((p,i) => `<img src="${p.data}" style="width:100%;border-radius:12px;margin-bottom:8px;" onclick="this.style.width=this.style.width==='100%'?'50%':'100%'">`).join('')}</div>`
+    ? `<div style="margin-top:12px;"><p style="color:#aaa;font-size:16px;margin-bottom:6px;">📸 Photos (${w.photos.length}):</p>${w.photos.map((p,i) => `<img src="${p.data||p.url}" style="width:100%;border-radius:12px;margin-bottom:8px;" onclick="this.style.width=this.style.width==='100%'?'50%':'100%'">`).join('')}</div>`
     : '';
   const uploadBtn = `<button class="email-btn" style="border-color:#ff9500;color:#ff9500;background:rgba(255,149,0,0.15);" onclick="openDisputePhotoUpload('${w.id}')">📸 Upload Dispute Photo</button>`;
   return `<div class="card" style="border:2px solid #ff3b30;">
@@ -595,7 +596,7 @@ function openDisputePhotoUpload(id){
   if (wo.photos && wo.photos.length > 0) {
     const previewDiv = document.getElementById('dp_photoPreview');
     previewDiv.style.display = 'block';
-    previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Existing photos:</p>' + wo.photos.map((p,i) => `<img src="${p.data}" style="width:100%;border-radius:12px;margin-bottom:8px;">`).join('');
+    previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Existing photos:</p>' + wo.photos.map((p,i) => `<img src="${p.data||p.url}" style="width:100%;border-radius:12px;margin-bottom:8px;">`).join('');
   }
 }
 
@@ -649,7 +650,7 @@ function resolvedCard(w){
   let desc = w.description || w.workDescription || '';
   const disputeReason = w.disputeReason || '';
   const photosHtml = w.photos && w.photos.length > 0
-    ? `<div style="margin-top:12px;"><p style="color:#aaa;font-size:16px;margin-bottom:6px;">📸 Photos (${w.photos.length}):</p>${w.photos.map((p,i) => `<img src="${p.data}" style="width:100%;border-radius:12px;margin-bottom:8px;" onclick="this.style.width=this.style.width==='100%'?'50%':'100%'">`).join('')}</div>`
+    ? `<div style="margin-top:12px;"><p style="color:#aaa;font-size:16px;margin-bottom:6px;">📸 Photos (${w.photos.length}):</p>${w.photos.map((p,i) => `<img src="${p.data||p.url}" style="width:100%;border-radius:12px;margin-bottom:8px;" onclick="this.style.width=this.style.width==='100%'?'50%':'100%'">`).join('')}</div>`
     : '';
   const invoiceHtml = (w.hours || w.rate || w.invoiceNumber)
     ? `<div style="margin-top:8px;color:#00cc66;font-size:16px;">✅ Hours: ${w.hours||'-'} | Rate: $${w.rate||'-'}/hr | Invoice: ${w.invoiceNumber||'-'}</div>`
@@ -697,7 +698,7 @@ function openDisputeForm(id){
   if (wo.photos && wo.photos.length > 0) {
     const previewDiv = document.getElementById('df_photoPreview');
     previewDiv.style.display = 'block';
-    previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Existing photos:</p>' + wo.photos.map((p,i) => `<img src="${p.data}" style="width:100%;border-radius:12px;margin-bottom:8px;">`).join('');
+    previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Existing photos:</p>' + wo.photos.map((p,i) => `<img src="${p.data||p.url}" style="width:100%;border-radius:12px;margin-bottom:8px;">`).join('');
   }
 }
 
@@ -837,9 +838,49 @@ function submitBid(){
   show('bidding');
   sendPickup();
 }
-async function sendPickup(){
+function exportPhotos(photos){
+  return (photos || []).map(p => p.url ? { name: p.name || '', url: p.url } : { name: p.name || '', url: '', data: p.data || '' });
+}
+function buildWoExport(w, status){
+  return {
+    number: w.number,
+    action: 'update',
+    workDescription: w.workDescription || (status === 'completed' ? (w.description || '') : ''),
+    comment: w.comment || w.workDescription || '',
+    hours: w.hours || '',
+    rate: w.rate || '',
+    materialsCost: w.materialsCost || '',
+    repairCategory: w.repairCategory || '',
+    repairCode: w.repairCode || '',
+    dateStarted: w.dateStarted || '',
+    dateCompleted: w.dateCompleted || '',
+    invoiceNumber: w.invoiceNumber || '',
+    location: w.location || '',
+    description: w.description || '',
+    status: status,
+    disputeReason: w.disputeReason || '',
+    disputedAmount: w.disputedAmount || '',
+    photos: exportPhotos(w.photos)
+  };
+}
+// Upload any photo that only exists as a data URL on this phone, and remember its URL
+async function ensurePhotoUrls(tab){
+  const arr = getData(tab);
+  let changed = false;
+  for (const w of arr) {
+    for (const p of (w.photos || [])) {
+      if (!p.url && p.data && String(p.data).startsWith('data:')) {
+        const url = await uploadPhotoToGitHub((w.number || 'wo') + '-' + (p.name || 'photo.jpg'), p.data);
+        if (url) { p.url = url; changed = true; }
+      }
+    }
+  }
+  if (changed) saveData(tab, arr);
+}
+async function sendPickup(silent){
   const token = localStorage.getItem('github_token');
-  if (!token) { alert('Saved on this phone. Paste the token in Settings so it can be picked up.'); return; }
+  if (!token) { if (!silent) alert('Saved on this phone. Paste the token in Settings so it can be picked up.'); return; }
+  try { await ensurePhotoUrls('corrigo_submitted'); await ensurePhotoUrls('corrigo_completed'); } catch(e) { console.error(e); }
   const actions = [];
   getData('corrigo_accepted').forEach(w => actions.push({number:w.number, action:'accept', location:w.location||'', description:w.description||''}));
   getData('corrigo_declined').forEach(w => actions.push({number:w.number, action:'decline', location:w.location||'', description:w.description||''}));
@@ -856,45 +897,9 @@ async function sendPickup(){
     getData('corrigo_resolved')
   );
   // Export WOs from the Completed tab (corrigo_completed) - these have finalize data
-  const completed = getData('corrigo_completed');
-  completed.forEach(w => {
-    actions.push({
-      number: w.number,
-      action: 'update',
-      workDescription: w.workDescription || w.description || '',
-      hours: w.hours || '',
-      rate: w.rate || '',
-      dateStarted: w.dateStarted || '',
-      dateCompleted: w.dateCompleted || '',
-      invoiceNumber: w.invoiceNumber || '',
-      location: w.location || '',
-      description: w.description || '',
-      status: 'completed',
-      disputeReason: w.disputeReason || '',
-      disputedAmount: w.disputedAmount || '',
-      photos: w.photos || []
-    });
-  });
-  // Also export submitted WOs
-  const submitted = getData('corrigo_submitted');
-  submitted.forEach(w => {
-    actions.push({
-      number: w.number,
-      action: 'update',
-      workDescription: w.workDescription || '',
-      hours: w.hours || '',
-      rate: w.rate || '',
-      dateStarted: w.dateStarted || '',
-      dateCompleted: w.dateCompleted || '',
-      invoiceNumber: w.invoiceNumber || '',
-      location: w.location || '',
-      description: w.description || '',
-      status: 'submitted',
-      disputeReason: w.disputeReason || '',
-      disputedAmount: w.disputedAmount || '',
-      photos: w.photos || []
-    });
-  });
+  getData('corrigo_completed').forEach(w => actions.push(buildWoExport(w, 'completed')));
+  // Also export submitted WOs (the app's Completed tab)
+  getData('corrigo_submitted').forEach(w => actions.push(buildWoExport(w, 'submitted')));
   // Also export dispute/resolve actions
   const allOthers = getData('corrigo_disputed').concat(getData('corrigo_resolved'));
   allOthers.forEach(w => {
@@ -928,8 +933,8 @@ async function sendPickup(){
   const cur = await fetch('https://api.github.com/repos/Simzy420/big-brain-ape-dashboard/contents/corrigo-actions.json', { headers:{ Authorization:'token '+token } });
   if (cur.ok) { const info = await cur.json(); if (info.sha) body.sha = info.sha; }
   const res = await fetch('https://api.github.com/repos/Simzy420/big-brain-ape-dashboard/contents/corrigo-actions.json', { method:'PUT', headers:{ Authorization:'token '+token, 'Content-Type':'application/json' }, body: JSON.stringify(body) });
-  if (!res.ok) alert('Saved on the phone. GitHub did not take the pickup file.');
-  else alert('Sent for Corrigo pickup.');
+  if (!res.ok) { if (!silent) alert('Saved on the phone. GitHub did not take the pickup file.'); }
+  else if (!silent) alert('Sent for Corrigo pickup.');
 }
 
 // ============ LINE ITEMS ============
@@ -1159,6 +1164,9 @@ function openCompleteForm(id){
       </div>
       <input id="cf_invoice" type="text" placeholder="Invoice Number" style="margin-bottom:10px;" value="${wo.invoiceNumber||''}" oninput="autoSaveComplete('${id}')">
       <input id="cf_materials" type="number" step="0.01" inputmode="decimal" placeholder="Materials Cost ($)" style="margin-bottom:10px;" value="${wo.materialsCost||''}" oninput="autoSaveComplete('${id}')">
+      <input id="cf_repairCat" type="text" placeholder="Repair category" style="margin-bottom:10px;" value="${wo.repairCategory||''}" oninput="autoSaveComplete('${id}')">
+      <input id="cf_repairCode" type="text" placeholder="Repair code" style="margin-bottom:10px;" value="${wo.repairCode||''}" oninput="autoSaveComplete('${id}')">
+      <textarea id="cf_comment" placeholder="Comment / work done" style="margin-bottom:10px;width:100%;min-height:80px;font-size:16px;" oninput="autoSaveComplete('${id}')">${wo.comment||wo.workDescription||''}</textarea>
       <h2 style="margin:8px 0;font-size:22px;">📸 Upload Photos</h2>
       <input type="file" id="cf_photo" accept="image/*" multiple style="margin-bottom:10px;width:100%;font-size:16px;" onchange="handleCompletePhoto(this)">
       <div id="cf_photoPreview" style="display:none;"></div>
@@ -1180,7 +1188,7 @@ function openCompleteForm(id){
   if (wo.photos && wo.photos.length > 0) {
     const previewDiv = document.getElementById('cf_photoPreview');
     previewDiv.style.display = 'block';
-    previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Existing photos:</p>' + wo.photos.map((p,i) => `<img src="${p.data}" style="width:100%;border-radius:12px;margin-bottom:8px;">`).join('');
+    previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Existing photos:</p>' + wo.photos.map((p,i) => `<img src="${p.data||p.url}" style="width:100%;border-radius:12px;margin-bottom:8px;">`).join('');
   }
 }
 
@@ -1273,6 +1281,9 @@ function autoSaveComplete(id){
   if (endEl) wo.dateCompleted = endEl.value;
   if (invEl) wo.invoiceNumber = invEl.value;
   if (matEl) wo.materialsCost = matEl.value;
+  const rcEl = document.getElementById('cf_repairCat'); if (rcEl) wo.repairCategory = rcEl.value;
+  const rcdEl = document.getElementById('cf_repairCode'); if (rcdEl) wo.repairCode = rcdEl.value;
+  const cmEl = document.getElementById('cf_comment'); if (cmEl) wo.comment = cmEl.value;
   if (fromTab) {
     let arr = getData(fromTab);
     const idx = arr.findIndex(w => w.id === id);
@@ -1307,6 +1318,9 @@ function saveCompleteForm(id){
     if (endEl) wo.dateCompleted = endEl.value;
     if (invEl) wo.invoiceNumber = invEl.value;
     if (matEl) wo.materialsCost = matEl.value;
+    const rcEl = document.getElementById('cf_repairCat'); if (rcEl) wo.repairCategory = rcEl.value;
+    const rcdEl = document.getElementById('cf_repairCode'); if (rcdEl) wo.repairCode = rcdEl.value;
+    const cmEl = document.getElementById('cf_comment'); if (cmEl) wo.comment = cmEl.value;
 
     if (typeof completePhotos !== 'undefined' && completePhotos.length > 0) {
       if (!wo.photos) wo.photos = [];
@@ -1336,7 +1350,7 @@ function saveCompleteForm(id){
     if (typeof completePhotos !== 'undefined') completePhotos = [];
     render();
     show('completedtab');
-    sendPickup();
+    sendPickup(true);
     alert('✅ Saved successfully! Moved to Completed tab.');
   } catch(err) {
     alert('Save failed: ' + (err.message || err));
@@ -1362,6 +1376,9 @@ function editSubmittedForm(id){
       </div>
       <input id="cf_invoice" type="text" placeholder="Invoice Number" style="margin-bottom:10px;" value="${wo.invoiceNumber||''}">
       <input id="cf_materials" type="number" step="0.01" inputmode="decimal" placeholder="Materials Cost ($)" style="margin-bottom:10px;" value="${wo.materialsCost||''}">
+      <input id="cf_repairCat" type="text" placeholder="Repair category" style="margin-bottom:10px;" value="${wo.repairCategory||''}">
+      <input id="cf_repairCode" type="text" placeholder="Repair code" style="margin-bottom:10px;" value="${wo.repairCode||''}">
+      <textarea id="cf_comment" placeholder="Comment / work done" style="margin-bottom:10px;width:100%;min-height:80px;font-size:16px;">${wo.comment||wo.workDescription||''}</textarea>
       <h2 style="margin:8px 0;font-size:22px;">📸 Upload Photos</h2>
       <input type="file" id="cf_photo" accept="image/*" multiple style="margin-bottom:10px;width:100%;font-size:16px;" onchange="handleCompletePhoto(this)">
       <div id="cf_photoPreview" style="display:none;"></div>
@@ -1373,7 +1390,7 @@ function editSubmittedForm(id){
   if (wo.photos && wo.photos.length > 0) {
     const previewDiv = document.getElementById('cf_photoPreview');
     previewDiv.style.display = 'block';
-    previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Existing photos:</p>' + wo.photos.map((p,i) => `<img src="${p.data}" style="width:100%;border-radius:12px;margin-bottom:8px;">`).join('');
+    previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Existing photos:</p>' + wo.photos.map((p,i) => `<img src="${p.data||p.url}" style="width:100%;border-radius:12px;margin-bottom:8px;">`).join('');
   }
 }
 
@@ -1525,6 +1542,9 @@ async function loadJobs(){
                 dateCompleted: act.dateCompleted || '',
                 invoiceNumber: act.invoiceNumber || '',
                 materialsCost: act.materialsCost || '',
+                repairCategory: act.repairCategory || '',
+                repairCode: act.repairCode || '',
+                comment: act.comment || '',
                 photos: act.photos || [],
                 status: 'submitted',
                 corrigoSubmitted: false
@@ -1569,6 +1589,10 @@ async function loadJobs(){
             if (act.dateStarted) foundWo.dateStarted = act.dateStarted;
             if (act.dateCompleted) foundWo.dateCompleted = act.dateCompleted;
             if (act.invoiceNumber) foundWo.invoiceNumber = act.invoiceNumber;
+            if (act.materialsCost) foundWo.materialsCost = act.materialsCost;
+            if (act.repairCategory) foundWo.repairCategory = act.repairCategory;
+            if (act.repairCode) foundWo.repairCode = act.repairCode;
+            if (act.comment) foundWo.comment = act.comment;
             if (act.photos && act.photos.length > 0) foundWo.photos = act.photos;
             if (act.disputeReason) foundWo.disputeReason = act.disputeReason;
             // If action says update and WO is in accepted, move to completed (Finalize)
@@ -1634,7 +1658,7 @@ try {
 } catch(e) {}
 // Wrap in try/catch so the page never goes blank
 try {
-  loadJobs();
+  loadJobs().then(() => sendPickup(true)).catch(e => console.error(e));
 } catch(e) {
   console.error('Failed to start:', e);
   try { render(); } catch(re) {}
