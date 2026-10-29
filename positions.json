@@ -2,40 +2,40 @@
   "address": "0x37a8023762c69f7150d878733fd9f635f1070fc6",
   "network": "mainnet",
   "abstraction": "unifiedAccount",
-  "accountValue": "1256.419974",
+  "accountValue": "1263.810559",
   "withdrawable": "852.597450",
   "positions": [
     {
       "token": "xyz:EUR",
       "size": "-300.0",
       "entryPx": "1.1198",
-      "unrealizedPnl": "1.98",
-      "marginUsed": "113.751143",
+      "unrealizedPnl": "1.59",
+      "marginUsed": "113.454729",
       "leverage": {
         "type": "isolated",
         "value": 3,
-        "rawUsd": "447.711143"
+        "rawUsd": "447.804729"
       }
     },
     {
       "token": "xyz:BRENTOIL",
       "size": "8.0",
       "entryPx": "109.89",
-      "unrealizedPnl": "-1.92",
-      "marginUsed": "290.151381",
+      "unrealizedPnl": "5.6",
+      "marginUsed": "297.83838",
       "leverage": {
         "type": "isolated",
         "value": 3,
-        "rawUsd": "-587.048619"
+        "rawUsd": "-586.88162"
       }
     }
   ],
   "spotBalances": [
     {
       "token": "USDC",
-      "total": "1256.419974",
-      "hold": "403.822524",
-      "usdValue": "1256.419974"
+      "total": "1263.810559",
+      "hold": "411.213109",
+      "usdValue": "1263.810559"
     }
   ]
 }
