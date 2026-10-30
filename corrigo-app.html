@@ -162,7 +162,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v9-202610280900</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v10-202610301506</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -291,7 +291,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v9-202610280900';
+const APP_VERSION = 'v10-202610301506';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -1003,9 +1003,28 @@ async function fetchActionsFile(token){
   let data; try { data = JSON.parse(text); } catch(e) { data = { pendingActions:[] }; }
   return { data, sha: info.sha };
 }
+const RELAY_URL = 'https://corrigo-sync-relay.vercel.app/api/sync';
+const RELAY_APP_KEY = 'csr-e76ca03362f3597203e4f90b'; // light abuse guard only; the page is public
+// Phones with no GitHub token sync through the relay, which does the same merge server-side
+async function sendViaRelay(silent){
+  setSyncStatus('Syncing to bot…', '#ff9500');
+  try {
+    const myName = getDeviceName();
+    const res = await fetch(RELAY_URL, { method:'POST', headers:{ 'Content-Type':'application/json', 'X-App-Key':RELAY_APP_KEY },
+      body: JSON.stringify({ deviceId:getDeviceId(), deviceName:myName, actions:buildLocalActions() }) });
+    if (res.ok) {
+      setSyncStatus('Synced to bot ✓ ' + nowTime() + ' from ' + (myName || 'this phone'), '#00cc66');
+      if (!silent) alert('Sent for Corrigo pickup.');
+      return;
+    }
+    let m = ''; try { m = (await res.json()).error || ''; } catch(e) {}
+    setSyncStatus('Sync failed: HTTP ' + res.status + (m ? ' ' + m : ''), '#ff3b30');
+    if (!silent) alert('Saved on the phone. The bot did not take the pickup file.');
+  } catch(err) { setSyncStatus('Sync failed: ' + (err.message || err), '#ff3b30'); }
+}
 async function sendPickup(silent){
   const token = localStorage.getItem('github_token');
-  if (!token) { setSyncStatus('Not synced: no token in Settings', '#ff3b30'); if (!silent) alert('Saved on this phone. Paste the token in Settings so it can be picked up.'); return; }
+  if (!token) return sendViaRelay(silent);
   setSyncStatus('Syncing to bot…', '#ff9500');
   try {
     try { await ensurePhotoUrls('corrigo_submitted'); await ensurePhotoUrls('corrigo_completed'); } catch(e) { console.error(e); }
