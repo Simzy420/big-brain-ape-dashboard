@@ -162,7 +162,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v12-202610301545</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v12-202610301600</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -291,7 +291,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v12-202610301545';
+const APP_VERSION = 'v12-202610301600';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -1561,8 +1561,15 @@ let WO_PHOTO_FILES = [];
 fetch('https://simzy420.github.io/big-brain-ape-dashboard/wo-photos/index.json?v=' + Date.now()).then(r => r.ok ? r.json() : {files:[]}).then(d => { WO_PHOTO_FILES = d.files || []; }).catch(() => {});
 function sentPhotoSrcs(w){
   const base = 'https://simzy420.github.io/big-brain-ape-dashboard/wo-photos/';
-  const out = [];
-  const add = s => { if (s && out.indexOf(s) < 0) out.push(s); };
+  const out = [], keys = {};
+  const add = s => {
+    if (!s) return;
+    s = String(s).replace('https://raw.githubusercontent.com/Simzy420/big-brain-ape-dashboard/main/', 'https://simzy420.github.io/big-brain-ape-dashboard/');
+    // Same iPhone picture uploaded more than once: show it once
+    const m = s.indexOf('data:') === 0 ? null : decodeURIComponent(s.split('/').pop().split('?')[0]).match(/(IMG_\d+\.\w+)$/i);
+    const k = m ? m[1].toUpperCase() : s;
+    if (keys[k]) return; keys[k] = true; out.push(s);
+  };
   const num = normStrict(w.number);
   (w.photos || []).forEach(p => {
     if (!p) return;
