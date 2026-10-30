@@ -162,7 +162,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v10-202610301506</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v11-202610301530</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -291,7 +291,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v10-202610301506';
+const APP_VERSION = 'v11-202610301530';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -794,6 +794,7 @@ function choose(id, action){
   const idx = inbox.findIndex(w => w.id===id);
   if (idx<0) return;
   const wo = inbox[idx];
+  delete wo.fromOverride;
   wo.status = action==='accept' ? 'accepted' : 'declined';
   inbox.splice(idx,1);
   saveData('corrigo_inbox', inbox);
@@ -924,8 +925,8 @@ function getMap(k){ try { return JSON.parse(localStorage.getItem(k) || '{}'); } 
 function setMap(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
 function rawLocalActions(){
   const actions = [];
-  getData('corrigo_accepted').forEach(w => actions.push({number:w.number, action:'accept', location:w.location||'', description:w.description||''}));
-  getData('corrigo_declined').forEach(w => actions.push({number:w.number, action:'decline', location:w.location||'', description:w.description||''}));
+  getData('corrigo_accepted').filter(w => !w.fromOverride).forEach(w => actions.push({number:w.number, action:'accept', location:w.location||'', description:w.description||''}));
+  getData('corrigo_declined').filter(w => !w.fromOverride).forEach(w => actions.push({number:w.number, action:'decline', location:w.location||'', description:w.description||''}));
   getData('corrigo_bidding').forEach(w => actions.push({number:w.number, action:'bid', bidAmount:w.bidAmount||0, location:w.location||'', description:w.description||''}));
   getData('corrigo_completed').forEach(w => actions.push(buildWoExport(w, 'completed')));
   getData('corrigo_submitted').forEach(w => actions.push(buildWoExport(w, 'submitted')));
@@ -1605,6 +1606,61 @@ function moveToSentToCorrigo(woNumber) {
   return true;
 }
 
+
+// ---- Repo overrides (corrigo-overrides.json): the bot can move, rename or remove WOs on every phone ----
+const OV_TABS = {inbox:'corrigo_inbox',accepted:'corrigo_accepted',declined:'corrigo_declined',bidding:'corrigo_bidding',saved:'corrigo_saved',completed:'corrigo_completed',finalize:'corrigo_completed',submitted:'corrigo_submitted',disputed:'corrigo_disputed',resolved:'corrigo_resolved',sent_to_corrigo:'corrigo_sent_to_corrigo'};
+const OV_ALL = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_submitted','corrigo_disputed','corrigo_resolved','corrigo_sent_to_corrigo'];
+function normStrict(n){ return String(n==null?'':n).replace(/[\u2010-\u2015\u2212]/g,'-').replace(/\s+/g,'').toUpperCase(); }
+function normWo(n){ return normStrict(n).replace(/^[1IJ](?=\d)/,'*'); }
+function ovMatches(o, w){
+  if (normWo(w.number) !== normWo(o.number)) return false;
+  if (o.onlyIfInvoice !== undefined && String(w.invoiceNumber||'') !== String(o.onlyIfInvoice)) return false;
+  return true;
+}
+async function fetchOverrides(){
+  try {
+    const r = await fetch('https://raw.githubusercontent.com/Simzy420/big-brain-ape-dashboard/main/corrigo-overrides.json?v=' + Date.now());
+    if (!r.ok) return [];
+    const d = await r.json(); return Array.isArray(d.overrides) ? d.overrides : [];
+  } catch(e) { return []; }
+}
+function isRemovedByOverride(ovs, w){ return ovs.some(o => o.removed && ovMatches(o, w)); }
+function applyOverrides(ovs){
+  const done = getMap('corrigo_applied_overrides');
+  let changed = false;
+  ovs.forEach(o => {
+    const key = o.id || (o.number + '|' + (o.forceTab||'') + (o.removed?'removed':'') + (o.renameTo||''));
+    if (done[key] === o.overrideAt) return;
+    if (o.renameTo) {
+      OV_ALL.forEach(t => { const arr = getData(t); let ch = false;
+        arr.forEach(w => { if (normStrict(w.number) === normStrict(o.number) && (o.onlyIfInvoice === undefined || String(w.invoiceNumber||'') === String(o.onlyIfInvoice))) { w.number = o.renameTo; ch = true; } });
+        if (ch) { saveData(t, arr); changed = true; } });
+    }
+    if (o.removed) {
+      OV_ALL.forEach(t => { const arr = getData(t); const keep = arr.filter(w => !ovMatches(o, w));
+        if (keep.length !== arr.length) { saveData(t, keep); changed = true; } });
+    } else if (o.forceTab && OV_TABS[o.forceTab]) {
+      const target = OV_TABS[o.forceTab]; let found = null;
+      OV_ALL.forEach(t => { const arr = getData(t); const keep = [];
+        arr.forEach(w => { if (ovMatches(o, w)) { found = found ? mergeSentWo(found, w) : w; } else keep.push(w); });
+        if (keep.length !== arr.length) saveData(t, keep); });
+      if (!found && o.wo) found = Object.assign({ id: 'ov-' + normStrict(o.number) }, o.wo);
+      if (found) {
+        found.status = o.forceTab === 'finalize' ? 'completed' : o.forceTab;
+        if (o.forceTab === 'accepted' || o.forceTab === 'declined') found.fromOverride = true;
+        const arr = getData(target); arr.unshift(found); saveData(target, arr); changed = true;
+      }
+    }
+    done[key] = o.overrideAt;
+  });
+  setMap('corrigo_applied_overrides', done);
+  // Merge rows that now share the same WO number inside a tab (keep the one with invoice data)
+  OV_ALL.forEach(t => { const arr = getData(t); const byNum = {}; const out = [];
+    arr.forEach(w => { const k = normStrict(w.number); if (byNum[k] === undefined) { byNum[k] = out.length; out.push(w); }
+      else { const a = out[byNum[k]]; out[byNum[k]] = (w.invoiceNumber && !a.invoiceNumber) ? mergeSentWo(w, a) : mergeSentWo(a, w); } });
+    if (out.length !== arr.length) { saveData(t, out); changed = true; } });
+  return changed;
+}
 async function loadJobs(){
   try {
     // 1. Load new work orders from work-orders.json
@@ -1624,6 +1680,8 @@ async function loadJobs(){
       console.warn('Could not load work-orders.json:', fetchErr.message);
     }
 
+    const overrides = await fetchOverrides();
+    if (Array.isArray(jobs)) jobs = jobs.filter(w => !isRemovedByOverride(overrides, w));
     let inbox = getData('corrigo_inbox');
     let disputed = getData('corrigo_disputed');
 
@@ -1708,6 +1766,7 @@ async function loadJobs(){
           }
           // If WO is not in localStorage yet (fresh browser / automation), create it from the action if it looks completed/submitted
           if (!foundWo) {
+            if (isRemovedByOverride(overrides, act)) return;
             const isSubmitted = (act.status === 'submitted') || (act.hours && act.invoiceNumber);
             if (isSubmitted) {
               const newWo = {
@@ -1816,6 +1875,7 @@ async function loadJobs(){
     } catch(syncErr) {
       console.warn('Could not sync from GitHub:', syncErr.message);
     }
+    try { applyOverrides(overrides); } catch(ovErr) { console.error('overrides', ovErr); }
 
     render();
   } catch(e) {
