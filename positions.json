@@ -2,40 +2,40 @@
   "address": "0x37a8023762c69f7150d878733fd9f635f1070fc6",
   "network": "mainnet",
   "abstraction": "unifiedAccount",
-  "accountValue": "1263.810559",
-  "withdrawable": "852.597450",
+  "accountValue": "1212.269603",
+  "withdrawable": "467.265583",
   "positions": [
+    {
+      "token": "xyz:GOLD",
+      "size": "0.5",
+      "entryPx": "4035.3",
+      "unrealizedPnl": "-35.4",
+      "marginUsed": "632.901095",
+      "leverage": {
+        "type": "isolated",
+        "value": 3,
+        "rawUsd": "-1349.348905"
+      }
+    },
     {
       "token": "xyz:EUR",
       "size": "-300.0",
       "entryPx": "1.1198",
-      "unrealizedPnl": "1.59",
-      "marginUsed": "113.454729",
+      "unrealizedPnl": "0.03",
+      "marginUsed": "111.902925",
       "leverage": {
         "type": "isolated",
         "value": 3,
-        "rawUsd": "447.804729"
-      }
-    },
-    {
-      "token": "xyz:BRENTOIL",
-      "size": "8.0",
-      "entryPx": "109.89",
-      "unrealizedPnl": "5.6",
-      "marginUsed": "297.83838",
-      "leverage": {
-        "type": "isolated",
-        "value": 3,
-        "rawUsd": "-586.88162"
+        "rawUsd": "447.812925"
       }
     }
   ],
   "spotBalances": [
     {
       "token": "USDC",
-      "total": "1263.810559",
-      "hold": "411.213109",
-      "usdValue": "1263.810559"
+      "total": "1212.269603",
+      "hold": "745.00402",
+      "usdValue": "1212.269603"
     }
   ]
 }
