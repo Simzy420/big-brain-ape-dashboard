@@ -162,7 +162,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v11-202610301530</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v12-202610301545</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -291,7 +291,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v11-202610301530';
+const APP_VERSION = 'v12-202610301545';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -1556,6 +1556,30 @@ function sentCard(w, i){
   return `<div class="card" style="cursor:pointer;" onclick="openSentDetail(${i})"><div class="wo-card-header"><strong>${escHtml(w.number||'')}</strong></div>${w.location ? '<p>'+escHtml(w.location)+'</p>' : ''}${line}<p class="muted" style="margin-top:8px;">Tap to see everything that was sent ›</p></div>`;
 }
 
+
+let WO_PHOTO_FILES = [];
+fetch('https://simzy420.github.io/big-brain-ape-dashboard/wo-photos/index.json?v=' + Date.now()).then(r => r.ok ? r.json() : {files:[]}).then(d => { WO_PHOTO_FILES = d.files || []; }).catch(() => {});
+function sentPhotoSrcs(w){
+  const base = 'https://simzy420.github.io/big-brain-ape-dashboard/wo-photos/';
+  const out = [];
+  const add = s => { if (s && out.indexOf(s) < 0) out.push(s); };
+  const num = normStrict(w.number);
+  (w.photos || []).forEach(p => {
+    if (!p) return;
+    if (typeof p === 'string') { add(p); return; }
+    if (p.url) add(p.url); else if (p.data) add(p.data);
+    else if (p.name) WO_PHOTO_FILES.filter(f => f.endsWith('-' + p.name) || f.endsWith('_' + p.name)).forEach(f => add(base + encodeURIComponent(f)));
+  });
+  if (w.photo) add(typeof w.photo === 'string' ? w.photo : (w.photo.url || w.photo.data));
+  WO_PHOTO_FILES.filter(f => normStrict(f).indexOf(num + '-') >= 0 || normStrict(f).indexOf(num + '_') >= 0).forEach(f => add(base + encodeURIComponent(f)));
+  return out;
+}
+function openPhotoFull(src){
+  let v = document.getElementById('photoFullView');
+  if (!v) { v = document.createElement('div'); v.id = 'photoFullView'; v.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:#000;z-index:2000;display:flex;align-items:center;justify-content:center;'; v.onclick = () => { v.style.display = 'none'; }; document.body.appendChild(v); }
+  v.innerHTML = '<img src="' + escHtml(src) + '" style="max-width:100%;max-height:100%;object-fit:contain;"><div style="position:absolute;top:12px;right:16px;color:#fff;font-size:32px;">✕</div>';
+  v.style.display = 'flex';
+}
 function openSentDetail(i){
   const w = getData('corrigo_sent_to_corrigo')[i];
   if (!w) return;
@@ -1563,11 +1587,10 @@ function openSentDetail(i){
   const hasMat = w.materialsCost !== undefined && w.materialsCost !== null && w.materialsCost !== '';
   const labor = (parseFloat(w.hours)||0) * (parseFloat(w.rate)||0);
   const total = labor + (parseFloat(w.materialsCost)||0);
-  const photos = (w.photos || []);
-  const photosHtml = photos.length ? `<p style="color:#aaa;font-size:16px;margin:12px 0 6px;">📸 Photos (${photos.length}):</p>` + photos.map(p => {
-      const src = (p && (p.data || p.url)) || '';
-      return src ? `<img src="${escHtml(src)}" style="width:100%;border-radius:12px;margin-bottom:8px;">` : `<p class="muted" style="font-size:15px;">${escHtml((p && p.name) || 'photo')} (no image saved)</p>`;
-    }).join('') : '<p class="muted" style="margin-top:12px;">No photos saved.</p>';
+  const photoSrcs = sentPhotoSrcs(w);
+  const photosHtml = photoSrcs.length ? `<p style="color:#aaa;font-size:16px;margin:12px 0 6px;">📸 Picture(s) (${photoSrcs.length}) — tap to enlarge:</p><div style="display:flex;flex-wrap:wrap;gap:8px;">` + photoSrcs.map(src =>
+      `<img src="${escHtml(src)}" onclick="openPhotoFull(this.src)" loading="lazy" style="width:96px;height:96px;object-fit:cover;border-radius:10px;cursor:pointer;background:#222;">`).join('') + '</div>'
+    : '<p class="muted" style="margin-top:12px;">No picture saved in the app</p>';
   const hasCorrigo = ['corrigoTotal','corrigoStatus','corrigoMaterial','corrigoLabor','corrigoWoNumber','submittedBy'].some(k => w[k] !== undefined && w[k] !== null && w[k] !== '');
   const corrigoHtml = hasCorrigo ? `<h3 style="margin:16px 0 4px;color:#00cc66;">In Corrigo</h3>${row('Corrigo WO #', w.corrigoWoNumber)}${row('Status', w.corrigoStatus)}${row('Labor', fmtMoney(w.corrigoLabor))}${row('Material', w.corrigoMaterial !== undefined && w.corrigoMaterial !== null && w.corrigoMaterial !== '' ? fmtMoney(w.corrigoMaterial) : '')}${row('Total', fmtMoney(w.corrigoTotal))}${row('Submitted by', w.submittedBy)}` : '';
   const desc = w.workDescription || w.comment || '';
