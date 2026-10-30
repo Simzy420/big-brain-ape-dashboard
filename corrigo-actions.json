@@ -74,13 +74,26 @@
       "deviceId": "dev-mvs8fph1-tdgim7",
       "deviceName": "Casey",
       "updatedAt": "2026-10-30T20:55:09.410Z"
+    },
+    {
+      "number": "TEST-RELAY-0001",
+      "action": "accept",
+      "location": "test",
+      "description": "relay test",
+      "updatedAt": "2026-10-30T21:00:00Z",
+      "deviceId": "relay-test",
+      "deviceName": "relay-test"
     }
   ],
-  "exportedAt": "2026-10-30T20:55:10.345Z",
+  "exportedAt": "2026-10-30T21:05:45.521Z",
   "devices": {
     "dev-mvs8fph1-tdgim7": {
       "name": "Casey",
       "lastSync": "2026-10-30T20:55:10.345Z"
+    },
+    "relay-test": {
+      "name": "relay-test",
+      "lastSync": "2026-10-30T21:05:45.521Z"
     }
   }
 }
