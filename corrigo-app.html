@@ -162,7 +162,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v12-202610301650</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v13-202610301552</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -291,7 +291,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v12-202610301650';
+const APP_VERSION = 'v13-202610301552';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -385,8 +385,8 @@ function render(){
   document.getElementById('acceptedCount').textContent = accepted.length;
   document.getElementById('declinedCount').textContent = declined.length;
   document.getElementById('biddingCount').textContent = bidding.length;
-  document.getElementById('inbox').innerHTML = inbox.map(w => card(w,true)).join('') || '<div class="card">No jobs in inbox.</div>';
-  document.getElementById('accepted').innerHTML = accepted.map(w => card(w,false)).join('') || '<div class="card">Nothing accepted yet.</div>';
+  document.getElementById('inbox').innerHTML = inbox.map(w => card(w,true,'inbox')).join('') || '<div class="card">No jobs in inbox.</div>';
+  document.getElementById('accepted').innerHTML = accepted.map(w => card(w,false,'accepted')).join('') || '<div class="card">Nothing accepted yet.</div>';
   document.getElementById('declined').innerHTML = declined.map(w => card(w,false)).join('') || '<div class="card">Nothing declined.</div>';
   document.getElementById('bidding').innerHTML = bidding.map(w => card(w,false)).join('') || '<div class="card">No bids submitted.</div>';
   const saved = getData('corrigo_saved');
@@ -497,11 +497,26 @@ function render(){
   const token = localStorage.getItem('github_token');
   document.getElementById('status').textContent = token ? 'Token saved on this phone.' : 'No token saved yet.';
 }
-function card(w, canAct){
-  const estDisplay = w.estimatedAmount ? '$' + parseFloat(w.estimatedAmount).toFixed(2) : '';
+function emailField(w, label){
+  const m = (w.emailContent||'').match(new RegExp(label + ':[^\\n]*\\n\\s*([0-9]{1,2}/[0-9]{1,2}/[0-9]{4}[^\\n]*)'));
+  return m ? m[1].trim() : '';
+}
+function cleanDesc(d){ return String(d||'').replace(/^[\s_]+/, '').replace(/\s*\n\s*/g, ' ').trim(); }
+function card(w, canAct, tab){
+  const nteVal = (parseFloat(w.bidAmount) > 500) ? parseFloat(w.bidAmount) : (w.estimatedAmount ? parseFloat(w.estimatedAmount) : ((tab==='inbox'||tab==='accepted') ? 500 : 0));
+  const estDisplay = nteVal ? (tab ? 'NTE ' : '') + '$' + nteVal.toFixed(2) : '';
   const estHtml = estDisplay ? `<div class="wo-est">${estDisplay}</div>` : '';
   let loc = w.location || '';
-  let desc = w.description || '';
+  let desc = cleanDesc(w.description || (tab ? w.workDescription : '') || '');
+  let dateHtml = '';
+  if (tab === 'inbox' || tab === 'accepted') {
+    const created = w.dateCreated || emailField(w, 'Date Created') || '';
+    const parts = [];
+    if (created) parts.push('Created: ' + created);
+    if (tab === 'inbox') { const ab = w.acceptBy || emailField(w, 'Accept/Reject By'); if (ab) parts.push('Accept/Reject By: ' + ab); }
+    else { const os = w.onSiteBy || emailField(w, 'On-Site By'); const cb = w.completeBy || emailField(w, 'Complete By'); if (os) parts.push('On-Site By: ' + os); if (cb) parts.push('Complete By: ' + cb); }
+    if (parts.length) dateHtml = '<p class="muted">📅 ' + parts.join(' · ') + '</p>';
+  }
   if (!loc && w.emailContent) {
     // Only try to extract from real work order emails, not invoice emails
     if (!w.emailContent.toLowerCase().includes('invoice') || !w.emailContent.includes('has been Authorized')) {
@@ -522,7 +537,7 @@ function card(w, canAct){
   const workDescBtn = `<button class="email-btn" style="border-color:#ff9500;color:#ff9500;background:rgba(255,149,0,0.15);" onclick="openWorkDesc('${w.id}')">📝 Add Work Description</button>`;
   const emailBtn = w.emailContent ? `<button class="email-btn" onclick="viewEmail('${w.id}')">📧 View Original Email</button>` : '';
   const extraBtns = `<div class="btn-row">${workDescBtn}${emailBtn}</div>`;
-  return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>${loc ? '<p>'+loc+'</p>' : ''}${desc ? '<p>'+desc+'</p>' : ''}${actionBtns}${extraBtns}</div>`;
+  return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>${dateHtml}${loc ? '<p>'+loc+'</p>' : ''}${desc ? '<p>'+desc+'</p>' : ''}${actionBtns}${extraBtns}</div>`;
 }
 
 function disputedCard(w){
@@ -1664,8 +1679,15 @@ function applyOverrides(ovs){
     const key = o.id || (o.number + '|' + (o.forceTab||'') + (o.removed?'removed':'') + (o.renameTo||''));
     if (done[key] === o.overrideAt) return;
     if (o.renameTo) {
-      OV_ALL.forEach(t => { const arr = getData(t); let ch = false;
+      OV_ALL.filter(t => !o.onlyTab || t === o.onlyTab).forEach(t => { const arr = getData(t); let ch = false;
         arr.forEach(w => { if (normStrict(w.number) === normStrict(o.number) && (o.onlyIfInvoice === undefined || String(w.invoiceNumber||'') === String(o.onlyIfInvoice))) { w.number = o.renameTo; ch = true; } });
+        if (ch) { saveData(t, arr); changed = true; } });
+    }
+    if (o.fill) {
+      // Fill/refresh card fields on phones that already have this WO (never moves the card or touches its id/status/notes)
+      const skip = {id:1, number:1, status:1, workDescription:1, photos:1};
+      OV_ALL.forEach(t => { const arr = getData(t); let ch = false;
+        arr.forEach(w => { if (normStrict(w.number) === normStrict(o.number)) { Object.keys(o.fill).forEach(k => { if (!skip[k]) { w[k] = o.fill[k]; ch = true; } }); } });
         if (ch) { saveData(t, arr); changed = true; } });
     }
     if (o.removed) {

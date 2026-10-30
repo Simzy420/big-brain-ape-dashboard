@@ -1,159 +1,252 @@
 {
-  "note": "Edited only by the bot. The email scanner must not write this file. Each override applies once per phone (corrigo_applied_overrides); removed ones also block re-import.",
-  "overrides": [
-    {
-      "id": "acc-J5075335-00131",
-      "number": "J5075335-00131",
-      "forceTab": "accepted",
-      "overrideAt": "2026-10-30T21:30:00Z",
-      "reason": "Corrigo: Require Completion Details (accepted)"
-    },
-    {
-      "id": "acc-I5013496-00375",
-      "number": "I5013496-00375",
-      "forceTab": "accepted",
-      "overrideAt": "2026-10-30T21:30:00Z",
-      "reason": "Casey accepted 10/30; Corrigo .01 Open ($2,800)"
-    },
-    {
-      "id": "acc-I5017025-00256.01",
-      "number": "I5017025-00256.01",
-      "forceTab": "accepted",
-      "overrideAt": "2026-10-30T21:30:00Z",
-      "reason": "Corrigo Open; accepted 10/28",
-      "wo": {
-        "number": "I5017025-00256.01",
-        "property": "The Church at Valley View",
-        "location": "Preston, ID",
-        "description": "Clear rain gutters on all 4 sides",
-        "date": "DO NOT EXCEED labor and materials of $500.00 USD",
-        "onSiteBy": "11/26/2026",
-        "completeBy": "11/26/2026",
-        "dueDate": "2026-11-26"
-      }
-    },
-    {
-      "id": "rm-I5016118-00414",
-      "number": "I5016118-00414",
-      "removed": true,
-      "onlyIfInvoice": "",
-      "overrideAt": "2026-10-30T21:30:00Z",
-      "reason": "email thread, not a job (Corrigo: Completed, inv 1405 Authorized)"
-    },
-    {
-      "id": "rm-J5012937-00391",
-      "number": "J5012937-00391",
-      "removed": true,
-      "onlyIfInvoice": "",
-      "overrideAt": "2026-10-30T21:30:00Z",
-      "reason": "email thread, not a job (Corrigo: Completed, inv 1411 Authorized)"
-    },
-    {
-      "id": "rm-test-INV-001",
-      "number": "I5019338-00459",
-      "removed": true,
-      "onlyIfInvoice": "INV-001",
-      "overrideAt": "2026-10-30T21:30:00Z",
-      "reason": "test entry"
-    },
-    {
-      "id": "rm-test-INV-002",
-      "number": "J5151856-00552",
-      "removed": true,
-      "onlyIfInvoice": "INV-002",
-      "overrideAt": "2026-10-30T21:30:00Z",
-      "reason": "test entry"
-    },
-    {
-      "id": "ren-J5013259-00415-15013259-00415",
-      "number": "15013259-00415",
-      "renameTo": "J5013259-00415",
-      "overrideAt": "2026-10-30T21:30:00Z",
-      "reason": "number typo fix"
-    },
-    {
-      "id": "ren-J5014328-00397.02-15014328–00397.02",
-      "number": "15014328–00397.02",
-      "renameTo": "J5014328-00397.02",
-      "overrideAt": "2026-10-30T21:30:00Z",
-      "reason": "number typo fix"
-    },
-    {
-      "id": "ren-J5151856-00554-J5151856–00554",
-      "number": "J5151856–00554",
-      "renameTo": "J5151856-00554",
-      "overrideAt": "2026-10-30T21:30:00Z",
-      "reason": "number typo fix"
-    },
-    {
-      "id": "ren-J5013755-00360-J5013755–00360",
-      "number": "J5013755–00360",
-      "renameTo": "J5013755-00360",
-      "overrideAt": "2026-10-30T21:30:00Z",
-      "reason": "number typo fix"
-    },
-    {
-      "id": "ren-J5363314-00338-J5363314–00338",
-      "number": "J5 363314–00338",
-      "renameTo": "J5363314-00338",
-      "overrideAt": "2026-10-30T21:30:00Z",
-      "reason": "number typo fix"
-    },
-    {
-      "id": "ren-J5165016-00126-J5165016–00126",
-      "number": "J5165016–00126",
-      "renameTo": "J5165016-00126",
-      "overrideAt": "2026-10-30T21:30:00Z",
-      "reason": "number typo fix"
-    },
-    {
-      "id": "ren-J5014166-00334-J5014166–00334",
-      "number": "J5014166–00334",
-      "renameTo": "J5014166-00334",
-      "overrideAt": "2026-10-30T21:30:00Z",
-      "reason": "number typo fix"
-    },
-    {
-      "id": "ren-J5013259-00430-J5013259–00430",
-      "number": "J5013259–00430",
-      "renameTo": "J5013259-00430",
-      "overrideAt": "2026-10-30T21:30:00Z",
-      "reason": "number typo fix"
-    },
-    {
-      "id": "ren-I5019338-00459-15019338–00459",
-      "number": "15019338–00459",
-      "renameTo": "I5019338-00459",
-      "overrideAt": "2026-10-30T21:30:00Z",
-      "reason": "number typo fix"
-    },
-    {
-      "id": "ren-J5014328-00397.02-J5014328-00397",
-      "number": "J5014328-00397",
-      "renameTo": "J5014328-00397.02",
-      "overrideAt": "2026-10-30T21:30:00Z",
-      "reason": "number typo fix"
-    },
-    {
-      "id": "acc-J5013496-00434",
-      "number": "J5013496-00434",
-      "forceTab": "accepted",
-      "overrideAt": "2026-10-30T21:45:00Z",
-      "reason": "Corrigo Open, invoice Pending WO Completion",
-      "wo": {
-        "number": "J5013496-00434",
-        "property": "St Charles 1",
-        "location": "St Charles, ID",
-        "description": "Request (Open in Corrigo)"
-      }
-    },
-    {
-      "id": "res-I5121787-00343",
-      "number": "J5121787-00343",
-      "renameTo": "I5121787-00343",
-      "forceTab": "resolved",
-      "overrideAt": "2026-10-30T21:45:00Z",
-      "reason": "Corrigo I5121787-00343 Completed, invoice 1287 Authorized $480.00"
-    }
-  ]
+ "note": "Edited only by the bot. The email scanner must not write this file. Each override applies once per phone (corrigo_applied_overrides); removed ones also block re-import.",
+ "overrides": [
+  {
+   "id": "acc-J5075335-00131",
+   "number": "J5075335-00131",
+   "forceTab": "accepted",
+   "overrideAt": "2026-10-30T21:30:00Z",
+   "reason": "Corrigo: Require Completion Details (accepted)"
+  },
+  {
+   "id": "acc-I5013496-00375",
+   "number": "I5013496-00375",
+   "forceTab": "accepted",
+   "overrideAt": "2026-10-30T21:30:00Z",
+   "reason": "Casey accepted 10/30; Corrigo .01 Open ($2,800)"
+  },
+  {
+   "id": "acc-I5017025-00256.01",
+   "number": "I5017025-00256.01",
+   "forceTab": "accepted",
+   "overrideAt": "2026-10-30T21:30:00Z",
+   "reason": "Corrigo Open; accepted 10/28",
+   "wo": {
+    "number": "I5017025-00256.01",
+    "property": "Valley View (Sp), Whitney",
+    "location": "1444 South 1600 East, Preston, ID 83263-5477, US",
+    "description": "Clear rain gutters on all 4 sides",
+    "date": "DO NOT EXCEED labor and materials of $500.00 USD",
+    "onSiteBy": "11/26/2026",
+    "completeBy": "11/26/2026",
+    "dueDate": "2026-11-26",
+    "dateCreated": "10/28/2026",
+    "estimatedAmount": 500,
+    "priority": "P30 (On Demand - 30 Days)"
+   }
+  },
+  {
+   "id": "rm-I5016118-00414",
+   "number": "I5016118-00414",
+   "removed": true,
+   "onlyIfInvoice": "",
+   "overrideAt": "2026-10-30T21:30:00Z",
+   "reason": "email thread, not a job (Corrigo: Completed, inv 1405 Authorized)"
+  },
+  {
+   "id": "rm-J5012937-00391",
+   "number": "J5012937-00391",
+   "removed": true,
+   "onlyIfInvoice": "",
+   "overrideAt": "2026-10-30T21:30:00Z",
+   "reason": "email thread, not a job (Corrigo: Completed, inv 1411 Authorized)"
+  },
+  {
+   "id": "rm-test-INV-001",
+   "number": "I5019338-00459",
+   "removed": true,
+   "onlyIfInvoice": "INV-001",
+   "overrideAt": "2026-10-30T21:30:00Z",
+   "reason": "test entry"
+  },
+  {
+   "id": "rm-test-INV-002",
+   "number": "J5151856-00552",
+   "removed": true,
+   "onlyIfInvoice": "INV-002",
+   "overrideAt": "2026-10-30T21:30:00Z",
+   "reason": "test entry"
+  },
+  {
+   "id": "ren-J5013259-00415-15013259-00415",
+   "number": "15013259-00415",
+   "renameTo": "J5013259-00415",
+   "overrideAt": "2026-10-30T21:30:00Z",
+   "reason": "number typo fix"
+  },
+  {
+   "id": "ren-J5014328-00397.02-15014328–00397.02",
+   "number": "15014328–00397.02",
+   "renameTo": "J5014328-00397.02",
+   "overrideAt": "2026-10-30T21:30:00Z",
+   "reason": "number typo fix"
+  },
+  {
+   "id": "ren-J5151856-00554-J5151856–00554",
+   "number": "J5151856–00554",
+   "renameTo": "J5151856-00554",
+   "overrideAt": "2026-10-30T21:30:00Z",
+   "reason": "number typo fix"
+  },
+  {
+   "id": "ren-J5013755-00360-J5013755–00360",
+   "number": "J5013755–00360",
+   "renameTo": "J5013755-00360",
+   "overrideAt": "2026-10-30T21:30:00Z",
+   "reason": "number typo fix"
+  },
+  {
+   "id": "ren-J5363314-00338-J5363314–00338",
+   "number": "J5 363314–00338",
+   "renameTo": "J5363314-00338",
+   "overrideAt": "2026-10-30T21:30:00Z",
+   "reason": "number typo fix"
+  },
+  {
+   "id": "ren-J5165016-00126-J5165016–00126",
+   "number": "J5165016–00126",
+   "renameTo": "J5165016-00126",
+   "overrideAt": "2026-10-30T21:30:00Z",
+   "reason": "number typo fix"
+  },
+  {
+   "id": "ren-J5014166-00334-J5014166–00334",
+   "number": "J5014166–00334",
+   "renameTo": "J5014166-00334",
+   "overrideAt": "2026-10-30T21:30:00Z",
+   "reason": "number typo fix"
+  },
+  {
+   "id": "ren-J5013259-00430-J5013259–00430",
+   "number": "J5013259–00430",
+   "renameTo": "J5013259-00430",
+   "overrideAt": "2026-10-30T21:30:00Z",
+   "reason": "number typo fix"
+  },
+  {
+   "id": "ren-I5019338-00459-15019338–00459",
+   "number": "15019338–00459",
+   "renameTo": "I5019338-00459",
+   "overrideAt": "2026-10-30T21:30:00Z",
+   "reason": "number typo fix"
+  },
+  {
+   "id": "ren-J5014328-00397.02-J5014328-00397",
+   "number": "J5014328-00397",
+   "renameTo": "J5014328-00397.02",
+   "overrideAt": "2026-10-30T21:30:00Z",
+   "reason": "number typo fix"
+  },
+  {
+   "id": "acc-J5013496-00434",
+   "number": "J5013496-00434",
+   "forceTab": "accepted",
+   "overrideAt": "2026-10-30T21:45:00Z",
+   "reason": "Corrigo Open, invoice Pending WO Completion",
+   "wo": {
+    "number": "J5013496-00434",
+    "property": "ST CHARLES 1",
+    "location": "75 North Main Street, ST CHARLES, ID 83272, US",
+    "description": "________________________________\nBuilding Exterior > Building/Structure Repair & Maintenance > Roof\nInspection\nDescription: “Please complete a roofing inspection to assess overall condition. Please identify existing and/or potential leaks, damaged or missing shingles/tiles/membrane, inspect flashing and seals around penetrations, examine high gutters (over 8’) and downspouts for blockages, and evaluate drainage systems. Address any findings requiring immediate repair to prevent winter weather damage. Please submit a quote for any work over $500.”",
+    "dateCreated": "9/21/2026 12:30 PM",
+    "acceptBy": "9/24/2026 12:25 PM",
+    "onSiteBy": "10/21/2026 12:25 PM",
+    "completeBy": "10/21/2026 12:25 PM",
+    "estimatedAmount": 500.0,
+    "priority": "P30 (On Demand - 30 Days)",
+    "requestedBy": "St Charles 1",
+    "emailContent": "\r\n________________________________\r\nFrom: CorrigoPro Support <alerts@am.corrigopro.com>\r\nSent: Tuesday, October 20, 2026 6:28:52 PM (UTC+00:00) Monrovia, Reykjavik\r\nTo: garysims60@msn.com <garysims60@msn.com>\r\nSubject: The P30 (On Demand - 30 Days) work order #J5013496-00434 received from 10/21/2026 12:25 PM for CorrigoPro is waiting for your arrival\r\n\r\nThis is a reminder that the WO#J5013496-00434 requires work be performed and updated no later than the On-Site By date shown below.\r\n[https://login.corrigo.com/Content/Images/connection_center_email_logo.png?v=2]\r\n\r\n[QR Code]\r\n\r\nSims Construction - JLL\r\n\r\n237 n 9th street, Montpelier, ID 83254, US\r\n\r\n+1 208-317-7214\r\n\r\nFor The Church\r\n\r\nFax this back to (800) 476-8004\r\n\r\nWORK ORDER #J5013496-00434\r\nDate Created:   DO NOT EXCEED labor and materials of $500.00 USD\r\n9/21/2026 12:30 PM      If you believe you will go over this amount, please submit a quote in CorrigoPro.\r\nCustomer\r\n________________________________\r\nName:   The Church\r\nRequested By:   St Charles 1\r\nSt Charles 1\r\nSite Address:   75 North Main Street, ST CHARLES, ID 83272, US\r\nService Contact Manager:        Patrick Crummett patrick.crummett@jll.com\r\nWO check in/out phone #:        (833) 212-7809\r\nIVR code:       904685474\r\nProblem\r\n________________________________\r\nBuilding Exterior > Building/Structure Repair & Maintenance > Roof\r\nInspection\r\nDescription: “Please complete a roofing inspection to assess overall condition. Please identify existing and/or potential leaks, damaged or missing shingles/tiles/membrane, inspect flashing and seals around penetrations, examine high gutters (over 8’) and downspouts for blockages, and evaluate drainage systems. Address any findings requiring immediate repair to prevent winter weather damage. Please submit a quote for any work over $500.”\r\nDetails\r\n________________________________\r\nStatus:\r\nOpen\r\nPriority:\r\nP30 (On Demand - 30 Days)\r\nType:\r\nReactive\r\nAccept/Reject By:\r\n9/24/2026 12:25 PM\r\nOn-Site By:\r\n10/21/2026 12:25 PM\r\nComplete By:\r\n10/21/2026 12:25 PM\r\nAppointment Type:\r\nN/A\r\nExecution Plan:\r\nNote\r\n________________________________\r\n\r\nNTE: $500.00 (NTE amount is\r\ninclusive of taxes)\r\nProperty: ST CHARLES 1\r\nPriority: P30 (On Demand - 30 Days) - Please schedule technician arrival within the listed ETA.\r\nOn Site\r\nBy::10/21/2026 12:25 PM\r\nWork Completion Due By: 10/21/2026 12:25 PM\r\n\r\nExpanded Work Description: Roof:Inspection:Description: “Please complete a roofing inspection to assess overall condition. Please identify existing and/or potential leaks, damaged or missing shingles/tiles/membrane, inspect flashing and seals around penetrations, examine high gutters (over 8’) and downspouts for blockages, and evaluate drainage systems. Address any findings requiring immediate repair to prevent winter weather damage. Please submit a quote for any work over $500.”\r\n\r\nOps Manager: Patrick Crummett 435-361-8831\r\nExterior Lock Box\r\ninfo: LockBox Code: 3496; Location: South Entrance\r\nInterior Lock Box info:\r\n\r\nAlarm Code:\r\n\r\nFor assistance or additional information related to this work order, please contact\r\nthe Property Service Center at 866-651-9298.\r\n\r\nFor help with your Work Order Network account, please contact Corrigo Work Order\r\nNetwork Support at https://provider.worktrack.com/Support or 800-517-2705.\r\n\r\nSpecial Instructions:\r\n\r\n\r\nElectronic Building Access Code :\r\n\r\n\r\n\r\n\r\n\r\nFIR ID:\r\nLocation:\r\n\r\n\r\nTC: https://enterpriseam.s3.amazonaws.com/6827/e43a6d3a-ad1f-40f7-90f4-003996f6b016/tc.txt\r\n\r\nAll dates and times are shown in (UTC-07:00) Mountain Time (US & Canada)\r\n\r\nIf you do not want to receive these emails from CorrigoPro in the future, please Unsubscribe <https://am-desktop.corrigopro.com/EntryPoint/Unsubscribe?p=6bj8w994cEpeskMLYIvcueAR8%2FDtnxz6lsPBlejKalDgShxGlTHHMDudmbxZZAUWsNDDNHG8b10azkTWZIY58CPYp3bVfcw%2FYDTwiS%2FZ4vkKupM9bwDtsPcsc86O9E66V8H%2B3XKvpvDfAo2hBNhafo7lNUQc%2FTZZrovQShDi9SIqTds7d%2F63Vev%2FBGA%2BUH06%2B%2FUY1U2WyIgs2pr%2BACabagqR7iJFiNq0iCsnumK%2BXE50MAX4y2ZY9GlnCUgqlNq1ag%2FNzqV1q3j8jkn1hBpRdcvMMZgefVTmDkzE5eyjdfw2pAFGxOkIHBHx6iFqqygfjfmtjV04Rf2eKcFf%2Bp4yxQ%3D%3D>\r\n\r\nYour CorrigoPro Support Team\r\nsupport.jllt@jll.com<mailto:support.jllt@jll.com>\r\n"
+   }
+  },
+  {
+   "id": "res-I5121787-00343",
+   "number": "J5121787-00343",
+   "renameTo": "I5121787-00343",
+   "forceTab": "resolved",
+   "overrideAt": "2026-10-30T21:45:00Z",
+   "reason": "Corrigo I5121787-00343 Completed, invoice 1287 Authorized $480.00"
+  },
+  {
+   "id": "ren-I5013496-00375.01",
+   "number": "I5013496-00375",
+   "renameTo": "I5013496-00375.01",
+   "onlyTab": "corrigo_accepted",
+   "overrideAt": "2026-10-31T00:30:00Z",
+   "reason": "Accepted card is the .01 quote job ($2,800); base 00375 is Completed $0"
+  },
+  {
+   "id": "fill-I5013496-00375.01",
+   "number": "I5013496-00375.01",
+   "fill": {
+    "property": "ST CHARLES 1",
+    "location": "75 North Main Street, ST CHARLES, ID 83272, US",
+    "description": "________________________________\nBuilding Exterior > Ground Services > Sidewalk/Driveway\nRepair/Maintenance\nFIR - Additional work order created for quote from FIR: 1. Task 1: Curb in front of the storage shed on the right side is damaged and needs replacement 2. Task 2: Propane tank needs to be painted or repaired.",
+    "dateCreated": "9/23/2026 8:16 AM",
+    "acceptBy": "9/26/2026 8:15 AM",
+    "onSiteBy": "10/23/2026 8:15 AM",
+    "completeBy": "10/23/2026 8:15 AM",
+    "estimatedAmount": 500.0,
+    "priority": "P30 (On Demand - 30 Days)",
+    "requestedBy": "St Charles 1",
+    "emailContent": "\r\n________________________________\r\nFrom: CorrigoPro Support <alerts@am.corrigopro.com>\r\nSent: Thursday, October 22, 2026 2:20:31 PM (UTC+00:00) Monrovia, Reykjavik\r\nTo: garysims60@msn.com <garysims60@msn.com>\r\nSubject: The P30 (On Demand - 30 Days) work order #I5013496-00375.01 received from 10/23/2026 8:15 AM for CorrigoPro is waiting for your arrival\r\n\r\nThis is a reminder that the WO#I5013496-00375.01 requires work be performed and updated no later than the On-Site By date shown below.\r\n[https://login.corrigo.com/Content/Images/connection_center_email_logo.png?v=2]\r\n\r\n[QR Code]\r\n\r\nSims Construction - JLL\r\n\r\n237 n 9th street, Montpelier, ID 83254, US\r\n\r\n+1 208-317-7214\r\n\r\nFor The Church\r\n\r\nFax this back to (800) 476-8004\r\n\r\nWORK ORDER #I5013496-00375.01\r\nDate Created:   DO NOT EXCEED labor and materials of $2,800.00 USD\r\n9/23/2026 8:16 AM       If you believe you will go over this amount, please submit a quote in CorrigoPro.\r\nCustomer\r\n________________________________\r\nName:   The Church\r\nRequested By:   St Charles 1\r\nSt Charles 1\r\nSite Address:   75 North Main Street, ST CHARLES, ID 83272, US\r\nService Contact Manager:        Patrick Crummett patrick.crummett@jll.com\r\nWO check in/out phone #:        (833) 212-7809\r\nIVR code:       923070930\r\nProblem\r\n________________________________\r\nBuilding Exterior > Ground Services > Sidewalk/Driveway\r\nRepair/Maintenance\r\nFIR - Additional work order created for quote from FIR: 1. Task 1: Curb in front of the storage shed on the right side is damaged and needs replacement 2. Task 2: Propane tank needs to be painted or repaired.\r\nDetails\r\n________________________________\r\nStatus:\r\nOpen\r\nPriority:\r\nP30 (On Demand - 30 Days)\r\nType:\r\nReactive\r\nAccept/Reject By:\r\n9/26/2026 8:15 AM\r\nOn-Site By:\r\n10/23/2026 8:15 AM\r\nComplete By:\r\n10/23/2026 8:15 AM\r\nAppointment Type:\r\nN/A\r\nExecution Plan:\r\nNote\r\n________________________________\r\n\r\nNTE: $500.00 (NTE amount is\r\ninclusive of taxes)\r\nProperty: ST CHARLES 1\r\nPriority: P30 (On Demand - 30 Days) - Please schedule technician arrival within the listed ETA.\r\nOn Site\r\nBy::10/23/2026 8:15 AM\r\nWork Completion Due By: 10/23/2026 8:15 AM\r\n\r\nExpanded Work Description: Sidewalk/Driveway:Repair/Maintenance:Additional work order created for quote from FIR: 1. Task 1: Curb in front of the storage shed on the right side is damaged and needs replacement 2. Task 2: Propane tank needs to be painted or repaired.\r\n\r\nOps Manager: Patrick Crummett 435-361-8831\r\nExterior Lock Box\r\ninfo: LockBox Code: 3496; Location: South Entrance\r\nInterior Lock Box info:\r\n\r\nAlarm Code:\r\n\r\nFor assistance or additional information related to this work order, please contact\r\nthe Property Service Center at 866-651-9298.\r\n\r\nFor help with your Work Order Network account, please contact Corrigo Work Order\r\nNetwork Support at https://provider.worktrack.com/Support or 800-517-2705.\r\n\r\nSpecial Instructions:\r\n\r\n\r\nElectronic Building Access Code :\r\n\r\n\r\n\r\n\r\n\r\nFIR ID: 5064322\r\nLocation:\r\n\r\n\r\nTC: https://enterpriseam.s3.amazonaws.com/6827/e43a6d3a-ad1f-40f7-90f4-003996f6b016/tc.txt\r\n\r\nAttachments\r\n________________________________\r\nDocuments\r\n\r\n  1.  FIRIMAGEeb16be9a-2b5a-407b-aeed-3bd831da1a4e.jpg\r\n\r\nAll dates and times are shown in (UTC-07:00) Mountain Time (US & Canada)\r\n\r\nIf you do not want to receive these emails from CorrigoPro in the future, please Unsubscribe <https://am-desktop.corrigopro.com/EntryPoint/Unsubscribe?p=6bj8w994cEpeskMLYIvcueAR8%2FDtnxz6lsPBlejKalDgShxGlTHHMDudmbxZZAUWsNDDNHG8b10azkTWZIY58CPYp3bVfcw%2FYDTwiS%2FZ4vkKupM9bwDtsPcsc86O9E66V8H%2B3XKvpvDfAo2hBNhafo7lNUQc%2FTZZrovQShDi9SJkblPYi9wGVAm5j9ot0lxlYPutVRtURIuRhJLSuweEPKhrgf%2FfpplRZnwpccA5esyIMjLobLIU5os1HEvokl4%2BF60Pc71OiPoBYH4WcliTCXCaLlTdOd7Xx5O6%2FMXH40MJ0xxfqKZ%2BoYEGMBI1iprCe0Fk9NY2x0woC0JumD7qZQ%3D%3D>\r\n\r\nYour CorrigoPro Support Team\r\nsupport.jllt@jll.com<mailto:support.jllt@jll.com>\r\n",
+    "bidAmount": 2800
+   },
+   "overrideAt": "2026-10-31T00:30:00Z",
+   "reason": "Fill date/description/address/NTE"
+  },
+  {
+   "id": "fill-J5013496-00434",
+   "number": "J5013496-00434",
+   "fill": {
+    "property": "ST CHARLES 1",
+    "location": "75 North Main Street, ST CHARLES, ID 83272, US",
+    "description": "________________________________\nBuilding Exterior > Building/Structure Repair & Maintenance > Roof\nInspection\nDescription: “Please complete a roofing inspection to assess overall condition. Please identify existing and/or potential leaks, damaged or missing shingles/tiles/membrane, inspect flashing and seals around penetrations, examine high gutters (over 8’) and downspouts for blockages, and evaluate drainage systems. Address any findings requiring immediate repair to prevent winter weather damage. Please submit a quote for any work over $500.”",
+    "dateCreated": "9/21/2026 12:30 PM",
+    "acceptBy": "9/24/2026 12:25 PM",
+    "onSiteBy": "10/21/2026 12:25 PM",
+    "completeBy": "10/21/2026 12:25 PM",
+    "estimatedAmount": 500.0,
+    "priority": "P30 (On Demand - 30 Days)",
+    "requestedBy": "St Charles 1",
+    "emailContent": "\r\n________________________________\r\nFrom: CorrigoPro Support <alerts@am.corrigopro.com>\r\nSent: Tuesday, October 20, 2026 6:28:52 PM (UTC+00:00) Monrovia, Reykjavik\r\nTo: garysims60@msn.com <garysims60@msn.com>\r\nSubject: The P30 (On Demand - 30 Days) work order #J5013496-00434 received from 10/21/2026 12:25 PM for CorrigoPro is waiting for your arrival\r\n\r\nThis is a reminder that the WO#J5013496-00434 requires work be performed and updated no later than the On-Site By date shown below.\r\n[https://login.corrigo.com/Content/Images/connection_center_email_logo.png?v=2]\r\n\r\n[QR Code]\r\n\r\nSims Construction - JLL\r\n\r\n237 n 9th street, Montpelier, ID 83254, US\r\n\r\n+1 208-317-7214\r\n\r\nFor The Church\r\n\r\nFax this back to (800) 476-8004\r\n\r\nWORK ORDER #J5013496-00434\r\nDate Created:   DO NOT EXCEED labor and materials of $500.00 USD\r\n9/21/2026 12:30 PM      If you believe you will go over this amount, please submit a quote in CorrigoPro.\r\nCustomer\r\n________________________________\r\nName:   The Church\r\nRequested By:   St Charles 1\r\nSt Charles 1\r\nSite Address:   75 North Main Street, ST CHARLES, ID 83272, US\r\nService Contact Manager:        Patrick Crummett patrick.crummett@jll.com\r\nWO check in/out phone #:        (833) 212-7809\r\nIVR code:       904685474\r\nProblem\r\n________________________________\r\nBuilding Exterior > Building/Structure Repair & Maintenance > Roof\r\nInspection\r\nDescription: “Please complete a roofing inspection to assess overall condition. Please identify existing and/or potential leaks, damaged or missing shingles/tiles/membrane, inspect flashing and seals around penetrations, examine high gutters (over 8’) and downspouts for blockages, and evaluate drainage systems. Address any findings requiring immediate repair to prevent winter weather damage. Please submit a quote for any work over $500.”\r\nDetails\r\n________________________________\r\nStatus:\r\nOpen\r\nPriority:\r\nP30 (On Demand - 30 Days)\r\nType:\r\nReactive\r\nAccept/Reject By:\r\n9/24/2026 12:25 PM\r\nOn-Site By:\r\n10/21/2026 12:25 PM\r\nComplete By:\r\n10/21/2026 12:25 PM\r\nAppointment Type:\r\nN/A\r\nExecution Plan:\r\nNote\r\n________________________________\r\n\r\nNTE: $500.00 (NTE amount is\r\ninclusive of taxes)\r\nProperty: ST CHARLES 1\r\nPriority: P30 (On Demand - 30 Days) - Please schedule technician arrival within the listed ETA.\r\nOn Site\r\nBy::10/21/2026 12:25 PM\r\nWork Completion Due By: 10/21/2026 12:25 PM\r\n\r\nExpanded Work Description: Roof:Inspection:Description: “Please complete a roofing inspection to assess overall condition. Please identify existing and/or potential leaks, damaged or missing shingles/tiles/membrane, inspect flashing and seals around penetrations, examine high gutters (over 8’) and downspouts for blockages, and evaluate drainage systems. Address any findings requiring immediate repair to prevent winter weather damage. Please submit a quote for any work over $500.”\r\n\r\nOps Manager: Patrick Crummett 435-361-8831\r\nExterior Lock Box\r\ninfo: LockBox Code: 3496; Location: South Entrance\r\nInterior Lock Box info:\r\n\r\nAlarm Code:\r\n\r\nFor assistance or additional information related to this work order, please contact\r\nthe Property Service Center at 866-651-9298.\r\n\r\nFor help with your Work Order Network account, please contact Corrigo Work Order\r\nNetwork Support at https://provider.worktrack.com/Support or 800-517-2705.\r\n\r\nSpecial Instructions:\r\n\r\n\r\nElectronic Building Access Code :\r\n\r\n\r\n\r\n\r\n\r\nFIR ID:\r\nLocation:\r\n\r\n\r\nTC: https://enterpriseam.s3.amazonaws.com/6827/e43a6d3a-ad1f-40f7-90f4-003996f6b016/tc.txt\r\n\r\nAll dates and times are shown in (UTC-07:00) Mountain Time (US & Canada)\r\n\r\nIf you do not want to receive these emails from CorrigoPro in the future, please Unsubscribe <https://am-desktop.corrigopro.com/EntryPoint/Unsubscribe?p=6bj8w994cEpeskMLYIvcueAR8%2FDtnxz6lsPBlejKalDgShxGlTHHMDudmbxZZAUWsNDDNHG8b10azkTWZIY58CPYp3bVfcw%2FYDTwiS%2FZ4vkKupM9bwDtsPcsc86O9E66V8H%2B3XKvpvDfAo2hBNhafo7lNUQc%2FTZZrovQShDi9SIqTds7d%2F63Vev%2FBGA%2BUH06%2B%2FUY1U2WyIgs2pr%2BACabagqR7iJFiNq0iCsnumK%2BXE50MAX4y2ZY9GlnCUgqlNq1ag%2FNzqV1q3j8jkn1hBpRdcvMMZgefVTmDkzE5eyjdfw2pAFGxOkIHBHx6iFqqygfjfmtjV04Rf2eKcFf%2Bp4yxQ%3D%3D>\r\n\r\nYour CorrigoPro Support Team\r\nsupport.jllt@jll.com<mailto:support.jllt@jll.com>\r\n"
+   },
+   "overrideAt": "2026-10-31T00:30:00Z",
+   "reason": "Fill date/description/address/NTE"
+  },
+  {
+   "id": "fill-J5075335-00131",
+   "number": "J5075335-00131",
+   "fill": {
+    "property": "Grace ID FamilySearch Ctr *Historic Building*",
+    "location": "406 South Main Street, GRACE, ID 83241-4709, US",
+    "description": "________________________________\nBuilding Exterior > Building/Structure Repair & Maintenance > Roof\nInspection\nDescription: “Please complete a roofing inspection to assess overall condition. Please identify existing and/or potential leaks, damaged or missing shingles/tiles/membrane, inspect flashing and seals around penetrations, examine high gutters (over 8’) and downspouts for blockages, and evaluate drainage systems. Address any findings requiring immediate repair to prevent winter weather damage. Please submit a quote for any work over $500.”",
+    "dateCreated": "9/21/2026 1:00 PM",
+    "acceptBy": "9/24/2026 12:56 PM",
+    "onSiteBy": "10/21/2026 12:56 PM",
+    "completeBy": "10/21/2026 12:56 PM",
+    "estimatedAmount": 500.0,
+    "priority": "P30 (On Demand - 30 Days)",
+    "requestedBy": "Grace ID FamilySearch Ctr *Historic Building*",
+    "emailContent": "\r\n________________________________\r\nFrom: CorrigoPro Support <alerts@am.corrigopro.com>\r\nSent: Tuesday, October 20, 2026 7:08:34 PM (UTC+00:00) Monrovia, Reykjavik\r\nTo: garysims60@msn.com <garysims60@msn.com>\r\nSubject: The P30 (On Demand - 30 Days) work order #J5075335-00131 received from 10/21/2026 12:56 PM for CorrigoPro is waiting for your arrival\r\n\r\nThis is a reminder that the WO#J5075335-00131 requires work be performed and updated no later than the On-Site By date shown below.\r\n[https://login.corrigo.com/Content/Images/connection_center_email_logo.png?v=2]\r\n\r\n[QR Code]\r\n\r\nSims Construction - JLL\r\n\r\n237 n 9th street, Montpelier, ID 83254, US\r\n\r\n+1 208-317-7214\r\n\r\nFor The Church\r\n\r\nFax this back to (800) 476-8004\r\n\r\nWORK ORDER #J5075335-00131\r\nDate Created:   DO NOT EXCEED labor and materials of $500.00 USD\r\n9/21/2026 1:00 PM       If you believe you will go over this amount, please submit a quote in CorrigoPro.\r\nCustomer\r\n________________________________\r\nName:   The Church\r\nRequested By:   Grace ID FamilySearch Ctr *Historic Building*\r\nGrace ID FamilySearch Ctr *Historic Building*\r\nSite Address:   406 South Main Street, GRACE, ID 83241-4709, US\r\nService Contact Manager:        Patrick Crummett patrick.crummett@jll.com\r\nWO check in/out phone #:        (833) 212-7809\r\nIVR code:       936048618\r\nProblem\r\n________________________________\r\nBuilding Exterior > Building/Structure Repair & Maintenance > Roof\r\nInspection\r\nDescription: “Please complete a roofing inspection to assess overall condition. Please identify existing and/or potential leaks, damaged or missing shingles/tiles/membrane, inspect flashing and seals around penetrations, examine high gutters (over 8’) and downspouts for blockages, and evaluate drainage systems. Address any findings requiring immediate repair to prevent winter weather damage. Please submit a quote for any work over $500.”\r\nDetails\r\n________________________________\r\nStatus:\r\nOpen\r\nPriority:\r\nP30 (On Demand - 30 Days)\r\nType:\r\nReactive\r\nAccept/Reject By:\r\n9/24/2026 12:56 PM\r\nOn-Site By:\r\n10/21/2026 12:56 PM\r\nComplete By:\r\n10/21/2026 12:56 PM\r\nAppointment Type:\r\nN/A\r\nExecution Plan:\r\nNote\r\n________________________________\r\n\r\nNTE: $500.00 (NTE amount is\r\ninclusive of taxes)\r\nProperty: Grace ID FamilySearch Ctr *Historic Building*\r\nPriority: P30 (On Demand - 30 Days) - Please schedule technician arrival within the listed ETA.\r\nOn Site\r\nBy::10/21/2026 12:56 PM\r\nWork Completion Due By: 10/21/2026 12:56 PM\r\n\r\nExpanded Work Description: Roof:Inspection:Description: “Please complete a roofing inspection to assess overall condition. Please identify existing and/or potential leaks, damaged or missing shingles/tiles/membrane, inspect flashing and seals around penetrations, examine high gutters (over 8’) and downspouts for blockages, and evaluate drainage systems. Address any findings requiring immediate repair to prevent winter weather damage. Please submit a quote for any work over $500.”\r\n\r\nOps Manager: Patrick Crummett 435-361-8831\r\nExterior Lock Box\r\ninfo: LockBox Code: 5335; Location: West Entrance\r\nInterior Lock Box info:\r\n\r\nAlarm Code:\r\n\r\nFor assistance or additional information related to this work order, please contact\r\nthe Property Service Center at 866-651-9298.\r\n\r\nFor help with your Work Order Network account, please contact Corrigo Work Order\r\nNetwork Support at https://provider.worktrack.com/Support or 800-517-2705.\r\n\r\nSpecial Instructions:\r\n\r\n\r\nElectronic Building Access Code :\r\n\r\n\r\n\r\n\r\n\r\nFIR ID:\r\nLocation:\r\n\r\n\r\nTC: https://enterpriseam.s3.amazonaws.com/6827/e43a6d3a-ad1f-40f7-90f4-003996f6b016/tc.txt\r\n\r\nAll dates and times are shown in (UTC-07:00) Mountain Time (US & Canada)\r\n\r\nIf you do not want to receive these emails from CorrigoPro in the future, please Unsubscribe <https://am-desktop.corrigopro.com/EntryPoint/Unsubscribe?p=6bj8w994cEpeskMLYIvcueAR8%2FDtnxz6lsPBlejKalDgShxGlTHHMDudmbxZZAUWsNDDNHG8b10azkTWZIY58CPYp3bVfcw%2FYDTwiS%2FZ4vkKupM9bwDtsPcsc86O9E66V8H%2B3XKvpvDfAo2hBNhafo7lNUQc%2FTZZrovQShDi9SIT8MrfHSVi5XV2nTR%2ByITFi%2FsNU8hpHK8ewYHAElaRqu%2BuMAg1KBJ7byowPDsMCKwBvrPiL8DA65ri8%2BGIVq%2FVC6tcFmPOBZgD8XH0pEmCj5ygiJnqWRb0braPZGp3Lxck8cQO8%2FS7vN7B24nlI%2Fvz9RxSQX2NW7Tig7qf87KyxQ%3D%3D>\r\n\r\nYour CorrigoPro Support Team\r\nsupport.jllt@jll.com<mailto:support.jllt@jll.com>\r\n"
+   },
+   "overrideAt": "2026-10-31T00:30:00Z",
+   "reason": "Fill date/description/address/NTE"
+  },
+  {
+   "id": "fill-I5017025-00256.01",
+   "number": "I5017025-00256.01",
+   "fill": {
+    "property": "Valley View (Sp), Whitney",
+    "location": "1444 South 1600 East, Preston, ID 83263-5477, US",
+    "description": "Clear rain gutters on all 4 sides",
+    "dateCreated": "10/28/2026",
+    "onSiteBy": "11/26/2026",
+    "completeBy": "11/26/2026",
+    "estimatedAmount": 500,
+    "priority": "P30 (On Demand - 30 Days)"
+   },
+   "overrideAt": "2026-10-31T00:30:00Z",
+   "reason": "Fill date/description/address/NTE"
+  }
+ ]
 }
