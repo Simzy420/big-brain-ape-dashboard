@@ -1,31 +1,29 @@
 {
-  "address": "0x37a8023762c69f7150d878733fd6f635f1070fc6",
+  "address": "0x37a8023762c69f7150d878733fd9f635f1070fc6",
   "network": "mainnet",
   "abstraction": "unifiedAccount",
-  "accountValue": "1194.889085",
-  "withdrawable": "1082.11",
+  "accountValue": "1195.278726",
+  "withdrawable": "1082.116160",
   "positions": [
     {
       "token": "xyz:EUR",
       "size": "-300.0",
       "entryPx": "1.1198",
-      "unrealizedPnl": "0.9",
-      "marginUsed": "112.772925",
+      "unrealizedPnl": "1.29",
+      "marginUsed": "113.162566",
       "leverage": {
         "type": "isolated",
         "value": 3,
-        "rawUsd": "447.812925"
+        "rawUsd": "447.812566"
       }
     }
   ],
   "spotBalances": [
     {
       "token": "USDC",
-      "total": "1194.889085",
-      "hold": "112.772925",
-      "usdValue": "1194.889085"
+      "total": "1195.278726",
+      "hold": "113.162566",
+      "usdValue": "1195.278726"
     }
-  ],
-  "lastUpdated": "2026-10-30T13:36:00Z",
-  "notes": "GOLD long closed at 3932.0 (cut trigger hit, $3,950 support broke). Realized loss ~$51.65. Cash freed."
+  ]
 }
