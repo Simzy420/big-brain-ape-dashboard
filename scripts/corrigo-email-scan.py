@@ -55,16 +55,21 @@ def prewritten_description(text):
     low = t.lower()
     parts = []
     if 'roof' in low and 'inspect' in low:
-        parts.append('Completed a full roof inspection, checking for leaks, damaged or missing shingles, and the flashing and seals around pipes and vents.')
+        parts.append('I completed the roof inspection and everything looks good.')
+        chk = []
+        if 'leak' in low: chk.append('potential leaks')
+        if re.search(r'shingle|tile|membrane', low): chk.append('damaged or missing shingles')
+        if re.search(r'flashing|seal|pipe|vent|penetration', low): chk.append('the flashing and seals around the pipes and vents')
+        if chk: parts.append('I looked for ' + (', '.join(chk[:-1]) + ' and ' + chk[-1] if len(chk) > 1 else chk[0]) + '.')
     elif 'leak' in low:
-        parts.append('Checked out the reported leak and took care of the repair.')
+        parts.append('I checked out the reported leak and took care of it.')
     if 'gutter' in low and 'repair' in low:
-        parts.append('Cleaned out the gutters and downspouts, repaired the damaged gutter sections, and checked that they drain properly.')
+        parts.append('I cleaned out the gutters and downspouts, repaired the damaged gutter sections, and made sure they drain properly.')
     elif 'gutter' in low:
-        parts.append('Cleaned out the gutters and downspouts and checked that they drain properly.')
+        parts.append('I cleaned out the gutters and downspouts and made sure they drain properly.')
     if not parts:
         first = re.split(r'(?<=[.!?])\s', t)[0].strip().rstrip('.') if t else ''
-        parts.append(('Completed the requested work: ' + first[0].lower() + first[1:] + '.') if first else 'Completed the requested work.')
+        parts.append(('I completed the requested work: ' + first[0].lower() + first[1:] + '.') if first else 'I completed the requested work.')
     return ' '.join(parts) + ' Job complete.'
 
 

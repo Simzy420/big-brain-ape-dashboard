@@ -162,7 +162,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v18-202611011515</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v18-202611011517</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -291,7 +291,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v18-202611011515';
+const APP_VERSION = 'v18-202611011517';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -1776,7 +1776,15 @@ async function loadJobs(){
     }
 
     const overrides = await fetchOverrides();
-    if (Array.isArray(jobs)) jobs = jobs.filter(w => !isRemovedByOverride(overrides, w) && !renamedAway(overrides, w));
+    if (Array.isArray(jobs)) {
+      // v18: carry renamed records under their new number (instead of dropping them) so their real status still syncs
+      const seenNew = {};
+      jobs = jobs.map(w => { if (w.status !== 'sent_to_corrigo') return w; const o = overrides.filter(o => o.renameTo && normStrict(o.number) === normStrict(w.number) && (o.onlyIfInvoice === undefined || String(w.invoiceNumber||'') === String(o.onlyIfInvoice))).pop();
+        return o ? Object.assign({}, w, {number: o.renameTo}) : w; })
+        .filter(w => !isRemovedByOverride(overrides, w) && !renamedAway(overrides, w))
+        .filter(w => { const k = normStrict(w.number); if (!(k in seenNew)) { seenNew[k] = w; return true; }
+          if (w.status === 'sent_to_corrigo' && seenNew[k].status !== 'sent_to_corrigo') { Object.assign(seenNew[k], w); } else { Object.keys(w).forEach(f => { if (seenNew[k][f] == null || seenNew[k][f] === '') seenNew[k][f] = w[f]; }); } return false; });
+    }
     let inbox = getData('corrigo_inbox');
     let disputed = getData('corrigo_disputed');
 
@@ -1785,6 +1793,9 @@ async function loadJobs(){
       jobs.forEach(w => {
         const num = String(w.number);
         if (w.status === 'sent_to_corrigo') {
+          // v18: a WO already sent to Corrigo can't also sit in Inbox/Accepted/Declined/Bidding (stale phone copies)
+          inbox = inbox.filter(x => normStrict(x.number) !== normStrict(num));
+          ['corrigo_accepted','corrigo_declined','corrigo_bidding'].forEach(t => { const a = getData(t), k = a.filter(x => normStrict(x.number) !== normStrict(num)); if (k.length !== a.length) saveData(t, k); });
           // Remove from corrigo_completed (Finalize tab) if it's there
           let completed = getData('corrigo_completed');
           const cIdx = completed.findIndex(x => String(x.number) === num);
@@ -2066,11 +2077,12 @@ const HOWTO = {
   addwo: 'How to use: Type a work order number and description, then tap Add to Inbox.',
   settings: 'How to use: Name this phone or reset the app. You normally do not need anything here.'
 };
+const TAB_TITLES = {inbox:'Inbox',accepted:'Accepted',declined:'Declined',bidding:'Bidding',almostdue:'⚠️ Almost Due',overdue:'⏰ Overdue',disputed:'⚠️ Disputed',resolved:'✅ Resolved',finalize:'📋 Finalize',completedtab:'✅ Completed',senttocorrigo:'📤 Sent In to Corrigo',addwo:'➕ Add WO',settings:'Settings'};
 function addHowTo(){
   Object.keys(HOWTO).forEach(id => {
     const el = document.getElementById(id); if (!el) return;
     if (el.firstElementChild && el.firstElementChild.classList.contains('howto')) return;
-    el.insertAdjacentHTML('afterbegin', '<div class="howto" style="background:#1c2a3a;border-left:4px solid #0a84ff;color:#e6f0ff;border-radius:10px;padding:10px 12px;margin:0 0 12px 0;font-size:16px;line-height:1.35;">' + escHtml(HOWTO[id]) + '</div>');
+    el.insertAdjacentHTML('afterbegin', '<div class="howto"><h2 class="tabtitle" style="color:#fff;font-size:24px;font-weight:800;margin:4px 0 8px 0;">' + escHtml(TAB_TITLES[id]||'') + '</h2><div class="howto-line" style="background:#1c2a3a;border-left:4px solid #0a84ff;color:#e6f0ff;border-radius:10px;padding:10px 12px;margin:0 0 12px 0;font-size:16px;line-height:1.35;">' + escHtml(HOWTO[id]) + '</div></div>');
   });
 }
 (function(){ const r1 = render; render = function(){ const x = r1.apply(this, arguments); try { addHowTo(); } catch(e){} return x; }; addHowTo(); })();
@@ -2094,11 +2106,17 @@ function templateWorkDesc(text){
   if (t.includes('>')) t = t.replace(/^[^\n]*>[^\n]*\n(?:[^\n]*\n)?/, '');
   t = t.trim().replace(/^(?:[^:\n]{1,40}:){1,3}\s*/, '').replace(/^Description:\s*/,'').trim().replace(/^[“”"]+|[“”"]+$/g,'').trim();
   const low = t.toLowerCase(), parts = [];
-  if (low.includes('roof') && low.includes('inspect')) parts.push('Completed a full roof inspection, checking for leaks, damaged or missing shingles, and the flashing and seals around pipes and vents.');
-  else if (low.includes('leak')) parts.push('Checked out the reported leak and took care of the repair.');
-  if (low.includes('gutter') && low.includes('repair')) parts.push('Cleaned out the gutters and downspouts, repaired the damaged gutter sections, and checked that they drain properly.');
-  else if (low.includes('gutter')) parts.push('Cleaned out the gutters and downspouts and checked that they drain properly.');
-  if (!parts.length) { const f = (t.split(/(?<=[.!?])\s/)[0]||'').trim().replace(/\.$/,''); parts.push(f ? 'Completed the requested work: ' + f[0].toLowerCase() + f.slice(1) + '.' : 'Completed the requested work.'); }
+  if (low.includes('roof') && low.includes('inspect')) {
+    parts.push('I completed the roof inspection and everything looks good.');
+    const chk = [];
+    if (low.includes('leak')) chk.push('potential leaks');
+    if (/shingle|tile|membrane/.test(low)) chk.push('damaged or missing shingles');
+    if (/flashing|seal|pipe|vent|penetration/.test(low)) chk.push('the flashing and seals around the pipes and vents');
+    if (chk.length) parts.push('I looked for ' + (chk.length > 1 ? chk.slice(0,-1).join(', ') + ' and ' + chk[chk.length-1] : chk[0]) + '.');
+  } else if (low.includes('leak')) parts.push('I checked out the reported leak and took care of it.');
+  if (low.includes('gutter') && low.includes('repair')) parts.push('I cleaned out the gutters and downspouts, repaired the damaged gutter sections, and made sure they drain properly.');
+  else if (low.includes('gutter')) parts.push('I cleaned out the gutters and downspouts and made sure they drain properly.');
+  if (!parts.length) { const f = (t.split(/(?<=[.!?])\s/)[0]||'').trim().replace(/\.$/,''); parts.push(f ? 'I completed the requested work: ' + f[0].toLowerCase() + f.slice(1) + '.' : 'I completed the requested work.'); }
   return parts.join(' ') + ' Job complete.';
 }
 function prefillWorkDesc(wo){
