@@ -162,7 +162,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v16-202611011234</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v17-202611011506</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -291,7 +291,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v16-202611011234';
+const APP_VERSION = 'v17-202611011506';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -2047,6 +2047,32 @@ function closeProof(){ document.getElementById('proofViewer').style.display = 'n
   const f0 = forceReload; forceReload = async function(){ await loadProof(); return f0.apply(this, arguments); };
   loadProof();
 })();
+</script>
+<script>
+// v17: How to use line at the top of every tab
+const HOWTO = {
+  inbox: 'How to use: Accept or Decline everything in the Inbox.',
+  accepted: 'How to use: When the job is completed, add the work description and Save.',
+  declined: 'How to use: Jobs you declined. The bot clicks Reject in Corrigo for you; nothing else to do here.',
+  bidding: 'How to use: Jobs you sent a bid on. Nothing to do here unless you need to add a work description.',
+  almostdue: 'How to use: Jobs due in the next 7 days. Get these done first.',
+  overdue: 'How to use: Jobs past their due date. Finish these as soon as you can.',
+  disputed: 'How to use: Enter the hours, rate, dates and invoice, or upload a photo, then tap Mark Resolved when it is settled.',
+  resolved: 'How to use: Disputes that are settled. Nothing to do here.',
+  finalize: 'How to use: Tap Enter Hours, Rate & Submit on each job; it then moves to Completed.',
+  completedtab: 'How to use: Check the invoice details and edit if needed. The bot sends these to Corrigo around 7 AM and 7 PM and moves them to Sent In to Corrigo.',
+  senttocorrigo: 'How to use: Jobs already sent to Corrigo. Tap a card to see what was sent, or tap Delete to remove it from the app.',
+  addwo: 'How to use: Type a work order number and description, then tap Add to Inbox.',
+  settings: 'How to use: Name this phone or reset the app. You normally do not need anything here.'
+};
+function addHowTo(){
+  Object.keys(HOWTO).forEach(id => {
+    const el = document.getElementById(id); if (!el) return;
+    if (el.firstElementChild && el.firstElementChild.classList.contains('howto')) return;
+    el.insertAdjacentHTML('afterbegin', '<div class="howto" style="background:#1c2a3a;border-left:4px solid #0a84ff;color:#e6f0ff;border-radius:10px;padding:10px 12px;margin:0 0 12px 0;font-size:16px;line-height:1.35;">' + escHtml(HOWTO[id]) + '</div>');
+  });
+}
+(function(){ const r1 = render; render = function(){ const x = r1.apply(this, arguments); try { addHowTo(); } catch(e){} return x; }; addHowTo(); })();
 </script>
 </body>
 </html>
