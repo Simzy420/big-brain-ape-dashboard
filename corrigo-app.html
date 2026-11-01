@@ -162,7 +162,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v14-202611011157</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v15-202611011208</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -291,7 +291,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v14-202611011157';
+const APP_VERSION = 'v15-202611011208';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -358,6 +358,7 @@ async function forceReload(){
 function handled(){
   const nums = new Set();
   ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_completed','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_resolved','corrigo_submitted','corrigo_sent_to_corrigo'].forEach(k => getData(k).forEach(w => nums.add(String(w.number))));
+  Object.keys(getMap('corrigo_sent_deleted')).forEach(n => nums.add(n));
   return nums;
 }
 function show(name){
@@ -377,6 +378,7 @@ function show(name){
   if (name==='senttocorrigo') render();
 }
 function render(){
+  purgeSentDeleted();
   const inbox = getData('corrigo_inbox');
   const accepted = getData('corrigo_accepted');
   const declined = getData('corrigo_declined');
@@ -954,6 +956,8 @@ function rawLocalActions(){
       actions.push(a);
     }
   });
+  // v15: Sent-tab deletions, synced to the other phone (bot ignores this action)
+  Object.entries(getMap('corrigo_sent_deleted')).forEach(([n,d]) => actions.push({number:n, action:'sent_delete', deletedAt:d}));
   return actions;
 }
 // After importing other phones' entries, remember how those WOs look here so they are not re-exported as ours
@@ -1568,10 +1572,23 @@ function sentCard(w, i){
   const labor = (parseFloat(w.hours)||0) * (parseFloat(w.rate)||0);
   const total = w.corrigoTotal != null && w.corrigoTotal !== '' ? parseFloat(w.corrigoTotal) : (labor + (parseFloat(w.materialsCost)||0));
   const line = (w.hours || w.invoiceNumber) ? `<div style="margin-top:8px;color:#00cc66;font-size:16px;">Invoice: ${escHtml(w.invoiceNumber||'-')} | Hours: ${escHtml(w.hours||'-')} | Materials: ${hasMat ? fmtMoney(w.materialsCost) : 'none'}${total ? ' | Total: ' + fmtMoney(total) : ''}</div>` : '';
-  return `<div class="card" style="cursor:pointer;" onclick="openSentDetail(${i})"><div class="wo-card-header"><strong>${escHtml(w.number||'')}</strong></div>${w.location ? '<p>'+escHtml(w.location)+'</p>' : ''}${line}<p class="muted" style="margin-top:8px;">Tap to see everything that was sent ›</p></div>`;
+  return `<div class="card" style="cursor:pointer;" onclick="openSentDetail(${i})"><div class="wo-card-header"><strong>${escHtml(w.number||'')}</strong></div>${w.location ? '<p>'+escHtml(w.location)+'</p>' : ''}${line}<p class="muted" style="margin-top:8px;">Tap to see everything that was sent ›</p><button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="event.stopPropagation();deleteSentWo(${i})">🗑️ Delete</button></div>`;
 }
 
 
+// v15: delete from Sent In to Corrigo (app only; bot records in work-orders.json are untouched)
+function isSentDeleted(n){ const k = normWo(n); return Object.keys(getMap('corrigo_sent_deleted')).some(d => normWo(d) === k); }
+function purgeSentDeleted(){
+  const sent = getData('corrigo_sent_to_corrigo'); const keep = sent.filter(w => !isSentDeleted(w.number));
+  if (keep.length !== sent.length) saveData('corrigo_sent_to_corrigo', keep);
+}
+function deleteSentWo(i){
+  const w = getData('corrigo_sent_to_corrigo')[i]; if (!w) return;
+  if (!confirm('Delete WO ' + (w.number||'') + ' from Sent In to Corrigo? This only removes it from the app, not from Corrigo.')) return;
+  const dm = getMap('corrigo_sent_deleted'); dm[String(w.number)] = new Date().toISOString(); setMap('corrigo_sent_deleted', dm);
+  render();
+  try { sendPickup(true); } catch(e) { console.error(e); }
+}
 let WO_PHOTO_FILES = [], WO_PHOTO_HIDE = {};
 fetch('https://simzy420.github.io/big-brain-ape-dashboard/wo-photos/index.json?v=' + Date.now()).then(r => r.ok ? r.json() : {files:[]}).then(d => { WO_PHOTO_FILES = d.files || []; WO_PHOTO_HIDE = d.hideOnWo || {}; }).catch(() => {});
 function sentPhotoSrcs(w){
@@ -1808,6 +1825,8 @@ async function loadJobs(){
         setMap('corrigo_imported_sigs', impSigs);
         actions.forEach(act => {
           if (act.deviceId && act.deviceId === myDev) return; // our own entry
+          if (act.action === 'sent_delete') { const dm = getMap('corrigo_sent_deleted'); if (!isSentDeleted(act.number)) { dm[String(act.number)] = act.deletedAt || new Date().toISOString(); setMap('corrigo_sent_deleted', dm); changed = true; } return; }
+          if (isSentDeleted(act.number)) return;
           const num = String(act.number);
           // Check all tabs for this WO
           const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_submitted','corrigo_disputed','corrigo_sent_to_corrigo'];
@@ -1930,6 +1949,7 @@ async function loadJobs(){
       console.warn('Could not sync from GitHub:', syncErr.message);
     }
     try { applyOverrides(overrides); } catch(ovErr) { console.error('overrides', ovErr); }
+    purgeSentDeleted();
 
     render();
   } catch(e) {
