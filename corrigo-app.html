@@ -162,7 +162,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v13-202610301552</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v14-202611011157</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -291,7 +291,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v13-202610301552';
+const APP_VERSION = 'v14-202611011157';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -1959,6 +1959,50 @@ try {
   console.error('Failed to start:', e);
   try { render(); } catch(re) {}
 }
+</script>
+<div id="proofViewer" onclick="closeProof()" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.95);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:50px 10px 30px;box-sizing:border-box;">
+  <button onclick="closeProof()" style="position:fixed;top:10px;right:10px;font-size:22px;padding:8px 16px;border-radius:10px;border:none;background:#333;color:#fff;z-index:100000;">✕ Close</button>
+  <div id="proofList" style="max-width:900px;margin:auto;"></div>
+</div>
+<script>
+// v14: Corrigo accept/decline proof screenshots
+let CORRIGO_PROOF = {};
+function proofKey(n){ return normWo(n).replace(/\.\d+$/,''); }
+function proofFor(n){
+  if (!n) return [];
+  let out = [];
+  const k = proofKey(n);
+  Object.keys(CORRIGO_PROOF).forEach(p => { if (proofKey(p) === k) out = out.concat(CORRIGO_PROOF[p] || []); });
+  return out.filter(e => e && e.url).sort((a,b) => new Date(b.at) - new Date(a.at));
+}
+function proofTime(at){ try { return new Date(at).toLocaleString('en-US',{timeZone:'America/Boise',month:'numeric',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}) + ' MT'; } catch(e){ return at||''; } }
+function loadProof(){
+  return fetch('https://simzy420.github.io/big-brain-ape-dashboard/corrigo-proof/index.json?v=' + Date.now(), {cache:'no-store'})
+    .then(r => r.ok ? r.json() : {}).then(d => { CORRIGO_PROOF = d || {}; decorateProof(); }).catch(() => {});
+}
+function decorateProof(){
+  document.querySelectorAll('.card').forEach(c => {
+    const s = c.querySelector('.wo-card-header strong'); if (!s) return;
+    const old = c.querySelector('.proof-box'); if (old) old.remove();
+    const num = s.textContent.trim(); const list = proofFor(num); if (!list.length) return;
+    const e = list[0], acc = e.action === 'accepted';
+    const d = document.createElement('div'); d.className = 'proof-box'; d.style.marginTop = '10px';
+    d.innerHTML = `<div style="color:${acc?'#00cc66':'#ff3b30'};font-size:15px;margin-bottom:6px;">${acc?'Accepted':'Declined'} in Corrigo ✓ ${escHtml(proofTime(e.at))}</div><button class="big" style="width:100%;background:#0a84ff;color:#fff;">📸 See Corrigo proof${list.length>1?' ('+list.length+')':''}</button>`;
+    d.querySelector('button').onclick = ev => { ev.stopPropagation(); openProof(num); };
+    d.onclick = ev => ev.stopPropagation();
+    c.appendChild(d);
+  });
+}
+function openProof(num){
+  document.getElementById('proofList').innerHTML = `<h2 style="color:#fff;text-align:center;">${escHtml(num)}</h2>` + proofFor(num).map(e => `<div style="margin-bottom:24px;"><div style="color:${e.action==='accepted'?'#00cc66':'#ff3b30'};font-size:18px;margin-bottom:6px;">${e.action==='accepted'?'✅ Accepted':'❌ Declined'} in Corrigo — ${escHtml(proofTime(e.at))}</div>${e.note?'<div style="color:#ccc;font-size:14px;margin-bottom:6px;">'+escHtml(e.note)+'</div>':''}<img src="${escHtml(e.url)}" style="width:100%;height:auto;border-radius:8px;background:#222;"></div>`).join('');
+  const v = document.getElementById('proofViewer'); v.style.display = 'block'; v.scrollTop = 0; document.body.style.overflow = 'hidden';
+}
+function closeProof(){ document.getElementById('proofViewer').style.display = 'none'; document.body.style.overflow = ''; }
+(function(){
+  const r0 = render; render = function(){ const x = r0.apply(this, arguments); try { decorateProof(); } catch(e){} return x; };
+  const f0 = forceReload; forceReload = async function(){ await loadProof(); return f0.apply(this, arguments); };
+  loadProof();
+})();
 </script>
 </body>
 </html>
