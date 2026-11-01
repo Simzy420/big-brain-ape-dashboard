@@ -163,7 +163,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v20-202611011604</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v21-202611011618</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -292,7 +292,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v20-202611011604';
+const APP_VERSION = 'v21-202611011618';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -469,7 +469,7 @@ function render(){
              <p style="margin:0;color:#00cc66;font-size:22px;font-weight:800;">TOTAL: $${grandTotal.toFixed(2)}</p>
            </div>`
         : '';
-      return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${w.description ? '<p>'+w.description+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}${w.disputeResolved ? '<p style="color:#00cc66;font-size:16px;">✅ Dispute resolved</p>' : ''}${invoiceHtml}${totalHtml}${photosHtml}<div class="btn-row"><button class="big save" onclick="openCompleteForm('${w.id}')">📋 Enter Hours, Rate & Submit</button></div><div class="btn-row"><button class="wo-delete" onclick="deleteWo('${w.id}')" style="width:100%;margin-top:0;">🗑️ Delete Work Order</button></div></div>`;
+      return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${cleanDesc(w.description) ? '<p>'+cleanDesc(w.description)+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}${w.disputeResolved ? '<p style="color:#00cc66;font-size:16px;">✅ Dispute resolved</p>' : ''}${invoiceHtml}${totalHtml}${photosHtml}<div class="btn-row"><button class="big save" onclick="openCompleteForm('${w.id}')">📋 Enter Hours, Rate & Submit</button></div><div class="btn-row"><button class="wo-delete" onclick="deleteWo('${w.id}')" style="width:100%;margin-top:0;">🗑️ Delete Work Order</button></div></div>`;
     }).join('')
     : '<div class="card">No work orders ready to finalize.</div>';
 
@@ -493,7 +493,7 @@ function render(){
              <p style="margin:0;color:#00cc66;font-size:22px;font-weight:800;">TOTAL: $${grandTotal.toFixed(2)}</p>
            </div>`;
       const submittedStatus = w.corrigoSubmitted ? '<p style="color:#00cc66;font-size:16px;">✅ Submitted to Corrigo</p>' : '<p style="color:#ff9500;font-size:16px;">⏳ Waiting to be submitted to Corrigo</p>';
-      return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${w.description ? '<p>'+w.description+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}${invoiceHtml}${totalHtml}${photosHtml}${submittedStatus}<div class="btn-row" style="margin-top:12px;"><button class="big save" onclick="editSubmittedForm('${w.id}')">✏️ Edit Invoice Details</button></div></div>`;
+      return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${cleanDesc(w.description) ? '<p>'+cleanDesc(w.description)+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}${invoiceHtml}${totalHtml}${photosHtml}${submittedStatus}<div class="btn-row" style="margin-top:12px;"><button class="big save" onclick="editSubmittedForm('${w.id}')">✏️ Edit Invoice Details</button></div></div>`;
     }).join('')
     : '<div class="card">No completed work orders waiting for Corrigo.</div>';
 
@@ -504,7 +504,47 @@ function emailField(w, label){
   const m = (w.emailContent||'').match(new RegExp(label + ':[^\\n]*\\n\\s*([0-9]{1,2}/[0-9]{1,2}/[0-9]{4}[^\\n]*)'));
   return m ? m[1].trim() : '';
 }
-function cleanDesc(d){ return String(d||'').replace(/^[\s_]+/, '').replace(/\s*\n\s*/g, ' ').trim(); }
+const BOILER_RE = /\s*If\s+you\s+believe\s+you\s+will\s+go\s+over\s+this\s+amount,?\s*please\s+submit\s+a\s+quote\s+in\s+Corrigo\s*Pro\.?/gi;
+const CREATED_RE = /\s*(?:Date\s+)?Created:\s*\d{1,2}\/\d{1,2}\/\d{4}(?:\s+\d{1,2}:\d{2}\s*[AP]M)?\s*(?:·\s*)?/gi;
+function stripBoiler(t){ return String(t==null?'':t).replace(BOILER_RE,'').replace(CREATED_RE,' ').replace(/\s{2,}/g,' ').trim(); }
+const KNOWN_SUBCATS = ['Roof Inspection','Roof Debris Removal','Roof Leak','Roof Repair','Structure Walls','Structure Foundation','Sidewalk/Driveway Repair/Maintenance'];
+function cleanDesc(d){
+  let t = String(d||'').replace(/\r/g,'').replace(/^[\s_]+/, '');
+  let lines = t.split('\n').map(l => l.trim()).filter(Boolean);
+  if (lines.length > 1 && / > /.test(lines[0])) {
+    lines.shift();
+    if (lines.length > 1 && lines[0].split(/\s+/).length <= 3 && !/[.:!?]/.test(lines[0])) lines.shift();
+    t = lines.join(' ');
+  } else if (lines.length === 1 && / > /.test(lines[0])) {
+    t = lines[0];
+  } else t = lines.join(' ');
+  if (/^[^.]*? > /.test(t)) {
+    const rest = t.slice(t.lastIndexOf(' > ') + 3);
+    const k = KNOWN_SUBCATS.find(c => rest.toLowerCase().startsWith(c.toLowerCase() + ' '));
+    if (k) t = rest.slice(k.length).trim();
+    else if (/Description:/i.test(rest)) t = rest.slice(rest.search(/Description:/i));
+  }
+  t = t.replace(/^(?:[A-Z][\w\/ &-]{0,30}:){2}\s*/, '');
+  t = t.replace(/^Description:\s*/i, '').trim().replace(/^[“”"]+|[“”"]+$/g, '').trim();
+  return stripBoiler(t);
+}
+const US_STATES = {AL:'Alabama',AK:'Alaska',AZ:'Arizona',AR:'Arkansas',CA:'California',CO:'Colorado',CT:'Connecticut',DE:'Delaware',FL:'Florida',GA:'Georgia',HI:'Hawaii',ID:'Idaho',IL:'Illinois',IN:'Indiana',IA:'Iowa',KS:'Kansas',KY:'Kentucky',LA:'Louisiana',ME:'Maine',MD:'Maryland',MA:'Massachusetts',MI:'Michigan',MN:'Minnesota',MS:'Mississippi',MO:'Missouri',MT:'Montana',NE:'Nebraska',NV:'Nevada',NH:'New Hampshire',NJ:'New Jersey',NM:'New Mexico',NY:'New York',NC:'North Carolina',ND:'North Dakota',OH:'Ohio',OK:'Oklahoma',OR:'Oregon',PA:'Pennsylvania',RI:'Rhode Island',SC:'South Carolina',SD:'South Dakota',TN:'Tennessee',TX:'Texas',UT:'Utah',VT:'Vermont',VA:'Virginia',WA:'Washington',WV:'West Virginia',WI:'Wisconsin',WY:'Wyoming'};
+function titleCase(x){ return String(x).toLowerCase().replace(/\b([a-z])/g, c => c.toUpperCase()); }
+function expandStreet(st){ return st.replace(/\bHwy\.?(?=\s|$)/gi,'Highway').replace(/\bAve\.?$/i,'Avenue').replace(/\bRd\.?$/i,'Road').replace(/\bBlvd\.?$/i,'Boulevard').replace(/\bDr\.?$/i,'Drive').replace(/\bLn\.?$/i,'Lane').replace(/(\w)\s+St\.?$/i,'$1 Street'); }
+function stateName(x){ const t = String(x||'').trim(); const m = t.match(/^([A-Za-z]{2})(?:\s+\d{5}(?:-\d{4})?)?$/); if (m && US_STATES[m[1].toUpperCase()]) return US_STATES[m[1].toUpperCase()]; const full = Object.values(US_STATES).find(n => n.toLowerCase() === t.replace(/\s+\d{5}(-\d{4})?$/,'').toLowerCase()); return full || ''; }
+function fmtLoc(loc){
+  let parts = String(loc||'').replace(/\r/g,'').split(/,|\n/).map(x => x.trim()).filter(Boolean);
+  if (parts.length && /^(US|USA|United States)$/i.test(parts[parts.length-1])) parts.pop();
+  if (!parts.length) return '';
+  let state = '', city = '', street = '';
+  if (parts.length >= 2 && stateName(parts[parts.length-1])) { state = stateName(parts.pop()); city = parts.pop(); street = parts.join(', '); }
+  else if (parts.length >= 2) { city = parts.pop(); street = parts.join(', '); }
+  else city = parts[0];
+  if (/^\d/.test(city) && !street) { street = city; city = ''; }
+  const line1 = [city ? titleCase(city) : '', state].filter(Boolean).join(', ');
+  const line2 = street ? expandStreet(street) : '';
+  return [line1, line2].filter(Boolean).map(escHtml).join('<br>');
+}
 function card(w, canAct, tab){
   const nteVal = (parseFloat(w.bidAmount) > 500) ? parseFloat(w.bidAmount) : (w.estimatedAmount ? parseFloat(w.estimatedAmount) : ((tab==='inbox'||tab==='accepted') ? 500 : 0));
   const estDisplay = nteVal ? (tab ? 'NTE ' : '') + '$' + nteVal.toFixed(2) : '';
@@ -515,8 +555,8 @@ function card(w, canAct, tab){
   if (tab === 'inbox' || tab === 'accepted') {
     const created = w.dateCreated || emailField(w, 'Date Created') || '';
     const parts = [];
-    if (tab === 'inbox') { const ab = w.acceptBy || emailField(w, 'Accept/Reject By'); if (ab) parts.push('Accept/Reject By: ' + ab); }
-    else { const os = w.onSiteBy || emailField(w, 'On-Site By'); const cb = w.completeBy || emailField(w, 'Complete By'); if (cb) parts.push('Complete By: ' + cb); }
+    if (tab === 'inbox') { const ab = w.acceptBy || emailField(w, 'Accept/Reject By'); if (ab && stripBoiler(ab)) parts.push('Accept/Reject By: ' + stripBoiler(ab)); }
+    else { const os = w.onSiteBy || emailField(w, 'On-Site By'); const cb = w.completeBy || emailField(w, 'Complete By'); if (cb && stripBoiler(cb)) parts.push('Complete By: ' + stripBoiler(cb)); }
     if (parts.length) dateHtml = '<p class="muted">📅 ' + parts.join(' · ') + '</p>';
   }
   if (!loc && w.emailContent) {
@@ -539,14 +579,14 @@ function card(w, canAct, tab){
   const workDescBtn = `<button class="email-btn" style="border-color:#ff9500;color:#ff9500;background:rgba(255,149,0,0.15);" onclick="openWorkDesc('${w.id}')">📝 Add Work Description</button>`;
   const emailBtn = w.emailContent ? `<button class="email-btn" onclick="viewEmail('${w.id}')">📧 View Original Email</button>` : '';
   const extraBtns = `<div class="btn-row">${workDescBtn}${emailBtn}</div>`;
-  return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>${dateHtml}${loc ? '<p>'+loc+'</p>' : ''}${desc ? '<p>'+desc+'</p>' : ''}${actionBtns}${extraBtns}</div>`;
+  return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>${dateHtml}${fmtLoc(loc) ? '<p>'+fmtLoc(loc)+'</p>' : ''}${desc ? '<p>'+desc+'</p>' : ''}${actionBtns}${extraBtns}</div>`;
 }
 
 function disputedCard(w){
   const estDisplay = w.estimatedAmount ? '$' + parseFloat(w.estimatedAmount).toFixed(2) : (w.disputedAmount ? '$' + parseFloat(w.disputedAmount).toFixed(2) : '');
   const estHtml = estDisplay ? `<div class="wo-est" style="color:#ff3b30;">${estDisplay}</div>` : '';
   let loc = w.location || '';
-  let desc = w.description || w.workDescription || '';
+  let desc = cleanDesc(w.description || w.workDescription || '');
   const disputeReason = w.disputeReason || '';
   const disputeEmailBtn = (w.disputeEmailContent || w.emailContent) ? `<button class="email-btn" onclick="viewEmail('${w.id}')">📧 View Dispute Email</button>` : '';
   const finalizeBtn = `<button class="big save" onclick="openDisputeForm('${w.id}')" style="margin-top:8px;">📋 Enter Hours, Rate, Dates & Invoice</button>`;
@@ -558,7 +598,7 @@ function disputedCard(w){
   const uploadBtn = `<button class="email-btn" style="border-color:#ff9500;color:#ff9500;background:rgba(255,149,0,0.15);" onclick="openDisputePhotoUpload('${w.id}')">📸 Upload Dispute Photo</button>`;
   return `<div class="card" style="border:2px solid #ff3b30;">
     <div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>
-    ${loc ? '<p>'+loc+'</p>' : ''}
+    ${fmtLoc(loc) ? '<p>'+fmtLoc(loc)+'</p>' : ''}
     ${desc ? '<p>'+desc+'</p>' : ''}
     ${disputeReason ? '<p style="color:#ff3b30;font-size:16px;">⚠️ Dispute Reason: '+disputeReason+'</p>' : ''}
     ${photosHtml}
@@ -687,7 +727,7 @@ function resolvedCard(w){
   const estDisplay = w.estimatedAmount ? '$' + parseFloat(w.estimatedAmount).toFixed(2) : (w.disputedAmount ? '$' + parseFloat(w.disputedAmount).toFixed(2) : '');
   const estHtml = estDisplay ? `<div class="wo-est" style="color:#00cc66;">${estDisplay}</div>` : '';
   let loc = w.location || '';
-  let desc = w.description || w.workDescription || '';
+  let desc = cleanDesc(w.description || w.workDescription || '');
   const disputeReason = w.disputeReason || '';
   const photosHtml = w.photos && w.photos.length > 0
     ? `<div style="margin-top:12px;"><p style="color:#aaa;font-size:16px;margin-bottom:6px;">📸 Photos (${w.photos.length}):</p>${w.photos.map((p,i) => `<img src="${p.data||p.url}" style="width:100%;border-radius:12px;margin-bottom:8px;" onclick="this.style.width=this.style.width==='100%'?'50%':'100%'">`).join('')}</div>`
@@ -698,7 +738,7 @@ function resolvedCard(w){
   const deleteBtn = `<button class="wo-delete" onclick="deleteWo('${w.id}')" style="width:100%;margin-top:8px;">🗑️ Delete</button>`;
   return `<div class="card" style="border:2px solid #00cc66;">
     <div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>
-    ${loc ? '<p>'+loc+'</p>' : ''}
+    ${fmtLoc(loc) ? '<p>'+fmtLoc(loc)+'</p>' : ''}
     ${desc ? '<p>'+desc+'</p>' : ''}
     ${disputeReason ? '<p style="color:#ff3b30;font-size:16px;">⚠️ Was Disputed: '+disputeReason+'</p>' : ''}
     <p style="color:#00cc66;font-size:16px;">✅ Dispute resolved</p>
@@ -1573,7 +1613,7 @@ function sentCard(w, i){
   const labor = (parseFloat(w.hours)||0) * (parseFloat(w.rate)||0);
   const total = w.corrigoTotal != null && w.corrigoTotal !== '' ? parseFloat(w.corrigoTotal) : (labor + (parseFloat(w.materialsCost)||0));
   const line = (w.hours || w.invoiceNumber) ? `<div style="margin-top:8px;color:#00cc66;font-size:16px;">Invoice: ${escHtml(w.invoiceNumber||'-')} | Hours: ${escHtml(w.hours||'-')} | Materials: ${hasMat ? fmtMoney(w.materialsCost) : 'none'}${total ? ' | Total: ' + fmtMoney(total) : ''}</div>` : '';
-  return `<div class="card" style="cursor:pointer;" onclick="openSentDetail(${i})"><div class="wo-card-header" style="gap:8px;"><strong style="min-width:0;overflow-wrap:anywhere;">${escHtml(w.number||'')}</strong>${total ? '<div class="wo-est">' + fmtMoney(total) + '</div>' : ''}</div>${w.location ? '<p>'+escHtml(w.location)+'</p>' : ''}${line}<p class="muted" style="margin-top:8px;">Tap to see everything that was sent ›</p><button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="event.stopPropagation();deleteSentWo(${i})">🗑️ Delete</button></div>`;
+  return `<div class="card" style="cursor:pointer;" onclick="openSentDetail(${i})"><div class="wo-card-header" style="gap:8px;"><strong style="min-width:0;overflow-wrap:anywhere;">${escHtml(w.number||'')}</strong>${total ? '<div class="wo-est">' + fmtMoney(total) + '</div>' : ''}</div>${fmtLoc(w.location) ? '<p>'+fmtLoc(w.location)+'</p>' : ''}${line}<p class="muted" style="margin-top:8px;">Tap to see everything that was sent ›</p><button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="event.stopPropagation();deleteSentWo(${i})">🗑️ Delete</button></div>`;
 }
 
 
@@ -2078,7 +2118,9 @@ const HOWTO = {
   settings: 'How to use: Name this phone or reset the app. You normally do not need anything here.'
 };
 const TAB_TITLES = {inbox:'Inbox',accepted:'Accepted',declined:'Declined',bidding:'Bidding',almostdue:'⚠️ Almost Due',overdue:'⏰ Overdue',disputed:'⚠️ Disputed',resolved:'✅ Resolved',finalize:'📋 Finalize',completedtab:'✅ Completed',senttocorrigo:'📤 Sent In to Corrigo',addwo:'➕ Add WO',settings:'Settings'};
+function sweepBoiler(){ document.querySelectorAll('.card p').forEach(p => { if (p.children.length) { p.childNodes.forEach(n => { if (n.nodeType === 3 && (BOILER_RE.test(n.nodeValue) || /Created:/.test(n.nodeValue))) { BOILER_RE.lastIndex = 0; n.nodeValue = stripBoiler(n.nodeValue); } BOILER_RE.lastIndex = 0; }); } else if (/Created:|If you believe you will go over/i.test(p.textContent)) { p.textContent = stripBoiler(p.textContent); } }); }
 function addHowTo(){
+  try { sweepBoiler(); } catch(e){}
   Object.keys(HOWTO).forEach(id => {
     const el = document.getElementById(id); if (!el) return;
     if (el.firstElementChild && el.firstElementChild.classList.contains('howto')) return;
