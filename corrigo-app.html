@@ -162,7 +162,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v17-202611011506</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v18-202611011515</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -291,7 +291,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v17-202611011506';
+const APP_VERSION = 'v18-202611011515';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -1175,7 +1175,7 @@ function openWorkDesc(id){
     getData('corrigo_disputed')
   );
   const wo = allWos.find(w => w.id === id);
-  document.getElementById('workDescText').value = (wo && wo.workDescription) || '';
+  document.getElementById('workDescText').value = (typeof prefillWorkDesc==='function') ? prefillWorkDesc(wo) : ((wo && wo.workDescription) || '');
   document.getElementById('workDescModal').classList.add('show');
 }
 
@@ -1194,6 +1194,7 @@ function saveWorkDesc(){
     if (idx >= 0) {
       const wo = arr[idx];
       wo.workDescription = desc;
+      wo.workDescSaved = true;
       wo.status = 'completed';
       arr.splice(idx, 1);
       saveData(tab, arr);
@@ -2073,6 +2074,39 @@ function addHowTo(){
   });
 }
 (function(){ const r1 = render; render = function(){ const x = r1.apply(this, arguments); try { addHowTo(); } catch(e){} return x; }; addHowTo(); })();
+</script>
+<script>
+// v18: green active tab + pre-written work descriptions
+(function(){
+  const st=document.createElement('style'); st.textContent='.tab.active-tab{color:#22c55e !important;font-weight:800;}'; document.head.appendChild(st);
+  function markTab(name){ document.querySelectorAll('.tabs .tab').forEach(b => { const m=(b.getAttribute('onclick')||'').match(/show\('([^']+)'\)/); b.classList.toggle('active-tab', !!m && m[1]===name); }); }
+  window.markTab = markTab;
+  const s0 = show; show = function(name){ const x = s0.apply(this, arguments); try { markTab(name); } catch(e){} return x; };
+  function current(){ const ids=['inbox','accepted','declined','bidding','almostdue','overdue','disputed','resolved','finalize','completedtab','senttocorrigo','addwo','settings']; return ids.find(id => { const e=document.getElementById(id); return e && e.style.display!=='none' && getComputedStyle(e).display!=='none'; }) || 'inbox'; }
+  markTab(current()); window.addEventListener('load', () => markTab(current()));
+})();
+let PREWRITTEN = {};
+fetch('https://raw.githubusercontent.com/Simzy420/big-brain-ape-dashboard/main/corrigo-prewritten.json?v=' + Date.now(), {cache:'no-store'})
+  .then(r => r.ok ? r.json() : {}).then(j => { const d = (j && j.descriptions) || {}; Object.keys(d).forEach(k => PREWRITTEN[normWo(k)] = d[k]); }).catch(()=>{});
+function looksScanned(t){ return /^[^:\n]{1,40}:[^:\n]{1,40}:/.test(String(t||'').trim()) || /Please complete|^_{5,}/i.test(String(t||'')); }
+function templateWorkDesc(text){
+  let t = String(text||'').replace(/_{3,}/g,' ').trim();
+  if (t.includes('>')) t = t.replace(/^[^\n]*>[^\n]*\n(?:[^\n]*\n)?/, '');
+  t = t.trim().replace(/^(?:[^:\n]{1,40}:){1,3}\s*/, '').replace(/^Description:\s*/,'').trim().replace(/^[“”"]+|[“”"]+$/g,'').trim();
+  const low = t.toLowerCase(), parts = [];
+  if (low.includes('roof') && low.includes('inspect')) parts.push('Completed a full roof inspection, checking for leaks, damaged or missing shingles, and the flashing and seals around pipes and vents.');
+  else if (low.includes('leak')) parts.push('Checked out the reported leak and took care of the repair.');
+  if (low.includes('gutter') && low.includes('repair')) parts.push('Cleaned out the gutters and downspouts, repaired the damaged gutter sections, and checked that they drain properly.');
+  else if (low.includes('gutter')) parts.push('Cleaned out the gutters and downspouts and checked that they drain properly.');
+  if (!parts.length) { const f = (t.split(/(?<=[.!?])\s/)[0]||'').trim().replace(/\.$/,''); parts.push(f ? 'Completed the requested work: ' + f[0].toLowerCase() + f.slice(1) + '.' : 'Completed the requested work.'); }
+  return parts.join(' ') + ' Job complete.';
+}
+function prefillWorkDesc(wo){
+  if (!wo) return '';
+  const saved = wo.workDescription || '';
+  if (saved && (wo.workDescSaved || !looksScanned(saved))) return saved;
+  return PREWRITTEN[normWo(wo.number)] || wo.prewrittenDescription || templateWorkDesc(wo.description || saved || '');
+}
 </script>
 </body>
 </html>

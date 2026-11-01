@@ -45,6 +45,29 @@ def field(body, label, multiline_next=False):
     return None
 
 
+
+def prewritten_description(text):
+    """Deterministic past-tense 'work done' note from the job's problem text (no API calls)."""
+    t = re.sub(r'_{3,}', ' ', text or '')
+    t = re.sub(r'^\s*[^\n]*>[^\n]*\n(?:[^\n]*\n)?', '', t.strip() + '\n') if '>' in t else t
+    t = re.sub(r'^(?:[^:\n]{1,40}:){1,3}\s*', '', t.strip())
+    t = re.sub(r'^Description:\s*', '', t).strip().strip('\u201c\u201d"').strip()
+    low = t.lower()
+    parts = []
+    if 'roof' in low and 'inspect' in low:
+        parts.append('Completed a full roof inspection, checking for leaks, damaged or missing shingles, and the flashing and seals around pipes and vents.')
+    elif 'leak' in low:
+        parts.append('Checked out the reported leak and took care of the repair.')
+    if 'gutter' in low and 'repair' in low:
+        parts.append('Cleaned out the gutters and downspouts, repaired the damaged gutter sections, and checked that they drain properly.')
+    elif 'gutter' in low:
+        parts.append('Cleaned out the gutters and downspouts and checked that they drain properly.')
+    if not parts:
+        first = re.split(r'(?<=[.!?])\s', t)[0].strip().rstrip('.') if t else ''
+        parts.append(('Completed the requested work: ' + first[0].lower() + first[1:] + '.') if first else 'Completed the requested work.')
+    return ' '.join(parts) + ' Job complete.'
+
+
 def parse(msg):
     body = (msg.get('body') or '').replace('\r\n', '\n')
     subj = msg.get('subject') or ''
@@ -90,6 +113,7 @@ def parse(msg):
         'date': banner,  # old scanner stored the text beside "Date Created:" here
         'type': field(body, 'Type', True),
         'status': 'inbox',
+        'prewrittenDescription': prewritten_description(problem or expanded or ''),
         'bidAmount': None,
         'completedSummary': None,
         'photo': None,
