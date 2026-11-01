@@ -29,6 +29,7 @@ button.big { width:100%; border:0; border-radius:12px; padding:16px; font-size:2
 .btn-row button { flex: 1; }
 .card .wo-card-header {
   display: flex;
+  gap: 8px;
   justify-content: space-between;
   align-items: center;
 }
@@ -162,7 +163,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v18-202611011517</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v19-202611011544</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -291,7 +292,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v18-202611011517';
+const APP_VERSION = 'v19-202611011544';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -516,7 +517,7 @@ function card(w, canAct, tab){
     const parts = [];
     if (created) parts.push('Created: ' + created);
     if (tab === 'inbox') { const ab = w.acceptBy || emailField(w, 'Accept/Reject By'); if (ab) parts.push('Accept/Reject By: ' + ab); }
-    else { const os = w.onSiteBy || emailField(w, 'On-Site By'); const cb = w.completeBy || emailField(w, 'Complete By'); if (os) parts.push('On-Site By: ' + os); if (cb) parts.push('Complete By: ' + cb); }
+    else { const os = w.onSiteBy || emailField(w, 'On-Site By'); const cb = w.completeBy || emailField(w, 'Complete By'); if (cb) parts.push('Complete By: ' + cb); }
     if (parts.length) dateHtml = '<p class="muted">📅 ' + parts.join(' · ') + '</p>';
   }
   if (!loc && w.emailContent) {
@@ -1573,7 +1574,7 @@ function sentCard(w, i){
   const labor = (parseFloat(w.hours)||0) * (parseFloat(w.rate)||0);
   const total = w.corrigoTotal != null && w.corrigoTotal !== '' ? parseFloat(w.corrigoTotal) : (labor + (parseFloat(w.materialsCost)||0));
   const line = (w.hours || w.invoiceNumber) ? `<div style="margin-top:8px;color:#00cc66;font-size:16px;">Invoice: ${escHtml(w.invoiceNumber||'-')} | Hours: ${escHtml(w.hours||'-')} | Materials: ${hasMat ? fmtMoney(w.materialsCost) : 'none'}${total ? ' | Total: ' + fmtMoney(total) : ''}</div>` : '';
-  return `<div class="card" style="cursor:pointer;" onclick="openSentDetail(${i})"><div class="wo-card-header"><strong>${escHtml(w.number||'')}</strong></div>${w.location ? '<p>'+escHtml(w.location)+'</p>' : ''}${line}<p class="muted" style="margin-top:8px;">Tap to see everything that was sent ›</p><button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="event.stopPropagation();deleteSentWo(${i})">🗑️ Delete</button></div>`;
+  return `<div class="card" style="cursor:pointer;" onclick="openSentDetail(${i})"><div class="wo-card-header" style="gap:8px;"><strong style="min-width:0;overflow-wrap:anywhere;">${escHtml(w.number||'')}</strong>${total ? '<div class="wo-est">' + fmtMoney(total) + '</div>' : ''}</div>${w.location ? '<p>'+escHtml(w.location)+'</p>' : ''}${line}<p class="muted" style="margin-top:8px;">Tap to see everything that was sent ›</p><button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="event.stopPropagation();deleteSentWo(${i})">🗑️ Delete</button></div>`;
 }
 
 
@@ -2082,7 +2083,7 @@ function addHowTo(){
   Object.keys(HOWTO).forEach(id => {
     const el = document.getElementById(id); if (!el) return;
     if (el.firstElementChild && el.firstElementChild.classList.contains('howto')) return;
-    el.insertAdjacentHTML('afterbegin', '<div class="howto"><h2 class="tabtitle" style="color:#fff;font-size:24px;font-weight:800;margin:4px 0 8px 0;">' + escHtml(TAB_TITLES[id]||'') + '</h2><div class="howto-line" style="background:#1c2a3a;border-left:4px solid #0a84ff;color:#e6f0ff;border-radius:10px;padding:10px 12px;margin:0 0 12px 0;font-size:16px;line-height:1.35;">' + escHtml(HOWTO[id]) + '</div></div>');
+    el.insertAdjacentHTML('afterbegin', '<div class="howto"><h2 class="tabtitle" style="color:#fff;font-size:24px;font-weight:800;margin:4px 0 8px 0;">' + escHtml(TAB_TITLES[id]||'') + '</h2><div class="howto-line" style="background:#1c2a3a;border-left:4px solid #0a84ff;color:#fff;border-radius:10px;padding:10px 12px;margin:0 0 12px 0;font-size:16px;line-height:1.35;">' + (HOWTO[id].startsWith('How to use:') ? '<b style="color:#7dd3fc;">How to use:</b>' + escHtml(HOWTO[id].slice(11)) : escHtml(HOWTO[id])) + '</div></div>');
   });
 }
 (function(){ const r1 = render; render = function(){ const x = r1.apply(this, arguments); try { addHowTo(); } catch(e){} return x; }; addHowTo(); })();
