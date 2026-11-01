@@ -162,7 +162,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v15-202611011208</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v16-202611011234</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -291,7 +291,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v15-202611011208';
+const APP_VERSION = 'v16-202611011234';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -1688,6 +1688,29 @@ async function fetchOverrides(){
     const d = await r.json(); return Array.isArray(d.overrides) ? d.overrides : [];
   } catch(e) { return []; }
 }
+// v16: a WO renamed by an override (old number) must not be re-imported once the renamed card exists
+function renamedAway(ovs, w){
+  return ovs.some(o => o.renameTo && normStrict(o.renameTo) !== normStrict(w.number) && normStrict(o.number) === normStrict(w.number)
+    && (o.onlyIfInvoice === undefined || String(w.invoiceNumber||'') === String(o.onlyIfInvoice))
+    && OV_ALL.some(t => getData(t).some(x => normStrict(x.number) === normStrict(o.renameTo))));
+}
+function sweepRenamed(ovs){
+  OV_ALL.forEach(t => { const arr = getData(t); const keep = arr.filter(w => !renamedAway(ovs, w)); if (keep.length !== arr.length) saveData(t, keep); });
+  // Inbox must never hold a WO the bot has moved or removed by override (fixes stale phone storage)
+  let inbox = getData('corrigo_inbox'); const keepIn = [];
+  inbox.forEach(w => {
+    if (isRemovedByOverride(ovs, w)) return;
+    const o = ovs.filter(o => o.forceTab && o.forceTab !== 'inbox' && OV_TABS[o.forceTab] && ovMatches(o, w)).pop();
+    if (!o) { keepIn.push(w); return; }
+    const target = OV_TABS[o.forceTab], arr = getData(target);
+    if (!arr.some(x => normStrict(x.number) === normStrict(w.number))) {
+      w.status = o.forceTab === 'finalize' ? 'completed' : o.forceTab;
+      if (o.forceTab === 'accepted' || o.forceTab === 'declined') w.fromOverride = true;
+      arr.unshift(w); saveData(target, arr);
+    }
+  });
+  if (keepIn.length !== inbox.length) saveData('corrigo_inbox', keepIn);
+}
 function isRemovedByOverride(ovs, w){ return ovs.some(o => o.removed && ovMatches(o, w)); }
 function applyOverrides(ovs){
   const done = getMap('corrigo_applied_overrides');
@@ -1752,7 +1775,7 @@ async function loadJobs(){
     }
 
     const overrides = await fetchOverrides();
-    if (Array.isArray(jobs)) jobs = jobs.filter(w => !isRemovedByOverride(overrides, w));
+    if (Array.isArray(jobs)) jobs = jobs.filter(w => !isRemovedByOverride(overrides, w) && !renamedAway(overrides, w));
     let inbox = getData('corrigo_inbox');
     let disputed = getData('corrigo_disputed');
 
@@ -1839,7 +1862,7 @@ async function loadJobs(){
           }
           // If WO is not in localStorage yet (fresh browser / automation), create it from the action if it looks completed/submitted
           if (!foundWo) {
-            if (isRemovedByOverride(overrides, act)) return;
+            if (isRemovedByOverride(overrides, act) || renamedAway(overrides, act)) return;
             const isSubmitted = (act.status === 'submitted') || (act.hours && act.invoiceNumber);
             if (isSubmitted) {
               const newWo = {
@@ -1949,6 +1972,7 @@ async function loadJobs(){
       console.warn('Could not sync from GitHub:', syncErr.message);
     }
     try { applyOverrides(overrides); } catch(ovErr) { console.error('overrides', ovErr); }
+    try { sweepRenamed(overrides); } catch(swErr) { console.error('sweep', swErr); }
     purgeSentDeleted();
 
     render();
