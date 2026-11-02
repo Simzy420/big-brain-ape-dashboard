@@ -163,7 +163,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v23-202611011815</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v24-202611011820</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -292,11 +292,17 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v23-202611011815';
+const APP_VERSION = 'v24-202611011820';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
-  if (el) { el.textContent = msg; el.style.color = color || '#aaa'; }
+  if (el) {
+    const m = String(msg);
+    const dot = /fail/i.test(m) ? ['#ef4444','0 0 8px #ef4444'] : /Syncing/i.test(m) ? ['#f59e0b','0 0 8px #f59e0b'] : /Synced/i.test(m) ? ['#22c55e','0 0 8px #22c55e'] : ['#9ca3af','none'];
+    el.style.cssText = 'font-size:17px;font-weight:800;color:#000;margin:6px 0;display:flex;align-items:center;gap:8px;';
+    el.innerHTML = '<span style="flex:0 0 14px;width:14px;height:14px;border-radius:50%;background:' + dot[0] + ';box-shadow:' + dot[1] + ';border:1px solid rgba(0,0,0,.35);"></span><span></span>';
+    el.lastChild.textContent = m;
+  }
 }
 function nowTime(){ return new Date().toLocaleTimeString([], {hour:'numeric', minute:'2-digit'}); }
 // If Safari served an old cached copy, reload once with a cache-busting URL
