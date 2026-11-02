@@ -163,7 +163,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v21-202611011618</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v22-202611011740</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -292,7 +292,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v21-202611011618';
+const APP_VERSION = 'v22-202611011740';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -506,6 +506,7 @@ function emailField(w, label){
 }
 const BOILER_RE = /\s*If\s+you\s+believe\s+you\s+will\s+go\s+over\s+this\s+amount,?\s*please\s+submit\s+a\s+quote\s+in\s+Corrigo\s*Pro\.?/gi;
 const CREATED_RE = /\s*(?:Date\s+)?Created:\s*\d{1,2}\/\d{1,2}\/\d{4}(?:\s+\d{1,2}:\d{2}\s*[AP]M)?\s*(?:·\s*)?/gi;
+function shortDate(t){ t=String(t==null?'':t).trim(); if(!t) return ''; const p2=n=>String(n).padStart(2,'0'); let m=t.match(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/); if(m) return p2(m[1])+'/'+p2(m[2])+'/'+String(m[3]).slice(-2); m=t.match(/^(\d{4})-(\d{2})-(\d{2})$/); if(m) return m[2]+'/'+m[3]+'/'+m[1].slice(-2); const d=new Date(t.replace(/\s+(MT|MDT|MST)$/,'')); if(!isNaN(d)){ const f=new Intl.DateTimeFormat('en-US',{timeZone:'America/Boise',month:'2-digit',day:'2-digit',year:'2-digit'}); return f.format(d); } return t; }
 function stripBoiler(t){ return String(t==null?'':t).replace(BOILER_RE,'').replace(CREATED_RE,' ').replace(/\s{2,}/g,' ').trim(); }
 const KNOWN_SUBCATS = ['Roof Inspection','Roof Debris Removal','Roof Leak','Roof Repair','Structure Walls','Structure Foundation','Sidewalk/Driveway Repair/Maintenance'];
 function cleanDesc(d){
@@ -555,8 +556,8 @@ function card(w, canAct, tab){
   if (tab === 'inbox' || tab === 'accepted') {
     const created = w.dateCreated || emailField(w, 'Date Created') || '';
     const parts = [];
-    if (tab === 'inbox') { const ab = w.acceptBy || emailField(w, 'Accept/Reject By'); if (ab && stripBoiler(ab)) parts.push('Accept/Reject By: ' + stripBoiler(ab)); }
-    else { const os = w.onSiteBy || emailField(w, 'On-Site By'); const cb = w.completeBy || emailField(w, 'Complete By'); if (cb && stripBoiler(cb)) parts.push('Complete By: ' + stripBoiler(cb)); }
+    if (tab === 'inbox') { const ab = w.acceptBy || emailField(w, 'Accept/Reject By'); if (ab && stripBoiler(ab)) parts.push('Accept/Reject By: ' + shortDate(stripBoiler(ab))); }
+    else { const os = w.onSiteBy || emailField(w, 'On-Site By'); const cb = w.completeBy || emailField(w, 'Complete By'); if (cb && stripBoiler(cb)) parts.push('Complete By: ' + shortDate(stripBoiler(cb))); }
     if (parts.length) dateHtml = '<p class="muted">📅 ' + parts.join(' · ') + '</p>';
   }
   if (!loc && w.emailContent) {
@@ -1601,12 +1602,7 @@ function escHtml(t){ return String(t == null ? '' : t).replace(/&/g,'&amp;').rep
 
 function fmtMoney(v){ const n = parseFloat(v); return isNaN(n) ? '' : '$' + n.toFixed(2); }
 
-function fmtMountain(iso){
-  if (!iso) return '';
-  try { const d = new Date(iso); if (isNaN(d)) return String(iso);
-    return d.toLocaleString('en-US', { timeZone: 'America/Denver', month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }) + ' MT';
-  } catch(e) { return String(iso); }
-}
+function fmtMountain(iso){ return iso ? shortDate(iso) : ''; }
 
 function sentCard(w, i){
   const hasMat = w.materialsCost !== undefined && w.materialsCost !== null && w.materialsCost !== '';
@@ -1679,7 +1675,7 @@ function openSentDetail(i){
   const html = `<div class="card" style="max-width:600px;margin:0 auto;">
     <div class="wo-card-header"><strong>${escHtml(w.number||'')}</strong></div>
     <h3 style="margin:8px 0 4px;">What was entered</h3>
-    ${row('Location', w.location)}${row('Date started', w.dateStarted)}${row('Date completed', w.dateCompleted)}${row('Invoice #', w.invoiceNumber)}${row('Hours', w.hours)}${row('Rate', w.rate ? '$' + w.rate + '/hr' : '')}${row('Labor total', labor ? fmtMoney(labor) : '')}${row('Materials', hasMat ? fmtMoney(w.materialsCost) : 'None entered')}${row('Total', total ? fmtMoney(total) : '')}${row('Sent', fmtMountain(w.sentAt))}
+    ${row('Location', w.location)}${row('Date started', shortDate(w.dateStarted))}${row('Date completed', shortDate(w.dateCompleted))}${row('Invoice #', w.invoiceNumber)}${row('Hours', w.hours)}${row('Rate', w.rate ? '$' + w.rate + '/hr' : '')}${row('Labor total', labor ? fmtMoney(labor) : '')}${row('Materials', hasMat ? fmtMoney(w.materialsCost) : 'None entered')}${row('Total', total ? fmtMoney(total) : '')}${row('Sent', fmtMountain(w.sentAt))}
     ${desc ? `<p style="color:#aaa;font-size:16px;margin:12px 0 4px;">Work description:</p><p style="white-space:pre-wrap;">${escHtml(desc)}</p>` : ''}
     ${corrigoHtml}
     ${photosHtml}
@@ -2071,7 +2067,7 @@ function proofFor(n){
   Object.keys(CORRIGO_PROOF).forEach(p => { if (proofKey(p) === k) out = out.concat(CORRIGO_PROOF[p] || []); });
   return out.filter(e => e && e.url).sort((a,b) => new Date(b.at) - new Date(a.at));
 }
-function proofTime(at){ try { return new Date(at).toLocaleString('en-US',{timeZone:'America/Boise',month:'numeric',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}) + ' MT'; } catch(e){ return at||''; } }
+function proofTime(at){ try { return shortDate(at); } catch(e){ return at||''; } }
 function loadProof(){
   return fetch('https://simzy420.github.io/big-brain-ape-dashboard/corrigo-proof/index.json?v=' + Date.now(), {cache:'no-store'})
     .then(r => r.ok ? r.json() : {}).then(d => { CORRIGO_PROOF = d || {}; decorateProof(); }).catch(() => {});
