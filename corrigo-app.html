@@ -163,7 +163,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v22-202611011740</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v23-202611011815</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -292,7 +292,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v22-202611011740';
+const APP_VERSION = 'v23-202611011815';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -351,10 +351,19 @@ function saveData(k,v){
 async function forceReload(){
   // DO NOT wipe localStorage — only re-fetch from GitHub and sync
   // This preserves all existing data (completed, submitted, etc.)
-  await loadJobs();
-  render();
-  try { await sendPickup(true); } catch(e) { console.error(e); }
-  alert('✅ Synced from server!');
+  try {
+    await loadJobs();
+    render();
+    try { await sendPickup(true); } catch(e) { console.error(e); }
+    reloadToast('✅ Synced from server!', false);
+  } catch(e) { console.error(e); reloadToast('⚠️ Reload failed: ' + (e && e.message ? e.message : e), true); }
+}
+function reloadToast(msg, isErr){
+  let t = document.getElementById('reloadToast');
+  if (!t) { t = document.createElement('div'); t.id = 'reloadToast'; t.style.cssText = 'position:fixed;left:50%;top:40%;transform:translateX(-50%);z-index:100001;padding:16px 24px;border-radius:12px;font-size:18px;color:#fff;box-shadow:0 4px 20px rgba(0,0,0,.5);text-align:center;max-width:85%;'; document.body.appendChild(t); }
+  t.style.background = isErr ? '#c0392b' : '#1e7e34';
+  t.textContent = msg; t.style.display = 'block';
+  clearTimeout(t._h); t._h = setTimeout(() => { t.style.display = 'none'; }, isErr ? 3000 : 1000);
 }
 function handled(){
   const nums = new Set();
