@@ -163,7 +163,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v24-202611011825</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v25-202611011900</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -292,7 +292,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v24-202611011825';
+const APP_VERSION = 'v25-202611011900';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -394,7 +394,7 @@ function show(name){
   if (name==='senttocorrigo') render();
 }
 function render(){
-  purgeSentDeleted();
+  purgeSentDeleted(); purgeCompletedDeleted();
   const inbox = getData('corrigo_inbox');
   const accepted = getData('corrigo_accepted');
   const declined = getData('corrigo_declined');
@@ -484,7 +484,7 @@ function render(){
              <p style="margin:0;color:#00cc66;font-size:22px;font-weight:800;">TOTAL: $${grandTotal.toFixed(2)}</p>
            </div>`
         : '';
-      return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${cleanDesc(w.description) ? '<p>'+cleanDesc(w.description)+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}${w.disputeResolved ? '<p style="color:#00cc66;font-size:16px;">✅ Dispute resolved</p>' : ''}${invoiceHtml}${totalHtml}${photosHtml}<div class="btn-row"><button class="big save" onclick="openCompleteForm('${w.id}')">📋 Enter Hours, Rate & Submit</button></div><div class="btn-row"><button class="wo-delete" onclick="deleteWo('${w.id}')" style="width:100%;margin-top:0;">🗑️ Delete Work Order</button></div></div>`;
+      return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${cleanDesc(w.description) ? '<p>'+cleanDesc(w.description)+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}${w.disputeResolved ? '<p style="color:#00cc66;font-size:16px;">✅ Dispute resolved</p>' : ''}${invoiceHtml}${totalHtml}${photosHtml}<div class="btn-row"><button class="big save" onclick="openCompleteForm('${w.id}')">📋 Enter Hours, Rate & Submit</button></div><div class="btn-row"><button class="wo-delete" onclick="deleteCompletedWo('${w.id}')" style="width:100%;margin-top:0;background:#ff3b30;color:#fff;">🗑️ Delete</button></div></div>`;
     }).join('')
     : '<div class="card">No work orders ready to finalize.</div>';
 
@@ -1014,7 +1014,11 @@ function rawLocalActions(){
   });
   // v15: Sent-tab deletions, synced to the other phone (bot ignores this action)
   Object.entries(getMap('corrigo_sent_deleted')).forEach(([n,d]) => actions.push({number:n, action:'sent_delete', deletedAt:d}));
-  return actions;
+  // v25: Completed-tab deletions — bot must NOT invoice these WOs
+  const cdel = getMap('corrigo_completed_deleted');
+  const out = actions.filter(a => a.action === 'sent_delete' || !isCompletedDeleted(a.number));
+  Object.entries(cdel).forEach(([n,d]) => out.push({number:n, action:'completed_delete', deletedAt:d}));
+  return out;
 }
 // After importing other phones' entries, remember how those WOs look here so they are not re-exported as ours
 function snapshotImported(incoming, myDev){
@@ -1634,6 +1638,22 @@ function purgeSentDeleted(){
   const sent = getData('corrigo_sent_to_corrigo'); const keep = sent.filter(w => !isSentDeleted(w.number));
   if (keep.length !== sent.length) saveData('corrigo_sent_to_corrigo', keep);
 }
+// v25: delete from Completed (app only; never invoiced; synced as completed_delete)
+function isCompletedDeleted(n){ const k = normWo(n); return Object.keys(getMap('corrigo_completed_deleted')).some(d => normWo(d) === k); }
+function purgeCompletedDeleted(){
+  if (!Object.keys(getMap('corrigo_completed_deleted')).length) return;
+  ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_submitted','corrigo_disputed','corrigo_resolved','corrigo_sent_to_corrigo'].forEach(k => {
+    const arr = getData(k); const keep = arr.filter(w => !isCompletedDeleted(w.number));
+    if (keep.length !== arr.length) saveData(k, keep);
+  });
+}
+function deleteCompletedWo(id){
+  const w = getData('corrigo_submitted').find(x => x.id === id); if (!w) return;
+  if (!confirm('Delete WO ' + (w.number||'') + ' from Completed? This only removes it from the app, not from Corrigo.')) return;
+  const dm = getMap('corrigo_completed_deleted'); dm[String(w.number)] = new Date().toISOString(); setMap('corrigo_completed_deleted', dm);
+  render();
+  try { sendPickup(true); } catch(e) { console.error(e); }
+}
 function deleteSentWo(i){
   const w = getData('corrigo_sent_to_corrigo')[i]; if (!w) return;
   if (!confirm('Delete WO ' + (w.number||'') + ' from Sent In to Corrigo? This only removes it from the app, not from Corrigo.')) return;
@@ -1912,7 +1932,9 @@ async function loadJobs(){
         actions.forEach(act => {
           if (act.deviceId && act.deviceId === myDev) return; // our own entry
           if (act.action === 'sent_delete') { const dm = getMap('corrigo_sent_deleted'); if (!isSentDeleted(act.number)) { dm[String(act.number)] = act.deletedAt || new Date().toISOString(); setMap('corrigo_sent_deleted', dm); changed = true; } return; }
+          if (act.action === 'completed_delete') { const dm = getMap('corrigo_completed_deleted'); if (!isCompletedDeleted(act.number)) { dm[String(act.number)] = act.deletedAt || new Date().toISOString(); setMap('corrigo_completed_deleted', dm); changed = true; } return; }
           if (isSentDeleted(act.number)) return;
+          if (isCompletedDeleted(act.number)) return;
           const num = String(act.number);
           // Check all tabs for this WO
           const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_submitted','corrigo_disputed','corrigo_sent_to_corrigo'];
@@ -2036,7 +2058,7 @@ async function loadJobs(){
     }
     try { applyOverrides(overrides); } catch(ovErr) { console.error('overrides', ovErr); }
     try { sweepRenamed(overrides); } catch(swErr) { console.error('sweep', swErr); }
-    purgeSentDeleted();
+    purgeSentDeleted(); purgeCompletedDeleted();
 
     render();
   } catch(e) {
