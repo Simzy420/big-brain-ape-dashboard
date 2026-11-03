@@ -4,9 +4,9 @@
       "id": "druck-live-book-confirm",
       "priority": "high",
       "title": "Confirm the Druck cycle live Hyperliquid book is OK",
-      "subtitle": "11/1 6:34 AM cycle (082f9960): held EUR 300 short @ 1.1198 only · 3x isolated · no trades · acct ~$1,195 · no positions snapshot since 10/31 6 AM · outside paper-only / no-leverage rule",
+      "subtitle": "11/2 6:35 AM cycle (a77b7a69): held EUR 300 short @ 1.1198 only · 3x isolated · no trades · cut trigger tightened to 1.135 · acct ~$1,194 · outside paper-only / no-leverage rule",
       "steps": [
-        "Open the cycle state link below and look at the current book (11/1: just a 300 EUR short at 3x; the cycle held it and made no trades. A gold long was opened and cut 10/30 for about a $52 loss).",
+        "Open the cycle state link below and look at the current book (11/2: just a 300 EUR short at 3x; the cycle held it, made no trades, and tightened its stop to 1.135. A gold long was opened and cut 10/30 for about a $52 loss).",
         "Decide: is the daily trading cycle allowed to trade live with 3x leverage?",
         "If YES: tell Chief of Staff it's intended, and we'll stop flagging it in the nightly.",
         "If NO: tell Chief of Staff to pause the Druck cycle and flatten or move it to paper. A bot will do the technical steps.",
@@ -18,8 +18,8 @@
           "url": "https://github.com/Simzy420/big-brain-ape-dashboard/blob/main/positions.json"
         },
         {
-          "label": "11/1 trading cycle commit",
-          "url": "https://github.com/Simzy420/big-brain-ape-dashboard/commit/082f9960"
+          "label": "11/2 trading cycle commit",
+          "url": "https://github.com/Simzy420/big-brain-ape-dashboard/commit/a77b7a69"
         },
         {
           "label": "Tasks dashboard",
