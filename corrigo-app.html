@@ -163,7 +163,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v25-202611011905</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v26-202611031520</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -292,7 +292,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v25-202611011905';
+const APP_VERSION = 'v26-202611031520';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -1628,7 +1628,8 @@ function sentCard(w, i){
   const labor = (parseFloat(w.hours)||0) * (parseFloat(w.rate)||0);
   const total = w.corrigoTotal != null && w.corrigoTotal !== '' ? parseFloat(w.corrigoTotal) : (labor + (parseFloat(w.materialsCost)||0));
   const line = (w.hours || w.invoiceNumber) ? `<div style="margin-top:8px;color:#00cc66;font-size:16px;">Invoice: ${escHtml(w.invoiceNumber||'-')} | Hours: ${escHtml(w.hours||'-')} | Materials: ${hasMat ? fmtMoney(w.materialsCost) : 'none'}${total ? ' | Total: ' + fmtMoney(total) : ''}</div>` : '';
-  return `<div class="card" style="cursor:pointer;" onclick="openSentDetail(${i})"><div class="wo-card-header" style="gap:8px;"><strong style="min-width:0;overflow-wrap:anywhere;">${escHtml(w.number||'')}</strong>${total ? '<div class="wo-est">' + fmtMoney(total) + '</div>' : ''}</div>${fmtLoc(w.location) ? '<p>'+fmtLoc(w.location)+'</p>' : ''}${line}<p class="muted" style="margin-top:8px;">Tap to see everything that was sent ›</p><button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="event.stopPropagation();deleteSentWo(${i})">🗑️ Delete</button></div>`;
+  const pics = sentPhotoSrcs(w); const picHtml = pics.length ? `<img src="${escHtml(pics[0])}" onclick="event.stopPropagation();openPhotoFull(this.src)" loading="lazy" style="width:100%;max-height:220px;object-fit:cover;border-radius:10px;margin-top:8px;background:#222;cursor:pointer;">` : '';
+  return `<div class="card" data-sent-idx="${i}" style="cursor:pointer;" onclick="openSentDetail(${i})"><div class="wo-card-header" style="gap:8px;"><strong style="min-width:0;overflow-wrap:anywhere;">${escHtml(w.number||'')}</strong>${total ? '<div class="wo-est">' + fmtMoney(total) + '</div>' : ''}</div>${fmtLoc(w.location) ? '<p>'+fmtLoc(w.location)+'</p>' : ''}${line}${picHtml}<p class="muted" style="margin-top:8px;">Tap to see everything that was sent ›</p><button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="event.stopPropagation();deleteSentWo(${i})">🗑️ Delete</button></div>`;
 }
 
 
@@ -2102,7 +2103,20 @@ function proofFor(n){
   let out = [];
   const k = proofKey(n);
   Object.keys(CORRIGO_PROOF).forEach(p => { if (proofKey(p) === k) out = out.concat(CORRIGO_PROOF[p] || []); });
-  return out.filter(e => e && e.url).sort((a,b) => new Date(b.at) - new Date(a.at));
+  return out.filter(e => e && e.url && e.action !== 'invoice_submitted').sort((a,b) => new Date(b.at) - new Date(a.at));
+}
+// v26: CruChat screenshots taken after the invoice was submitted
+function cruFor(n, w){
+  const out = [], seen = {};
+  const add = e => { if (e && e.url && !seen[e.url]) { seen[e.url] = 1; out.push(e); } };
+  if (n) { const k = proofKey(n); Object.keys(CORRIGO_PROOF).forEach(p => { if (proofKey(p) === k) (CORRIGO_PROOF[p] || []).forEach(e => { if (e && e.action === 'invoice_submitted') add(e); }); }); }
+  if (w && w.cruChatScreenshotUrl) add({action:'invoice_submitted', url:w.cruChatScreenshotUrl, at:w.sentAt||''});
+  return out.sort((a,b) => new Date(b.at||0) - new Date(a.at||0));
+}
+function openCru(num, i){
+  const w = getData('corrigo_sent_to_corrigo')[i];
+  document.getElementById('proofList').innerHTML = `<h2 style="color:#fff;text-align:center;">${escHtml(num)}</h2>` + cruFor(num, w).map(e => `<div style="margin-bottom:24px;"><div style="color:#00cc66;font-size:18px;margin-bottom:6px;">💬 CruChat after invoice submitted${e.at ? ' — ' + escHtml(proofTime(e.at)) : ''}</div>${e.note?'<div style="color:#ccc;font-size:14px;margin-bottom:6px;">'+escHtml(e.note)+'</div>':''}<img src="${escHtml(e.url)}" style="width:100%;height:auto;border-radius:8px;background:#222;"></div>`).join('');
+  const v = document.getElementById('proofViewer'); v.style.display = 'block'; v.scrollTop = 0; document.body.style.overflow = 'hidden';
 }
 function proofTime(at){ try { return shortDate(at); } catch(e){ return at||''; } }
 function loadProof(){
@@ -2120,6 +2134,16 @@ function decorateProof(){
     d.querySelector('button').onclick = ev => { ev.stopPropagation(); openProof(num); };
     d.onclick = ev => ev.stopPropagation();
     c.appendChild(d);
+  });
+  document.querySelectorAll('#sentToCorrigoList .card[data-sent-idx]').forEach(c => {
+    const old = c.querySelector('.cru-box'); if (old) old.remove();
+    const i = +c.getAttribute('data-sent-idx'); const w = getData('corrigo_sent_to_corrigo')[i]; if (!w) return;
+    const list = cruFor(w.number, w); if (!list.length) return;
+    const d = document.createElement('div'); d.className = 'cru-box'; d.style.marginTop = '10px';
+    d.innerHTML = `<button class="big" style="width:100%;background:#0a84ff;color:#fff;">💬 See CruChat${list.length>1?' ('+list.length+')':''}</button>`;
+    d.querySelector('button').onclick = ev => { ev.stopPropagation(); openCru(w.number, i); };
+    d.onclick = ev => ev.stopPropagation();
+    const del = c.querySelector('button.wo-delete'); if (del) c.insertBefore(d, del); else c.appendChild(d);
   });
 }
 function openProof(num){
