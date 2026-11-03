@@ -163,7 +163,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v28-202611031550</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v29-202611031615</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -175,7 +175,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
   <button class="tab" onclick="show('resolved')">✅ Resolved <span id="resolvedCount">0</span></button>
   <button class="tab" onclick="show('finalize')">📋 Finalize <span id="finalizeCount">0</span></button>
   <button class="tab" onclick="show('completedtab')">✅ Completed <span id="completedTabCount">0</span></button>
-  <button class="tab" onclick="show('senttocorrigo')">📤 Sent In to Corrigo <span id="sentToCorrigoCount">0</span></button>
+  <button class="tab" onclick="show('senttocorrigo')">📤 Submitted <span id="sentToCorrigoCount">0</span></button>
   <button class="tab" onclick="show('addwo')">➕ Add WO</button>
   <button class="tab" onclick="show('settings')">Settings</button>
 </div>
@@ -292,7 +292,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v28-202611031550';
+const APP_VERSION = 'v29-202611031615';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -1628,8 +1628,8 @@ function sentCard(w, i){
   const labor = (parseFloat(w.hours)||0) * (parseFloat(w.rate)||0);
   const total = w.corrigoTotal != null && w.corrigoTotal !== '' ? parseFloat(w.corrigoTotal) : (labor + (parseFloat(w.materialsCost)||0));
   const line = (w.hours || w.invoiceNumber) ? `<div style="margin-top:8px;color:#00cc66;font-size:16px;">Invoice: ${escHtml(w.invoiceNumber||'-')} | Hours: ${escHtml(w.hours||'-')} | Materials: ${hasMat ? fmtMoney(w.materialsCost) : 'none'}${total ? ' | Total: ' + fmtMoney(total) : ''}</div>` : '';
-  const pics = sentPhotoSrcs(w); const picHtml = pics.length ? `<img src="${escHtml(pics[0])}" onclick="event.stopPropagation();openPhotoFull(this.src)" loading="lazy" style="width:100%;max-height:220px;object-fit:cover;border-radius:10px;margin-top:8px;background:#222;cursor:pointer;">` : '';
-  return `<div class="card" data-sent-idx="${i}" style="cursor:pointer;" onclick="openSentDetail(${i})"><div class="wo-card-header" style="gap:8px;"><strong style="min-width:0;overflow-wrap:anywhere;">${escHtml(w.number||'')}</strong>${total ? '<div class="wo-est">' + fmtMoney(total) + '</div>' : ''}</div>${fmtLoc(w.location) ? '<p>'+fmtLoc(w.location)+'</p>' : ''}${line}${picHtml}<p class="muted" style="margin-top:8px;">Tap to see everything that was sent ›</p><button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="event.stopPropagation();deleteSentWo(${i})">🗑️ Delete</button></div>`;
+  const pics = sentPhotoSrcs(w); const picHtml = pics.length ? `<button class="big" style="width:100%;margin-top:10px;background:#5e5ce6;color:#fff;" onclick="event.stopPropagation();const im=this.nextElementSibling;const open=im.style.display==='none';if(open&&!im.src)im.src=im.dataset.src;im.style.display=open?'block':'none';">🖼️ Job Image Submitted</button><img data-src="${escHtml(pics[0])}" onclick="event.stopPropagation();openPhotoFull(this.src)" style="display:none;width:100%;max-height:260px;object-fit:cover;border-radius:10px;margin-top:8px;background:#222;cursor:pointer;">` : '';
+  return `<div class="card" data-sent-idx="${i}"><div class="wo-card-header" style="gap:8px;"><strong style="min-width:0;overflow-wrap:anywhere;">${escHtml(w.number||'')}</strong>${total ? '<div class="wo-est">' + fmtMoney(total) + '</div>' : ''}</div>${fmtLoc(w.location) ? '<p>'+fmtLoc(w.location)+'</p>' : ''}${line}<button class="big" style="width:100%;margin-top:10px;background:#00a86b;color:#fff;" onclick="event.stopPropagation();openSentDetail(${i})">🧾 Corrigo Receipt</button>${picHtml}<button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="event.stopPropagation();deleteSentWo(${i})">🗑️ Delete</button></div>`;
 }
 
 
@@ -1657,7 +1657,7 @@ function deleteCompletedWo(id){
 }
 function deleteSentWo(i){
   const w = getData('corrigo_sent_to_corrigo')[i]; if (!w) return;
-  if (!confirm('Delete WO ' + (w.number||'') + ' from Sent In to Corrigo? This only removes it from the app, not from Corrigo.')) return;
+  if (!confirm('Delete WO ' + (w.number||'') + ' from Submitted? This only removes it from the app, not from Corrigo.')) return;
   const dm = getMap('corrigo_sent_deleted'); dm[String(w.number)] = new Date().toISOString(); setMap('corrigo_sent_deleted', dm);
   render();
   try { sendPickup(true); } catch(e) { console.error(e); }
@@ -2145,7 +2145,7 @@ function decorateProof(){
     const i = +c.getAttribute('data-sent-idx'); const w = getData('corrigo_sent_to_corrigo')[i]; if (!w) return;
     const list = cruFor(w.number, w); if (!list.length) return;
     const d = document.createElement('div'); d.className = 'cru-box'; d.style.marginTop = '10px';
-    d.innerHTML = `<button class="big" style="width:100%;background:#0a84ff;color:#fff;">💬 See CruChat${list.length>1?' ('+list.length+')':''}</button>`;
+    d.innerHTML = `<button class="big" style="width:100%;background:#0a84ff;color:#fff;">✅ Proof It Was Submitted${list.length>1?' ('+list.length+')':''}</button>`;
     d.querySelector('button').onclick = ev => { ev.stopPropagation(); openCru(w.number, i); };
     d.onclick = ev => ev.stopPropagation();
     const del = c.querySelector('button.wo-delete'); if (del) c.insertBefore(d, del); else c.appendChild(d);
@@ -2174,12 +2174,12 @@ const HOWTO = {
   disputed: 'How to use: Enter the hours, rate, dates and invoice, or upload a photo, then tap Mark Resolved when it is settled.',
   resolved: 'How to use: Disputes that are settled. Nothing to do here.',
   finalize: 'How to use: Tap Enter Hours, Rate & Submit on each job; it then moves to Completed.',
-  completedtab: 'How to use: Check the invoice details and edit if needed. The bot sends these to Corrigo around 7 AM and 7 PM and moves them to Sent In to Corrigo.',
-  senttocorrigo: 'How to use: Jobs already sent to Corrigo. Tap a card to see what was sent, or tap Delete to remove it from the app.',
+  completedtab: 'How to use: Check the invoice details and edit if needed. The bot sends these to Corrigo around 7 AM and 7 PM and moves them to Submitted.',
+  senttocorrigo: 'How to use: Jobs already submitted to Corrigo. Tap Corrigo Receipt to see what was sent, Job Image Submitted to see the picture, or Proof It Was Submitted to see the CruChat.',
   addwo: 'How to use: Type a work order number and description, then tap Add to Inbox.',
   settings: 'How to use: Name this phone or reset the app. You normally do not need anything here.'
 };
-const TAB_TITLES = {inbox:'Inbox',accepted:'Accepted',declined:'Declined',bidding:'Bidding',almostdue:'⚠️ Almost Due',overdue:'⏰ Overdue',disputed:'⚠️ Disputed',resolved:'✅ Resolved',finalize:'📋 Finalize',completedtab:'✅ Completed',senttocorrigo:'📤 Sent In to Corrigo',addwo:'➕ Add WO',settings:'Settings'};
+const TAB_TITLES = {inbox:'Inbox',accepted:'Accepted',declined:'Declined',bidding:'Bidding',almostdue:'⚠️ Almost Due',overdue:'⏰ Overdue',disputed:'⚠️ Disputed',resolved:'✅ Resolved',finalize:'📋 Finalize',completedtab:'✅ Completed',senttocorrigo:'📤 Submitted',addwo:'➕ Add WO',settings:'Settings'};
 function sweepBoiler(){ document.querySelectorAll('.card p').forEach(p => { if (p.children.length) { p.childNodes.forEach(n => { if (n.nodeType === 3 && (BOILER_RE.test(n.nodeValue) || /Created:/.test(n.nodeValue))) { BOILER_RE.lastIndex = 0; n.nodeValue = stripBoiler(n.nodeValue); } BOILER_RE.lastIndex = 0; }); } else if (/Created:|If you believe you will go over/i.test(p.textContent)) { p.textContent = stripBoiler(p.textContent); } }); }
 function addHowTo(){
   try { sweepBoiler(); } catch(e){}
