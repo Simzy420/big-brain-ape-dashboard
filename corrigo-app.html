@@ -163,7 +163,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v27-202611031535</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v28-202611031550</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -292,7 +292,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v27-202611031535';
+const APP_VERSION = 'v28-202611031550';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -1807,6 +1807,8 @@ function applyOverrides(ovs){
       OV_ALL.forEach(t => { const arr = getData(t); const keep = arr.filter(w => !ovMatches(o, w));
         if (keep.length !== arr.length) { saveData(t, keep); changed = true; } });
     } else if (o.forceTab && OV_TABS[o.forceTab]) {
+      // v28: an old accepted/declined override never pulls a WO back out of Completed/Sent/Resolved
+      if ((o.forceTab === 'accepted' || o.forceTab === 'declined') && ['corrigo_submitted','corrigo_sent_to_corrigo','corrigo_resolved'].some(t => getData(t).some(w => ovMatches(o, w)))) { done[key] = o.overrideAt; return; }
       const target = OV_TABS[o.forceTab]; let found = null;
       OV_ALL.forEach(t => { const arr = getData(t); const keep = [];
         arr.forEach(w => { if (ovMatches(o, w)) { found = found ? mergeSentWo(found, w) : w; } else keep.push(w); });
