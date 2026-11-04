@@ -19,7 +19,7 @@ import json, re, sys, subprocess, datetime, os
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SENDERS = ('garysims60@msn.com', 'alerts@am.corrigopro.com')
 ASSIGN_RE = re.compile(r'\bThe new (.+?) work order #\s*([A-Z0-9][A-Z0-9.\-]+?)\s+received from\s+(.+?)\s*$', re.I)
-WO_RE = re.compile(r'\b[1IJ]\d{6,8}-\d{3,6}(?:\.\d{1,3})?\b', re.I)
+WO_RE = re.compile(r'\b[1IJ]\d{6,8}-\d{3,6}(?:\.\d{1,3})*\b', re.I)
 
 
 def norm_strict(n):
