@@ -73,6 +73,96 @@ def prewritten_description(text):
     return ' '.join(parts) + ' Job complete.'
 
 
+
+def short_date_summary(t):
+    import re
+    m = re.search(r'(\d{1,2})/(\d{1,2})/(\d{2,4})', str(t or ''))
+    if not m: return ''
+    return '%02d/%02d/%s' % (int(m.group(1)), int(m.group(2)), str(m.group(3))[-2:])
+
+def clip_job_text(text):
+    import re
+    t = re.sub(r'\s+', ' ', str(text or '')).strip().strip('"\u201c\u201d')
+    t = re.split(r'\b(?:Ops Manager|Exterior Lock Box|Interior Lock Box|Alarm Code|For assistance|If you have any questions|All dates and times|Your CorrigoPro|Unsubscribe)\b', t, maxsplit=1, flags=re.I)[0].strip(' :;-')
+    t = re.sub(r'^(?:[A-Za-z][\w/ &-]{0,40}:){1,4}\s*', '', t)
+    t = re.sub(r'^Description:\s*', '', t, flags=re.I).strip().strip('"\u201c\u201d')
+    return t.strip()
+
+def extract_job_description(body, description=None):
+    import re
+    body = body or ''
+    m = re.search(r'(?:^|\n)Description:\s*(.+?)(?:\nDetails\b|\nPriority:|\nAccept/Reject|\nOn-Site|\nComplete By|\nNote\n|\nNTE:|\Z)', body, re.S|re.I)
+    if m:
+        dd = clip_job_text(m.group(1))
+        if dd and len(dd) > 8: return dd
+    m = re.search(r'Expanded Work Description:\s*(.+?)(?:\n\s*\n|\Z)', body, re.S)
+    if m:
+        dd = clip_job_text(m.group(1))
+        if dd and len(dd) > 8: return dd
+    m = re.search(r'\nProblem\n_+\n(.*?)\nDetails\n', body, re.S)
+    if m:
+        dd = clip_job_text(re.sub(r'^.*?>\s*', '', m.group(1), flags=re.S))
+        dd = re.sub(r'^Description:\s*', '', dd, flags=re.I).strip()
+        if dd and len(dd) > 8: return dd
+    return clip_job_text(description or '') or None
+
+def build_email_summary(row):
+    """Plain-English 2-3 sentence email summary. No AI. Omit missing fields."""
+    import re
+    body = row.get('emailContent') or ''
+    jd = row.get('emailJobDescription') or extract_job_description(body, row.get('description'))
+    parts = []
+    if jd:
+        sents = re.split(r'(?<=[.!?])\s+', jd.strip())
+        lead = sents[0].rstrip('.')
+        blob = lead + '.'
+        if len(sents) > 1 and len(sents[0]) < 90:
+            blob = lead + '. ' + sents[1].rstrip('.') + '.'
+        if len(blob) > 160:
+            blob = blob[:160].rsplit(' ', 1)[0].rstrip(',;:.') + '.'
+        parts.append(blob)
+    nte = row.get('estimatedAmount')
+    if nte in (None, '', 0, '0'):
+        m = re.search(r'NTE:\s*\$([\d,]+(?:\.\d+)?)', body) or re.search(r'DO NOT EXCEED[^$]*\$([\d,]+(?:\.\d+)?)', body)
+        nte = float(m.group(1).replace(',','')) if m else None
+    else:
+        try: nte = float(nte)
+        except: nte = None
+    if nte is not None:
+        parts.append('NTE is $%s (labor and materials).' % ('{:,.2f}'.format(nte)))
+    def _d(*keys, label=None):
+        for k in keys:
+            v = row.get(k)
+            if v and 'DO NOT EXCEED' not in str(v):
+                sd = short_date_summary(v)
+                if sd: return sd
+        if label:
+            return short_date_summary(field(body, label, True) or '')
+        return ''
+    ab = _d('acceptBy', label='Accept/Reject By')
+    cb = _d('completeBy', label='Complete By')
+    if ab: parts.append('Accept or decline by %s.' % ab)
+    if cb: parts.append('Complete by %s.' % cb)
+    if re.search(r'(?:photo|picture)s?\s+(?:of|required|needed|must)|please\s+(?:take|attach|provide|upload)\s+(?:a\s+)?(?:photo|picture)', body, re.I):
+        parts.append('Photos of the work are required.')
+    has_lb = False
+    if re.search(r'LockBox\s*Code\s*:\s*\S+', body, re.I):
+        has_lb = True
+    for m in re.finditer(r'Lock\s*Box[^:\n]*:\s*(.*)$', body, re.M | re.I):
+        v = m.group(1).strip()
+        if not v:
+            # value may be on the next non-empty line
+            rest = body[m.end():].lstrip('\r\n')
+            for line in rest.splitlines():
+                if line.strip():
+                    v = line.strip(); break
+        if v and len(v) > 2 and not re.match(r'^(?:info:?|Interior Lock Box.*|Exterior Lock Box.*|Alarm Code.*)?$', v, re.I):
+            has_lb = True; break
+    if has_lb:
+        parts.append('Lock box info is listed in the email.')
+    return ' '.join(parts).strip() or None
+
+
 def parse(msg):
     body = (msg.get('body') or '').replace('\r\n', '\n')
     subj = msg.get('subject') or ''
@@ -99,7 +189,7 @@ def parse(msg):
     expanded = m.group(1).strip() if m else None
     req = field(body, 'Requested By')
     mt = re.search(r'Customer\n_+\nName:\s*(.+)', body)
-    return {
+    row = {
         'number': num,
         'estimatedAmount': nte,
         'location': field(body, 'Site Address'),
@@ -119,6 +209,8 @@ def parse(msg):
         'type': field(body, 'Type', True),
         'status': 'inbox',
         'prewrittenDescription': prewritten_description(problem or expanded or ''),
+        'emailJobDescription': None,  # filled below
+        'emailSummary': None,
         'bidAmount': None,
         'completedSummary': None,
         'photo': None,
@@ -131,6 +223,12 @@ def parse(msg):
         'emailHtml': msg.get('htmlBody') or '',
         'corrigoUrl': None,
     }
+    row['emailJobDescription'] = extract_job_description(body, row.get('description'))
+    row['emailSummary'] = build_email_summary(row)
+    return row
+
+
+
 
 
 def known_numbers():

@@ -61,6 +61,24 @@ button.big { width:100%; border:0; border-radius:12px; padding:16px; font-size:2
 }
 .email-modal.show { display: flex; }
 
+.email-summary {
+  background: #fffbe6;
+  color: #111;
+  border: 3px solid #f5a623;
+  border-radius: 14px;
+  padding: 16px 16px 14px;
+  margin: 0 0 16px 0;
+  flex-shrink: 0;
+  -webkit-text-size-adjust: 100%;
+}
+.email-summary .es-wo { font-size: 28px; font-weight: 900; line-height: 1.2; margin: 0 0 10px 0; color: #000; }
+.email-summary .es-label { font-size: 13px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: #8a5a00; margin: 10px 0 2px 0; }
+.email-summary .es-addr { font-size: 20px; font-weight: 800; line-height: 1.35; color: #111; }
+.email-summary .es-job { font-size: 19px; font-weight: 700; line-height: 1.4; color: #111; }
+.email-summary .es-sum { font-size: 18px; font-weight: 600; line-height: 1.45; color: #222; }
+.email-summary .es-full-label { font-size: 14px; font-weight: 700; color: #aaa; margin: 4px 0 8px; }
+
+
 /* FIELD ROW */
 .field-row { display: flex; gap: 12px; }
 .field-row .field { flex: 1; }
@@ -163,7 +181,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v32-202611051100</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v33-202611051111</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -287,12 +305,14 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
       <button onclick="closeEmailModal()" style="background:#1c1c2e;border:none;color:#fff;font-size:28px;width:44px;height:44px;border-radius:50%;cursor:pointer;flex-shrink:0;">✕</button>
     </div>
     <div id="emailModalSubject" style="color:#aaa;font-size:20px;margin-bottom:12px;border-bottom:1px solid #1c1c2e;padding-bottom:12px;flex-shrink:0;"></div>
+    <div id="emailModalSummary" class="email-summary" style="display:none;"></div>
+    <div class="es-full-label" id="emailModalFullLabel" style="display:none;">Full original email</div>
     <div id="emailModalBody" style="white-space:pre-wrap;font-size:18px;line-height:1.6;overflow-y:auto;flex:1;color:#fff;-webkit-overflow-scrolling:touch;"></div>
   </div>
 </div>
 
 <script>
-const APP_VERSION = 'v32-202611051100';
+const APP_VERSION = 'v33-202611051111';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -1298,6 +1318,78 @@ function saveWo(id){
   }
 }
 
+
+function emailDateField(w, label){
+  const body = String(w.emailContent||'');
+  const re = new RegExp('^\\s*' + label.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ':?[ \\t]*(.*)$', 'im');
+  const m = body.match(re);
+  if (!m) return '';
+  let v = (m[1]||'').trim();
+  if (!v) {
+    const after = body.slice(m.index + m[0].length).replace(/^\r?\n/, '');
+    for (const line of after.split(/\r?\n/)) { if (line.trim()) { v = line.trim(); break; } }
+  }
+  return shortDate(v);
+}
+function emailJobDesc(w){
+  if (w.emailJobDescription) return String(w.emailJobDescription).trim();
+  const body = String(w.emailContent||'');
+  let m = body.match(/(?:^|\n)Description:\s*([\s\S]+?)(?:\nDetails\b|\nPriority:|\nAccept\/Reject|\nOn-Site|\nComplete By|\nNote\n|\nNTE:|$)/i);
+  let t = m ? m[1] : '';
+  if (!t) { m = body.match(/Expanded Work Description:\s*([\s\S]+?)(?:\n\s*\n|$)/); t = m ? m[1] : ''; }
+  t = String(t||w.description||'').replace(/\s+/g,' ').trim().replace(/^["“”]+|["“”]+$/g,'');
+  t = t.split(/\b(?:Ops Manager|Exterior Lock Box|Interior Lock Box|Alarm Code|For assistance|If you have any questions|All dates and times|Your CorrigoPro|Unsubscribe)\b/i)[0].trim();
+  t = t.replace(/^(?:[A-Za-z][\w\/ &-]{0,40}:){1,4}\s*/, '');
+  t = t.replace(/^Description:\s*/i,'').trim();
+  return t;
+}
+function buildEmailSummaryText(w){
+  if (w.emailSummary) return String(w.emailSummary).trim();
+  const parts = [];
+  let jd = emailJobDesc(w);
+  if (jd) {
+    const sents = jd.split(/(?<=[.!?])\s+/);
+    let blob = sents[0].replace(/\.$/,'') + '.';
+    if (sents.length > 1 && sents[0].length < 90) blob = sents[0].replace(/\.$/,'') + '. ' + sents[1].replace(/\.$/,'') + '.';
+    if (blob.length > 160) blob = blob.slice(0,160).replace(/\s+\S*$/,'').replace(/[,;:.]+$/,'') + '.';
+    parts.push(blob);
+  }
+  let nte = parseFloat(w.estimatedAmount);
+  if (isNaN(nte) || !nte) {
+    const m = String(w.emailContent||'').match(/NTE:\s*\$([\d,]+(?:\.\d+)?)/i) || String(w.emailContent||'').match(/DO NOT EXCEED[^$]*\$([\d,]+(?:\.\d+)?)/i);
+    if (m) nte = parseFloat(m[1].replace(/,/g,''));
+  }
+  if (!isNaN(nte) && nte) parts.push('NTE is $' + nte.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' (labor and materials).');
+  const ab = (w.acceptBy && !/DO NOT EXCEED/i.test(String(w.acceptBy)) ? shortDate(w.acceptBy) : '') || emailDateField(w, 'Accept/Reject By');
+  const cb = (w.completeBy ? shortDate(w.completeBy) : '') || emailDateField(w, 'Complete By');
+  if (ab) parts.push('Accept or decline by ' + ab + '.');
+  if (cb) parts.push('Complete by ' + cb + '.');
+  const body = String(w.emailContent||'');
+  if (/(?:photo|picture)s?\s+(?:of|required|needed|must)|please\s+(?:take|attach|provide|upload)\s+(?:a\s+)?(?:photo|picture)/i.test(body))
+    parts.push('Photos of the work are required.');
+  if (/LockBox\s*Code\s*:\s*\S+/i.test(body) || /Lock\s*Box[^:\n]*:\s*(?!info:?\s*$)(\S.+)$/im.test(body))
+    parts.push('Lock box info is listed in the email.');
+  return parts.join(' ').trim();
+}
+function renderEmailSummary(w){
+  const box = document.getElementById('emailModalSummary');
+  const lab = document.getElementById('emailModalFullLabel');
+  if (!box) return;
+  const num = w.number || '';
+  const addr = fmtLoc(w.location || '');
+  const job = emailJobDesc(w);
+  const sum = buildEmailSummaryText(w);
+  if (!num && !addr && !job && !sum) { box.style.display='none'; if(lab) lab.style.display='none'; return; }
+  let html = '';
+  if (num) html += '<div class="es-wo">' + escHtml(num) + '</div>';
+  if (addr) html += '<div class="es-label">Address</div><div class="es-addr">' + addr + '</div>';
+  if (job) html += '<div class="es-label">Job description</div><div class="es-job">' + escHtml(job) + '</div>';
+  if (sum) html += '<div class="es-label">Summary</div><div class="es-sum">' + escHtml(sum) + '</div>';
+  box.innerHTML = html;
+  box.style.display = 'block';
+  if (lab) lab.style.display = 'block';
+}
+
 function viewEmail(id){
   const allWos = [].concat(
     getData('corrigo_inbox'),
@@ -1310,8 +1402,10 @@ function viewEmail(id){
   if (!wo) { alert('Could not find work order'); return; }
   if (!wo.emailContent) { alert('No email saved for this work order'); return; }
   document.getElementById('emailModalSubject').textContent = wo.emailSubject || '(no subject)';
+  try { renderEmailSummary(wo); } catch(e) { console.error(e); const b=document.getElementById('emailModalSummary'); if(b) b.style.display='none'; }
   document.getElementById('emailModalBody').textContent = wo.emailContent;
   document.getElementById('emailModal').classList.add('show');
+  const bodyEl = document.getElementById('emailModalBody'); if (bodyEl) bodyEl.scrollTop = 0;
 }
 
 function closeEmailModal(){
