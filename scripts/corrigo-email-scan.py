@@ -9,7 +9,11 @@ Adds NEW work-order assignment emails ("The new <priority> work order #X
 received from <customer>") to work-orders.json with status "inbox", using the
 same fields the old scanner wrote. Skips WOs already in work-orders.json or
 corrigo-overrides.json (normalized number match, incl. renames and removals),
-and skips every non-assignment email (reminders, invoices, recalls, chats).
+and skips every non-assignment email (reminders, invoices, recalls, chats)
+except a paid notice. When a Corrigo email says the invoice/work order has
+been paid, the matching WO is created or updated with status "paid" (invoice
+number, amount, date, customer, site) so the app's Paid tab can pick it up.
+A paid WO is not left as "inbox" or "sent_to_corrigo".
 
 Usage:  python3 scripts/corrigo-email-scan.py emails.json [--dry-run] [--push]
 Prints "NO_NEW_WOS" when nothing is added (the routine stays quiet then).
@@ -20,6 +24,8 @@ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SENDERS = ('garysims60@msn.com', 'alerts@am.corrigopro.com')
 ASSIGN_RE = re.compile(r'\bThe new (.+?) work order #\s*([A-Z0-9][A-Z0-9.\-]+?)\s+received from\s+(.+?)\s*$', re.I)
 WO_RE = re.compile(r'\b[1IJ]\d{6,8}-\d{3,6}(?:\.\d{1,3})*\b', re.I)
+PAID_SUBJ_RE = re.compile(r'\b(?:has been paid|payment (?:has been )?(?:received|issued|processed|made)|invoice\b.{0,40}\bpaid)\b', re.I)
+PAID_BODY_RE = re.compile(r'\bthis invoice (?:has been|was|is) paid\b|-\s*Paid\b', re.I)
 
 
 def norm_strict(n):
@@ -231,6 +237,175 @@ def parse(msg):
 
 
 
+def is_paid_notice(subj, body):
+    """Corrigo paid mail, not a dispute that only mentions reviewing for payment."""
+    subj, body = subj or '', body or ''
+    if PAID_SUBJ_RE.search(subj):
+        return True
+    if PAID_BODY_RE.search(body):
+        return True
+    if re.search(r'\bpayment (?:has been )?(?:received|issued|processed|made)\b', body, re.I) and re.search(r'\binvoice\b', body, re.I):
+        return True
+    return False
+
+
+def next_block(body, label):
+    m = re.search(r'(?:^|\n)\s*' + re.escape(label) + r'\s*\n+\s*(.+)', body or '', re.I)
+    if not m:
+        return None
+    v = m.group(1).strip()
+    if not v or v.lower() in ('space', 'site', 'customer', 'nte', 'invoice', 'total'):
+        return None
+    return v
+
+
+def money_after(body, label):
+    m = re.search(r'(?:^|\n)\s*' + re.escape(label) + r'\s*\n+\s*\$([\d,]+(?:\.\d+)?)', body or '', re.I)
+    if not m:
+        return None
+    return float(m.group(1).replace(',', ''))
+
+
+def wo_number_from(subj, body):
+    subj, body = subj or '', body or ''
+    for text in (subj, body):
+        m = re.search(r'work order #\s*([A-Z0-9][A-Z0-9.\-]+)', text, re.I)
+        if m:
+            num = norm_strict(m.group(1).rstrip('.'))
+            if WO_RE.fullmatch(num):
+                return num
+        m = re.search(r'(?:^|\n)\s*WO\s+([A-Z0-9][A-Z0-9.\-]+)', text, re.I)
+        if m:
+            num = norm_strict(m.group(1).rstrip('.'))
+            if WO_RE.fullmatch(num):
+                return num
+        found = WO_RE.findall(norm_strict(text))
+        if found:
+            return found[0]
+    return None
+
+
+def parse_paid(msg):
+    body = (msg.get('body') or '').replace('\r\n', '\n')
+    subj = msg.get('subject') or ''
+    amount = money_after(body, 'Total')
+    nte = money_after(body, 'NTE')
+    paid_line = re.search(r'(\d{1,2}/\d{1,2}/\d{4}(?:\s+\d{1,2}:\d{2}(?::\d{2})?\s*[AP]M)?)\s*-\s*Paid\b', body, re.I)
+    work = re.search(r'Work Done Description:\s*(.+)', body, re.I)
+    return {
+        'number': wo_number_from(subj, body),
+        'invoiceAmount': amount,
+        'invoiceNumber': next_block(body, 'Invoice #'),
+        'invoiceDate': next_block(body, 'Invoice Date'),
+        'paidDate': paid_line.group(1).strip() if paid_line else None,
+        'paidAt': msg.get('date') or None,
+        'customer': next_block(body, 'Customer'),
+        'location': next_block(body, 'Site'),
+        'nte': nte,
+        'workDone': work.group(1).strip() if work else None,
+        'emailSubject': subj,
+        'emailContent': body,
+        'emailHtml': msg.get('htmlBody') or '',
+        'gmailMsgId': msg.get('id'),
+        'gmailThreadId': msg.get('threadId'),
+    }
+
+
+def apply_paid(row, info):
+    """Mark a work-orders.json row paid. Returns True when something changed."""
+    changed = False
+
+    def setf(key, val, overwrite=False):
+        nonlocal changed
+        if val is None or val == '':
+            return
+        if overwrite or row.get(key) in (None, '', []):
+            if row.get(key) != val:
+                row[key] = val
+                changed = True
+
+    if row.get('status') != 'paid':
+        row['status'] = 'paid'
+        changed = True
+    if row.get('corrigoStatus') != 'Paid':
+        row['corrigoStatus'] = 'Paid'
+        changed = True
+    setf('invoiceAmount', info.get('invoiceAmount'), True)
+    setf('paidAmount', info.get('invoiceAmount'), True)
+    setf('invoiceDate', info.get('invoiceDate'), True)
+    setf('paidDate', info.get('paidDate'), True)
+    setf('paidAt', info.get('paidAt'), True)
+    setf('invoiceNumber', info.get('invoiceNumber'))
+    setf('customer', info.get('customer'))
+    setf('location', info.get('location'))
+    setf('paidEmailSubject', info.get('emailSubject'), True)
+    setf('paidEmailContent', info.get('emailContent'), True)
+    setf('paidGmailMsgId', info.get('gmailMsgId'), True)
+    if info.get('invoiceAmount') is not None and row.get('corrigoTotal') in (None, '', 0):
+        row['corrigoTotal'] = info['invoiceAmount']
+        changed = True
+    if info.get('workDone') and not row.get('workDescription'):
+        row['workDescription'] = info['workDone']
+        changed = True
+    return changed
+
+
+def new_paid_row(info):
+    num = info['number']
+    amount = info.get('invoiceAmount')
+    now = datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None).isoformat()
+    return {
+        'number': num,
+        'estimatedAmount': info.get('nte'),
+        'location': info.get('location'),
+        'requestedBy': None,
+        'serviceContact': None,
+        'ivrCode': None,
+        'description': info.get('workDone') or 'Invoice paid',
+        'workDescription': info.get('workDone'),
+        'priority': None,
+        'onSiteBy': None,
+        'completeBy': None,
+        'acceptBy': None,
+        'dateCreated': None,
+        'property': None,
+        'customer': info.get('customer'),
+        'date': None,
+        'type': None,
+        'status': 'paid',
+        'corrigoStatus': 'Paid',
+        'invoiceNumber': info.get('invoiceNumber'),
+        'invoiceAmount': amount,
+        'paidAmount': amount,
+        'invoiceDate': info.get('invoiceDate'),
+        'paidDate': info.get('paidDate'),
+        'paidAt': info.get('paidAt'),
+        'corrigoTotal': amount,
+        'prewrittenDescription': None,
+        'emailJobDescription': info.get('workDone'),
+        'emailSummary': None,
+        'bidAmount': None,
+        'completedSummary': None,
+        'photo': None,
+        'timestamp': now,
+        'id': 'wo_paid_' + re.sub(r'[^A-Za-z0-9]', '_', num or ''),
+        'gmailMsgId': info.get('gmailMsgId'),
+        'gmailThreadId': info.get('gmailThreadId'),
+        'emailSubject': info.get('emailSubject'),
+        'emailContent': info.get('emailContent') or '',
+        'emailHtml': info.get('emailHtml') or '',
+        'paidEmailSubject': info.get('emailSubject'),
+        'paidEmailContent': info.get('emailContent') or '',
+        'paidGmailMsgId': info.get('gmailMsgId'),
+        'corrigoUrl': None,
+    }
+
+
+def matching_wos(wos, number):
+    k = norm_wo(number)
+    return [w for w in wos if norm_wo(w.get('number')) == k or (w.get('corrigoWoNumber') and norm_wo(w.get('corrigoWoNumber')) == k)]
+
+
 def known_numbers():
     known, removed = set(), set()
     wos = json.load(open(os.path.join(REPO, 'work-orders.json')))
@@ -259,12 +434,37 @@ def main():
     msgs = data.get('messages', data) if isinstance(data, dict) else data
     wos, known, removed = known_numbers()
     msgs = sorted(msgs, key=lambda m: m.get('date') or '')
-    added, notes = [], []
+    added, paid_new, paid_updated, notes = [], [], [], []
     for msg in msgs:
         subj = msg.get('subject') or ''
         frm = (msg.get('from') or '').lower()
         body = msg.get('body') or ''
         if not any(s in frm for s in SENDERS) or 'alerts@am.corrigopro.com' not in body + frm:
+            continue
+        if is_paid_notice(subj, body):
+            info = parse_paid(msg)
+            n = info.get('number')
+            if not n:
+                notes.append('paid email missing WO number: ' + subj)
+                continue
+            k = norm_wo(n)
+            matches = matching_wos(wos, n)
+            if matches:
+                changed = False
+                for w in matches:
+                    if apply_paid(w, info):
+                        changed = True
+                if changed:
+                    paid_updated.append(matches[0].get('number') or n)
+                known.add(k)
+                continue
+            if k in removed:
+                notes.append('paid email for removed WO %s (not added)' % n)
+                continue
+            row = new_paid_row(info)
+            wos.append(row)
+            known.add(k)
+            paid_new.append(row)
             continue
         if not ASSIGN_RE.search(subj):
             nums = WO_RE.findall(subj)
@@ -274,7 +474,7 @@ def main():
             continue
         row = parse(msg)
         n = row['number']
-        if not n or not WO_RE.fullmatch(n):
+        if not n or not WO_RE.fullmatch(norm_strict(n)):
             notes.append('could not read WO number from: ' + subj)
             continue
         k = norm_wo(n)
@@ -284,26 +484,38 @@ def main():
         added.append(row)
     for n in notes:
         print('NOTE:', n)
-    if not added:
-        print('NO_NEW_WOS')
-        return
+    for r in paid_new:
+        print('PAID NEW: %s | %s | %s | invoice %s | $%s | %s' % (r['number'], r.get('customer'), r.get('location'),
+              r.get('invoiceNumber'), r.get('invoiceAmount'), r.get('invoiceDate')))
+    for n in paid_updated:
+        print('PAID UPDATE: %s' % n)
     for r in added:
         print('NEW: %s | %s | %s | NTE %s | on-site by %s' % (r['number'], r['property'] or r['requestedBy'],
               r['location'], r['estimatedAmount'], r['onSiteBy']))
+    if not added and not paid_new and not paid_updated:
+        print('NO_NEW_WOS')
+        return
     if dry:
-        print('DRY_RUN: %d new WO(s), nothing written' % len(added))
+        print('DRY_RUN: %d new WO(s), %d paid new, %d paid updated, nothing written' % (len(added), len(paid_new), len(paid_updated)))
         return
     path = os.path.join(REPO, 'work-orders.json')
     json.dump(wos + added, open(path, 'w'), indent=2, ensure_ascii=False)
     g = ['git', '-C', REPO]
     ident = ['-c', 'user.name=Big Brain Ape 🧠 👑', '-c', 'user.email=big.brain.ape.trading.bot@gmail.com']
+    parts = []
+    if added:
+        parts.append('add ' + ', '.join(r['number'] for r in added))
+    if paid_new:
+        parts.append('paid ' + ', '.join(r['number'] for r in paid_new))
+    if paid_updated:
+        parts.append('mark paid ' + ', '.join(paid_updated))
     subprocess.run(g + ['add', 'work-orders.json'], check=True)
-    subprocess.run(g + ident + ['commit', '-qm', 'Auto-update work orders %s: add %s' % (
-        datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None).strftime('%Y-%m-%d %H:%M'), ', '.join(r['number'] for r in added))], check=True)
+    subprocess.run(g + ident + ['commit', '-qm', 'Auto-update work orders %s: %s' % (
+        datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None).strftime('%Y-%m-%d %H:%M'), '; '.join(parts))], check=True)
     if push:
         subprocess.run(g + ident + ['pull', '-q', '--rebase'], check=True)
         subprocess.run(g + ['push', '-q'], check=True)
-    print('ADDED: %d' % len(added))
+    print('ADDED: %d PAID_NEW: %d PAID_UPDATED: %d' % (len(added), len(paid_new), len(paid_updated)))
 
 
 if __name__ == '__main__':

@@ -258,6 +258,8 @@ def process_pending_actions(actions_list):
             bid_amount = action.get('bidAmount')
 
             log(f"📋 Processing {wo_number} - Action: {action_type}")
+            if action_type == 'paid_delete':
+                continue
 
             # Find work order
             wo_url = find_work_order(session, wo_number)

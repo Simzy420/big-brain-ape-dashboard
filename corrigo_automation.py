@@ -247,6 +247,8 @@ def process_pending_actions(actions_list):
             bid_amount = action.get('bidAmount')
 
             log(f"📋 Processing {wo_number} - Action: {action_type}")
+            if action_type == 'paid_delete':
+                continue
 
             # Find work order
             wo_element = find_work_order(driver, wo_number)
