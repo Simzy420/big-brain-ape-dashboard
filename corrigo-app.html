@@ -181,7 +181,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v34-202611052010</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v35-202611052016</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
   <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
@@ -194,6 +194,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
   <button class="tab" onclick="show('finalize')">📋 Finalize <span id="finalizeCount">0</span></button>
   <button class="tab" onclick="show('completedtab')">✅ Completed <span id="completedTabCount">0</span></button>
   <button class="tab" onclick="show('senttocorrigo')">📤 Submitted <span id="sentToCorrigoCount">0</span></button>
+  <button class="tab" onclick="show('paid')">Paid <span id="paidCount">0</span></button>
   <button class="tab" onclick="show('addwo')">➕ Add WO</button>
   <button class="tab" onclick="show('settings')">Settings</button>
 </div>
@@ -225,6 +226,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
   <div id="senttocorrigo" style="display:none">
     <div id="sentToCorrigoList"></div>
   </div>
+  <div id="paid" style="display:none"></div>
   <div id="new" style="display:none">
     <div id="completedList"></div>
     <div class="card">
@@ -312,7 +314,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v34-202611052010';
+const APP_VERSION = 'v35-202611052016';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -355,7 +357,7 @@ function saveData(k,v){
         try { localStorage.setItem(k, JSON.stringify(slim)); return; } catch(e2) {}
       }
       // Last resort: clear old photos from other keys
-      ['corrigo_completed','corrigo_submitted','corrigo_inbox','corrigo_accepted'].forEach(key => {
+      ['corrigo_completed','corrigo_submitted','corrigo_inbox','corrigo_accepted','corrigo_paid'].forEach(key => {
         try {
           const arr = JSON.parse(localStorage.getItem(key)||'[]');
           const slim = arr.map(w => {
@@ -393,12 +395,13 @@ function reloadToast(msg, isErr){
 }
 function handled(){
   const nums = new Set();
-  ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_completed','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_resolved','corrigo_submitted','corrigo_sent_to_corrigo'].forEach(k => getData(k).forEach(w => nums.add(String(w.number))));
+  ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_completed','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_resolved','corrigo_submitted','corrigo_sent_to_corrigo','corrigo_paid'].forEach(k => getData(k).forEach(w => nums.add(String(w.number))));
   Object.keys(getMap('corrigo_sent_deleted')).forEach(n => nums.add(n));
+  Object.keys(getMap('corrigo_paid_deleted')).forEach(n => nums.add(n));
   return nums;
 }
 function show(name){
-  ['inbox','accepted','declined','bidding','almostdue','overdue','disputed','resolved','finalize','completedtab','senttocorrigo','new','addwo','settings'].forEach(id => document.getElementById(id).style.display = id===name ? 'block' : 'none');
+  ['inbox','accepted','declined','bidding','almostdue','overdue','disputed','resolved','finalize','completedtab','senttocorrigo','paid','new','addwo','settings'].forEach(id => document.getElementById(id).style.display = id===name ? 'block' : 'none');
   if (name==='inbox') render();
   if (name==='accepted') render();
   if (name==='declined') render();
@@ -412,9 +415,10 @@ function show(name){
   if (name==='finalize') render();
   if (name==='completedtab') render();
   if (name==='senttocorrigo') render();
+  if (name==='paid') render();
 }
 function render(){
-  purgeSentDeleted(); purgeCompletedDeleted();
+  purgeSentDeleted(); purgeCompletedDeleted(); purgePaidDeleted();
   repairPrestonRoofWorkDesc();
   const inbox = getData('corrigo_inbox');
   const accepted = getData('corrigo_accepted');
@@ -480,6 +484,13 @@ function render(){
       ? sentToCorrigo.map((w,i) => sentCard(w,i)).join('')
       : '<div class="card">No work orders sent to Corrigo yet.</div>';
   }
+  const paid = getData('corrigo_paid');
+  const paidCountEl = document.getElementById('paidCount');
+  if (paidCountEl) paidCountEl.textContent = paid.length;
+  const paidEl = document.getElementById('paid');
+  if (paidEl) paidEl.innerHTML = paid.length > 0
+    ? paid.map(w => paidCard(w)).join('')
+    : '<div class="card">No paid work orders.</div>';
 
     // Render completed work orders in the Finalize tab
   const completed = getData('corrigo_completed');
@@ -935,7 +946,7 @@ function isStalePrestonCompletion(t){
   return /roof is intake/i.test(s) || /i completed the requested work:\s*tree fell/i.test(s);
 }
 function repairPrestonRoofWorkDesc(){
-  const tabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_submitted','corrigo_disputed','corrigo_resolved','corrigo_sent_to_corrigo'];
+  const tabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_submitted','corrigo_disputed','corrigo_resolved','corrigo_sent_to_corrigo','corrigo_paid'];
   tabs.forEach(tab => {
     const arr = getData(tab);
     let changed = false;
@@ -1078,9 +1089,11 @@ function rawLocalActions(){
   });
   // v15: Sent-tab deletions, synced to the other phone (bot ignores this action)
   Object.entries(getMap('corrigo_sent_deleted')).forEach(([n,d]) => actions.push({number:n, action:'sent_delete', deletedAt:d}));
+  // v35: Paid-tab deletions, synced the same way (bot ignores this action)
+  Object.entries(getMap('corrigo_paid_deleted')).forEach(([n,d]) => actions.push({number:n, action:'paid_delete', deletedAt:d}));
   // v25: Completed-tab deletions — bot must NOT invoice these WOs
   const cdel = getMap('corrigo_completed_deleted');
-  const out = actions.filter(a => a.action === 'sent_delete' || !isCompletedDeleted(a.number));
+  const out = actions.filter(a => a.action === 'sent_delete' || a.action === 'paid_delete' || !isCompletedDeleted(a.number));
   Object.entries(cdel).forEach(([n,d]) => out.push({number:n, action:'completed_delete', deletedAt:d}));
   return out;
 }
@@ -1439,14 +1452,18 @@ function viewEmail(id){
     getData('corrigo_accepted'),
     getData('corrigo_declined'),
     getData('corrigo_bidding'),
-    getData('corrigo_disputed')
+    getData('corrigo_disputed'),
+    getData('corrigo_paid')
   );
   const wo = allWos.find(w => w.id === id);
   if (!wo) { alert('Could not find work order'); return; }
-  if (!wo.emailContent) { alert('No email saved for this work order'); return; }
-  document.getElementById('emailModalSubject').textContent = wo.emailSubject || '(no subject)';
+  const paidMail = String(wo.status) === 'paid' && wo.paidEmailContent;
+  const content = paidMail ? wo.paidEmailContent : (wo.emailContent || wo.paidEmailContent || '');
+  const subject = paidMail ? (wo.paidEmailSubject || wo.emailSubject) : (wo.emailSubject || wo.paidEmailSubject);
+  if (!content) { alert('No email saved for this work order'); return; }
+  document.getElementById('emailModalSubject').textContent = subject || '(no subject)';
   try { renderEmailSummary(wo); } catch(e) { console.error(e); const b=document.getElementById('emailModalSummary'); if(b) b.style.display='none'; }
-  document.getElementById('emailModalBody').textContent = wo.emailContent;
+  document.getElementById('emailModalBody').textContent = content;
   document.getElementById('emailModal').classList.add('show');
   const bodyEl = document.getElementById('emailModalBody'); if (bodyEl) bodyEl.scrollTop = 0;
 }
@@ -1468,11 +1485,14 @@ function deleteWo(id){
   if (!confirm('Are you sure you want to delete this work order? This cannot be undone.')) return;
   
   // Check all tabs for this work order and delete it
-  const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_completed','corrigo_resolved'];
+  const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_completed','corrigo_resolved','corrigo_paid'];
   for (const tab of allTabs) {
     const arr = getData(tab);
     const idx = arr.findIndex(w => w.id === id);
     if (idx >= 0) {
+      if (tab === 'corrigo_paid') {
+        const dm = getMap('corrigo_paid_deleted'); dm[String(arr[idx].number)] = new Date().toISOString(); setMap('corrigo_paid_deleted', dm);
+      }
       arr.splice(idx, 1);
       saveData(tab, arr);
       render();
@@ -1770,6 +1790,20 @@ function sentCard(w, i){
   return `<div class="card" data-sent-idx="${i}"><div class="wo-card-header" style="gap:8px;"><strong style="min-width:0;overflow-wrap:anywhere;">${escHtml(w.number||'')}</strong>${total ? '<div class="wo-est">' + fmtMoney(total) + '</div>' : ''}</div>${fmtLoc(w.location) ? '<p>'+fmtLoc(w.location)+'</p>' : ''}${line}<button class="big" style="width:100%;margin-top:10px;background:#00a86b;color:#fff;" onclick="event.stopPropagation();openSentDetail(${i})">🧾 Corrigo Receipt</button>${picHtml}<button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="event.stopPropagation();deleteSentWo(${i})">🗑️ Delete</button></div>`;
 }
 
+function paidCard(w){
+  const rawAmt = (w.paidAmount != null && w.paidAmount !== '') ? w.paidAmount : ((w.invoiceAmount != null && w.invoiceAmount !== '') ? w.invoiceAmount : w.corrigoTotal);
+  const amt = parseFloat(rawAmt);
+  const amtHtml = !isNaN(amt) ? `<div class="wo-est">${fmtMoney(amt)}</div>` : '';
+  const bits = [];
+  if (w.invoiceNumber) bits.push('Invoice ' + escHtml(w.invoiceNumber));
+  const when = w.paidDate || w.invoiceDate || '';
+  if (when) bits.push('Paid ' + escHtml(shortDate(when) || when));
+  const line = bits.length ? `<p class="muted">${bits.join(' · ')}</p>` : '';
+  const emailBtn = (w.paidEmailContent || w.emailContent) ? `<button class="email-btn" onclick="viewEmail('${w.id}')">📧 View Paid Email</button>` : '';
+  const desc = cleanDesc(w.description || w.workDescription || '');
+  return `<div class="card" style="border:2px solid #00cc66;"><div class="wo-card-header"><strong>${escHtml(w.number||'')}</strong>${amtHtml}</div><p style="color:#00cc66;font-size:16px;margin:6px 0;">✅ Paid</p>${w.customer ? '<p>'+escHtml(w.customer)+'</p>' : ''}${fmtLoc(w.location) ? '<p>'+fmtLoc(w.location)+'</p>' : ''}${line}${desc ? '<p>'+desc+'</p>' : ''}${emailBtn}<button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="deletePaidWo('${w.id}')">🗑️ Delete</button></div>`;
+}
+
 
 // v15: delete from Sent In to Corrigo (app only; bot records in work-orders.json are untouched)
 function isSentDeleted(n){ const k = normWo(n); return Object.keys(getMap('corrigo_sent_deleted')).some(d => normWo(d) === k); }
@@ -1779,9 +1813,21 @@ function purgeSentDeleted(){
 }
 // v25: delete from Completed (app only; never invoiced; synced as completed_delete)
 function isCompletedDeleted(n){ const k = normWo(n); return Object.keys(getMap('corrigo_completed_deleted')).some(d => normWo(d) === k); }
+function isPaidDeleted(n){ const k = normWo(n); return Object.keys(getMap('corrigo_paid_deleted')).some(d => normWo(d) === k); }
+function purgePaidDeleted(){
+  const paid = getData('corrigo_paid'); const keep = paid.filter(w => !isPaidDeleted(w.number));
+  if (keep.length !== paid.length) saveData('corrigo_paid', keep);
+}
+function deletePaidWo(id){
+  const w = getData('corrigo_paid').find(x => x.id === id); if (!w) return;
+  if (!confirm('Delete WO ' + (w.number||'') + ' from Paid? This only removes it from the app, not from Corrigo.')) return;
+  const dm = getMap('corrigo_paid_deleted'); dm[String(w.number)] = new Date().toISOString(); setMap('corrigo_paid_deleted', dm);
+  render();
+  try { sendPickup(true); } catch(e) { console.error(e); }
+}
 function purgeCompletedDeleted(){
   if (!Object.keys(getMap('corrigo_completed_deleted')).length) return;
-  ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_submitted','corrigo_disputed','corrigo_resolved','corrigo_sent_to_corrigo'].forEach(k => {
+  ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_submitted','corrigo_disputed','corrigo_resolved','corrigo_sent_to_corrigo','corrigo_paid'].forEach(k => {
     const arr = getData(k); const keep = arr.filter(w => !isCompletedDeleted(w.number));
     if (keep.length !== arr.length) saveData(k, keep);
   });
@@ -1883,8 +1929,9 @@ function moveToSentToCorrigo(woNumber) {
 
 
 // ---- Repo overrides (corrigo-overrides.json): the bot can move, rename or remove WOs on every phone ----
-const OV_TABS = {inbox:'corrigo_inbox',accepted:'corrigo_accepted',declined:'corrigo_declined',bidding:'corrigo_bidding',saved:'corrigo_saved',completed:'corrigo_completed',finalize:'corrigo_completed',submitted:'corrigo_submitted',disputed:'corrigo_disputed',resolved:'corrigo_resolved',sent_to_corrigo:'corrigo_sent_to_corrigo'};
-const OV_ALL = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_submitted','corrigo_disputed','corrigo_resolved','corrigo_sent_to_corrigo'];
+const OV_TABS = {inbox:'corrigo_inbox',accepted:'corrigo_accepted',declined:'corrigo_declined',bidding:'corrigo_bidding',saved:'corrigo_saved',completed:'corrigo_completed',finalize:'corrigo_completed',submitted:'corrigo_submitted',disputed:'corrigo_disputed',resolved:'corrigo_resolved',sent_to_corrigo:'corrigo_sent_to_corrigo',paid:'corrigo_paid'};
+const OV_ALL = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_submitted','corrigo_disputed','corrigo_resolved','corrigo_sent_to_corrigo','corrigo_paid'];
+const PAID_MOVE_TABS = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_submitted','corrigo_disputed','corrigo_resolved','corrigo_sent_to_corrigo'];
 function normStrict(n){ return String(n==null?'':n).replace(/[\u2010-\u2015\u2212]/g,'-').replace(/\s+/g,'').toUpperCase(); }
 function normWo(n){ return normStrict(n).replace(/^[1IJ](?=\d)/,'*'); }
 function ovMatches(o, w){
@@ -1946,7 +1993,7 @@ function applyOverrides(ovs){
         if (keep.length !== arr.length) { saveData(t, keep); changed = true; } });
     } else if (o.forceTab && OV_TABS[o.forceTab]) {
       // v28: an old accepted/declined override never pulls a WO back out of Completed/Sent/Resolved
-      if ((o.forceTab === 'accepted' || o.forceTab === 'declined') && ['corrigo_submitted','corrigo_sent_to_corrigo','corrigo_resolved'].some(t => getData(t).some(w => ovMatches(o, w)))) { done[key] = o.overrideAt; return; }
+      if ((o.forceTab === 'accepted' || o.forceTab === 'declined') && ['corrigo_submitted','corrigo_sent_to_corrigo','corrigo_resolved','corrigo_paid'].some(t => getData(t).some(w => ovMatches(o, w)))) { done[key] = o.overrideAt; return; }
       const target = OV_TABS[o.forceTab]; let found = null;
       OV_ALL.forEach(t => { const arr = getData(t); const keep = [];
         arr.forEach(w => { if (ovMatches(o, w)) { found = found ? mergeSentWo(found, w) : w; } else keep.push(w); });
@@ -1967,6 +2014,40 @@ function applyOverrides(ovs){
       else { const a = out[byNum[k]]; out[byNum[k]] = (w.invoiceNumber && !a.invoiceNumber) ? mergeSentWo(w, a) : mergeSentWo(a, w); } });
     if (out.length !== arr.length) { saveData(t, out); changed = true; } });
   return changed;
+}
+function isPaidNotice(w){
+  if (!w) return false;
+  if (String(w.status || '').toLowerCase() === 'paid') return true;
+  if (/^paid\b/i.test(String(w.corrigoStatus || ''))) return true;
+  const subj = String(w.paidEmailSubject || w.emailSubject || '');
+  const body = String(w.paidEmailContent || '');
+  const blob = subj + '\n' + body;
+  if (/\b(?:has been paid|payment (?:has been )?(?:received|issued|processed|made)|invoice\b.{0,40}\bpaid)\b/i.test(subj)) return true;
+  if (/\bthis invoice (?:has been|was|is) paid\b|-\s*Paid\b/.test(blob)) return true;
+  if (/\bpayment (?:has been )?(?:received|issued|processed|made)\b/i.test(body) && /\binvoice\b/i.test(body)) return true;
+  return false;
+}
+function moveWoToPaid(serverWo){
+  if (!serverWo || serverWo.number == null) return;
+  const key = normWo(serverWo.number);
+  let phone = null;
+  PAID_MOVE_TABS.forEach(t => {
+    const arr = getData(t);
+    const keep = [];
+    arr.forEach(x => {
+      if (normWo(x.number) === key) phone = phone ? mergeSentWo(phone, x) : Object.assign({}, x);
+      else keep.push(x);
+    });
+    if (keep.length !== arr.length) saveData(t, keep);
+  });
+  if (isPaidDeleted(serverWo.number)) return;
+  const merged = mergeSentWo(phone || {}, serverWo);
+  merged.status = 'paid';
+  let paid = getData('corrigo_paid');
+  const idx = paid.findIndex(x => normWo(x.number) === key);
+  if (idx < 0) paid.unshift(merged);
+  else paid[idx] = mergeSentWo(paid[idx], merged);
+  saveData('corrigo_paid', paid);
 }
 async function loadJobs(){
   try {
@@ -1995,7 +2076,12 @@ async function loadJobs(){
         return o ? Object.assign({}, w, {number: o.renameTo}) : w; })
         .filter(w => !isRemovedByOverride(overrides, w) && !renamedAway(overrides, w))
         .filter(w => { const k = normStrict(w.number); if (!(k in seenNew)) { seenNew[k] = w; return true; }
-          if (w.status === 'sent_to_corrigo' && seenNew[k].status !== 'sent_to_corrigo') { Object.assign(seenNew[k], w); } else { Object.keys(w).forEach(f => { if (seenNew[k][f] == null || seenNew[k][f] === '') seenNew[k][f] = w[f]; }); } return false; });
+          const paidNew = isPaidNotice(w), paidOld = isPaidNotice(seenNew[k]);
+          if (paidNew && !paidOld) { const prev = seenNew[k]; Object.assign(seenNew[k], w); Object.keys(prev).forEach(f => { if (f !== 'status' && f !== 'corrigoStatus' && (seenNew[k][f] == null || seenNew[k][f] === '')) seenNew[k][f] = prev[f]; }); }
+          else if (paidOld && !paidNew) { Object.keys(w).forEach(f => { if (f === 'status' || f === 'corrigoStatus') return; if (seenNew[k][f] == null || seenNew[k][f] === '') seenNew[k][f] = w[f]; }); }
+          else if (w.status === 'sent_to_corrigo' && seenNew[k].status !== 'sent_to_corrigo') { Object.assign(seenNew[k], w); }
+          else { Object.keys(w).forEach(f => { if (seenNew[k][f] == null || seenNew[k][f] === '') seenNew[k][f] = w[f]; }); }
+          return false; });
     }
     let inbox = getData('corrigo_inbox');
     let disputed = getData('corrigo_disputed');
@@ -2004,6 +2090,13 @@ async function loadJobs(){
       // Sync status changes from GitHub: if a WO's status changed, move it to the right tab
       jobs.forEach(w => {
         const num = String(w.number);
+        if (isPaidNotice(w)) {
+          // v35: a paid notice moves the WO onto Paid and off every other tab
+          inbox = inbox.filter(x => normWo(x.number) !== normWo(num));
+          disputed = disputed.filter(x => normWo(x.number) !== normWo(num));
+          moveWoToPaid(w);
+          return;
+        }
         if (w.status === 'sent_to_corrigo') {
           // v18: a WO already sent to Corrigo can't also sit in Inbox/Accepted/Declined/Bidding (stale phone copies)
           inbox = inbox.filter(x => normStrict(x.number) !== normStrict(num));
@@ -2039,6 +2132,7 @@ async function loadJobs(){
       const seen = handled();
       jobs.forEach(w => {
         if (seen.has(String(w.number))) return;
+        if (isPaidNotice(w)) { moveWoToPaid(w); return; }
         if (w.status === 'disputed') {
           disputed.unshift(w);
         } else if (w.status === 'sent_to_corrigo') {
@@ -2073,12 +2167,14 @@ async function loadJobs(){
         actions.forEach(act => {
           if (act.deviceId && act.deviceId === myDev) return; // our own entry
           if (act.action === 'sent_delete') { const dm = getMap('corrigo_sent_deleted'); if (!isSentDeleted(act.number)) { dm[String(act.number)] = act.deletedAt || new Date().toISOString(); setMap('corrigo_sent_deleted', dm); changed = true; } return; }
+          if (act.action === 'paid_delete') { const dm = getMap('corrigo_paid_deleted'); if (!isPaidDeleted(act.number)) { dm[String(act.number)] = act.deletedAt || new Date().toISOString(); setMap('corrigo_paid_deleted', dm); changed = true; } return; }
           if (act.action === 'completed_delete') { const dm = getMap('corrigo_completed_deleted'); if (!isCompletedDeleted(act.number)) { dm[String(act.number)] = act.deletedAt || new Date().toISOString(); setMap('corrigo_completed_deleted', dm); changed = true; } return; }
           if (isSentDeleted(act.number)) return;
+          if (isPaidDeleted(act.number)) return;
           if (isCompletedDeleted(act.number)) return;
           const num = String(act.number);
           // Check all tabs for this WO
-          const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_submitted','corrigo_disputed','corrigo_sent_to_corrigo'];
+          const allTabs = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_submitted','corrigo_disputed','corrigo_sent_to_corrigo','corrigo_paid'];
           let foundWo = null;
           let foundTab = null;
           for (const tab of allTabs) {
@@ -2122,7 +2218,7 @@ async function loadJobs(){
           }
 
           // v27: an old accept/decline never pulls a WO back out of a later stage
-          const LATER = ['corrigo_completed','corrigo_submitted','corrigo_sent_to_corrigo','corrigo_resolved','corrigo_disputed'];
+          const LATER = ['corrigo_completed','corrigo_submitted','corrigo_sent_to_corrigo','corrigo_resolved','corrigo_disputed','corrigo_paid'];
           if ((act.action === 'accept' || act.action === 'decline') && LATER.includes(foundTab)) return;
           // Apply action
           if (act.action === 'accept' && foundTab !== 'corrigo_accepted') {
@@ -2171,7 +2267,7 @@ async function loadJobs(){
                 saveData('corrigo_completed', completed);
               }
               changed = true;
-            } else if (act.action === 'dispute' && foundTab !== 'corrigo_disputed' && foundTab !== 'corrigo_sent_to_corrigo') {
+            } else if (act.action === 'dispute' && foundTab !== 'corrigo_disputed' && foundTab !== 'corrigo_sent_to_corrigo' && foundTab !== 'corrigo_paid') {
               const arr = getData(foundTab);
               arr.splice(arr.findIndex(w => String(w.number) === num), 1);
               saveData(foundTab, arr);
@@ -2217,7 +2313,7 @@ async function loadJobs(){
 try {
   render();
   // Only show loading if ALL tabs are empty (first visit)
-  const totalWos = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_completed','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_submitted','corrigo_sent_to_corrigo'].reduce((sum, k) => sum + getData(k).length, 0);
+  const totalWos = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_completed','corrigo_bidding','corrigo_saved','corrigo_disputed','corrigo_submitted','corrigo_sent_to_corrigo','corrigo_paid'].reduce((sum, k) => sum + getData(k).length, 0);
   if (totalWos === 0) {
     const inboxEl = document.getElementById('inbox');
     if (inboxEl) inboxEl.innerHTML = '<div class="card" style="text-align:center;color:#aaa;font-size:18px;">⏳ Loading work orders from server...</div>';
@@ -2314,10 +2410,11 @@ const HOWTO = {
   finalize: 'How to use: Tap Enter Hours, Rate & Submit on each job; it then moves to Completed.',
   completedtab: 'How to use: Check the invoice details and edit if needed. The bot sends these to Corrigo around 7 AM and 7 PM and moves them to Submitted.',
   senttocorrigo: 'How to use: Jobs already submitted to Corrigo. Tap Corrigo Receipt to see what was sent, Job Image Submitted to see the picture, or Proof It Was Submitted to see the CruChat.',
+  paid: 'How to use: Jobs Corrigo has marked paid. They land here when a paid email comes in. Nothing else to do.',
   addwo: 'How to use: Type a work order number and description, then tap Add to Inbox.',
   settings: 'How to use: Name this phone or reset the app. You normally do not need anything here.'
 };
-const TAB_TITLES = {inbox:'Inbox',accepted:'Accepted',declined:'Declined',bidding:'Bidding',almostdue:'⚠️ Almost Due',overdue:'⏰ Overdue',disputed:'⚠️ Disputed',resolved:'✅ Resolved',finalize:'📋 Finalize',completedtab:'✅ Completed',senttocorrigo:'📤 Submitted',addwo:'➕ Add WO',settings:'Settings'};
+const TAB_TITLES = {inbox:'Inbox',accepted:'Accepted',declined:'Declined',bidding:'Bidding',almostdue:'⚠️ Almost Due',overdue:'⏰ Overdue',disputed:'⚠️ Disputed',resolved:'✅ Resolved',finalize:'📋 Finalize',completedtab:'✅ Completed',senttocorrigo:'📤 Submitted',paid:'Paid',addwo:'➕ Add WO',settings:'Settings'};
 function sweepBoiler(){ document.querySelectorAll('.card p').forEach(p => { if (p.children.length) { p.childNodes.forEach(n => { if (n.nodeType === 3 && (BOILER_RE.test(n.nodeValue) || /Created:/.test(n.nodeValue))) { BOILER_RE.lastIndex = 0; n.nodeValue = stripBoiler(n.nodeValue); } BOILER_RE.lastIndex = 0; }); } else if (/Created:|If you believe you will go over/i.test(p.textContent)) { p.textContent = stripBoiler(p.textContent); } }); }
 function addHowTo(){
   try { sweepBoiler(); } catch(e){}
@@ -2336,7 +2433,7 @@ function addHowTo(){
   function markTab(name){ document.querySelectorAll('.tabs .tab').forEach(b => { const m=(b.getAttribute('onclick')||'').match(/show\('([^']+)'\)/); b.classList.toggle('active-tab', !!m && m[1]===name); }); }
   window.markTab = markTab;
   const s0 = show; show = function(name){ const x = s0.apply(this, arguments); try { markTab(name); } catch(e){} return x; };
-  function current(){ const ids=['inbox','accepted','declined','bidding','almostdue','overdue','disputed','resolved','finalize','completedtab','senttocorrigo','addwo','settings']; return ids.find(id => { const e=document.getElementById(id); return e && e.style.display!=='none' && getComputedStyle(e).display!=='none'; }) || 'inbox'; }
+  function current(){ const ids=['inbox','accepted','declined','bidding','almostdue','overdue','disputed','resolved','finalize','completedtab','senttocorrigo','paid','addwo','settings']; return ids.find(id => { const e=document.getElementById(id); return e && e.style.display!=='none' && getComputedStyle(e).display!=='none'; }) || 'inbox'; }
   markTab(current()); window.addEventListener('load', () => markTab(current()));
 })();
 let PREWRITTEN = {};

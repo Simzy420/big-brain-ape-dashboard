@@ -42,7 +42,7 @@ def load_pending_actions():
             actions = data.get('pendingActions', [])
             # v25: skip WOs deleted from the app's Completed tab (never invoice them)
             deleted = {str(a.get('number','')).strip() for a in actions if a.get('action') == 'completed_delete'}
-            actions = [a for a in actions if a.get('action') not in ('completed_delete', 'sent_delete') and str(a.get('number','')).strip() not in deleted]
+            actions = [a for a in actions if a.get('action') not in ('completed_delete', 'sent_delete', 'paid_delete') and str(a.get('number','')).strip() not in deleted]
             log(f"Loaded {len(actions)} pending actions")
             return actions
         else:
