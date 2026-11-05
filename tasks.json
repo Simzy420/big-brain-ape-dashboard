@@ -4,9 +4,9 @@
       "id": "druck-live-book-confirm",
       "priority": "high",
       "title": "Confirm the Druck cycle live Hyperliquid book is OK",
-      "subtitle": "11/3 5:30 AM cycle (4bf5b61e): held EUR 300 short @ 1.1198 only · 3x isolated · no trades · cut trigger back at 1.14 · acct ~$1,194 · outside paper-only / no-leverage rule",
+      "subtitle": "11/4 cycle (ef1585f3): covered EUR 300 short (−$2.19) · opened GOLD 0.09 long @ $4,034 · 3x isolated · acct ~$1,191 · outside paper-only / no-leverage rule",
       "steps": [
-        "Open the cycle state link below and look at the current book (11/2: just a 300 EUR short at 3x; the cycle held it, made no trades, and tightened its stop to 1.135. A gold long was opened and cut 10/30 for about a $52 loss).",
+        "Open the cycle state link below and look at the current book (11/4: the cycle covered the EUR 300 short for −$2.19 and opened a 0.09 GOLD long at $4,034.2, 3x isolated, cut below $3,800, add above $4,100. positions.json is stale today because the snapshot job didn't run).",
         "Decide: is the daily trading cycle allowed to trade live with 3x leverage?",
         "If YES: tell Chief of Staff it's intended, and we'll stop flagging it in the nightly.",
         "If NO: tell Chief of Staff to pause the Druck cycle and flatten or move it to paper. A bot will do the technical steps.",
@@ -14,12 +14,12 @@
       ],
       "links": [
         {
-          "label": "positions.json (live book)",
-          "url": "https://github.com/Simzy420/big-brain-ape-dashboard/blob/main/positions.json"
+          "label": "latest-state.json (live book)",
+          "url": "https://github.com/Simzy420/big-brain-ape-dashboard/blob/main/latest-state.json"
         },
         {
-          "label": "11/2 trading cycle commit",
-          "url": "https://github.com/Simzy420/big-brain-ape-dashboard/commit/a77b7a69"
+          "label": "11/4 trading cycle commit",
+          "url": "https://github.com/Simzy420/big-brain-ape-dashboard/commit/ef1585f3"
         },
         {
           "label": "Tasks dashboard",
