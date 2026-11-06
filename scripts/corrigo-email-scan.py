@@ -13,7 +13,9 @@ and skips every non-assignment email (reminders, invoices, recalls, chats)
 except a paid notice. When a Corrigo email says the invoice/work order has
 been paid, the matching WO is created or updated with status "paid" (invoice
 number, amount, date, customer, site) so the app's Paid tab can pick it up.
-A paid WO is not left as "inbox" or "sent_to_corrigo".
+A paid WO is not left as "inbox" or "sent_to_corrigo". Updating a work order
+that was already submitted keeps the fields the app's Corrigo Receipt reads
+(hours, rate, materials, photos, dates, Corrigo totals) and any invoice link.
 
 Usage:  python3 scripts/corrigo-email-scan.py emails.json [--dry-run] [--push]
 Prints "NO_NEW_WOS" when nothing is added (the routine stays quiet then).
@@ -26,6 +28,15 @@ ASSIGN_RE = re.compile(r'\bThe new (.+?) work order #\s*([A-Z0-9][A-Z0-9.\-]+?)\
 WO_RE = re.compile(r'\b[1IJ]\d{6,8}-\d{3,6}(?:\.\d{1,3})*\b', re.I)
 PAID_SUBJ_RE = re.compile(r'\b(?:has been paid|payment (?:has been )?(?:received|issued|processed|made)|invoice\b.{0,40}\bpaid)\b', re.I)
 PAID_BODY_RE = re.compile(r'\bthis invoice (?:has been|was|is) paid\b|-\s*Paid\b', re.I)
+INVOICE_URL_RE = re.compile(r'https://am-desktop\.corrigopro\.com/Invoicing#!/start/invoice\?woId=\d+', re.I)
+# Fields the Corrigo Receipt modal shows. A paid update must not blank these.
+RECEIPT_FIELDS = (
+    'hours', 'rate', 'materialsCost', 'invoiceNumber', 'invoiceTotal',
+    'dateStarted', 'dateCompleted', 'sentAt', 'workDescription', 'comment',
+    'photos', 'photo', 'location', 'repairCategory', 'repairCode',
+    'submittedBy', 'corrigoWoNumber', 'corrigoLabor', 'corrigoMaterial',
+    'corrigoTotal', 'corrigoUrl', 'cruChatScreenshotUrl', 'corrigoProofUrl',
+)
 
 
 def norm_strict(n):
@@ -311,9 +322,30 @@ def parse_paid(msg):
     }
 
 
+def _blank(v):
+    return v is None or v == '' or v == [] or v == {}
+
+
+def invoice_url(*texts):
+    """Corrigo invoice link, including the angle-bracket form in plain-text mail."""
+    for t in texts:
+        if not t:
+            continue
+        m = INVOICE_URL_RE.search(str(t).replace('&amp;', '&'))
+        if m:
+            return m.group(0)
+    return None
+
+
 def apply_paid(row, info):
-    """Mark a work-orders.json row paid. Returns True when something changed."""
+    """Mark a work-orders.json row paid. Returns True when something changed.
+
+    Receipt fields already on the row (from Submitted) are kept. A later paid
+    email whose plain text dropped the invoice URL does not replace a copy
+    that still has that link.
+    """
     changed = False
+    kept = {k: row[k] for k in RECEIPT_FIELDS if k in row and not _blank(row.get(k))}
 
     def setf(key, val, overwrite=False):
         nonlocal changed
@@ -339,13 +371,24 @@ def apply_paid(row, info):
     setf('customer', info.get('customer'))
     setf('location', info.get('location'))
     setf('paidEmailSubject', info.get('emailSubject'), True)
-    setf('paidEmailContent', info.get('emailContent'), True)
+    new_body = info.get('emailContent')
+    old_paid = row.get('paidEmailContent')
+    if not (new_body and old_paid and invoice_url(old_paid) and not invoice_url(new_body)):
+        setf('paidEmailContent', new_body, True)
     setf('paidGmailMsgId', info.get('gmailMsgId'), True)
     if info.get('invoiceAmount') is not None and row.get('corrigoTotal') in (None, '', 0):
         row['corrigoTotal'] = info['invoiceAmount']
         changed = True
     if info.get('workDone') and not row.get('workDescription'):
         row['workDescription'] = info['workDone']
+        changed = True
+    for k, v in kept.items():
+        if _blank(row.get(k)):
+            row[k] = v
+            changed = True
+    url = invoice_url(info.get('emailContent'), info.get('emailHtml'), row.get('emailContent'), row.get('paidEmailContent'))
+    if url and _blank(row.get('corrigoUrl')):
+        row['corrigoUrl'] = url
         changed = True
     return changed
 
@@ -397,7 +440,7 @@ def new_paid_row(info):
         'paidEmailSubject': info.get('emailSubject'),
         'paidEmailContent': info.get('emailContent') or '',
         'paidGmailMsgId': info.get('gmailMsgId'),
-        'corrigoUrl': None,
+        'corrigoUrl': invoice_url(info.get('emailContent'), info.get('emailHtml')),
     }
 
 

@@ -183,7 +183,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v35-202611052016</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v36-202611061813</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <div class="stepwrap"><div class="steplabel">Step 1 ⭐️</div><button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button></div>
   <div class="stepwrap"><div class="steplabel">Step 2 ⭐️</div><button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button></div>
@@ -316,7 +316,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v35-202611052016';
+const APP_VERSION = 'v36-202611061813';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -491,7 +491,7 @@ function render(){
   if (paidCountEl) paidCountEl.textContent = paid.length;
   const paidEl = document.getElementById('paid');
   if (paidEl) paidEl.innerHTML = paid.length > 0
-    ? paid.map(w => paidCard(w)).join('')
+    ? paid.map((w,i) => paidCard(w, i)).join('')
     : '<div class="card">No paid work orders.</div>';
 
     // Render completed work orders in the Finalize tab
@@ -1777,6 +1777,16 @@ function mergeSentWo(phone, server){
   return out;
 }
 
+function fieldBlank(v){ return v == null || v === '' || (Array.isArray(v) && v.length === 0); }
+// A paid notice must not wipe the invoice fields the Corrigo Receipt reads.
+// status and corrigoStatus stay on the paid copy.
+function keepNonBlank(target, source, skip){
+  Object.keys(source || {}).forEach(f => {
+    if (skip && skip[f]) return;
+    if (fieldBlank(target[f]) && !fieldBlank(source[f])) target[f] = source[f];
+  });
+}
+
 function escHtml(t){ return String(t == null ? '' : t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 function fmtMoney(v){ const n = parseFloat(v); return isNaN(n) ? '' : '$' + n.toFixed(2); }
@@ -1789,10 +1799,14 @@ function sentCard(w, i){
   const total = w.corrigoTotal != null && w.corrigoTotal !== '' ? parseFloat(w.corrigoTotal) : (labor + (parseFloat(w.materialsCost)||0));
   const line = (w.hours || w.invoiceNumber) ? `<div style="margin-top:8px;color:#00cc66;font-size:16px;">Invoice: ${escHtml(w.invoiceNumber||'-')} | Hours: ${escHtml(w.hours||'-')} | Materials: ${hasMat ? fmtMoney(w.materialsCost) : 'none'}${total ? ' | Total: ' + fmtMoney(total) : ''}</div>` : '';
   const pics = sentPhotoSrcs(w); const picHtml = pics.length ? `<button class="big" style="width:100%;margin-top:10px;background:#5e5ce6;color:#fff;" onclick="event.stopPropagation();const im=this.nextElementSibling;const open=im.style.display==='none';if(open&&!im.src)im.src=im.dataset.src;im.style.display=open?'block':'none';">🖼️ Job Image Submitted</button><img data-src="${escHtml(pics[0])}" onclick="event.stopPropagation();openPhotoFull(this.src)" style="display:none;width:100%;max-height:260px;object-fit:cover;border-radius:10px;margin-top:8px;background:#222;cursor:pointer;">` : '';
-  return `<div class="card" data-sent-idx="${i}"><div class="wo-card-header" style="gap:8px;"><strong style="min-width:0;overflow-wrap:anywhere;">${escHtml(w.number||'')}</strong>${total ? '<div class="wo-est">' + fmtMoney(total) + '</div>' : ''}</div>${fmtLoc(w.location) ? '<p>'+fmtLoc(w.location)+'</p>' : ''}${line}<button class="big" style="width:100%;margin-top:10px;background:#00a86b;color:#fff;" onclick="event.stopPropagation();openSentDetail(${i})">🧾 Corrigo Receipt</button>${picHtml}<button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="event.stopPropagation();deleteSentWo(${i})">🗑️ Delete</button></div>`;
+  return `<div class="card" data-sent-idx="${i}"><div class="wo-card-header" style="gap:8px;"><strong style="min-width:0;overflow-wrap:anywhere;">${escHtml(w.number||'')}</strong>${total ? '<div class="wo-est">' + fmtMoney(total) + '</div>' : ''}</div>${fmtLoc(w.location) ? '<p>'+fmtLoc(w.location)+'</p>' : ''}${line}${corrigoReceiptButton('corrigo_sent_to_corrigo', i)}${picHtml}<button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="event.stopPropagation();deleteSentWo(${i})">🗑️ Delete</button></div>`;
 }
 
-function paidCard(w){
+function corrigoReceiptButton(store, i){
+  return `<button class="big" style="width:100%;margin-top:10px;background:#00a86b;color:#fff;" onclick="event.stopPropagation();openWoReceipt('${store}',${Number(i)})">🧾 Corrigo Receipt</button>`;
+}
+
+function paidCard(w, i){
   const rawAmt = (w.paidAmount != null && w.paidAmount !== '') ? w.paidAmount : ((w.invoiceAmount != null && w.invoiceAmount !== '') ? w.invoiceAmount : w.corrigoTotal);
   const amt = parseFloat(rawAmt);
   const amtHtml = !isNaN(amt) ? `<div class="wo-est">${fmtMoney(amt)}</div>` : '';
@@ -1803,7 +1817,7 @@ function paidCard(w){
   const line = bits.length ? `<p class="muted">${bits.join(' · ')}</p>` : '';
   const emailBtn = (w.paidEmailContent || w.emailContent) ? `<button class="email-btn" onclick="viewEmail('${w.id}')">📧 View Paid Email</button>` : '';
   const desc = cleanDesc(w.description || w.workDescription || '');
-  return `<div class="card" style="border:2px solid #00cc66;"><div class="wo-card-header"><strong>${escHtml(w.number||'')}</strong>${amtHtml}</div><p style="color:#00cc66;font-size:16px;margin:6px 0;">✅ Paid</p>${w.customer ? '<p>'+escHtml(w.customer)+'</p>' : ''}${fmtLoc(w.location) ? '<p>'+fmtLoc(w.location)+'</p>' : ''}${line}${desc ? '<p>'+desc+'</p>' : ''}${emailBtn}<button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="deletePaidWo('${w.id}')">🗑️ Delete</button></div>`;
+  return `<div class="card" data-paid-idx="${i}" style="border:2px solid #00cc66;"><div class="wo-card-header"><strong>${escHtml(w.number||'')}</strong>${amtHtml}</div><p style="color:#00cc66;font-size:16px;margin:6px 0;">✅ Paid</p>${w.customer ? '<p>'+escHtml(w.customer)+'</p>' : ''}${fmtLoc(w.location) ? '<p>'+fmtLoc(w.location)+'</p>' : ''}${line}${desc ? '<p>'+desc+'</p>' : ''}${corrigoReceiptButton('corrigo_paid', i)}${emailBtn}<button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="deletePaidWo('${w.id}')">🗑️ Delete</button></div>`;
 }
 
 
@@ -1880,9 +1894,14 @@ function openPhotoFull(src){
   v.innerHTML = '<img src="' + escHtml(src) + '" style="max-width:100%;max-height:100%;object-fit:contain;"><div style="position:absolute;top:12px;right:16px;color:#fff;font-size:32px;">✕</div>';
   v.style.display = 'flex';
 }
-function openSentDetail(i){
-  const w = getData('corrigo_sent_to_corrigo')[i];
+function openWoReceipt(store, i){
+  const list = getData(store);
+  const w = list && list[i];
   if (!w) return;
+  showWoReceipt(w);
+}
+function openSentDetail(i){ openWoReceipt('corrigo_sent_to_corrigo', i); }
+function showWoReceipt(w){
   const row = (label, val) => (val === undefined || val === null || val === '') ? '' : `<div style="display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #333;font-size:17px;"><span style="color:#aaa;">${label}</span><span style="text-align:right;">${escHtml(val)}</span></div>`;
   const hasMat = w.materialsCost !== undefined && w.materialsCost !== null && w.materialsCost !== '';
   const labor = (parseFloat(w.hours)||0) * (parseFloat(w.rate)||0);
@@ -2044,6 +2063,8 @@ function moveWoToPaid(serverWo){
   });
   if (isPaidDeleted(serverWo.number)) return;
   const merged = mergeSentWo(phone || {}, serverWo);
+  // Phone copy (often the Submitted card) wins wherever the paid email left a field blank
+  if (phone) keepNonBlank(merged, phone, {status:1, corrigoStatus:1});
   merged.status = 'paid';
   let paid = getData('corrigo_paid');
   const idx = paid.findIndex(x => normWo(x.number) === key);
@@ -2079,8 +2100,9 @@ async function loadJobs(){
         .filter(w => !isRemovedByOverride(overrides, w) && !renamedAway(overrides, w))
         .filter(w => { const k = normStrict(w.number); if (!(k in seenNew)) { seenNew[k] = w; return true; }
           const paidNew = isPaidNotice(w), paidOld = isPaidNotice(seenNew[k]);
-          if (paidNew && !paidOld) { const prev = seenNew[k]; Object.assign(seenNew[k], w); Object.keys(prev).forEach(f => { if (f !== 'status' && f !== 'corrigoStatus' && (seenNew[k][f] == null || seenNew[k][f] === '')) seenNew[k][f] = prev[f]; }); }
-          else if (paidOld && !paidNew) { Object.keys(w).forEach(f => { if (f === 'status' || f === 'corrigoStatus') return; if (seenNew[k][f] == null || seenNew[k][f] === '') seenNew[k][f] = w[f]; }); }
+          const paidSkip = {status:1, corrigoStatus:1};
+          if (paidNew && !paidOld) { const prev = Object.assign({}, seenNew[k]); Object.assign(seenNew[k], w); keepNonBlank(seenNew[k], prev, paidSkip); }
+          else if (paidOld && !paidNew) { keepNonBlank(seenNew[k], w, paidSkip); }
           else if (w.status === 'sent_to_corrigo' && seenNew[k].status !== 'sent_to_corrigo') { Object.assign(seenNew[k], w); }
           else { Object.keys(w).forEach(f => { if (seenNew[k][f] == null || seenNew[k][f] === '') seenNew[k][f] = w[f]; }); }
           return false; });
@@ -2412,7 +2434,7 @@ const HOWTO = {
   finalize: 'How to use: Tap Enter Hours, Rate & Submit on each job; it then moves to Completed.',
   completedtab: 'How to use: Check the invoice details and edit if needed. The bot sends these to Corrigo around 7 AM and 7 PM and moves them to Submitted.',
   senttocorrigo: 'How to use: Jobs already submitted to Corrigo. Tap Corrigo Receipt to see what was sent, Job Image Submitted to see the picture, or Proof It Was Submitted to see the CruChat.',
-  paid: 'How to use: Jobs Corrigo has marked paid. They land here when a paid email comes in. Nothing else to do.',
+  paid: 'How to use: Jobs Corrigo has marked paid. Tap Corrigo Receipt to see what was sent, or View Paid Email to read the payment notice.',
   addwo: 'How to use: Type a work order number and description, then tap Add to Inbox.',
   settings: 'How to use: Name this phone or reset the app. You normally do not need anything here.'
 };
