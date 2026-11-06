@@ -11,7 +11,9 @@
 body { margin:0; background:#0f0f17; color:#fff; font-family:-apple-system,sans-serif; }
 header { padding:16px; background:linear-gradient(135deg,#0099ff,#00cc66); position:sticky; top:0; }
 h1 { margin:0; font-size:24px; }
-.tabs { display:flex; gap:8px; overflow:auto; padding:12px; }
+.tabs { display:flex; gap:8px; overflow:auto; padding:12px; align-items:flex-end; }
+.stepwrap { display:flex; flex-direction:column; align-items:center; flex-shrink:0; }
+.steplabel { color:#facc15; font-size:16px; font-weight:800; margin-bottom:4px; white-space:nowrap; }
 .tab { background:#1c1c2e; border:0; color:#fff; border-radius:12px; padding:12px 14px; font-size:18px; font-weight:700; }
 .wrap { padding:12px; }
 .card { background:#1c1c2e; border-radius:16px; padding:16px; margin-bottom:12px; }
@@ -183,8 +185,8 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 <body>
 <header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v35-202611052016</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
-  <button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button>
-  <button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button>
+  <div class="stepwrap"><div class="steplabel">Step 1 ⭐️</div><button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button></div>
+  <div class="stepwrap"><div class="steplabel">Step 2 ⭐️</div><button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button></div>
   <button class="tab" onclick="show('declined')">Declined <span id="declinedCount">0</span></button>
   <button class="tab" onclick="show('bidding')">Bidding <span id="biddingCount">0</span></button>
   <button class="tab" onclick="show('almostdue')">⚠️ Almost Due <span id="almostDueCount">0</span></button>
