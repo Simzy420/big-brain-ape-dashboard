@@ -4,9 +4,9 @@
       "id": "druck-live-book-confirm",
       "priority": "high",
       "title": "Confirm the Druck cycle live Hyperliquid book is OK",
-      "subtitle": "11/5 cycle (deb23c2d): pyramided GOLD 0.09\u21920.18 @ $4,073.6 blended \u00b7 3x isolated \u00b7 acct ~$1,197 \u00b7 outside paper-only / no-leverage rule",
+      "subtitle": "11/6 cycle (7714ae46): held GOLD 0.18 @ $4,073.6 blended through pullback · 3x isolated · acct ~$1,186–$1,191 · outside paper-only / no-leverage rule",
       "steps": [
-        "Open the cycle state link below and look at the current book (11/5: the cycle pyramided GOLD from a 0.09 probe to 0.18 conviction at a $4,073.6 blended entry, 3x isolated, cut below $3,800, next add 0.27 above $4,200. positions.json is still stale \u2014 snapshots have not run since 11/3 \u2014 so use latest-state.json).",
+        "Open the cycle state link below and look at the current book (11/6: the cycle held GOLD 0.18 conviction at a $4,073.6 blended entry through a pullback to ~$4,049, still 3x isolated, cut below $3,800, next add 0.27 above $4,200. Positions snapshots are writing again — 5 AM and 5 PM — so positions.json and latest-state.json both show GOLD 0.18).",
         "Decide: is the daily trading cycle allowed to trade live with 3x leverage?",
         "If YES: tell Chief of Staff it's intended, and we'll stop flagging it in the nightly.",
         "If NO: tell Chief of Staff to pause the Druck cycle and flatten or move it to paper. A bot will do the technical steps.",
@@ -18,8 +18,12 @@
           "url": "https://github.com/Simzy420/big-brain-ape-dashboard/blob/main/latest-state.json"
         },
         {
-          "label": "11/5 trading cycle commit",
-          "url": "https://github.com/Simzy420/big-brain-ape-dashboard/commit/deb23c2d"
+          "label": "11/6 trading cycle commit",
+          "url": "https://github.com/Simzy420/big-brain-ape-dashboard/commit/7714ae46"
+        },
+        {
+          "label": "5 PM positions snapshot",
+          "url": "https://github.com/Simzy420/big-brain-ape-dashboard/commit/8a5fcd06"
         },
         {
           "label": "Tasks dashboard",
@@ -31,12 +35,12 @@
       "id": "wan22-hf-space-sync",
       "priority": "high",
       "title": "Push Wan templates space/ to Hugging Face Space",
-      "subtitle": "PR #1 merged on GitHub \u00b7 live HF Space is separate git \u2014 gallery won\u2019t update until you push",
+      "subtitle": "PR #1 merged on GitHub · live HF Space is separate git — gallery won’t update until you push",
       "steps": [
         "Open https://huggingface.co/spaces/Simzy/Wan-2.2-templates/tree/main",
         "Replace space files with the merged repo copies: space/app.py, space/requirements.txt, space/README.md (from Simzy420/wan22-templates main)",
         "Commit + push on the HF Space repo (or use huggingface-cli upload)",
-        "Hard-refresh https://simzy-wan-2-2-templates.hf.space \u2014 confirm autoplay gallery + How to use & create templates",
+        "Hard-refresh https://simzy-wan-2-2-templates.hf.space — confirm autoplay gallery + How to use & create templates",
         "Reply done in Chief of Staff or Command Center"
       ],
       "links": [
@@ -65,7 +69,7 @@
       "subtitle": "CC Files pack for 2026-09-22 has daily print; hourly artifact not found",
       "steps": [
         "Decide where hourly prints live (desk bot export, Hyperliquid tape, Buffer, other)",
-        "Reply with path, repo, or export link \u2014 or say \u201cno hourly print\u201d so we close the gap",
+        "Reply with path, repo, or export link — or say “no hourly print” so we close the gap",
         "Optional: drop a sample file into the board pack folder"
       ],
       "links": [
@@ -87,11 +91,11 @@
       "id": "gmail-identity-filters",
       "priority": "medium",
       "title": "Create Gmail filters for Identity labels",
-      "subtitle": "API scopes block us from creating filters \u2014 2 min in Gmail UI",
+      "subtitle": "API scopes block us from creating filters — 2 min in Gmail UI",
       "steps": [
-        "Open Gmail Settings \u2192 Filters and Blocked Addresses (link below)",
-        "Create filter: To has caseylsims@gmail.com \u2192 Apply label Identity/Gmail",
-        "Create filter: To has caseysims463@yahoo.com \u2192 Apply label Identity/Yahoo",
+        "Open Gmail Settings → Filters and Blocked Addresses (link below)",
+        "Create filter: To has caseylsims@gmail.com → Apply label Identity/Gmail",
+        "Create filter: To has caseysims463@yahoo.com → Apply label Identity/Yahoo",
         "Optionally check 'Also apply to matching conversations'",
         "Save both filters"
       ],
@@ -106,9 +110,9 @@
       "id": "bitly-finish-signup",
       "priority": "low",
       "title": "Finish Bitly free signup (password step)",
-      "subtitle": "Only if you still want short links \u2014 signup was stuck on password",
+      "subtitle": "Only if you still want short links — signup was stuck on password",
       "steps": [
-        "Open the Bitly signup link below (or bitly.com \u2192 Sign up)",
+        "Open the Bitly signup link below (or bitly.com → Sign up)",
         "Complete email + password",
         "Verify email if asked",
         "Tell Chief of Staff when done so we can connect the connector"
@@ -129,7 +133,7 @@
         "Go to GitHub Settings (link below)",
         "Click Change username (once every 30 days)",
         "Type: Big-Brain-Ape (check availability first)",
-        "Confirm \u2014 repos/stars/followers move automatically",
+        "Confirm — repos/stars/followers move automatically",
         "Tell Chief of Staff when done so links get updated"
       ],
       "links": [
@@ -143,7 +147,7 @@
       "id": "virtuals-review",
       "priority": "low",
       "title": "Submit Virtuals Builder Review",
-      "subtitle": "Unlock Elite tier \u2014 compute credits (5 min form)",
+      "subtitle": "Unlock Elite tier — compute credits (5 min form)",
       "steps": [
         "Open the Virtuals Builder Review form",
         "Fill in Big Brain Ape project details",
