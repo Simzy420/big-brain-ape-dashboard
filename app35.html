@@ -3365,65 +3365,54 @@ nextStock();
 // STOCK GAINERS & LOSERS + TRENDING
 // ==============================
 window.loadStockGainersLosers=function(){
-var FMP_KEY='FYPPeClubVq4A3KcyNkDH5S1g2Rw1SCL';
-// Fetch top gainers and losers from FMP
-fetch('https://financialmodelingprep.com/stable/gainers?apikey='+FMP_KEY)
-.then(function(r){return r.json()})
-.then(function(data){
-if(!data||!data.length)return;
-var gainers=data.slice(0,10);
-var gLabels=[],gData=[];
-for(var i=0;i<gainers.length;i++){
-gLabels.push(gainers[i].symbol||gainers[i].ticker||'?');
-gData.push(parseFloat(gainers[i].changePercentage||gainers[i].changesPercentage||0));
-}
-var gc=document.getElementById('stockGainersChart');
-if(gc&&typeof Chart!=='undefined'){
-new Chart(gc,{
-type:'bar',
-data:{labels:gLabels,datasets:[{
-label:'% Change',data:gData,
-backgroundColor:gData.map(function(v){return v>=0?'#3fb950':'#f85149'}),
-borderRadius:6
-}]},
-options:{responsive:true,maintainAspectRatio:false,
-plugins:{legend:{display:false},
-tooltip:{callbacks:{label:function(ctx){return ctx.parsed.y.toFixed(2)+'%'}}}},
-scales:{y:{grid:{color:'rgba(48,54,61,0.6)'},ticks:{color:'#8b949e',callback:function(v){return v+'%'}}},
-x:{grid:{display:false},ticks:{color:'#e6edf3',maxRotation:45}}}}
-});
-}
-})
-.catch(function(){});
-
-fetch('https://financialmodelingprep.com/stable/losers?apikey='+FMP_KEY)
-.then(function(r){return r.json()})
-.then(function(data){
-if(!data||!data.length)return;
-var losers=data.slice(0,10);
-var lLabels=[],lData=[];
-for(var i=0;i<losers.length;i++){
-lLabels.push(losers[i].symbol||losers[i].ticker||'?');
-lData.push(parseFloat(losers[i].changePercentage||losers[i].changesPercentage||0));
-}
-var lc=document.getElementById('stockLosersChart');
-if(lc&&typeof Chart!=='undefined'){
-new Chart(lc,{
-type:'bar',
-data:{labels:lLabels,datasets:[{
-label:'% Change',data:lData,
-backgroundColor:lData.map(function(v){return v>=0?'#3fb950':'#f85149'}),
-borderRadius:6
-}]},
-options:{responsive:true,maintainAspectRatio:false,
-plugins:{legend:{display:false},
-tooltip:{callbacks:{label:function(ctx){return ctx.parsed.y.toFixed(2)+'%'}}}},
-scales:{y:{grid:{color:'rgba(48,54,61,0.6)'},ticks:{color:'#8b949e',callback:function(v){return v+'%'}}},
-x:{grid:{display:false},ticks:{color:'#e6edf3',maxRotation:45}}}}
-});
-}
-})
-.catch(function(){});
+ var FMP_KEY='FYPPeClubVq4A3KcyNkDH5S1g2Rw1SCL';
+ function showMoverMessage(canvasId,message){
+  var canvas=document.getElementById(canvasId);
+  if(!canvas||!canvas.parentNode)return;
+  canvas.parentNode.innerHTML='<div style="height:100%;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--text2);padding:16px;box-sizing:border-box">'+message+'</div>';
+ }
+ function loadMover(endpoint,canvasId,color){
+  return fetch('https://financialmodelingprep.com/stable/'+endpoint+'?apikey='+encodeURIComponent(FMP_KEY))
+   .then(function(response){
+    if(!response.ok)throw new Error('HTTP '+response.status);
+    return response.json();
+   })
+   .then(function(data){
+    if(!Array.isArray(data))throw new Error('Unexpected API response');
+    if(!data.length){showMoverMessage(canvasId,'No stock mover data is available right now.');return;}
+    var labels=[],values=[];
+    for(var i=0;i<data.length&&labels.length<10;i++){
+     var row=data[i]||{};
+     var change=parseFloat(row.changesPercentage!=null?row.changesPercentage:row.changePercentage);
+     if(!row.symbol||!isFinite(change))continue;
+     labels.push(row.symbol);
+     values.push(change);
+    }
+    if(!labels.length){showMoverMessage(canvasId,'No stock mover data is available right now.');return;}
+    var canvas=document.getElementById(canvasId);
+    if(!canvas)return;
+    if(typeof Chart==='undefined'){
+     showMoverMessage(canvasId,'The chart library did not load. Refresh to try again.');
+     return;
+    }
+    new Chart(canvas,{
+     type:'bar',
+     data:{labels:labels,datasets:[{label:'% Change',data:values,backgroundColor:color,borderRadius:6}]},
+     options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return (ctx.raw>=0?'+':'')+ctx.raw.toFixed(2)+'%';}}}},
+      scales:{x:{grid:{color:'rgba(48,54,61,0.6)'},ticks:{color:'#8b949e',callback:function(v){return v+'%';}}},
+       y:{grid:{display:false},ticks:{color:'#e6edf3'}}}}
+    });
+   })
+   .catch(function(error){
+    console.warn('Stock mover request failed ('+endpoint+'): '+(error&&error.message?error.message:'request failed'));
+    showMoverMessage(canvasId,'Stock mover data is temporarily unavailable.');
+   });
+ }
+ return Promise.all([
+  loadMover('biggest-gainers','stockGainersChart','#10b981'),
+  loadMover('biggest-losers','stockLosersChart','#ef4444')
+ ]);
 };
 
 window.loadTrendingStocks=function(){
