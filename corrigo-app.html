@@ -183,7 +183,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v36-202611061813</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:12px;opacity:0.7;">v37-202611072352</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <div class="stepwrap"><div class="steplabel">Step 1 ⭐️</div><button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button></div>
   <div class="stepwrap"><div class="steplabel">Step 2 ⭐️</div><button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button></div>
@@ -316,7 +316,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v36-202611061813';
+const APP_VERSION = 'v37-202611072352';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -347,6 +347,7 @@ function getData(k){ try { return JSON.parse(localStorage.getItem(k)||'[]'); } c
 function saveData(k,v){
   try {
     localStorage.setItem(k, JSON.stringify(v));
+    return true;
   } catch(e) {
     if (e.name === 'QuotaExceededError' || (e.message && e.message.includes('quota'))) {
       // Strip photos from this save and retry
@@ -356,7 +357,7 @@ function saveData(k,v){
           if (copy.photos) copy.photos = copy.photos.map(p => ({ name: p.name, data: '' }));
           return copy;
         });
-        try { localStorage.setItem(k, JSON.stringify(slim)); return; } catch(e2) {}
+        try { localStorage.setItem(k, JSON.stringify(slim)); return true; } catch(e2) {}
       }
       // Last resort: clear old photos from other keys
       ['corrigo_completed','corrigo_submitted','corrigo_inbox','corrigo_accepted','corrigo_paid'].forEach(key => {
@@ -370,8 +371,9 @@ function saveData(k,v){
           localStorage.setItem(key, JSON.stringify(slim));
         } catch(ignore) {}
       });
-      try { localStorage.setItem(k, JSON.stringify(v)); } catch(e3) {
+      try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch(e3) {
         console.warn('Still could not save after cleanup:', e3);
+        return false;
       }
     } else {
       throw e;
@@ -382,10 +384,13 @@ async function forceReload(){
   // DO NOT wipe localStorage — only re-fetch from GitHub and sync
   // This preserves all existing data (completed, submitted, etc.)
   try {
-    await loadJobs();
+    const loaded = await loadJobs();
     render();
     try { await sendPickup(true); } catch(e) { console.error(e); }
-    reloadToast('✅ Synced from server!', false);
+    if (!loaded || loaded.workOrdersOk === false) reloadToast('⚠️ Reload failed: work orders did not load', true);
+    else if (loaded.actionsOk === false) reloadToast('⚠️ Reload failed: the accept list did not load', true);
+    else if (loaded.overridesOk === false) reloadToast('⚠️ Reload failed: phone instructions did not load', true);
+    else reloadToast('✅ Synced from server!', false);
   } catch(e) { console.error(e); reloadToast('⚠️ Reload failed: ' + (e && e.message ? e.message : e), true); }
 }
 function reloadToast(msg, isErr){
@@ -905,11 +910,23 @@ function choose(id, action){
   delete wo.fromOverride;
   wo.status = action==='accept' ? 'accepted' : 'declined';
   inbox.splice(idx,1);
-  saveData('corrigo_inbox', inbox);
+  const inboxOk = saveData('corrigo_inbox', inbox);
   const key = action==='accept' ? 'corrigo_accepted' : 'corrigo_declined';
   const arr = getData(key);
   arr.unshift(wo);
-  saveData(key, arr);
+  const saved = saveData(key, arr);
+  if (action==='accept') collapseSamePlaceTwins();
+  const stored = getData(key).some(w => w.id===id || (action==='accept' && samePlace(w, wo) && isDotChild(wo.number, w.number)));
+  if (inboxOk === false || saved === false || !stored) {
+    const back = getData('corrigo_inbox');
+    if (!back.some(w => w.id===id)) { back.unshift(wo); saveData('corrigo_inbox', back); }
+    const kept = getData(key).filter(w => w.id!==id);
+    saveData(key, kept);
+    render();
+    show('inbox');
+    alert('This phone could not store that. The job is still in the Inbox.');
+    return;
+  }
   render();
   show(action==='accept' ? 'accepted' : 'declined');
   playSound();
@@ -1960,11 +1977,15 @@ function ovMatches(o, w){
   if (o.onlyIfInvoice !== undefined && String(w.invoiceNumber||'') !== String(o.onlyIfInvoice)) return false;
   return true;
 }
+let lastOverridesFetchOk = false;
 async function fetchOverrides(){
+  lastOverridesFetchOk = false;
   try {
     const r = await fetch('https://raw.githubusercontent.com/Simzy420/big-brain-ape-dashboard/main/corrigo-overrides.json?v=' + Date.now());
     if (!r.ok) return [];
-    const d = await r.json(); return Array.isArray(d.overrides) ? d.overrides : [];
+    const d = await r.json();
+    lastOverridesFetchOk = true;
+    return Array.isArray(d.overrides) ? d.overrides : [];
   } catch(e) { return []; }
 }
 // v16: a WO renamed by an override (old number) must not be re-imported once the renamed card exists
@@ -2072,7 +2093,63 @@ function moveWoToPaid(serverWo){
   else paid[idx] = mergeSentWo(paid[idx], merged);
   saveData('corrigo_paid', paid);
 }
+function samePlace(a, b){
+  const p = normWo(a && a.location), q = normWo(b && b.location);
+  return !!p && p === q;
+}
+function isDotChild(parentNum, childNum){
+  const p = normWo(parentNum), c = normWo(childNum);
+  return !!p && c.indexOf(p + '.') === 0;
+}
+// Same address and one number is the other plus a dot suffix: keep the longer number.
+// A different address is a different job, even when the numbers share a prefix.
+function collapseSamePlaceTwins(){
+  let inbox = getData('corrigo_inbox');
+  let accepted = getData('corrigo_accepted');
+  const dropIn = new Set(), dropAcc = new Set(), promote = [];
+  const pool = inbox.concat(accepted);
+  pool.forEach(parent => {
+    pool.forEach(child => {
+      if (parent === child || !samePlace(parent, child) || !isDotChild(parent.number, child.number)) return;
+      const childInAcc = accepted.some(a => String(a.number) === String(child.number));
+      const parentInAcc = accepted.some(a => String(a.number) === String(parent.number));
+      const childInIn = inbox.some(a => String(a.number) === String(child.number));
+      if (!(child.corrigoAccepted === true || parent.corrigoAccepted === true || childInAcc || parentInAcc)) return;
+      dropIn.add(String(parent.number));
+      if (parentInAcc) dropAcc.add(String(parent.number));
+      if (!childInAcc && childInIn) {
+        const src = inbox.find(x => String(x.number) === String(child.number)) || child;
+        promote.push(Object.assign({}, src, { status: 'accepted', fromOverride: src.fromOverride === true || child.corrigoAccepted === true }));
+        dropIn.add(String(child.number));
+      }
+    });
+  });
+  if (!dropIn.size && !dropAcc.size && !promote.length) return false;
+  const nextIn = inbox.filter(w => !dropIn.has(String(w.number)));
+  if (nextIn.length !== inbox.length) saveData('corrigo_inbox', nextIn);
+  let nextAcc = accepted.filter(w => !dropAcc.has(String(w.number)));
+  promote.forEach(w => { if (!nextAcc.some(x => String(x.number) === String(w.number))) nextAcc.unshift(w); });
+  if (dropAcc.size || promote.length) saveData('corrigo_accepted', nextAcc);
+  return true;
+}
+function laterStageHas(num){
+  return ['corrigo_completed','corrigo_submitted','corrigo_sent_to_corrigo','corrigo_resolved','corrigo_disputed','corrigo_paid'].some(t => getData(t).some(x => String(x.number) === String(num)));
+}
+function placeCorrigoAccepted(w){
+  const num = String(w.number);
+  if (laterStageHas(num)) return;
+  ['corrigo_declined','corrigo_bidding','corrigo_saved'].forEach(t => {
+    const a = getData(t), k = a.filter(x => String(x.number) !== num);
+    if (k.length !== a.length) saveData(t, k);
+  });
+  let accepted = getData('corrigo_accepted');
+  if (!accepted.some(x => String(x.number) === num)) {
+    accepted.unshift(Object.assign({}, w, { status: 'accepted', fromOverride: true }));
+    saveData('corrigo_accepted', accepted);
+  }
+}
 async function loadJobs(){
+  let workOrdersOk = false, actionsOk = false;
   try {
     // 1. Load new work orders from work-orders.json
     let jobs = [];
@@ -2086,6 +2163,7 @@ async function loadJobs(){
       }
       if (!res.ok) throw new Error('HTTP ' + res.status);
       jobs = await res.json();
+      workOrdersOk = Array.isArray(jobs);
       console.log('[loadJobs] Fetched ' + (Array.isArray(jobs) ? jobs.length : 0) + ' work orders');
     } catch(fetchErr) {
       console.warn('Could not load work-orders.json:', fetchErr.message);
@@ -2150,6 +2228,9 @@ async function loadJobs(){
             sent[exIdx] = mergeSentWo(sent[exIdx], w);
           }
           saveData('corrigo_sent_to_corrigo', sent);
+        } else if (w.corrigoAccepted === true && w.status !== 'completed' && w.status !== 'disputed') {
+          inbox = inbox.filter(x => String(x.number) !== num);
+          placeCorrigoAccepted(w);
         }
       });
       // Rebuild seen AFTER status sync so moved WOs aren't skipped
@@ -2169,6 +2250,8 @@ async function loadJobs(){
           let completed = getData('corrigo_completed');
           completed.unshift(w);
           saveData('corrigo_completed', completed);
+        } else if (w.corrigoAccepted === true) {
+          placeCorrigoAccepted(w);
         } else {
           inbox.unshift(w);
         }
@@ -2181,6 +2264,7 @@ async function loadJobs(){
     try {
       const actRes = await fetch('https://raw.githubusercontent.com/Simzy420/big-brain-ape-dashboard/main/corrigo-actions.json?v=' + Date.now());
       if (actRes.ok) {
+        actionsOk = true;
         const actData = await actRes.json();
         const actions = actData.pendingActions || [];
         let changed = false;
@@ -2322,15 +2406,18 @@ async function loadJobs(){
     }
     try { applyOverrides(overrides); } catch(ovErr) { console.error('overrides', ovErr); }
     try { sweepRenamed(overrides); } catch(swErr) { console.error('sweep', swErr); }
+    try { collapseSamePlaceTwins(); } catch(twErr) { console.error('twins', twErr); }
     purgeSentDeleted(); purgeCompletedDeleted();
 
     render();
+    return { workOrdersOk, actionsOk, overridesOk: lastOverridesFetchOk };
   } catch(e) {
     console.error('loadJobs error:', e);
     // Show error message in the app so it's not just zeros silently
     const inboxEl = document.getElementById('inbox');
     if (inboxEl) inboxEl.innerHTML = '<div class="card" style="text-align:center;color:#ff3b30;font-size:18px;">⚠️ Error loading work orders: ' + e.message + '<br><br>Push 🔄 Reload to try again.</div>';
     try { render(); } catch(re) {}
+    return { workOrdersOk, actionsOk, overridesOk: lastOverridesFetchOk };
   }
 }
 // Render immediately with localStorage data or show loading
