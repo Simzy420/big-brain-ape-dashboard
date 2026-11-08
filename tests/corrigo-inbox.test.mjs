@@ -366,7 +366,7 @@ test('Reload reports a failed work-order fetch and a real success', async () => 
   await session.page.close();
 });
 
-test('a phone delete does not make Reload say the sync failed', async () => {
+test('a phone delete is not reported as synced and stays on the phone', async () => {
   const accepted = Object.assign({}, plain, { status: 'accepted' });
   const session = await openApp({
     workOrders: [plain],
@@ -379,16 +379,19 @@ test('a phone delete does not make Reload say the sync failed', async () => {
   await session.page.evaluate(() => forceReload());
   const got = await session.page.evaluate(() => ({
     toast: document.getElementById('reloadToast').textContent,
-    pill: document.getElementById('syncStatus').innerText
+    pill: document.getElementById('syncStatus').innerText,
+    deleted: JSON.parse(localStorage.getItem('corrigo_sent_deleted') || '{}'),
+    accepted: JSON.parse(localStorage.getItem('corrigo_accepted') || '[]').map(w => w.number)
   }));
-  const sent = session.state.relayBodies.filter(b => (b.actions || []).length);
-  assert.ok(sent.length);
-  sent.forEach(b => {
-    assert.equal((b.actions || []).some(a => /_delete$/.test(a.action)), false);
-    assert.ok((b.actions || []).some(a => a.action === 'accept' && a.number === plain.number));
-  });
-  assert.equal(got.toast, '✅ Synced from server!');
-  assert.match(got.pill, /Synced to bot/);
+  assert.equal(session.state.relayBodies.length, 0);
+  assert.equal(got.deleted['J5013259-00415'] != null, true);
+  assert.deepEqual(got.accepted, [plain.number]);
+  assert.match(got.toast, /could not send its changes/);
+  assert.equal(got.toast.includes('Synced from server'), false);
+  assert.match(got.pill, /List reloaded/);
+  assert.match(got.pill, /Sync failed/);
+  assert.match(got.pill, /still on this phone/);
+  assert.equal(/Synced to bot/.test(got.pill), false);
   await session.page.close();
 });
 
