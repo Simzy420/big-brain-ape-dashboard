@@ -183,7 +183,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v38-202611081722</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v39-202611082023</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <div class="stepwrap"><div class="steplabel">Step 1 ⭐️</div><button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button></div>
   <div class="stepwrap"><div class="steplabel">Step 2 ⭐️</div><button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button></div>
@@ -316,7 +316,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v38-202611081722';
+const APP_VERSION = 'v39-202611082023';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -390,7 +390,13 @@ async function forceReload(){
     if (!loaded || loaded.workOrdersOk === false) reloadToast('⚠️ Reload failed: work orders did not load', true);
     else if (loaded.actionsOk === false) reloadToast('⚠️ Reload failed: the accept list did not load', true);
     else if (loaded.overridesOk === false) reloadToast('⚠️ Reload failed: phone instructions did not load', true);
-    else reloadToast('✅ Synced from server!', false);
+    else {
+      const pill = (document.getElementById('syncStatus') || {}).innerText || '';
+      if (/Sync failed/i.test(pill)) {
+        setSyncStatus('List reloaded. ' + pill, '#f59e0b');
+        reloadToast('✅ Work orders reloaded. This phone could not send its changes.', true);
+      } else reloadToast('✅ Synced from server!', false);
+    }
   } catch(e) { console.error(e); reloadToast('⚠️ Reload failed: ' + (e && e.message ? e.message : e), true); }
 }
 function reloadToast(msg, isErr){
@@ -1181,13 +1187,23 @@ async function fetchActionsFile(token){
 }
 const RELAY_URL = 'https://corrigo-sync-relay.vercel.app/api/sync';
 const RELAY_APP_KEY = 'csr-e76ca03362f3597203e4f90b'; // light abuse guard only; the page is public
+// The relay replaces this phone's saved actions with the posted list, and it rejects a delete.
+// Sending the other actions without the delete would erase that delete, so send nothing and keep it here.
+function relayHeldDeletes(list){ return (list || []).filter(a => a && /_delete$/.test(String(a.action))); }
 // Phones with no GitHub token sync through the relay, which does the same merge server-side
 async function sendViaRelay(silent){
   setSyncStatus('Syncing to bot…', '#ff9500');
   try {
     const myName = getDeviceName();
+    const mine = buildLocalActions();
+    const held = relayHeldDeletes(mine);
+    if (held.length) {
+      setSyncStatus('Sync failed: ' + held.length + ' delete' + (held.length === 1 ? '' : 's') + ' still on this phone. Nothing was sent.', '#ff3b30');
+      if (!silent) alert('Saved on the phone. A delete could not be sent, so nothing was sent.');
+      return;
+    }
     const res = await fetch(RELAY_URL, { method:'POST', headers:{ 'Content-Type':'application/json', 'X-App-Key':RELAY_APP_KEY },
-      body: JSON.stringify({ deviceId:getDeviceId(), deviceName:myName, actions:buildLocalActions() }) });
+      body: JSON.stringify({ deviceId:getDeviceId(), deviceName:myName, actions:mine }) });
     if (res.ok) {
       setSyncStatus('Synced to bot ✓ ' + nowTime() + ' from ' + (myName || 'this phone'), '#00cc66');
       if (!silent) alert('Sent for Corrigo pickup.');
