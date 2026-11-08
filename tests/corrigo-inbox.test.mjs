@@ -111,8 +111,8 @@ function json(req, body, status = 200) {
   });
 }
 
-async function openApp({ workOrders = [], overrides = [], actions = [], seed = {}, fail = {} } = {}) {
-  const state = { fail, writes: [] };
+async function openApp({ workOrders = [], overrides = [], actions = [], seed = {}, fail = {}, allowRelay = false } = {}) {
+  const state = { fail, allowRelay, writes: [], relayBodies: [] };
   const page = await browser.newPage();
   await page.setViewport({ width: 390, height: 844, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
   await page.setRequestInterception(true);
@@ -121,6 +121,17 @@ async function openApp({ workOrders = [], overrides = [], actions = [], seed = {
     const method = req.method();
     if (method !== 'GET' && method !== 'HEAD') {
       state.writes.push(method + ' ' + url.split('?')[0]);
+      if (state.allowRelay && url.includes('/api/sync')) {
+        if (method === 'OPTIONS') {
+          return req.respond({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': 'Content-Type, X-App-Key', 'access-control-allow-methods': 'POST, OPTIONS' } });
+        }
+        let body = {};
+        try { body = JSON.parse(req.postData() || '{}'); } catch (e) {}
+        state.relayBodies.push(body);
+        const bad = (body.actions || []).some(a => /_delete$/.test(a.action));
+        if (bad) return json(req, { error: 'bad action entry' }, 400);
+        return json(req, { ok: true });
+      }
       req.abort();
       return;
     }
@@ -148,7 +159,12 @@ async function openApp({ workOrders = [], overrides = [], actions = [], seed = {
     localStorage.clear();
     Object.keys(saved || {}).forEach(key => localStorage.setItem(key, JSON.stringify(saved[key])));
   }, seed);
-  await page.goto(origin + '/corrigo-app.html', { waitUntil: 'networkidle0', timeout: 20000 });
+  await page.goto(origin + '/corrigo-app.html', { waitUntil: 'domcontentloaded', timeout: 20000 });
+  await page.waitForFunction(() => {
+    const pill = (document.getElementById('syncStatus') || {}).innerText || '';
+    const inbox = document.getElementById('inbox');
+    return !!(inbox && inbox.innerText && !/Syncing|starting/i.test(pill));
+  }, { timeout: 15000 });
   return { page, dialogs, state };
 }
 
@@ -323,7 +339,7 @@ test('another phone accepting one job leaves the same-address neighbor in Inbox'
 });
 
 test('Reload reports a failed work-order fetch and a real success', async () => {
-  const session = await openApp({ workOrders: [plain], fail: {} });
+  const session = await openApp({ workOrders: [plain], fail: {}, allowRelay: true });
   session.state.fail.workOrders = true;
   const failed = await session.page.evaluate(async () => {
     await forceReload();
@@ -345,6 +361,34 @@ test('Reload reports a failed work-order fetch and a real success', async () => 
     return document.getElementById('reloadToast').textContent;
   });
   assert.equal(ok, '✅ Synced from server!');
+  const pill = await session.page.evaluate(() => document.getElementById('syncStatus').innerText);
+  assert.match(pill, /Synced to bot/);
+  await session.page.close();
+});
+
+test('a phone delete does not make Reload say the sync failed', async () => {
+  const accepted = Object.assign({}, plain, { status: 'accepted' });
+  const session = await openApp({
+    workOrders: [plain],
+    allowRelay: true,
+    seed: {
+      corrigo_accepted: [accepted],
+      corrigo_sent_deleted: { 'J5013259-00415': '2026-11-01T21:17:21.194Z' }
+    }
+  });
+  await session.page.evaluate(() => forceReload());
+  const got = await session.page.evaluate(() => ({
+    toast: document.getElementById('reloadToast').textContent,
+    pill: document.getElementById('syncStatus').innerText
+  }));
+  const sent = session.state.relayBodies.filter(b => (b.actions || []).length);
+  assert.ok(sent.length);
+  sent.forEach(b => {
+    assert.equal((b.actions || []).some(a => /_delete$/.test(a.action)), false);
+    assert.ok((b.actions || []).some(a => a.action === 'accept' && a.number === plain.number));
+  });
+  assert.equal(got.toast, '✅ Synced from server!');
+  assert.match(got.pill, /Synced to bot/);
   await session.page.close();
 });
 
