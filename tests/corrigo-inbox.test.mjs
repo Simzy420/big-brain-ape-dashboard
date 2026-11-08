@@ -111,14 +111,27 @@ function json(req, body, status = 200) {
   });
 }
 
-async function openApp({ workOrders = [], overrides = [], actions = [], seed = {}, fail = {}, allowRelay = false } = {}) {
-  const state = { fail, allowRelay, writes: [], relayBodies: [] };
+async function openApp({ workOrders = [], overrides = [], actions = [], seed = {}, fail = {}, allowRelay = false, rejectSavedToken = false } = {}) {
+  const state = { fail, allowRelay, rejectSavedToken, writes: [], relayBodies: [], relayUsedAuth: false, githubCalls: [], githubWrites: [] };
   const page = await browser.newPage();
   await page.setViewport({ width: 390, height: 844, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
   await page.setRequestInterception(true);
   page.on('request', req => {
     const url = req.url();
     const method = req.method();
+    if (/api\.github\.com/i.test(url)) {
+      state.githubCalls.push(method);
+      if (method === 'OPTIONS') {
+        return req.respond({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': 'Authorization, Content-Type, Accept', 'access-control-allow-methods': 'GET, PUT, OPTIONS' } });
+      }
+      if (method === 'PUT' || method === 'POST') {
+        state.githubWrites.push(method);
+        return json(req, { message: 'blocked by test' }, 401);
+      }
+      if (state.rejectSavedToken && method === 'GET') return json(req, { message: 'Bad credentials' }, 401);
+      req.abort();
+      return;
+    }
     if (method !== 'GET' && method !== 'HEAD') {
       state.writes.push(method + ' ' + url.split('?')[0]);
       if (state.allowRelay && url.includes('/api/sync')) {
@@ -128,6 +141,8 @@ async function openApp({ workOrders = [], overrides = [], actions = [], seed = {
         let body = {};
         try { body = JSON.parse(req.postData() || '{}'); } catch (e) {}
         state.relayBodies.push(body);
+        if (req.headers()['authorization']) state.relayUsedAuth = true;
+        if (state.failRelay && method === 'POST') return json(req, { error: 'bad app key' }, 401);
         const bad = (body.actions || []).some(a => /_delete$/.test(a.action));
         if (bad) return json(req, { error: 'bad action entry' }, 400);
         return json(req, { ok: true });
@@ -450,4 +465,72 @@ test('mobile Inbox has no work-description button and the email summary stays', 
   assert.match(summary, /Tree fell and hit the roof/);
   assert.match(summary, /NTE is \$500\.00/);
   await page.close();
+});
+
+test('a rejected saved GitHub token is reported and the phone falls back without deleting it', async () => {
+  const kept = Object.assign({}, plain, { status: 'accepted', photos: [{ name: 'roof.jpg', url: 'https://example.test/roof.jpg' }] });
+  const session = await openApp({ workOrders: [plain], allowRelay: true, rejectSavedToken: true, seed: { corrigo_accepted: [kept] } });
+  session.state.relayBodies = [];
+  session.state.githubCalls = [];
+  session.state.githubWrites = [];
+  await session.page.evaluate(() => localStorage.setItem('github_token', 'rejected-test-token'));
+  await session.page.evaluate(() => forceReload());
+  const got = await session.page.evaluate(() => ({
+    toast: (document.getElementById('reloadToast') || {}).textContent || '',
+    pill: document.getElementById('syncStatus').innerText,
+    token: localStorage.getItem('github_token'),
+    photo: (JSON.parse(localStorage.getItem('corrigo_accepted') || '[]').find(w => w.number === 'J5012937-00391') || {}).photos
+  }));
+  assert.equal(got.token, 'rejected-test-token');
+  assert.equal(session.state.githubWrites.length, 0);
+  assert.ok(session.state.githubCalls.includes('GET'));
+  assert.equal(session.state.relayUsedAuth, false);
+  assert.ok(session.state.relayBodies.length >= 1);
+  assert.equal(JSON.stringify(session.state.relayBodies).includes('rejected-test-token'), false);
+  assert.equal(got.photo && got.photo[0] && got.photo[0].url, 'https://example.test/roof.jpg');
+  assert.match(got.pill, /Saved GitHub token was rejected/);
+  assert.match(got.pill, /Sent without that token/);
+  assert.equal(/read HTTP 401/.test(got.pill), false);
+  assert.match(got.toast, /Sent without the saved GitHub token/);
+  assert.equal(got.toast.includes('could not send'), false);
+  await session.page.close();
+});
+
+test('a rejected token does not send or drop a phone delete', async () => {
+  const session = await openApp({
+    workOrders: [],
+    allowRelay: true,
+    rejectSavedToken: true,
+    seed: { corrigo_sent_deleted: { 'PHONE-LOCAL-DELETE': '2026-11-08T20:00:00.000Z' } }
+  });
+  session.state.relayBodies = [];
+  session.state.githubWrites = [];
+  await session.page.evaluate(() => localStorage.setItem('github_token', 'rejected-test-token'));
+  await session.page.evaluate(() => forceReload());
+  const got = await session.page.evaluate(() => ({
+    pill: document.getElementById('syncStatus').innerText,
+    toast: (document.getElementById('reloadToast') || {}).textContent || '',
+    token: localStorage.getItem('github_token'),
+    deleted: JSON.parse(localStorage.getItem('corrigo_sent_deleted') || '{}')
+  }));
+  assert.equal(got.token, 'rejected-test-token');
+  assert.equal(session.state.relayBodies.length, 0);
+  assert.equal(session.state.githubWrites.length, 0);
+  assert.equal(got.deleted['PHONE-LOCAL-DELETE'], '2026-11-08T20:00:00.000Z');
+  assert.match(got.pill, /Saved GitHub token was rejected/);
+  assert.match(got.pill, /still on this phone/);
+  assert.match(got.pill, /Nothing was sent/);
+  assert.match(got.toast, /could not send its changes/);
+  await session.page.close();
+});
+
+test('a relay 401 without a saved token is not called a GitHub read failure', async () => {
+  const session = await openApp({ workOrders: [plain], allowRelay: true });
+  session.state.failRelay = true;
+  await session.page.evaluate(() => forceReload());
+  const pill = await session.page.evaluate(() => document.getElementById('syncStatus').innerText);
+  assert.match(pill, /Sync failed: HTTP 401/);
+  assert.equal(/read HTTP 401/.test(pill), false);
+  assert.equal(/Saved GitHub token was rejected/.test(pill), false);
+  await session.page.close();
 });
