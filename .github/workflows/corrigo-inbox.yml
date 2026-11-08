@@ -1,0 +1,30 @@
+name: Corrigo inbox
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Install Chrome
+        run: npx --no-install @puppeteer/browsers install chrome --path "$RUNNER_TEMP/chrome"
+      - name: Run Corrigo inbox tests
+        run: |
+          set -euo pipefail
+          CHROME="$(find "$RUNNER_TEMP/chrome" -type f -name chrome | head -1)"
+          if [ -z "$CHROME" ]; then
+            echo "Chrome binary was not installed"
+            find "$RUNNER_TEMP/chrome" -type f | head
+            exit 1
+          fi
+          export CHROME_PATH="$CHROME"
+          npm test
