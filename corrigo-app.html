@@ -183,7 +183,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v40-202611082049</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v41-202611090315</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <div class="stepwrap"><div class="steplabel">Step 1 ⭐️</div><button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button></div>
   <div class="stepwrap"><div class="steplabel">Step 2 ⭐️</div><button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button></div>
@@ -316,7 +316,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v40-202611082049';
+const APP_VERSION = 'v41-202611090315';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -642,7 +642,8 @@ function card(w, canAct, tab){
   const actionBtns = canAct ? `<div class="btn-row"><button class="big accept" onclick="choose('${w.id}','accept')">Accept</button><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button></div><div class="btn-row"><button class="big save" onclick="openBidModal('${w.id}')" style="margin-top:0;">🔨 Bid</button><button class="big save" onclick="saveWo('${w.id}')" style="margin-top:0;background:#666;">💾 Save for Later</button></div><div class="btn-row"><button class="wo-delete" onclick="deleteWo('${w.id}')" style="width:100%;margin-top:0;">🗑️ Delete Work Order</button></div>` : `<div class="btn-row"><button class="big decline" onclick="unaccept('${w.id}')" style="background:#f44336;">↩ Unaccept</button><button class="wo-delete" onclick="deleteWo('${w.id}')">🗑️ Delete</button></div><p class="muted">Waiting for Corrigo pickup</p>`;
   // Inbox: Accept/Decline only. Work description is added later on the Accepted tab.
   const workDescBtn = tab === 'inbox' ? '' : `<button class="email-btn" style="border-color:#ff9500;color:#ff9500;background:rgba(255,149,0,0.15);" onclick="openWorkDesc('${w.id}')">📝 Add Work Description</button>`;
-  const emailBtn = w.emailContent ? `<button class="email-btn" onclick="viewEmail('${w.id}')">📧 View Original Email</button>` : '';
+  // Accepted cards always show View Original Email so the row matches, even when no email was saved.
+  const emailBtn = (String(w.emailContent || '').trim() || tab === 'accepted') ? `<button class="email-btn" onclick="viewEmail('${w.id}')">📧 View Original Email</button>` : '';
   const extraBtns = (workDescBtn || emailBtn) ? `<div class="btn-row">${workDescBtn}${emailBtn}</div>` : '';
   return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>${dateHtml}${fmtLoc(loc) ? '<p>'+fmtLoc(loc)+'</p>' : ''}${desc ? '<p>'+desc+'</p>' : ''}${actionBtns}${extraBtns}</div>`;
 }
@@ -1504,7 +1505,7 @@ function viewEmail(id){
   const paidMail = String(wo.status) === 'paid' && wo.paidEmailContent;
   const content = paidMail ? wo.paidEmailContent : (wo.emailContent || wo.paidEmailContent || '');
   const subject = paidMail ? (wo.paidEmailSubject || wo.emailSubject) : (wo.emailSubject || wo.paidEmailSubject);
-  if (!content) { alert('No email saved for this work order'); return; }
+  if (!String(content || '').trim()) { alert('No original email is saved for this work order.'); return; }
   document.getElementById('emailModalSubject').textContent = subject || '(no subject)';
   try { renderEmailSummary(wo); } catch(e) { console.error(e); const b=document.getElementById('emailModalSummary'); if(b) b.style.display='none'; }
   document.getElementById('emailModalBody').textContent = content;
@@ -2505,8 +2506,8 @@ function decorateProof(){
     const num = s.textContent.trim(); const list = proofFor(num); if (!list.length) return;
     const e = list[0], acc = e.action === 'accepted';
     const d = document.createElement('div'); d.className = 'proof-box'; d.style.marginTop = '10px';
-    d.innerHTML = `<div style="color:${acc?'#00cc66':'#ff3b30'};font-size:15px;margin-bottom:6px;">${acc?'Accepted':'Declined'} in Corrigo ✓ ${escHtml(proofTime(e.at))}</div><button class="big" style="width:100%;background:#0a84ff;color:#fff;">📸 See Corrigo proof${list.length>1?' ('+list.length+')':''}</button>`;
-    d.querySelector('button').onclick = ev => { ev.stopPropagation(); openProof(num); };
+    // Keep the accept/decline line. The blue See Corrigo proof button is not shown; proof files stay in corrigo-proof/.
+    d.innerHTML = `<div style="color:${acc?'#00cc66':'#ff3b30'};font-size:15px;">${acc?'Accepted':'Declined'} in Corrigo ✓ ${escHtml(proofTime(e.at))}</div>`;
     d.onclick = ev => ev.stopPropagation();
     c.appendChild(d);
   });
