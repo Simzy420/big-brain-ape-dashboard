@@ -111,7 +111,7 @@ function json(req, body, status = 200) {
   });
 }
 
-async function openApp({ workOrders = [], overrides = [], actions = [], seed = {}, fail = {}, allowRelay = false, rejectSavedToken = false } = {}) {
+async function openApp({ workOrders = [], overrides = [], actions = [], seed = {}, fail = {}, allowRelay = false, rejectSavedToken = false, proof = {} } = {}) {
   const state = { fail, allowRelay, rejectSavedToken, writes: [], relayBodies: [], relayUsedAuth: false, githubCalls: [], githubWrites: [] };
   const page = await browser.newPage();
   await page.setViewport({ width: 390, height: 844, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
@@ -164,7 +164,7 @@ async function openApp({ workOrders = [], overrides = [], actions = [], seed = {
       if (state.fail.actions) return json(req, 'nope', 500);
       return json(req, { schemaVersion: 2, pendingActions: actions, devices: {} });
     }
-    if (/corrigo-proof\/index\.json/.test(url)) return json(req, {});
+    if (/corrigo-proof\/index\.json/.test(url)) return json(req, proof);
     if (/corrigo-prewritten\.json/.test(url)) return json(req, { descriptions: {} });
     req.abort();
   });
@@ -522,6 +522,135 @@ test('a rejected token does not send or drop a phone delete', async () => {
   assert.match(got.pill, /Nothing was sent/);
   assert.match(got.toast, /could not send its changes/);
   await session.page.close();
+});
+
+test('Accepted cards use the same four buttons and Corrigo proof is not a button', async () => {
+  const withEmail = wo({
+    id: 'with-email',
+    number: 'I5013496-00375.01',
+    status: 'accepted',
+    location: OTHER_ADDR,
+    description: 'Curb in front of the storage shed is damaged.',
+    emailJobDescription: 'Curb in front of the storage shed is damaged.',
+    emailSummary: 'Curb in front of the storage shed is damaged. NTE is $2,800.00 (labor and materials).',
+    bidAmount: 2800,
+    emailContent: 'Description: Curb in front of the storage shed is damaged.\nNTE: $2800.00\n',
+    emailSubject: 'FW: work order #I5013496-00375.01'
+  });
+  const noEmail = wo({
+    id: 'no-email',
+    number: 'I5017025-00256.01',
+    status: 'accepted',
+    description: 'Clear rain gutters on all 4 sides',
+    emailContent: '   ',
+    emailSubject: '',
+    emailSummary: '',
+    emailJobDescription: ''
+  });
+  const withProof = wo({
+    id: 'with-proof',
+    number: 'I5376025-00135.01.01',
+    status: 'accepted',
+    corrigoProofUrl: 'https://example.test/accepted.png'
+  });
+  const declinedProof = wo({
+    id: 'declined-proof',
+    number: 'J9999999-00001',
+    status: 'declined',
+    description: 'Declined job that has a Corrigo proof file.',
+    emailContent: '',
+    emailSummary: '',
+    emailJobDescription: ''
+  });
+  const sent = {
+    id: 'sent-proof',
+    number: 'J5075335-00131',
+    status: 'sent_to_corrigo',
+    location: '406 South Main Street, GRACE, IDAHO 83241, US',
+    invoiceNumber: '1425',
+    hours: '1',
+    corrigoTotal: 485,
+    cruChatScreenshotUrl: 'https://example.test/cru.png'
+  };
+  const { page, dialogs } = await openApp({
+    workOrders: [],
+    proof: {
+      'I5376025-00135.01.01': [{ action: 'accepted', at: '2026-11-05T19:10:52.299826-07:00', url: 'https://example.test/accepted.png' }],
+      'J9999999-00001': [{ action: 'declined', at: '2026-11-01T12:00:00-07:00', url: 'https://example.test/declined.png' }],
+      'J5075335-00131': [{ action: 'invoice_submitted', at: '2026-11-03T22:22:00Z', url: 'https://example.test/cru.png' }]
+    },
+    seed: {
+      corrigo_accepted: [withEmail, noEmail, withProof],
+      corrigo_declined: [declinedProof],
+      corrigo_sent_to_corrigo: [sent]
+    }
+  });
+  await page.evaluate(async () => { await loadProof(); render(); });
+  const layout = await page.evaluate(() => {
+    const buttons = root => [...root.querySelectorAll('button')].map(b => b.textContent.replace(/\s+/g, ' ').trim());
+    const sideBySide = root => {
+      const rows = [...root.querySelectorAll('.btn-row')];
+      const row = rows[rows.length - 1];
+      const pair = row ? [...row.querySelectorAll('button')] : [];
+      if (pair.length !== 2) return false;
+      const a = pair[0].getBoundingClientRect();
+      const b = pair[1].getBoundingClientRect();
+      return Math.abs(a.top - b.top) < 4 && b.left >= a.right - 1 && a.width > 40 && b.width > 40;
+    };
+    const accepted = [...document.querySelectorAll('#accepted .card')].map(card => ({
+      num: card.querySelector('strong').textContent.trim(),
+      buttons: buttons(card),
+      sideBySide: sideBySide(card),
+      line: (card.querySelector('.proof-box') || {}).innerText || ''
+    }));
+    show('accepted');
+    const acceptedNow = [...document.querySelectorAll('#accepted .card')].map(card => sideBySide(card));
+    const declined = document.querySelector('#declined .card');
+    const sentCard = document.querySelector('#sentToCorrigoList .card');
+    return {
+      accepted,
+      acceptedNow,
+      pageText: document.body.innerText,
+      declinedButtons: buttons(declined),
+      declinedLine: (declined.querySelector('.proof-box') || {}).innerText || '',
+      sentButtons: buttons(sentCard),
+      version: document.getElementById('appVersion').textContent,
+      steps: [...document.querySelectorAll('.steplabel')].map(el => el.textContent)
+    };
+  });
+  const four = ['↩ Unaccept', '🗑️ Delete', '📝 Add Work Description', '📧 View Original Email'];
+  assert.equal(layout.accepted.length, 3);
+  layout.accepted.forEach(card => assert.deepEqual(card.buttons, four));
+  assert.deepEqual(layout.acceptedNow, [true, true, true]);
+  assert.equal(layout.pageText.includes('See Corrigo proof'), false);
+  assert.equal(layout.accepted[0].line, '');
+  assert.equal(layout.accepted[1].line, '');
+  assert.match(layout.accepted[2].line, /Accepted in Corrigo ✓ 11\/05\/26/);
+  assert.equal(layout.declinedButtons.includes('📧 View Original Email'), false);
+  assert.equal(layout.declinedButtons.includes('📸 See Corrigo proof'), false);
+  assert.match(layout.declinedLine, /Declined in Corrigo/);
+  assert.ok(layout.sentButtons.some(label => label.includes('Proof It Was Submitted')));
+  assert.deepEqual(layout.steps, ['Step 1 ⭐️', 'Step 2 ⭐️']);
+  assert.equal(layout.version, APP_VERSION);
+  await page.evaluate(() => {
+    const card = [...document.querySelectorAll('#accepted .card')].find(c => c.innerText.includes('I5017025-00256.01'));
+    [...card.querySelectorAll('button')].find(b => b.textContent.includes('View Original Email')).click();
+  });
+  assert.ok(dialogs.some(m => m === 'No original email is saved for this work order.'));
+  const summary = await page.evaluate(() => {
+    const card = [...document.querySelectorAll('#accepted .card')].find(c => c.innerText.includes('I5013496-00375.01'));
+    [...card.querySelectorAll('button')].find(b => b.textContent.includes('View Original Email')).click();
+    return document.getElementById('emailModalSummary').innerText;
+  });
+  assert.match(summary, /I5013496-00375\.01/);
+  assert.match(summary, /Curb in front of the storage shed/);
+  const stored = await page.evaluate(() => ({
+    accepted: JSON.parse(localStorage.getItem('corrigo_accepted') || '[]').map(w => w.number),
+    proofUrl: (JSON.parse(localStorage.getItem('corrigo_accepted') || '[]').find(w => w.number === 'I5376025-00135.01.01') || {}).corrigoProofUrl
+  }));
+  assert.deepEqual(stored.accepted, ['I5013496-00375.01', 'I5017025-00256.01', 'I5376025-00135.01.01']);
+  assert.equal(stored.proofUrl, 'https://example.test/accepted.png');
+  await page.close();
 });
 
 test('a relay 401 without a saved token is not called a GitHub read failure', async () => {
