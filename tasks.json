@@ -4,9 +4,9 @@
       "id": "druck-live-book-confirm",
       "priority": "high",
       "title": "Confirm the Druck cycle live Hyperliquid book is OK",
-      "subtitle": "11/6 cycle (7714ae46): held GOLD 0.18 @ $4,073.6 blended through pullback · 3x isolated · acct ~$1,186–$1,191 · outside paper-only / no-leverage rule",
+      "subtitle": "11/8 cycle (279a80c1): held GOLD 0.18 @ $4,073.6 blended, mark ~$4,070 (uPnL -$1.91) · 3x isolated · acct $1,188 · outside paper-only / no-leverage rule",
       "steps": [
-        "Open the cycle state link below and look at the current book (11/6: the cycle held GOLD 0.18 conviction at a $4,073.6 blended entry through a pullback to ~$4,049, still 3x isolated, cut below $3,800, next add 0.27 above $4,200. Positions snapshots are writing again — 5 AM and 5 PM — so positions.json and latest-state.json both show GOLD 0.18).",
+        "Open the cycle state link below and look at the current book (11/8: the morning cycle held GOLD 0.18 at a $4,073.6 blended entry with gold ~$4,070, still 3x isolated, no fills, cut below $3,800, next add to 0.27 above $4,200).",
         "Decide: is the daily trading cycle allowed to trade live with 3x leverage?",
         "If YES: tell Chief of Staff it's intended, and we'll stop flagging it in the nightly.",
         "If NO: tell Chief of Staff to pause the Druck cycle and flatten or move it to paper. A bot will do the technical steps.",
@@ -18,12 +18,8 @@
           "url": "https://github.com/Simzy420/big-brain-ape-dashboard/blob/main/latest-state.json"
         },
         {
-          "label": "11/6 trading cycle commit",
-          "url": "https://github.com/Simzy420/big-brain-ape-dashboard/commit/7714ae46"
-        },
-        {
-          "label": "5 PM positions snapshot",
-          "url": "https://github.com/Simzy420/big-brain-ape-dashboard/commit/8a5fcd06"
+          "label": "11/8 trading cycle commit",
+          "url": "https://github.com/Simzy420/big-brain-ape-dashboard/commit/279a80c1"
         },
         {
           "label": "Tasks dashboard",
