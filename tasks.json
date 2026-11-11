@@ -4,9 +4,9 @@
       "id": "druck-live-book-confirm",
       "priority": "high",
       "title": "Confirm the Druck cycle live Hyperliquid book is OK",
-      "subtitle": "11/9 cycle (11b9293c): held GOLD 0.18 @ $4,073.6 blended, mark ~$4,123 (uPnL +$9.54) · 3x isolated · acct $1,199.51 · outside paper-only / no-leverage rule",
+      "subtitle": "11/10 cycle (ba3c1136): held GOLD 0.18 @ $4,073.6 blended, mark ~$4,086 (uPnL -$4.32) · 3x isolated · acct $1,185.75 · outside paper-only / no-leverage rule",
       "steps": [
-        "Open the cycle state link below and look at the current book (11/9: the morning cycle held GOLD 0.18 at a $4,073.6 blended entry with gold ~$4,123, now up +$9.54, still 3x isolated, no fills, cut below $3,800, next add to 0.27 above $4,200, which is about $78 away).",
+        "Open the cycle state link below and look at the current book (11/10: the morning cycle held GOLD 0.18 at a $4,073.6 blended entry with gold ~$4,086, now down -$4.32, still 3x isolated, no fills, cut below $3,800, next add to 0.27 above $4,200, which is about $114 away).",
         "Decide: is the daily trading cycle allowed to trade live with 3x leverage?",
         "If YES: tell Chief of Staff it's intended, and we'll stop flagging it in the nightly.",
         "If NO: tell Chief of Staff to pause the Druck cycle and flatten or move it to paper. A bot will do the technical steps.",
@@ -18,8 +18,8 @@
           "url": "https://github.com/Simzy420/big-brain-ape-dashboard/blob/main/latest-state.json"
         },
         {
-          "label": "11/9 trading cycle commit",
-          "url": "https://github.com/Simzy420/big-brain-ape-dashboard/commit/11b9293c"
+          "label": "11/10 trading cycle commit",
+          "url": "https://github.com/Simzy420/big-brain-ape-dashboard/commit/ba3c1136"
         },
         {
           "label": "Tasks dashboard",
