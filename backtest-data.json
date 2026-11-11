@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-09",
+  "updated": "2026-11-10",
   "baseline": "R4-C",
   "atr": [
     {
@@ -6646,6 +6646,45 @@
       "verdict": "Made money (+9.06%), but only 8 trades (unchanged), still too few to trust",
       "date": "2026-11-09",
       "source": "backtest-2026-11-09-daily.json"
+    },
+    {
+      "name": "R4-C, ATR hurdle 0.9×",
+      "test": "Daily check 2026-11-10",
+      "window": "2025-11-10..2026-11-10",
+      "ret": -11.16,
+      "dd": 16.67,
+      "sharpe": -1.144,
+      "trades": 13,
+      "shield": "pass",
+      "verdict": "Lost money (-11.16%) with a bad 16.67% dip; same as yesterday, so the 0.9× setting still fails",
+      "date": "2026-11-10",
+      "source": "backtest-2026-11-10-daily.json"
+    },
+    {
+      "name": "R4-C, ATR hurdle 1.0× (normal)",
+      "test": "Daily check 2026-11-10",
+      "window": "2025-11-10..2026-11-10",
+      "ret": 8.18,
+      "dd": 9.67,
+      "sharpe": 0.848,
+      "trades": 10,
+      "shield": "pass",
+      "verdict": "Still makes money (+8.18%, worst dip 9.67%) with 10 trades, unchanged; stays the paper baseline",
+      "date": "2026-11-10",
+      "source": "backtest-2026-11-10-daily.json"
+    },
+    {
+      "name": "R4-C, ATR hurdle 1.1×",
+      "test": "Daily check 2026-11-10",
+      "window": "2025-11-10..2026-11-10",
+      "ret": 9.06,
+      "dd": 11.26,
+      "sharpe": 0.81,
+      "trades": 8,
+      "shield": "pass",
+      "verdict": "Made money (+9.06%), but only 8 trades (unchanged), still too few to trust",
+      "date": "2026-11-10",
+      "source": "backtest-2026-11-10-daily.json"
     }
   ]
 }
