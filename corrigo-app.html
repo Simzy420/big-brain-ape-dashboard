@@ -189,7 +189,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v48-202611122112</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v49-202611122122</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <div class="stepwrap"><div class="steplabel">Step 1 ⭐️</div><button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button></div>
   <div class="stepwrap"><div class="steplabel">Step 2 ⭐️</div><button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button></div>
@@ -322,7 +322,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v48-202611122112';
+const APP_VERSION = 'v49-202611122122';
 const DECISION_ENDPOINT = 'https://doorbell-relay-production-c59989ff.up.railway.app/decision';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
@@ -501,9 +501,39 @@ function almostDueItems(now){
       const due = parseMountain(raw);
       if (!due) return;
       const ms = due.getTime() - now.getTime();
-      if (ms > ALMOST_DUE_MS) return;
+      if (ms < 0 || ms > ALMOST_DUE_MS) return;
       seen[id] = true;
-      out.push({ w: w, canAct: canAct, tab: tab, kind: kind, raw: raw, due: due, overdue: ms < 0, text: formatDueIn(due, now) });
+      out.push({ w: w, canAct: canAct, tab: tab, kind: kind, raw: raw, due: due, overdue: false, text: formatDueIn(due, now) });
+    });
+  });
+  out.sort(function(a, b){ return a.due - b.due; });
+  return out;
+}
+function overdueItems(now){
+  const sources = [
+    ['corrigo_accepted', false, 'accepted'],
+    ['corrigo_inbox', true, 'inbox'],
+    ['corrigo_saved', true, ''],
+    ['corrigo_bidding', false, '']
+  ];
+  const out = [];
+  const seen = {};
+  sources.forEach(function(src){
+    const key = src[0], canAct = src[1], tab = src[2];
+    getData(key).forEach(function(w){
+      const id = String(w.number || w.id || '');
+      if (!id || seen[id]) return;
+      const decided = decisionFor(w.number);
+      if (decided === 'accept' || decided === 'decline') return;
+      const kind = deadlineKind(w, key);
+      if (!kind) return;
+      const raw = deadlineRaw(w, kind);
+      const due = parseMountain(raw);
+      if (!due) return;
+      const ms = due.getTime() - now.getTime();
+      if (ms >= 0) return;
+      seen[id] = true;
+      out.push({ w: w, canAct: canAct, tab: tab, kind: kind, raw: raw, due: due, overdue: true, text: 'overdue' });
     });
   });
   out.sort(function(a, b){ return a.due - b.due; });
@@ -549,23 +579,11 @@ function render(){
   const savedEl = document.getElementById('saved');
   if (savedEl) savedEl.innerHTML = saved.map(w => card(w,true)).join('') || '<div class="card">Nothing saved yet.</div>';
   const now = new Date();
-  const overdueList = [];
-  accepted.forEach(w => {
-    if (w.dueDate) {
-      const due = new Date(w.dueDate);
-      if (due < now) overdueList.push(w);
-    }
-  });
-  inbox.forEach(w => {
-    if (w.dueDate) {
-      const due = new Date(w.dueDate);
-      if (due < now) overdueList.push(w);
-    }
-  });
+  const overdueList = overdueItems(now);
   const almostDueList = almostDueItems(now);
   document.getElementById('overdueCount').textContent = overdueList.length;
   document.getElementById('almostDueCount').textContent = almostDueList.length;
-  document.getElementById('overdue').innerHTML = overdueList.map(w => card(w,false)).join('') || '<div class="card">Nothing overdue. ✅</div>';
+  document.getElementById('overdue').innerHTML = overdueList.map(item => card(item.w, item.canAct, item.tab, item)).join('') || '<div class="card">Nothing overdue. ✅</div>';
   document.getElementById('almostdue').innerHTML = almostDueList.map(item => card(item.w, item.canAct, item.tab, item)).join('') || '<div class="card">Nothing due in the next 3 days.</div>';
   // Render disputed work orders
   const disputed = getData('corrigo_disputed');
@@ -2797,7 +2815,7 @@ const HOWTO = {
   accepted: 'How to use: When the job is completed, add the work description and Save.',
   declined: 'How to use: Jobs you declined. The bot clicks Reject in Corrigo for you; nothing else to do here.',
   bidding: 'How to use: Jobs you sent a bid on. Nothing to do here unless you need to add a work description.',
-  almostdue: 'How to use: Jobs whose accept or complete deadline is within 3 days, including ones already past due. They also stay on their normal tab.',
+  almostdue: 'How to use: Jobs whose accept or complete deadline is within 3 days. Past-due jobs are in Overdue. They also stay on their normal tab.',
   overdue: 'How to use: Jobs past their due date. Finish these as soon as you can.',
   disputed: 'How to use: Enter the hours, rate, dates and invoice, or upload a photo, then tap Mark Resolved when it is settled.',
   resolved: 'How to use: Disputes that are settled. Nothing to do here.',
