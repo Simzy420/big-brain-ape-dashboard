@@ -111,8 +111,8 @@ function json(req, body, status = 200) {
   });
 }
 
-async function openApp({ workOrders = [], overrides = [], actions = [], seed = {}, fail = {}, allowRelay = false, rejectSavedToken = false, proof = {} } = {}) {
-  const state = { fail, allowRelay, rejectSavedToken, writes: [], relayBodies: [], relayUsedAuth: false, githubCalls: [], githubWrites: [] };
+async function openApp({ workOrders = [], overrides = [], actions = [], seed = {}, fail = {}, allowRelay = false, rejectSavedToken = false, proof = {}, decisionStatus = 0 } = {}) {
+  const state = { fail, allowRelay, rejectSavedToken, writes: [], relayBodies: [], relayUsedAuth: false, githubCalls: [], githubWrites: [], decisionPosts: [], decisionStatus };
   const page = await browser.newPage();
   await page.setViewport({ width: 390, height: 844, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
   await page.setRequestInterception(true);
@@ -134,6 +134,17 @@ async function openApp({ workOrders = [], overrides = [], actions = [], seed = {
     }
     if (method !== 'GET' && method !== 'HEAD') {
       state.writes.push(method + ' ' + url.split('?')[0]);
+      if (/doorbell-relay-production-c59989ff\.up\.railway\.app\/decision/.test(url)) {
+        if (method === 'OPTIONS') {
+          return req.respond({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': 'Content-Type', 'access-control-allow-methods': 'POST, OPTIONS' } });
+        }
+        if (method === 'POST') {
+          state.decisionPosts.push({ contentType: req.headers()['content-type'] || '', body: req.postData() || '' });
+          if (state.decisionStatus) return json(req, { ok: state.decisionStatus >= 200 && state.decisionStatus < 300 }, state.decisionStatus);
+          req.abort();
+          return;
+        }
+      }
       if (state.allowRelay && url.includes('/api/sync')) {
         if (method === 'OPTIONS') {
           return req.respond({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': 'Content-Type, X-App-Key', 'access-control-allow-methods': 'POST, OPTIONS' } });
@@ -896,8 +907,14 @@ test('Accept and Decline confirm before they move a job, and the local decision 
   assert.equal(accepted.queue[0].decision, 'accept');
   assert.equal(typeof accepted.queue[0].ts, 'string');
   assert.deepEqual(accepted.undo, ['Undo']);
-  assert.equal(accepted.endpoint, '');
-  assert.equal(state.writes.some(line => /DECISION_ENDPOINT|\/decisions/i.test(line)), false);
+  assert.equal(accepted.endpoint, 'https://doorbell-relay-production-c59989ff.up.railway.app/decision');
+  assert.equal(state.decisionPosts.length, 1);
+  assert.match(state.decisionPosts[0].contentType, /application\/json/i);
+  const posted = JSON.parse(state.decisionPosts[0].body);
+  assert.deepEqual(Object.keys(posted).sort(), ['decision', 'ts', 'wo']);
+  assert.equal(posted.wo, 'J5015189-00435');
+  assert.equal(posted.decision, 'accept');
+  assert.equal(typeof posted.ts, 'string');
 
   await page.evaluate(() => {
     const wo = JSON.parse(localStorage.getItem('corrigo_accepted')).find(w => w.number === 'J5015189-00435');
@@ -929,6 +946,7 @@ test('Accept and Decline confirm before they move a job, and the local decision 
   assert.equal(undone.accepted.includes('J5015189-00435'), false);
   assert.equal(undone.decisions['J5015189-00435'], undefined);
   assert.equal(undone.queue.length, 0);
+  assert.equal(state.decisionPosts.length, 1);
 
   await page.evaluate(() => {
     const card = [...document.querySelectorAll('#inbox .card')].find(c => c.innerText.includes('J5991021-00465'));
@@ -960,6 +978,28 @@ test('Accept and Decline confirm before they move a job, and the local decision 
   assert.equal(declined.decisions['J5991021-00465'], 'decline');
   assert.deepEqual(declined.undo, ['Undo']);
   assert.equal(declined.confirms.includes('Decline J5991021-00465?'), true);
+  await page.close();
+});
+
+test('queued decisions stay until the relay returns 2xx and are retried on the next flush', async () => {
+  const queued = { wo: 'TEST-NO-SEND', decision: 'decline', ts: '2026-11-12T00:00:00.000Z' };
+  const { page, state } = await openApp({
+    workOrders: [],
+    decisionStatus: 500,
+    seed: { corrigoDecisionQueue: [queued] }
+  });
+  for (let i = 0; i < 50 && !state.decisionPosts.length; i++) {
+    await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 20)));
+  }
+  assert.equal(state.decisionPosts.length >= 1, true);
+  const first = JSON.parse(state.decisionPosts[0].body);
+  assert.deepEqual(first, queued);
+  assert.match(state.decisionPosts[0].contentType, /application\/json/i);
+  const before = state.decisionPosts.length;
+  state.decisionStatus = 204;
+  await page.evaluate(() => flushDecisionQueue());
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem('corrigoDecisionQueue') || '[]').length === 0, { timeout: 5000 });
+  assert.equal(state.decisionPosts.length > before, true);
   await page.close();
 });
 
