@@ -775,13 +775,29 @@ test('Almost Due uses the 3-day accept and complete deadlines', async () => {
         accept: [...card.querySelectorAll('button')].some(b => b.textContent.trim() === 'Accept')
       };
     });
+    const readCards = root => [...root.querySelectorAll('.card')].map(card => {
+      const flag = card.querySelector('.due-flag');
+      const labels = [...card.querySelectorAll('button')].map(b => b.textContent.replace(/\s+/g, ' ').trim());
+      return {
+        num: (card.querySelector('strong') || {}).textContent || '',
+        text: flag ? flag.textContent : card.innerText,
+        overdue: card.classList.contains('overdue'),
+        color: flag ? getComputedStyle(flag).color : '',
+        accept: labels.includes('Accept'),
+        decline: labels.includes('Decline'),
+        unaccept: labels.includes('↩ Unaccept')
+      };
+    });
     const inboxNums = [...document.querySelectorAll('#inbox .card strong')].map(el => el.textContent.trim());
     const acceptedNums = [...document.querySelectorAll('#accepted .card strong')].map(el => el.textContent.trim());
     return {
       tabs: almostDueButtons.length,
       tabOrder: tabButtons.map(b => b.textContent.replace(/\s+/g, ' ').trim()),
       count: document.getElementById('almostDueCount').textContent,
+      overdueCount: document.getElementById('overdueCount').textContent,
       cards,
+      overdueCards: readCards(document.getElementById('overdue')),
+      help: (document.querySelector('#almostdue .howto-line') || {}).innerText || '',
       inboxNums,
       acceptedNums,
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
@@ -793,17 +809,26 @@ test('Almost Due uses the 3-day accept and complete deadlines', async () => {
   assert.deepEqual(names, ['Inbox', 'Accepted', 'Almost Due', 'Bidding', 'Overdue', 'Disputed', 'Resolved', 'Finalize', 'Completed', 'Submitted', 'Paid', 'Declined', 'Add WO', 'Settings']);
   assert.equal(view.overflow <= 1, true);
   assert.equal(view.count, String(view.cards.length));
+  assert.equal(view.overdueCount, String(view.overdueCards.filter(c => c.num).length));
+  assert.match(view.help, /Past-due jobs are in Overdue/);
   const byNum = Object.fromEntries(view.cards.filter(c => c.num).map(c => [c.num, c]));
-  assert.ok(byNum['J5015189-00435'], 'J5015189-00435 should be on Almost Due');
-  assert.ok(byNum['J5991021-00465'], 'J5991021-00465 should be on Almost Due');
-  assert.match(byNum['J5991021-00465'].text, /overdue/);
-  assert.equal(byNum['J5991021-00465'].overdue, true);
-  assert.equal(byNum['J5991021-00465'].color, 'rgb(255, 59, 48)');
-  assert.equal(byNum['J5991021-00465'].accept, true);
+  const overdueByNum = Object.fromEntries(view.overdueCards.filter(c => c.num).map(c => [c.num, c]));
+  assert.equal(byNum['J5991021-00465'], undefined);
+  assert.ok(overdueByNum['J5991021-00465'], 'J5991021-00465 should be on Overdue');
+  assert.match(overdueByNum['J5991021-00465'].text, /overdue/);
+  assert.equal(overdueByNum['J5991021-00465'].overdue, true);
+  assert.equal(overdueByNum['J5991021-00465'].color, 'rgb(255, 59, 48)');
+  assert.equal(overdueByNum['J5991021-00465'].accept, true);
+  assert.equal(overdueByNum['J5991021-00465'].decline, true);
+  assert.equal(overdueByNum['J5991021-00465'].unaccept, true);
   if (view.expectedSoon === 'overdue') {
-    assert.match(byNum['J5015189-00435'].text, /overdue/);
-    assert.equal(byNum['J5015189-00435'].overdue, true);
+    assert.equal(byNum['J5015189-00435'], undefined);
+    assert.ok(overdueByNum['J5015189-00435']);
+    assert.equal(overdueByNum['J5015189-00435'].accept, true);
+    assert.equal(overdueByNum['J5015189-00435'].unaccept, true);
   } else {
+    assert.ok(byNum['J5015189-00435'], 'J5015189-00435 should be on Almost Due');
+    assert.equal(overdueByNum['J5015189-00435'], undefined);
     assert.match(byNum['J5015189-00435'].text, /due in \d+d(?: \d+h)?|due in \d+h(?: \d+m)?|due in \d+m/);
     assert.equal(byNum['J5015189-00435'].text.includes(view.expectedSoon), true);
     assert.equal(byNum['J5015189-00435'].overdue, false);
@@ -1051,8 +1076,8 @@ test('Almost Due Unaccept returns the job to Inbox and a reload keeps it there',
     id: 'almost-saved',
     number: 'J5015189-00435',
     status: 'saved',
-    acceptBy: '11/11/2026 11:48 AM',
-    completeBy: '12/20/2026 11:48 AM'
+    acceptBy: mountainStamp(26 * 60 * 60 * 1000),
+    completeBy: mountainStamp(20 * 24 * 60 * 60 * 1000)
   });
   const { page, state } = await openApp({ workOrders: [], seed: { corrigo_saved: [savedJob] } });
   const buttons = await page.evaluate(() => {
