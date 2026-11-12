@@ -653,6 +653,181 @@ test('Accepted cards use the same four buttons and Corrigo proof is not a button
   await page.close();
 });
 
+function mountainStamp(msFromNow) {
+  const target = new Date(Date.now() + msFromNow);
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Boise',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  }).formatToParts(target);
+  const get = type => parts.find(p => p.type === type).value;
+  return get('month') + '/' + get('day') + '/' + get('year') + ' ' + get('hour') + ':' + get('minute') + ' ' + get('dayPeriod');
+}
+
+test('Almost Due uses the 3-day accept and complete deadlines', async () => {
+  const soon = wo({
+    id: 'soon-accept',
+    number: 'J5015189-00435',
+    status: 'inbox',
+    acceptBy: '11/13/2026 1:48 PM',
+    completeBy: '12/7/2026 5:00 PM'
+  });
+  const late = wo({
+    id: 'late-accept',
+    number: 'J5991021-00465',
+    status: 'inbox',
+    acceptBy: '11/11/2026 11:48 AM',
+    completeBy: '12/8/2026 11:48 AM'
+  });
+  const far = wo({
+    id: 'far-accept',
+    number: 'J0000000-00991',
+    status: 'inbox',
+    acceptBy: mountainStamp(10 * 24 * 60 * 60 * 1000),
+    completeBy: mountainStamp(20 * 24 * 60 * 60 * 1000)
+  });
+  const emailOnly = wo({
+    id: 'email-accept',
+    number: 'J0000000-00992',
+    status: 'inbox',
+    acceptBy: '',
+    completeBy: mountainStamp(20 * 24 * 60 * 60 * 1000),
+    emailContent: 'Accept/Reject By:\n' + mountainStamp(26 * 60 * 60 * 1000) + '\n'
+  });
+  const acceptedSoon = wo({
+    id: 'accepted-soon',
+    number: 'J0000000-00993',
+    status: 'accepted',
+    acceptBy: '11/01/2026 8:00 AM',
+    completeBy: mountainStamp(26 * 60 * 60 * 1000)
+  });
+  const acceptedFar = wo({
+    id: 'accepted-far',
+    number: 'J0000000-00994',
+    status: 'accepted',
+    acceptBy: '11/01/2026 8:00 AM',
+    completeBy: mountainStamp(10 * 24 * 60 * 60 * 1000)
+  });
+  const declined = wo({
+    id: 'declined-past',
+    number: 'J0000000-00995',
+    status: 'declined',
+    acceptBy: '11/01/2026 8:00 AM'
+  });
+  const paid = wo({
+    id: 'paid-past',
+    number: 'J0000000-00996',
+    status: 'paid',
+    acceptBy: '11/01/2026 8:00 AM',
+    completeBy: '11/02/2026 8:00 AM'
+  });
+  const sent = wo({
+    id: 'sent-past',
+    number: 'J0000000-00997',
+    status: 'sent_to_corrigo',
+    acceptBy: '11/01/2026 8:00 AM',
+    completeBy: '11/02/2026 8:00 AM'
+  });
+  const completed = wo({
+    id: 'completed-past',
+    number: 'J0000000-00998',
+    status: 'completed',
+    acceptBy: '11/01/2026 8:00 AM',
+    completeBy: '11/02/2026 8:00 AM'
+  });
+  const { page, dialogs } = await openApp({
+    workOrders: [],
+    seed: {
+      corrigo_inbox: [soon, late, far, emailOnly],
+      corrigo_accepted: [acceptedSoon, acceptedFar],
+      corrigo_declined: [declined],
+      corrigo_paid: [paid],
+      corrigo_sent_to_corrigo: [sent],
+      corrigo_completed: [completed]
+    }
+  });
+  const view = await page.evaluate(() => {
+    show('almostdue');
+    const tabButtons = [...document.querySelectorAll('.tabs .tab')].filter(b => /Almost Due/.test(b.textContent));
+    const cards = [...document.querySelectorAll('#almostdue .card')].map(card => {
+      const flag = card.querySelector('.due-flag');
+      return {
+        num: (card.querySelector('strong') || {}).textContent || '',
+        text: flag ? flag.textContent : card.innerText,
+        overdue: card.classList.contains('overdue'),
+        color: flag ? getComputedStyle(flag).color : '',
+        accept: [...card.querySelectorAll('button')].some(b => b.textContent.trim() === 'Accept')
+      };
+    });
+    const inboxNums = [...document.querySelectorAll('#inbox .card strong')].map(el => el.textContent.trim());
+    const acceptedNums = [...document.querySelectorAll('#accepted .card strong')].map(el => el.textContent.trim());
+    return {
+      tabs: tabButtons.length,
+      count: document.getElementById('almostDueCount').textContent,
+      cards,
+      inboxNums,
+      acceptedNums,
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      expectedSoon: formatDueIn(parseMountain('11/13/2026 1:48 PM'), new Date())
+    };
+  });
+  assert.equal(view.tabs, 1);
+  assert.equal(view.overflow <= 1, true);
+  assert.equal(view.count, String(view.cards.length));
+  const byNum = Object.fromEntries(view.cards.filter(c => c.num).map(c => [c.num, c]));
+  assert.ok(byNum['J5015189-00435'], 'J5015189-00435 should be on Almost Due');
+  assert.ok(byNum['J5991021-00465'], 'J5991021-00465 should be on Almost Due');
+  assert.match(byNum['J5991021-00465'].text, /overdue/);
+  assert.equal(byNum['J5991021-00465'].overdue, true);
+  assert.equal(byNum['J5991021-00465'].color, 'rgb(255, 59, 48)');
+  assert.equal(byNum['J5991021-00465'].accept, true);
+  if (view.expectedSoon === 'overdue') {
+    assert.match(byNum['J5015189-00435'].text, /overdue/);
+    assert.equal(byNum['J5015189-00435'].overdue, true);
+  } else {
+    assert.match(byNum['J5015189-00435'].text, /due in \d+d(?: \d+h)?|due in \d+h(?: \d+m)?|due in \d+m/);
+    assert.equal(byNum['J5015189-00435'].text.includes(view.expectedSoon), true);
+    assert.equal(byNum['J5015189-00435'].overdue, false);
+  }
+  assert.ok(byNum['J0000000-00992']);
+  assert.match(byNum['J0000000-00992'].text, /due in /);
+  assert.ok(byNum['J0000000-00993']);
+  assert.match(byNum['J0000000-00993'].text, /Complete By/);
+  assert.equal(byNum['J0000000-00991'], undefined);
+  assert.equal(byNum['J0000000-00994'], undefined);
+  assert.equal(byNum['J0000000-00995'], undefined);
+  assert.equal(byNum['J0000000-00996'], undefined);
+  assert.equal(byNum['J0000000-00997'], undefined);
+  assert.equal(byNum['J0000000-00998'], undefined);
+  for (const num of ['J5015189-00435', 'J5991021-00465', 'J0000000-00991', 'J0000000-00992']) {
+    assert.equal(view.inboxNums.includes(num), true);
+  }
+  assert.equal(view.acceptedNums.includes('J0000000-00993'), true);
+  assert.equal(view.acceptedNums.includes('J0000000-00994'), true);
+  await page.setViewport({ width: 320, height: 700, isMobile: true, hasTouch: true });
+  const narrow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  assert.ok(narrow <= 1);
+  await page.evaluate(() => {
+    const card = [...document.querySelectorAll('#almostdue .card')].find(c => c.innerText.includes('J0000000-00992'));
+    [...card.querySelectorAll('button')].find(b => b.textContent.trim() === 'Accept').click();
+  });
+  const after = await page.evaluate(() => ({
+    almost: [...document.querySelectorAll('#almostdue .card strong')].map(el => el.textContent.trim()),
+    accepted: JSON.parse(localStorage.getItem('corrigo_accepted') || '[]').map(w => w.number),
+    inbox: JSON.parse(localStorage.getItem('corrigo_inbox') || '[]').map(w => w.number)
+  }));
+  assert.equal(after.almost.includes('J0000000-00992'), false);
+  assert.equal(after.accepted.includes('J0000000-00992'), true);
+  assert.equal(after.inbox.includes('J0000000-00992'), false);
+  assert.equal(after.inbox.includes('J5015189-00435'), true);
+  assert.ok(dialogs.some(m => m.includes('You Accepted the Job')));
+  await page.close();
+});
+
 test('a relay 401 without a saved token is not called a GitHub read failure', async () => {
   const session = await openApp({ workOrders: [plain], allowRelay: true });
   session.state.failRelay = true;
