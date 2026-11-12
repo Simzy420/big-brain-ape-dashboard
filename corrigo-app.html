@@ -15,6 +15,11 @@ h1 { margin:0; font-size:24px; }
 .stepwrap { display:flex; flex-direction:column; align-items:center; flex-shrink:0; }
 .steplabel { color:#facc15; font-size:16px; font-weight:800; margin-bottom:4px; white-space:nowrap; }
 .tab { background:#1c1c2e; border:0; color:#fff; border-radius:12px; padding:12px 14px; font-size:18px; font-weight:700; }
+#almostDueCount { display:inline-block; min-width:1.4em; margin-left:6px; padding:0 7px; border-radius:999px; background:#ff9f0a; color:#111; font-size:16px; line-height:1.35; text-align:center; vertical-align:1px; }
+.card.overdue { border:2px solid #ff3b30; }
+.due-flag { font-size:22px; font-weight:800; line-height:1.35; margin:8px 0; }
+.due-flag.soon { color:#ff9f0a; }
+.due-flag.overdue { color:#ff3b30; }
 .wrap { padding:12px; }
 .card { background:#1c1c2e; border-radius:16px; padding:16px; margin-bottom:12px; }
 button.big { width:100%; border:0; border-radius:12px; padding:16px; font-size:22px; font-weight:800; color:#fff; margin-top:8px; }
@@ -183,7 +188,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v41-202611090315</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v42-202611121725</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <div class="stepwrap"><div class="steplabel">Step 1 ⭐️</div><button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button></div>
   <div class="stepwrap"><div class="steplabel">Step 2 ⭐️</div><button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button></div>
@@ -316,7 +321,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v41-202611090315';
+const APP_VERSION = 'v42-202611121725';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -415,6 +420,91 @@ function handled(){
   Object.keys(getMap('corrigo_paid_deleted')).forEach(n => nums.add(n));
   return nums;
 }
+const ALMOST_DUE_MS = 3 * 24 * 60 * 60 * 1000;
+const CLOSED_WO_STATUS = { completed:1, submitted:1, sent_to_corrigo:1, paid:1, declined:1, resolved:1, disputed:1 };
+function mountainWallTime(year, month, day, hour, minute){
+  const timeZone = 'America/Boise';
+  let utc = Date.UTC(year, month - 1, day, hour, minute, 0);
+  const dtf = new Intl.DateTimeFormat('en-US', { timeZone: timeZone, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  for (let i = 0; i < 3; i++) {
+    const parts = dtf.formatToParts(new Date(utc));
+    const map = {};
+    parts.forEach(p => { if (p.type !== 'literal') map[p.type] = p.value; });
+    const shown = Date.UTC(+map.year, +map.month - 1, +map.day, +map.hour, +map.minute, +map.second);
+    const target = Date.UTC(year, month - 1, day, hour, minute, 0);
+    const diff = target - shown;
+    if (diff === 0) break;
+    utc += diff;
+  }
+  return new Date(utc);
+}
+function parseMountain(raw){
+  const t = stripBoiler(String(raw == null ? '' : raw));
+  const m = t.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+  if (!m) return null;
+  let hour = parseInt(m[4], 10);
+  const ap = m[6].toUpperCase();
+  if (ap === 'AM') { if (hour === 12) hour = 0; }
+  else if (hour !== 12) hour += 12;
+  return mountainWallTime(+m[3], +m[1], +m[2], hour, +m[5]);
+}
+function formatDueIn(due, now){
+  const ms = due.getTime() - now.getTime();
+  if (ms < 0) return 'overdue';
+  let mins = Math.floor(ms / 60000);
+  const days = Math.floor(mins / 1440);
+  mins -= days * 1440;
+  const hours = Math.floor(mins / 60);
+  mins -= hours * 60;
+  if (days > 0) return hours > 0 ? ('due in ' + days + 'd ' + hours + 'h') : ('due in ' + days + 'd');
+  if (hours > 0) return mins > 0 ? ('due in ' + hours + 'h ' + mins + 'm') : ('due in ' + hours + 'h');
+  if (mins > 0) return 'due in ' + mins + 'm';
+  return 'due in 0m';
+}
+function deadlineKind(w, bucket){
+  const status = String(w.status || '').toLowerCase().trim().replace(/[\s-]+/g, '_');
+  if (CLOSED_WO_STATUS[status]) return null;
+  if (bucket === 'corrigo_declined' || bucket === 'corrigo_completed' || bucket === 'corrigo_submitted' || bucket === 'corrigo_sent_to_corrigo' || bucket === 'corrigo_paid' || bucket === 'corrigo_resolved' || bucket === 'corrigo_disputed') return null;
+  if (status === 'accepted' || status === 'in_progress' || bucket === 'corrigo_accepted') return 'complete';
+  if (status === 'inbox' || status === 'bidding' || status === 'saved' || status === '' || bucket === 'corrigo_inbox' || bucket === 'corrigo_bidding' || bucket === 'corrigo_saved') return 'accept';
+  return null;
+}
+function deadlineRaw(w, kind){
+  if (kind === 'accept') {
+    const field = w.acceptBy && !/DO NOT EXCEED/i.test(String(w.acceptBy)) ? stripBoiler(w.acceptBy) : '';
+    return field || emailField(w, 'Accept/Reject By');
+  }
+  const field = w.completeBy ? stripBoiler(w.completeBy) : '';
+  return field || emailField(w, 'Complete By');
+}
+function almostDueItems(now){
+  const sources = [
+    ['corrigo_accepted', false, 'accepted'],
+    ['corrigo_inbox', true, 'inbox'],
+    ['corrigo_saved', true, ''],
+    ['corrigo_bidding', false, '']
+  ];
+  const out = [];
+  const seen = {};
+  sources.forEach(function(src){
+    const key = src[0], canAct = src[1], tab = src[2];
+    getData(key).forEach(function(w){
+      const id = String(w.number || w.id || '');
+      if (!id || seen[id]) return;
+      const kind = deadlineKind(w, key);
+      if (!kind) return;
+      const raw = deadlineRaw(w, kind);
+      const due = parseMountain(raw);
+      if (!due) return;
+      const ms = due.getTime() - now.getTime();
+      if (ms > ALMOST_DUE_MS) return;
+      seen[id] = true;
+      out.push({ w: w, canAct: canAct, tab: tab, kind: kind, raw: raw, due: due, overdue: ms < 0, text: formatDueIn(due, now) });
+    });
+  });
+  out.sort(function(a, b){ return a.due - b.due; });
+  return out;
+}
 function show(name){
   ['inbox','accepted','declined','bidding','almostdue','overdue','disputed','resolved','finalize','completedtab','senttocorrigo','paid','new','addwo','settings'].forEach(id => document.getElementById(id).style.display = id===name ? 'block' : 'none');
   if (name==='inbox') render();
@@ -453,28 +543,24 @@ function render(){
   const savedEl = document.getElementById('saved');
   if (savedEl) savedEl.innerHTML = saved.map(w => card(w,true)).join('') || '<div class="card">Nothing saved yet.</div>';
   const now = new Date();
-  const sevenDays = new Date(now.getTime() + 7*24*60*60*1000);
   const overdueList = [];
-  const almostDueList = [];
   accepted.forEach(w => {
     if (w.dueDate) {
       const due = new Date(w.dueDate);
       if (due < now) overdueList.push(w);
-      else if (due <= sevenDays) almostDueList.push(w);
     }
   });
-  // Also check inbox items
   inbox.forEach(w => {
     if (w.dueDate) {
       const due = new Date(w.dueDate);
       if (due < now) overdueList.push(w);
-      else if (due <= sevenDays) almostDueList.push(w);
     }
   });
+  const almostDueList = almostDueItems(now);
   document.getElementById('overdueCount').textContent = overdueList.length;
   document.getElementById('almostDueCount').textContent = almostDueList.length;
   document.getElementById('overdue').innerHTML = overdueList.map(w => card(w,false)).join('') || '<div class="card">Nothing overdue. ✅</div>';
-  document.getElementById('almostdue').innerHTML = almostDueList.map(w => card(w,false)).join('') || '<div class="card">Nothing due in the next 7 days.</div>';
+  document.getElementById('almostdue').innerHTML = almostDueList.map(item => card(item.w, item.canAct, item.tab, item)).join('') || '<div class="card">Nothing due in the next 3 days.</div>';
   // Render disputed work orders
   const disputed = getData('corrigo_disputed');
   document.getElementById('disputedCount').textContent = disputed.length;
@@ -609,14 +695,20 @@ function fmtLoc(loc){
   const line2 = street ? expandStreet(street) : '';
   return [line1, line2].filter(Boolean).map(escHtml).join('<br>');
 }
-function card(w, canAct, tab){
+function card(w, canAct, tab, dueInfo){
   const nteVal = (parseFloat(w.bidAmount) > 500) ? parseFloat(w.bidAmount) : (w.estimatedAmount ? parseFloat(w.estimatedAmount) : ((tab==='inbox'||tab==='accepted') ? 500 : 0));
   const estDisplay = nteVal ? (tab ? 'NTE ' : '') + '$' + nteVal.toFixed(2) : '';
   const estHtml = estDisplay ? `<div class="wo-est">${estDisplay}</div>` : '';
   let loc = w.location || '';
   let desc = cleanDesc(w.description || (tab ? w.workDescription : '') || '');
   let dateHtml = '';
-  if (tab === 'inbox' || tab === 'accepted') {
+  let dueHtml = '';
+  if (dueInfo && dueInfo.text) {
+    const cls = dueInfo.overdue ? 'due-flag overdue' : 'due-flag soon';
+    const what = dueInfo.kind === 'complete' ? 'Complete By' : 'Accept/Reject By';
+    dueHtml = '<p class="' + cls + '">⏰ ' + escHtml(what) + ': ' + escHtml(shortDate(dueInfo.raw)) + ' · ' + escHtml(dueInfo.text) + '</p>';
+  }
+  if (!dueHtml && (tab === 'inbox' || tab === 'accepted')) {
     const created = w.dateCreated || emailField(w, 'Date Created') || '';
     const parts = [];
     if (tab === 'inbox') { const ab = w.acceptBy || emailField(w, 'Accept/Reject By'); if (ab && stripBoiler(ab)) parts.push('Accept/Reject By: ' + shortDate(stripBoiler(ab))); }
@@ -645,7 +737,8 @@ function card(w, canAct, tab){
   // Accepted cards always show View Original Email so the row matches, even when no email was saved.
   const emailBtn = (String(w.emailContent || '').trim() || tab === 'accepted') ? `<button class="email-btn" onclick="viewEmail('${w.id}')">📧 View Original Email</button>` : '';
   const extraBtns = (workDescBtn || emailBtn) ? `<div class="btn-row">${workDescBtn}${emailBtn}</div>` : '';
-  return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>${dateHtml}${fmtLoc(loc) ? '<p>'+fmtLoc(loc)+'</p>' : ''}${desc ? '<p>'+desc+'</p>' : ''}${actionBtns}${extraBtns}</div>`;
+  const overdueCls = dueInfo && dueInfo.overdue ? ' overdue' : '';
+  return `<div class="card${overdueCls}"><div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>${dueHtml}${dateHtml}${fmtLoc(loc) ? '<p>'+fmtLoc(loc)+'</p>' : ''}${desc ? '<p>'+desc+'</p>' : ''}${actionBtns}${extraBtns}</div>`;
 }
 
 function disputedCard(w){
@@ -2540,7 +2633,7 @@ const HOWTO = {
   accepted: 'How to use: When the job is completed, add the work description and Save.',
   declined: 'How to use: Jobs you declined. The bot clicks Reject in Corrigo for you; nothing else to do here.',
   bidding: 'How to use: Jobs you sent a bid on. Nothing to do here unless you need to add a work description.',
-  almostdue: 'How to use: Jobs due in the next 7 days. Get these done first.',
+  almostdue: 'How to use: Jobs whose accept or complete deadline is within 3 days, including ones already past due. They also stay on their normal tab.',
   overdue: 'How to use: Jobs past their due date. Finish these as soon as you can.',
   disputed: 'How to use: Enter the hours, rate, dates and invoice, or upload a photo, then tap Mark Resolved when it is settled.',
   resolved: 'How to use: Disputes that are settled. Nothing to do here.',
