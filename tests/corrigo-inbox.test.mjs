@@ -1046,6 +1046,60 @@ test('Unaccept on a Declined card returns the job to Inbox and does not post', a
   await page.close();
 });
 
+test('Almost Due Unaccept returns the job to Inbox and a reload keeps it there', async () => {
+  const savedJob = wo({
+    id: 'almost-saved',
+    number: 'J5015189-00435',
+    status: 'saved',
+    acceptBy: '11/11/2026 11:48 AM',
+    completeBy: '12/20/2026 11:48 AM'
+  });
+  const { page, state } = await openApp({ workOrders: [], seed: { corrigo_saved: [savedJob] } });
+  const buttons = await page.evaluate(() => {
+    show('almostdue');
+    const card = [...document.querySelectorAll('#almostdue .card')].find(c => c.innerText.includes('J5015189-00435'));
+    return [...card.querySelectorAll('button')].map(b => b.textContent.replace(/\s+/g, ' ').trim());
+  });
+  assert.equal(buttons.includes('Accept'), true);
+  assert.equal(buttons.includes('Decline'), true);
+  assert.equal(buttons.includes('↩ Unaccept'), true);
+  const posts = state.decisionPosts.length;
+  await page.evaluate(() => {
+    const card = [...document.querySelectorAll('#almostdue .card')].find(c => c.innerText.includes('J5015189-00435'));
+    [...card.querySelectorAll('button')].find(b => b.textContent.includes('Unaccept')).click();
+  });
+  const moved = await page.evaluate(() => ({
+    inbox: JSON.parse(localStorage.getItem('corrigo_inbox') || '[]').map(w => w.number),
+    saved: JSON.parse(localStorage.getItem('corrigo_saved') || '[]').map(w => w.number),
+    accepted: JSON.parse(localStorage.getItem('corrigo_accepted') || '[]').map(w => w.number),
+    decisions: JSON.parse(localStorage.getItem('corrigoDecisions') || '{}'),
+    queue: JSON.parse(localStorage.getItem('corrigoDecisionQueue') || '[]'),
+    shown: document.getElementById('inbox').style.display
+  }));
+  assert.deepEqual(moved.inbox, ['J5015189-00435']);
+  assert.deepEqual(moved.saved, []);
+  assert.deepEqual(moved.accepted, []);
+  assert.equal(moved.decisions['J5015189-00435'], undefined);
+  assert.deepEqual(moved.queue, []);
+  assert.equal(moved.shown, 'block');
+  assert.equal(state.decisionPosts.length, posts);
+  const kept = await page.evaluate(() => {
+    const wo = JSON.parse(localStorage.getItem('corrigo_inbox'))[0];
+    wo.status = 'accepted';
+    wo.corrigoAccepted = true;
+    localStorage.setItem('corrigo_accepted', JSON.stringify([wo]));
+    localStorage.setItem('corrigo_inbox', '[]');
+    render();
+    return {
+      inbox: JSON.parse(localStorage.getItem('corrigo_inbox') || '[]').map(w => w.number),
+      accepted: JSON.parse(localStorage.getItem('corrigo_accepted') || '[]').map(w => w.number)
+    };
+  });
+  assert.deepEqual(kept.inbox, ['J5015189-00435']);
+  assert.deepEqual(kept.accepted, []);
+  await page.close();
+});
+
 test('a relay 401 without a saved token is not called a GitHub read failure', async () => {
   const session = await openApp({ workOrders: [plain], allowRelay: true });
   session.state.failRelay = true;
