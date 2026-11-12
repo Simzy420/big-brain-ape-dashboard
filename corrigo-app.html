@@ -189,7 +189,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v46-202611121927</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v47-202611122013</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <div class="stepwrap"><div class="steplabel">Step 1 ⭐️</div><button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button></div>
   <div class="stepwrap"><div class="steplabel">Step 2 ⭐️</div><button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button></div>
@@ -322,7 +322,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v46-202611121927';
+const APP_VERSION = 'v47-202611122013';
 const DECISION_ENDPOINT = 'https://doorbell-relay-production-c59989ff.up.railway.app/decision';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
@@ -1172,20 +1172,7 @@ function undoDecision(id){
 }
 
 function unaccept(id){
-  let accepted = getData('corrigo_accepted');
-  const idx = accepted.findIndex(w => w.id===id);
-  if (idx<0) return;
-  const wo = accepted[idx];
-  wo.status = 'inbox';
-  accepted.splice(idx,1);
-  saveData('corrigo_accepted', accepted);
-  forgetDecision(String(wo.number || ''));
-  setDecisionQueue(getDecisionQueue().filter(item => String(item.wo) !== String(wo.number || '')));
-  let inbox = getData('corrigo_inbox');
-  inbox.unshift(wo);
-  saveData('corrigo_inbox', inbox);
-  render();
-  show('inbox');
+  undoDecision(id);
   sendPickup();
 }
 
