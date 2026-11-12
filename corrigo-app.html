@@ -20,6 +20,7 @@ h1 { margin:0; font-size:24px; }
 .due-flag { font-size:22px; font-weight:800; line-height:1.35; margin:8px 0; }
 .due-flag.soon { color:#ff9f0a; }
 .due-flag.overdue { color:#ff3b30; }
+.undo-btn { display:inline-block; margin-top:8px; background:transparent; border:1px solid #aaa; color:#fff; border-radius:10px; padding:8px 14px; font-size:16px; font-weight:700; }
 .wrap { padding:12px; }
 .card { background:#1c1c2e; border-radius:16px; padding:16px; margin-bottom:12px; }
 button.big { width:100%; border:0; border-radius:12px; padding:16px; font-size:22px; font-weight:800; color:#fff; margin-top:8px; }
@@ -188,10 +189,9 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v43-202611121732</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v44-202611121810</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <div class="stepwrap"><div class="steplabel">Step 1 ⭐️</div><button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button></div>
-  <button class="tab" onclick="show('declined')">Declined <span id="declinedCount">0</span></button>
   <button class="tab" onclick="show('bidding')">Bidding <span id="biddingCount">0</span></button>
   <button class="tab" onclick="show('overdue')">⏰ Overdue <span id="overdueCount">0</span></button>
   <button class="tab" onclick="show('disputed')">⚠️ Disputed <span id="disputedCount">0</span></button>
@@ -201,6 +201,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
   <button class="tab" onclick="show('senttocorrigo')">📤 Submitted <span id="sentToCorrigoCount">0</span></button>
   <button class="tab" onclick="show('paid')">Paid <span id="paidCount">0</span></button>
   <div class="stepwrap"><div class="steplabel">Step 2 ⭐️</div><button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button></div>
+  <button class="tab" onclick="show('declined')">Declined <span id="declinedCount">0</span></button>
   <button class="tab" onclick="show('almostdue')">⚠️ Almost Due <span id="almostDueCount">0</span></button>
   <button class="tab" onclick="show('addwo')">➕ Add WO</button>
   <button class="tab" onclick="show('settings')">Settings</button>
@@ -321,7 +322,8 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v43-202611121732';
+const APP_VERSION = 'v44-202611121810';
+const DECISION_ENDPOINT = '';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
@@ -491,6 +493,8 @@ function almostDueItems(now){
     getData(key).forEach(function(w){
       const id = String(w.number || w.id || '');
       if (!id || seen[id]) return;
+      const decided = decisionFor(w.number);
+      if (decided === 'accept' || decided === 'decline') return;
       const kind = deadlineKind(w, key);
       if (!kind) return;
       const raw = deadlineRaw(w, kind);
@@ -523,6 +527,7 @@ function show(name){
   if (name==='paid') render();
 }
 function render(){
+  try { applyLocalDecisions(); } catch (e) { console.error(e); }
   purgeSentDeleted(); purgeCompletedDeleted(); purgePaidDeleted();
   repairPrestonRoofWorkDesc();
   const inbox = getData('corrigo_inbox');
@@ -535,7 +540,7 @@ function render(){
   document.getElementById('biddingCount').textContent = bidding.length;
   document.getElementById('inbox').innerHTML = inbox.map(w => card(w,true,'inbox')).join('') || '<div class="card">No jobs in inbox.</div>';
   document.getElementById('accepted').innerHTML = accepted.map(w => card(w,false,'accepted')).join('') || '<div class="card">Nothing accepted yet.</div>';
-  document.getElementById('declined').innerHTML = declined.map(w => card(w,false)).join('') || '<div class="card">Nothing declined.</div>';
+  document.getElementById('declined').innerHTML = declined.map(w => card(w,false,'declined')).join('') || '<div class="card">Nothing declined.</div>';
   document.getElementById('bidding').innerHTML = bidding.map(w => card(w,false)).join('') || '<div class="card">No bids submitted.</div>';
   const saved = getData('corrigo_saved');
   const savedCountEl = document.getElementById('savedCount');
@@ -731,14 +736,23 @@ function card(w, canAct, tab, dueInfo){
       desc = lines.slice(0, 3).join(' ').substring(0, 200);
     }
   }
-  const actionBtns = canAct ? `<div class="btn-row"><button class="big accept" onclick="choose('${w.id}','accept')">Accept</button><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button></div><div class="btn-row"><button class="big save" onclick="openBidModal('${w.id}')" style="margin-top:0;">🔨 Bid</button><button class="big save" onclick="saveWo('${w.id}')" style="margin-top:0;background:#666;">💾 Save for Later</button></div><div class="btn-row"><button class="wo-delete" onclick="deleteWo('${w.id}')" style="width:100%;margin-top:0;">🗑️ Delete Work Order</button></div>` : `<div class="btn-row"><button class="big decline" onclick="unaccept('${w.id}')" style="background:#f44336;">↩ Unaccept</button><button class="wo-delete" onclick="deleteWo('${w.id}')">🗑️ Delete</button></div><p class="muted">Waiting for Corrigo pickup</p>`;
+  const bothDecisions = `<div class="btn-row"><button class="big accept" onclick="choose('${w.id}','accept')">Accept</button><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button></div>`;
+  const inboxExtras = `<div class="btn-row"><button class="big save" onclick="openBidModal('${w.id}')" style="margin-top:0;">🔨 Bid</button><button class="big save" onclick="saveWo('${w.id}')" style="margin-top:0;background:#666;">💾 Save for Later</button></div><div class="btn-row"><button class="wo-delete" onclick="deleteWo('${w.id}')" style="width:100%;margin-top:0;">🗑️ Delete Work Order</button></div>`;
+  const parkedExtras = `<div class="btn-row"><button class="big decline" onclick="unaccept('${w.id}')" style="background:#f44336;">↩ Unaccept</button><button class="wo-delete" onclick="deleteWo('${w.id}')">🗑️ Delete</button></div><p class="muted">Waiting for Corrigo pickup</p>`;
+  let actionBtns;
+  if (dueInfo && dueInfo.text) actionBtns = bothDecisions + (canAct ? inboxExtras : '');
+  else if (canAct) actionBtns = bothDecisions + inboxExtras;
+  else if (tab === 'accepted') actionBtns = `<div class="btn-row"><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button></div>` + parkedExtras;
+  else actionBtns = parkedExtras;
   // Inbox: Accept/Decline only. Work description is added later on the Accepted tab.
   const workDescBtn = tab === 'inbox' ? '' : `<button class="email-btn" style="border-color:#ff9500;color:#ff9500;background:rgba(255,149,0,0.15);" onclick="openWorkDesc('${w.id}')">📝 Add Work Description</button>`;
   // Accepted cards always show View Original Email so the row matches, even when no email was saved.
   const emailBtn = (String(w.emailContent || '').trim() || tab === 'accepted') ? `<button class="email-btn" onclick="viewEmail('${w.id}')">📧 View Original Email</button>` : '';
   const extraBtns = (workDescBtn || emailBtn) ? `<div class="btn-row">${workDescBtn}${emailBtn}</div>` : '';
   const overdueCls = dueInfo && dueInfo.overdue ? ' overdue' : '';
-  return `<div class="card${overdueCls}"><div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>${dueHtml}${dateHtml}${fmtLoc(loc) ? '<p>'+fmtLoc(loc)+'</p>' : ''}${desc ? '<p>'+desc+'</p>' : ''}${actionBtns}${extraBtns}</div>`;
+  const decided = decisionFor(w.number);
+  const undoHtml = decided && (tab === 'accepted' || tab === 'declined') ? `<button class="undo-btn" onclick="undoDecision('${w.id}')">Undo</button>` : '';
+  return `<div class="card${overdueCls}"><div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>${dueHtml}${dateHtml}${fmtLoc(loc) ? '<p>'+fmtLoc(loc)+'</p>' : ''}${desc ? '<p>'+desc+'</p>' : ''}${actionBtns}${extraBtns}${undoHtml}</div>`;
 }
 
 function disputedCard(w){
@@ -1005,40 +1019,156 @@ function playSound(){
   } catch(e) {}
 }
 
+const DECISION_TABS = ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved'];
+function getDecisions(){ return getMap('corrigoDecisions'); }
+function decisionFor(number){
+  const map = getDecisions();
+  const raw = map[String(number)];
+  if (!raw) return '';
+  return typeof raw === 'object' ? (raw.decision || '') : String(raw);
+}
+function rememberDecision(number, decision){
+  if (!number) return;
+  const map = getDecisions();
+  map[String(number)] = decision;
+  setMap('corrigoDecisions', map);
+}
+function forgetDecision(number){
+  const map = getDecisions();
+  delete map[String(number)];
+  setMap('corrigoDecisions', map);
+}
+function getDecisionQueue(){
+  try {
+    const q = JSON.parse(localStorage.getItem('corrigoDecisionQueue') || '[]');
+    return Array.isArray(q) ? q : [];
+  } catch (e) { return []; }
+}
+function setDecisionQueue(q){
+  try { localStorage.setItem('corrigoDecisionQueue', JSON.stringify(q)); } catch (e) {}
+}
+function queueDecision(number, decision){
+  const q = getDecisionQueue();
+  q.push({ wo: String(number), decision: decision, ts: new Date().toISOString() });
+  setDecisionQueue(q);
+  flushDecisionQueue();
+}
+function flushDecisionQueue(){
+  if (!DECISION_ENDPOINT) return;
+  getDecisionQueue().forEach(item => {
+    fetch(DECISION_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(item)
+    }).then(res => {
+      if (!res || !res.ok) return;
+      setDecisionQueue(getDecisionQueue().filter(x => !(x.wo === item.wo && x.decision === item.decision && x.ts === item.ts)));
+    }).catch(() => {});
+  });
+}
+function applyLocalDecisions(){
+  const map = getDecisions();
+  const nums = Object.keys(map);
+  if (!nums.length) return;
+  nums.forEach(num => {
+    const decision = decisionFor(num);
+    if (decision !== 'accept' && decision !== 'decline') return;
+    const target = decision === 'accept' ? 'corrigo_accepted' : 'corrigo_declined';
+    let found = null;
+    let elsewhere = false;
+    DECISION_TABS.forEach(key => {
+      const arr = getData(key);
+      const keep = [];
+      arr.forEach(w => {
+        if (String(w.number) === String(num)) {
+          found = found ? mergeSentWo(found, w) : Object.assign({}, w);
+          if (key !== target) elsewhere = true;
+        } else keep.push(w);
+      });
+      if (key !== target && keep.length !== arr.length) saveData(key, keep);
+    });
+    if (!found) return;
+    found.status = decision === 'accept' ? 'accepted' : 'declined';
+    const arr = getData(target).filter(w => String(w.number) !== String(num));
+    if (elsewhere || !getData(target).some(w => String(w.number) === String(num))) {
+      arr.unshift(found);
+      saveData(target, arr);
+    }
+  });
+}
 function choose(id, action){
-  let inbox = getData('corrigo_inbox');
-  const idx = inbox.findIndex(w => w.id===id);
-  if (idx<0) return;
-  const wo = inbox[idx];
-  delete wo.fromOverride;
-  wo.status = action==='accept' ? 'accepted' : 'declined';
-  inbox.splice(idx,1);
-  const inboxOk = saveData('corrigo_inbox', inbox);
-  const key = action==='accept' ? 'corrigo_accepted' : 'corrigo_declined';
-  const arr = getData(key);
-  arr.unshift(wo);
-  const saved = saveData(key, arr);
-  if (action==='accept') collapseSamePlaceTwins();
-  const stored = getData(key).some(w => w.id===id || (action==='accept' && samePlace(w, wo) && isDotChild(wo.number, w.number)));
-  if (inboxOk === false || saved === false || !stored) {
-    const back = getData('corrigo_inbox');
-    if (!back.some(w => w.id===id)) { back.unshift(wo); saveData('corrigo_inbox', back); }
-    const kept = getData(key).filter(w => w.id!==id);
-    saveData(key, kept);
+  const tabs = DECISION_TABS;
+  let wo = null;
+  tabs.forEach(key => {
+    if (wo) return;
+    const arr = getData(key);
+    const idx = arr.findIndex(w => w.id === id);
+    if (idx >= 0) wo = arr[idx];
+  });
+  if (!wo) return;
+  const num = String(wo.number || '');
+  const label = action === 'accept' ? 'Accept' : 'Decline';
+  if (!confirm(label + ' ' + (num || 'this job') + '?')) return;
+  const targetKey = action === 'accept' ? 'corrigo_accepted' : 'corrigo_declined';
+  const snapshots = {};
+  let failed = false;
+  tabs.forEach(key => {
+    const arr = getData(key);
+    const keep = arr.filter(w => w.id !== id);
+    if (keep.length !== arr.length) {
+      snapshots[key] = arr;
+      if (saveData(key, keep) === false) failed = true;
+    }
+  });
+  if (failed) {
+    Object.keys(snapshots).forEach(key => saveData(key, snapshots[key]));
     render();
     show('inbox');
     alert('This phone could not store that. The job is still in the Inbox.');
     return;
   }
-  render();
-  show(action==='accept' ? 'accepted' : 'declined');
-  playSound();
-  if (action==='accept') {
-    alert('✅ You Accepted the Job!');
-  } else {
-    alert('❌ Job Declined.');
+  delete wo.fromOverride;
+  wo.status = action === 'accept' ? 'accepted' : 'declined';
+  const dest = getData(targetKey).filter(w => w.id !== id);
+  dest.unshift(wo);
+  const saved = saveData(targetKey, dest);
+  if (action === 'accept') collapseSamePlaceTwins();
+  const stored = getData(targetKey).some(w => w.id === id || (action === 'accept' && samePlace(w, wo) && isDotChild(wo.number, w.number)));
+  if (saved === false || !stored) {
+    Object.keys(snapshots).forEach(key => saveData(key, snapshots[key]));
+    saveData(targetKey, getData(targetKey).filter(w => w.id !== id));
+    render();
+    show('inbox');
+    alert('This phone could not store that. The job is still in the Inbox.');
+    return;
   }
+  rememberDecision(num, action);
+  queueDecision(num, action);
+  render();
+  show(action === 'accept' ? 'accepted' : 'declined');
+  playSound();
+  if (action === 'accept') alert('✅ You Accepted the Job!');
+  else alert('❌ Job Declined.');
   sendPickup();
+}
+function undoDecision(id){
+  let wo = null;
+  DECISION_TABS.forEach(key => {
+    const arr = getData(key);
+    const keep = [];
+    arr.forEach(w => { if (w.id === id) wo = wo || w; else keep.push(w); });
+    if (keep.length !== arr.length) saveData(key, keep);
+  });
+  if (!wo) return;
+  const num = String(wo.number || '');
+  forgetDecision(num);
+  setDecisionQueue(getDecisionQueue().filter(item => String(item.wo) !== num));
+  wo.status = 'inbox';
+  const inbox = getData('corrigo_inbox').filter(w => w.id !== id && String(w.number) !== num);
+  inbox.unshift(wo);
+  saveData('corrigo_inbox', inbox);
+  render();
+  show('inbox');
 }
 
 function unaccept(id){
@@ -1049,6 +1179,8 @@ function unaccept(id){
   wo.status = 'inbox';
   accepted.splice(idx,1);
   saveData('corrigo_accepted', accepted);
+  forgetDecision(String(wo.number || ''));
+  setDecisionQueue(getDecisionQueue().filter(item => String(item.wo) !== String(wo.number || '')));
   let inbox = getData('corrigo_inbox');
   inbox.unshift(wo);
   saveData('corrigo_inbox', inbox);
@@ -2553,7 +2685,7 @@ try {
 try {
   try { const el = document.getElementById('deviceNameLabel'); if (el) el.textContent = getDeviceName() || '(not set)'; } catch(e) {}
   const prev = localStorage.getItem('corrigo_last_sync_status'); if (prev) setSyncStatus('Last: ' + prev);
-  loadJobs().catch(e => console.error(e)).then(() => { try { render(); } catch(e) {} return sendPickup(true); }).catch(e => setSyncStatus('Sync failed: ' + (e.message||e), '#ff3b30'));
+  loadJobs().catch(e => console.error(e)).then(() => { try { render(); } catch(e) {} try { flushDecisionQueue(); } catch(e) {} return sendPickup(true); }).catch(e => setSyncStatus('Sync failed: ' + (e.message||e), '#ff3b30'));
 } catch(e) {
   console.error('Failed to start:', e);
   try { render(); } catch(re) {}
