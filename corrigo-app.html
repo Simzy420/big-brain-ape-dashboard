@@ -189,7 +189,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v47-202611122013</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v48-202611122112</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <div class="stepwrap"><div class="steplabel">Step 1 ⭐️</div><button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button></div>
   <div class="stepwrap"><div class="steplabel">Step 2 ⭐️</div><button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button></div>
@@ -322,7 +322,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v47-202611122013';
+const APP_VERSION = 'v48-202611122112';
 const DECISION_ENDPOINT = 'https://doorbell-relay-production-c59989ff.up.railway.app/decision';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
@@ -528,6 +528,7 @@ function show(name){
 }
 function render(){
   try { applyLocalDecisions(); } catch (e) { console.error(e); }
+  try { applyInboxHolds(); } catch (e) { console.error(e); }
   purgeSentDeleted(); purgeCompletedDeleted(); purgePaidDeleted();
   repairPrestonRoofWorkDesc();
   const inbox = getData('corrigo_inbox');
@@ -737,10 +738,11 @@ function card(w, canAct, tab, dueInfo){
     }
   }
   const bothDecisions = `<div class="btn-row"><button class="big accept" onclick="choose('${w.id}','accept')">Accept</button><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button></div>`;
+  const almostDueUnaccept = `<div class="btn-row"><button class="big decline" onclick="unaccept('${w.id}')" style="background:#f44336;">↩ Unaccept</button></div>`;
   const inboxExtras = `<div class="btn-row"><button class="big save" onclick="openBidModal('${w.id}')" style="margin-top:0;">🔨 Bid</button><button class="big save" onclick="saveWo('${w.id}')" style="margin-top:0;background:#666;">💾 Save for Later</button></div><div class="btn-row"><button class="wo-delete" onclick="deleteWo('${w.id}')" style="width:100%;margin-top:0;">🗑️ Delete Work Order</button></div>`;
   const parkedExtras = `<div class="btn-row"><button class="big decline" onclick="unaccept('${w.id}')" style="background:#f44336;">↩ Unaccept</button><button class="wo-delete" onclick="deleteWo('${w.id}')">🗑️ Delete</button></div><p class="muted">Waiting for Corrigo pickup</p>`;
   let actionBtns;
-  if (dueInfo && dueInfo.text) actionBtns = bothDecisions + (canAct ? inboxExtras : '');
+  if (dueInfo && dueInfo.text) actionBtns = bothDecisions + almostDueUnaccept + (canAct ? inboxExtras : '');
   else if (canAct) actionBtns = bothDecisions + inboxExtras;
   else if (tab === 'accepted') actionBtns = `<div class="btn-row"><button class="big decline" onclick="choose('${w.id}','decline')">Decline</button></div>` + parkedExtras;
   else actionBtns = parkedExtras;
@@ -1032,6 +1034,8 @@ function rememberDecision(number, decision){
   const map = getDecisions();
   map[String(number)] = decision;
   setMap('corrigoDecisions', map);
+  const holds = getMap('corrigo_inbox_hold');
+  if (holds[String(number)]) { delete holds[String(number)]; setMap('corrigo_inbox_hold', holds); }
 }
 function forgetDecision(number){
   const map = getDecisions();
@@ -1151,9 +1155,49 @@ function choose(id, action){
   else alert('❌ Job Declined.');
   sendPickup();
 }
+function returnToInboxKeys(){
+  const keys = DECISION_TABS.slice();
+  ['corrigo_accepted','corrigo_inbox','corrigo_saved','corrigo_bidding'].forEach(k => { if (keys.indexOf(k) < 0) keys.push(k); });
+  return keys;
+}
+function holdInInbox(number){
+  if (!number) return;
+  const holds = getMap('corrigo_inbox_hold');
+  holds[String(number)] = new Date().toISOString();
+  setMap('corrigo_inbox_hold', holds);
+}
+function applyInboxHolds(){
+  const holds = getMap('corrigo_inbox_hold');
+  Object.keys(holds).forEach(num => {
+    let found = null;
+    returnToInboxKeys().forEach(key => {
+      const arr = getData(key);
+      if (key === 'corrigo_inbox') {
+        const hit = arr.find(w => String(w.number) === String(num));
+        if (hit) found = hit;
+        return;
+      }
+      const keep = [];
+      arr.forEach(w => {
+        if (String(w.number) === String(num)) { if (!found) found = Object.assign({}, w); }
+        else keep.push(w);
+      });
+      if (keep.length !== arr.length) saveData(key, keep);
+    });
+    const inbox = getData('corrigo_inbox');
+    const hits = inbox.filter(w => String(w.number) === String(num));
+    if (hits.length === 1 && hits[0].status === 'inbox') return;
+    const next = hits[0] || found;
+    if (!next) return;
+    next.status = 'inbox';
+    const rest = inbox.filter(w => String(w.number) !== String(num));
+    rest.unshift(next);
+    saveData('corrigo_inbox', rest);
+  });
+}
 function undoDecision(id){
   let wo = null;
-  DECISION_TABS.forEach(key => {
+  returnToInboxKeys().forEach(key => {
     const arr = getData(key);
     const keep = [];
     arr.forEach(w => { if (w.id === id) wo = wo || w; else keep.push(w); });
@@ -1162,6 +1206,7 @@ function undoDecision(id){
   if (!wo) return;
   const num = String(wo.number || '');
   forgetDecision(num);
+  holdInInbox(num);
   setDecisionQueue(getDecisionQueue().filter(item => String(item.wo) !== num));
   wo.status = 'inbox';
   const inbox = getData('corrigo_inbox').filter(w => w.id !== id && String(w.number) !== num);
