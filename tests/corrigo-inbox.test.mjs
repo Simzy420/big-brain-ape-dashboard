@@ -618,7 +618,7 @@ test('Accepted cards use the same four buttons and Corrigo proof is not a button
       steps: [...document.querySelectorAll('.steplabel')].map(el => el.textContent)
     };
   });
-  const four = ['↩ Unaccept', '🗑️ Delete', '📝 Add Work Description', '📧 View Original Email'];
+  const four = ['Decline', '↩ Unaccept', '🗑️ Delete', '📝 Add Work Description', '📧 View Original Email'];
   assert.equal(layout.accepted.length, 3);
   layout.accepted.forEach(card => assert.deepEqual(card.buttons, four));
   assert.deepEqual(layout.acceptedNow, [true, true, true]);
@@ -780,8 +780,12 @@ test('Almost Due uses the 3-day accept and complete deadlines', async () => {
   assert.equal(view.tabs, 1);
   const almostDueIndex = view.tabOrder.findIndex(label => label.startsWith('⚠️ Almost Due'));
   const acceptedIndex = view.tabOrder.findIndex(label => label.startsWith('Accepted'));
+  const declinedIndex = view.tabOrder.findIndex(label => label.startsWith('Declined'));
+  assert.equal(declinedIndex, acceptedIndex + 1);
+  assert.equal(almostDueIndex, declinedIndex + 1);
   assert.equal(view.tabOrder.length - almostDueIndex, 3);
-  assert.equal(almostDueIndex, acceptedIndex + 1);
+  assert.equal(/Add WO/.test(view.tabOrder[view.tabOrder.length - 2]), true);
+  assert.equal(view.tabOrder[view.tabOrder.length - 1].startsWith('Settings'), true);
   assert.equal(view.overflow <= 1, true);
   assert.equal(view.count, String(view.cards.length));
   const byNum = Object.fromEntries(view.cards.filter(c => c.num).map(c => [c.num, c]));
@@ -831,6 +835,137 @@ test('Almost Due uses the 3-day accept and complete deadlines', async () => {
   assert.equal(after.inbox.includes('J0000000-00992'), false);
   assert.equal(after.inbox.includes('J5015189-00435'), true);
   assert.ok(dialogs.some(m => m.includes('You Accepted the Job')));
+  await page.close();
+});
+
+test('Accept and Decline confirm before they move a job, and the local decision wins', async () => {
+  const job = wo({
+    id: 'decide-me',
+    number: 'J5015189-00435',
+    status: 'inbox',
+    acceptBy: '11/13/2026 1:48 PM',
+    completeBy: '12/07/2026 5:00 PM'
+  });
+  const other = wo({
+    id: 'decide-other',
+    number: 'J5991021-00465',
+    status: 'inbox',
+    acceptBy: '11/11/2026 11:48 AM',
+    completeBy: '12/08/2026 11:48 AM'
+  });
+  const { page, state } = await openApp({ workOrders: [job, other] });
+  const before = await page.evaluate(() => {
+    const buttons = root => [...root.querySelectorAll('button')].map(b => b.textContent.replace(/\s+/g, ' ').trim());
+    const inbox = [...document.querySelectorAll('#inbox .card')].find(c => c.innerText.includes('J5015189-00435'));
+    const soon = [...document.querySelectorAll('#almostdue .card')].find(c => c.innerText.includes('J5015189-00435'));
+    return { inbox: buttons(inbox), soon: buttons(soon) };
+  });
+  assert.equal(before.inbox.includes('Accept'), true);
+  assert.equal(before.inbox.includes('Decline'), true);
+  assert.equal(before.soon.includes('Accept'), true);
+  assert.equal(before.soon.includes('Decline'), true);
+
+  await page.evaluate(() => {
+    window.confirm = msg => { window.__confirms = (window.__confirms || []).concat(msg); return false; };
+    const card = [...document.querySelectorAll('#inbox .card')].find(c => c.innerText.includes('J5015189-00435'));
+    [...card.querySelectorAll('button')].find(b => b.textContent.trim() === 'Accept').click();
+  });
+  const cancelled = await page.evaluate(() => ({
+    confirms: window.__confirms || [],
+    inbox: JSON.parse(localStorage.getItem('corrigo_inbox') || '[]').map(w => w.number),
+    queue: JSON.parse(localStorage.getItem('corrigoDecisionQueue') || '[]')
+  }));
+  assert.deepEqual(cancelled.confirms, ['Accept J5015189-00435?']);
+  assert.equal(cancelled.inbox.includes('J5015189-00435'), true);
+  assert.equal(cancelled.queue.length, 0);
+
+  await page.evaluate(() => {
+    window.confirm = msg => { window.__confirms.push(msg); return true; };
+    const card = [...document.querySelectorAll('#almostdue .card')].find(c => c.innerText.includes('J5015189-00435'));
+    [...card.querySelectorAll('button')].find(b => b.textContent.trim() === 'Accept').click();
+  });
+  const accepted = await page.evaluate(() => ({
+    inbox: JSON.parse(localStorage.getItem('corrigo_inbox') || '[]').map(w => w.number),
+    accepted: JSON.parse(localStorage.getItem('corrigo_accepted') || '[]').map(w => w.number),
+    almost: [...document.querySelectorAll('#almostdue strong')].map(el => el.textContent.trim()),
+    decisions: JSON.parse(localStorage.getItem('corrigoDecisions') || '{}'),
+    queue: JSON.parse(localStorage.getItem('corrigoDecisionQueue') || '[]'),
+    undo: [...document.querySelectorAll('#accepted .undo-btn')].map(b => b.textContent.trim()),
+    endpoint: DECISION_ENDPOINT
+  }));
+  assert.equal(accepted.inbox.includes('J5015189-00435'), false);
+  assert.equal(accepted.accepted.includes('J5015189-00435'), true);
+  assert.equal(accepted.almost.includes('J5015189-00435'), false);
+  assert.equal(accepted.decisions['J5015189-00435'], 'accept');
+  assert.equal(accepted.queue.length, 1);
+  assert.equal(accepted.queue[0].wo, 'J5015189-00435');
+  assert.equal(accepted.queue[0].decision, 'accept');
+  assert.equal(typeof accepted.queue[0].ts, 'string');
+  assert.deepEqual(accepted.undo, ['Undo']);
+  assert.equal(accepted.endpoint, '');
+  assert.equal(state.writes.some(line => /DECISION_ENDPOINT|\/decisions/i.test(line)), false);
+
+  await page.evaluate(() => {
+    const wo = JSON.parse(localStorage.getItem('corrigo_accepted')).find(w => w.number === 'J5015189-00435');
+    wo.status = 'inbox';
+    const inbox = JSON.parse(localStorage.getItem('corrigo_inbox') || '[]');
+    inbox.unshift(wo);
+    localStorage.setItem('corrigo_inbox', JSON.stringify(inbox));
+    localStorage.setItem('corrigo_accepted', '[]');
+    render();
+  });
+  const reapplied = await page.evaluate(() => ({
+    inbox: JSON.parse(localStorage.getItem('corrigo_inbox') || '[]').map(w => w.number),
+    accepted: JSON.parse(localStorage.getItem('corrigo_accepted') || '[]').map(w => w.number)
+  }));
+  assert.equal(reapplied.accepted.includes('J5015189-00435'), true);
+  assert.equal(reapplied.inbox.includes('J5015189-00435'), false);
+
+  await page.evaluate(() => {
+    const card = [...document.querySelectorAll('#accepted .card')].find(c => c.innerText.includes('J5015189-00435'));
+    [...card.querySelectorAll('button')].find(b => b.textContent.trim() === 'Undo').click();
+  });
+  const undone = await page.evaluate(() => ({
+    inbox: JSON.parse(localStorage.getItem('corrigo_inbox') || '[]').map(w => w.number),
+    accepted: JSON.parse(localStorage.getItem('corrigo_accepted') || '[]').map(w => w.number),
+    decisions: JSON.parse(localStorage.getItem('corrigoDecisions') || '{}'),
+    queue: JSON.parse(localStorage.getItem('corrigoDecisionQueue') || '[]')
+  }));
+  assert.equal(undone.inbox.includes('J5015189-00435'), true);
+  assert.equal(undone.accepted.includes('J5015189-00435'), false);
+  assert.equal(undone.decisions['J5015189-00435'], undefined);
+  assert.equal(undone.queue.length, 0);
+
+  await page.evaluate(() => {
+    const card = [...document.querySelectorAll('#inbox .card')].find(c => c.innerText.includes('J5991021-00465'));
+    [...card.querySelectorAll('button')].find(b => b.textContent.trim() === 'Accept').click();
+  });
+  const acceptedButtons = await page.evaluate(() => {
+    const card = [...document.querySelectorAll('#accepted .card')].find(c => c.innerText.includes('J5991021-00465'));
+    return [...card.querySelectorAll('button')].map(b => b.textContent.replace(/\s+/g, ' ').trim());
+  });
+  assert.equal(acceptedButtons.includes('Accept'), false);
+  assert.equal(acceptedButtons.includes('Decline'), true);
+  await page.evaluate(() => {
+    const card = [...document.querySelectorAll('#accepted .card')].find(c => c.innerText.includes('J5991021-00465'));
+    [...card.querySelectorAll('button')].find(b => b.textContent.trim() === 'Decline').click();
+  });
+  const declined = await page.evaluate(() => ({
+    declined: JSON.parse(localStorage.getItem('corrigo_declined') || '[]').map(w => w.number),
+    accepted: JSON.parse(localStorage.getItem('corrigo_accepted') || '[]').map(w => w.number),
+    inbox: JSON.parse(localStorage.getItem('corrigo_inbox') || '[]').map(w => w.number),
+    almost: [...document.querySelectorAll('#almostdue strong')].map(el => el.textContent.trim()),
+    decisions: JSON.parse(localStorage.getItem('corrigoDecisions') || '{}'),
+    undo: [...document.querySelectorAll('#declined .undo-btn')].map(b => b.textContent.trim()),
+    confirms: window.__confirms
+  }));
+  assert.equal(declined.declined.includes('J5991021-00465'), true);
+  assert.equal(declined.accepted.includes('J5991021-00465'), false);
+  assert.equal(declined.inbox.includes('J5991021-00465'), false);
+  assert.equal(declined.almost.includes('J5991021-00465'), false);
+  assert.equal(declined.decisions['J5991021-00465'], 'decline');
+  assert.deepEqual(declined.undo, ['Undo']);
+  assert.equal(declined.confirms.includes('Decline J5991021-00465?'), true);
   await page.close();
 });
 
