@@ -1003,6 +1003,49 @@ test('queued decisions stay until the relay returns 2xx and are retried on the n
   await page.close();
 });
 
+test('Unaccept on a Declined card returns the job to Inbox and does not post', async () => {
+  const job = wo({
+    id: 'unaccept-declined',
+    number: 'J5015189-00435',
+    status: 'inbox',
+    acceptBy: '11/13/2026 1:48 PM'
+  });
+  const { page, state } = await openApp({ workOrders: [job] });
+  await page.evaluate(() => { window.confirm = () => true; });
+  await page.evaluate(() => {
+    const card = [...document.querySelectorAll('#inbox .card')].find(c => c.innerText.includes('J5015189-00435'));
+    [...card.querySelectorAll('button')].find(b => b.textContent.trim() === 'Decline').click();
+  });
+  const declined = await page.evaluate(() => ({
+    tab: JSON.parse(localStorage.getItem('corrigo_declined') || '[]').map(w => w.number),
+    hasUnaccept: [...document.querySelectorAll('#declined button')].some(b => b.textContent.includes('Unaccept'))
+  }));
+  assert.deepEqual(declined.tab, ['J5015189-00435']);
+  assert.equal(declined.hasUnaccept, true);
+  const posts = state.decisionPosts.length;
+  await page.evaluate(() => {
+    const card = [...document.querySelectorAll('#declined .card')].find(c => c.innerText.includes('J5015189-00435'));
+    [...card.querySelectorAll('button')].find(b => b.textContent.includes('Unaccept')).click();
+  });
+  const after = await page.evaluate(() => {
+    render();
+    return {
+      inbox: JSON.parse(localStorage.getItem('corrigo_inbox') || '[]').map(w => w.number),
+      declined: JSON.parse(localStorage.getItem('corrigo_declined') || '[]').map(w => w.number),
+      accepted: JSON.parse(localStorage.getItem('corrigo_accepted') || '[]').map(w => w.number),
+      decisions: JSON.parse(localStorage.getItem('corrigoDecisions') || '{}'),
+      queue: JSON.parse(localStorage.getItem('corrigoDecisionQueue') || '[]')
+    };
+  });
+  assert.deepEqual(after.inbox, ['J5015189-00435']);
+  assert.deepEqual(after.declined, []);
+  assert.deepEqual(after.accepted, []);
+  assert.equal(after.decisions['J5015189-00435'], undefined);
+  assert.deepEqual(after.queue, []);
+  assert.equal(state.decisionPosts.length, posts);
+  await page.close();
+});
+
 test('a relay 401 without a saved token is not called a GitHub read failure', async () => {
   const session = await openApp({ workOrders: [plain], allowRelay: true });
   session.state.failRelay = true;
