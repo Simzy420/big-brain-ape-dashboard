@@ -752,7 +752,8 @@ test('Almost Due uses the 3-day accept and complete deadlines', async () => {
   });
   const view = await page.evaluate(() => {
     show('almostdue');
-    const tabButtons = [...document.querySelectorAll('.tabs .tab')].filter(b => /Almost Due/.test(b.textContent));
+    const tabButtons = [...document.querySelectorAll('.tabs .tab')];
+    const almostDueButtons = tabButtons.filter(b => /Almost Due/.test(b.textContent));
     const cards = [...document.querySelectorAll('#almostdue .card')].map(card => {
       const flag = card.querySelector('.due-flag');
       return {
@@ -766,7 +767,8 @@ test('Almost Due uses the 3-day accept and complete deadlines', async () => {
     const inboxNums = [...document.querySelectorAll('#inbox .card strong')].map(el => el.textContent.trim());
     const acceptedNums = [...document.querySelectorAll('#accepted .card strong')].map(el => el.textContent.trim());
     return {
-      tabs: tabButtons.length,
+      tabs: almostDueButtons.length,
+      tabOrder: tabButtons.map(b => b.textContent.replace(/\s+/g, ' ').trim()),
       count: document.getElementById('almostDueCount').textContent,
       cards,
       inboxNums,
@@ -776,6 +778,10 @@ test('Almost Due uses the 3-day accept and complete deadlines', async () => {
     };
   });
   assert.equal(view.tabs, 1);
+  const almostDueIndex = view.tabOrder.findIndex(label => label.startsWith('⚠️ Almost Due'));
+  const acceptedIndex = view.tabOrder.findIndex(label => label.startsWith('Accepted'));
+  assert.equal(view.tabOrder.length - almostDueIndex, 3);
+  assert.equal(almostDueIndex, acceptedIndex + 1);
   assert.equal(view.overflow <= 1, true);
   assert.equal(view.count, String(view.cards.length));
   const byNum = Object.fromEntries(view.cards.filter(c => c.num).map(c => [c.num, c]));
