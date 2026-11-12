@@ -778,14 +778,8 @@ test('Almost Due uses the 3-day accept and complete deadlines', async () => {
     };
   });
   assert.equal(view.tabs, 1);
-  const almostDueIndex = view.tabOrder.findIndex(label => label.startsWith('⚠️ Almost Due'));
-  const acceptedIndex = view.tabOrder.findIndex(label => label.startsWith('Accepted'));
-  const declinedIndex = view.tabOrder.findIndex(label => label.startsWith('Declined'));
-  assert.equal(declinedIndex, acceptedIndex + 1);
-  assert.equal(almostDueIndex, declinedIndex + 1);
-  assert.equal(view.tabOrder.length - almostDueIndex, 3);
-  assert.equal(/Add WO/.test(view.tabOrder[view.tabOrder.length - 2]), true);
-  assert.equal(view.tabOrder[view.tabOrder.length - 1].startsWith('Settings'), true);
+  const names = view.tabOrder.map(label => label.replace(/^\W+\s*/, '').replace(/\s+\d+$/, '').trim());
+  assert.deepEqual(names, ['Inbox', 'Accepted', 'Almost Due', 'Bidding', 'Overdue', 'Disputed', 'Resolved', 'Finalize', 'Completed', 'Submitted', 'Paid', 'Declined', 'Add WO', 'Settings']);
   assert.equal(view.overflow <= 1, true);
   assert.equal(view.count, String(view.cards.length));
   const byNum = Object.fromEntries(view.cards.filter(c => c.num).map(c => [c.num, c]));
