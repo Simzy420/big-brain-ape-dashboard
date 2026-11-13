@@ -629,7 +629,7 @@ test('Accepted cards use the same four buttons and Corrigo proof is not a button
       steps: [...document.querySelectorAll('.steplabel')].map(el => el.textContent)
     };
   });
-  const four = ['Decline', '↩ Unaccept', '🗑️ Delete', '📝 Add Work Description', '📧 View Original Email'];
+  const four = ['Decline', '↩ Unaccept', '🗑️ Delete', '📝 Add Work Description', '📧 View Original Email', '📷 Corrigo Photos'];
   assert.equal(layout.accepted.length, 3);
   layout.accepted.forEach(card => assert.deepEqual(card.buttons, four));
   assert.deepEqual(layout.acceptedNow, [true, true, true]);
@@ -887,7 +887,7 @@ test('Accept and Decline confirm before they move a job, and the local decision 
   const before = await page.evaluate(() => {
     const buttons = root => [...root.querySelectorAll('button')].map(b => b.textContent.replace(/\s+/g, ' ').trim());
     const inbox = [...document.querySelectorAll('#inbox .card')].find(c => c.innerText.includes('J5015189-00435'));
-    const soon = [...document.querySelectorAll('#almostdue .card')].find(c => c.innerText.includes('J5015189-00435'));
+    const soon = [...document.querySelectorAll('#almostdue .card, #overdue .card')].find(c => c.innerText.includes('J5015189-00435'));
     return { inbox: buttons(inbox), soon: buttons(soon) };
   });
   assert.equal(before.inbox.includes('Accept'), true);
@@ -911,7 +911,7 @@ test('Accept and Decline confirm before they move a job, and the local decision 
 
   await page.evaluate(() => {
     window.confirm = msg => { window.__confirms.push(msg); return true; };
-    const card = [...document.querySelectorAll('#almostdue .card')].find(c => c.innerText.includes('J5015189-00435'));
+    const card = [...document.querySelectorAll('#almostdue .card, #overdue .card')].find(c => c.innerText.includes('J5015189-00435'));
     [...card.querySelectorAll('button')].find(b => b.textContent.trim() === 'Accept').click();
   });
   const accepted = await page.evaluate(() => ({

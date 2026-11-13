@@ -189,7 +189,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v49-202611122122</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v51-202611132054</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <div class="stepwrap"><div class="steplabel">Step 1 ⭐️</div><button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button></div>
   <div class="stepwrap"><div class="steplabel">Step 2 ⭐️</div><button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button></div>
@@ -322,7 +322,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v49-202611122122';
+const APP_VERSION = 'v51-202611132054';
 const DECISION_ENDPOINT = 'https://doorbell-relay-production-c59989ff.up.railway.app/decision';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
@@ -641,7 +641,7 @@ function render(){
              <p style="margin:0;color:#00cc66;font-size:22px;font-weight:800;">TOTAL: $${grandTotal.toFixed(2)}</p>
            </div>`
         : '';
-      return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${cleanDesc(w.description) ? '<p>'+cleanDesc(w.description)+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}${w.disputeResolved ? '<p style="color:#00cc66;font-size:16px;">✅ Dispute resolved</p>' : ''}${invoiceHtml}${totalHtml}${photosHtml}<div class="btn-row"><button class="big save" onclick="openCompleteForm('${w.id}')">📋 Enter Hours, Rate & Submit</button></div><div class="btn-row"><button class="big" style="background:#ff9f0a;color:#111;" onclick="backToAccepted('${w.id}')">↩ Back to Accepted</button></div><div class="btn-row"><button class="wo-delete" onclick="deleteWo('${w.id}')" style="width:100%;margin-top:0;">🗑️ Delete Work Order</button></div></div>`;
+      return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${cleanDesc(w.description) ? '<p>'+cleanDesc(w.description)+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}${w.disputeResolved ? '<p style="color:#00cc66;font-size:16px;">✅ Dispute resolved</p>' : ''}${invoiceHtml}${totalHtml}${photosHtml}${corrigoPhotoBtn(w)}<div class="btn-row"><button class="big save" onclick="openCompleteForm('${w.id}')">📋 Enter Hours, Rate & Submit</button></div><div class="btn-row"><button class="big" style="background:#ff9f0a;color:#111;" onclick="backToAccepted('${w.id}')">↩ Back to Accepted</button></div><div class="btn-row"><button class="wo-delete" onclick="deleteWo('${w.id}')" style="width:100%;margin-top:0;">🗑️ Delete Work Order</button></div></div>`;
     }).join('')
     : '<div class="card">No work orders ready to finalize.</div>';
 
@@ -665,7 +665,7 @@ function render(){
              <p style="margin:0;color:#00cc66;font-size:22px;font-weight:800;">TOTAL: $${grandTotal.toFixed(2)}</p>
            </div>`;
       const submittedStatus = w.corrigoSubmitted ? '<p style="color:#00cc66;font-size:16px;">✅ Submitted to Corrigo</p>' : '<p style="color:#ff9500;font-size:16px;">⏳ Waiting to be submitted to Corrigo</p>';
-      return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${cleanDesc(w.description) ? '<p>'+cleanDesc(w.description)+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}${invoiceHtml}${totalHtml}${photosHtml}${submittedStatus}<div class="btn-row" style="margin-top:12px;"><button class="big save" onclick="editSubmittedForm('${w.id}')">✏️ Edit Invoice Details</button></div><button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="deleteCompletedWo('${w.id}')">🗑️ Delete</button></div>`;
+      return `<div class="card"><div class="wo-card-header"><strong>${w.number||''}</strong></div>${cleanDesc(w.description) ? '<p>'+cleanDesc(w.description)+'</p>' : ''}${w.workDescription ? '<p style="color:#ff9500;font-size:16px;">📝 '+w.workDescription+'</p>' : ''}${invoiceHtml}${totalHtml}${photosHtml}${submittedStatus}${corrigoPhotoBtn(w)}<div class="btn-row" style="margin-top:12px;"><button class="big save" onclick="editSubmittedForm('${w.id}')">✏️ Edit Invoice Details</button></div><button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="deleteCompletedWo('${w.id}')">🗑️ Delete</button></div>`;
     }).join('')
     : '<div class="card">No completed work orders waiting for Corrigo.</div>';
 
@@ -772,7 +772,98 @@ function card(w, canAct, tab, dueInfo){
   const overdueCls = dueInfo && dueInfo.overdue ? ' overdue' : '';
   const decided = decisionFor(w.number);
   const undoHtml = decided && (tab === 'accepted' || tab === 'declined') ? `<button class="undo-btn" onclick="undoDecision('${w.id}')">Undo</button>` : '';
-  return `<div class="card${overdueCls}"><div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>${dueHtml}${dateHtml}${fmtLoc(loc) ? '<p>'+fmtLoc(loc)+'</p>' : ''}${desc ? '<p>'+desc+'</p>' : ''}${actionBtns}${extraBtns}${undoHtml}</div>`;
+  const photoBtn = corrigoPhotoBtn(w);
+  return `<div class="card${overdueCls}"><div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>${dueHtml}${dateHtml}${fmtLoc(loc) ? '<p>'+fmtLoc(loc)+'</p>' : ''}${desc ? '<p>'+desc+'</p>' : ''}${actionBtns}${extraBtns}${photoBtn}${undoHtml}</div>`;
+}
+let corrigoPhotoSeq = 0;
+let corrigoPhotoList = [];
+let corrigoPhotoIndex = 0;
+function noCorrigoPhotos(){
+  alert("Corrigo hasn't provided any images for this work order.");
+}
+function corrigoPhotoBtn(w){
+  const imgs = Array.isArray(w && w.images) ? w.images.map(s => String(s || '').trim()).filter(Boolean) : [];
+  if (!imgs.length) return '<button type="button" class="email-btn" onclick="noCorrigoPhotos()">📷 Corrigo Photos</button>';
+  if (!window.CORRIGO_CARD_IMAGES) window.CORRIGO_CARD_IMAGES = {};
+  const key = 'p' + (++corrigoPhotoSeq);
+  window.CORRIGO_CARD_IMAGES[key] = imgs;
+  return `<button type="button" class="email-btn" onclick="openCorrigoPhotos('${key}')">📷 Corrigo Photos (${imgs.length})</button>`;
+}
+function ensureCorrigoPhotoViewer(){
+  let v = document.getElementById('corrigoPhotoViewer');
+  if (v) return v;
+  v = document.createElement('div');
+  v.id = 'corrigoPhotoViewer';
+  v.style.cssText = 'display:none;position:fixed;inset:0;z-index:100000;background:#000;color:#fff;flex-direction:column;';
+  v.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 12px 8px;flex:0 0 auto;"><strong id="corrigoPhotoCount" style="font-size:18px;"></strong><button type="button" id="corrigoPhotoClose" style="background:#333;color:#fff;border:0;border-radius:12px;font-size:22px;font-weight:800;min-width:64px;min-height:44px;padding:8px 14px;">Close</button></div><div id="corrigoPhotoStage" style="flex:1 1 auto;display:flex;align-items:center;justify-content:center;min-height:0;position:relative;touch-action:pan-y;"><button type="button" id="corrigoPhotoPrev" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);color:#fff;border:0;border-radius:12px;font-size:32px;min-width:48px;min-height:64px;">‹</button><img id="corrigoPhotoImg" alt="Corrigo photo" style="max-width:100%;max-height:100%;object-fit:contain;"><button type="button" id="corrigoPhotoNext" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);color:#fff;border:0;border-radius:12px;font-size:32px;min-width:48px;min-height:64px;">›</button></div>';
+  document.body.appendChild(v);
+  document.getElementById('corrigoPhotoClose').onclick = closeCorrigoPhotos;
+  document.getElementById('corrigoPhotoPrev').onclick = function(ev){ ev.stopPropagation(); stepCorrigoPhoto(-1); };
+  document.getElementById('corrigoPhotoNext').onclick = function(ev){ ev.stopPropagation(); stepCorrigoPhoto(1); };
+  const stage = document.getElementById('corrigoPhotoStage');
+  let startX = 0;
+  stage.addEventListener('touchstart', function(ev){ if (ev.touches && ev.touches[0]) startX = ev.touches[0].clientX; }, {passive:true});
+  stage.addEventListener('touchend', function(ev){
+    if (!ev.changedTouches || !ev.changedTouches[0] || corrigoPhotoList.length < 2) return;
+    const dx = ev.changedTouches[0].clientX - startX;
+    if (dx > 40) stepCorrigoPhoto(-1);
+    else if (dx < -40) stepCorrigoPhoto(1);
+  }, {passive:true});
+  return v;
+}
+function showCorrigoPhoto(){
+  const img = document.getElementById('corrigoPhotoImg');
+  const count = document.getElementById('corrigoPhotoCount');
+  const prev = document.getElementById('corrigoPhotoPrev');
+  const next = document.getElementById('corrigoPhotoNext');
+  const src = corrigoPhotoList[corrigoPhotoIndex] || '';
+  img.src = src;
+  count.textContent = (corrigoPhotoIndex + 1) + ' / ' + corrigoPhotoList.length;
+  const many = corrigoPhotoList.length > 1;
+  prev.style.display = many ? 'block' : 'none';
+  next.style.display = many ? 'block' : 'none';
+}
+function openCorrigoPhotos(key){
+  const list = (window.CORRIGO_CARD_IMAGES && window.CORRIGO_CARD_IMAGES[key]) || [];
+  if (!list.length) return;
+  corrigoPhotoList = list.slice();
+  corrigoPhotoIndex = 0;
+  const v = ensureCorrigoPhotoViewer();
+  v.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  showCorrigoPhoto();
+}
+function stepCorrigoPhoto(dir){
+  if (corrigoPhotoList.length < 2) return;
+  corrigoPhotoIndex = (corrigoPhotoIndex + dir + corrigoPhotoList.length) % corrigoPhotoList.length;
+  showCorrigoPhoto();
+}
+function closeCorrigoPhotos(){
+  const v = document.getElementById('corrigoPhotoViewer');
+  if (v) v.style.display = 'none';
+  const img = document.getElementById('corrigoPhotoImg');
+  if (img) img.removeAttribute('src');
+  document.body.style.overflow = '';
+}
+function fillServerImages(jobs){
+  if (!Array.isArray(jobs)) return;
+  const byNum = {};
+  jobs.forEach(w => {
+    if (!w || !Array.isArray(w.images) || !w.images.length) return;
+    byNum[String(w.number)] = w.images;
+  });
+  if (!Object.keys(byNum).length) return;
+  ['corrigo_inbox','corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved','corrigo_completed','corrigo_submitted','corrigo_disputed','corrigo_resolved','corrigo_sent_to_corrigo','corrigo_paid'].forEach(k => {
+    const arr = getData(k);
+    let changed = false;
+    arr.forEach(w => {
+      const imgs = byNum[String(w.number)];
+      if (!imgs || (Array.isArray(w.images) && w.images.length)) return;
+      w.images = imgs.slice();
+      changed = true;
+    });
+    if (changed) saveData(k, arr);
+  });
 }
 
 function disputedCard(w){
@@ -799,6 +890,7 @@ function disputedCard(w){
     ${disputeEmailBtn}
     ${finalizeBtn}
     ${resolveBtn}
+    ${corrigoPhotoBtn(w)}
     ${deleteBtn}
   </div>`;
 }
@@ -937,6 +1029,7 @@ function resolvedCard(w){
     <p style="color:#00cc66;font-size:16px;">✅ Dispute resolved</p>
     ${invoiceHtml}
     ${photosHtml}
+    ${corrigoPhotoBtn(w)}
     ${deleteBtn}
   </div>`;
 }
@@ -2117,7 +2210,7 @@ function sentCard(w, i){
   const total = w.corrigoTotal != null && w.corrigoTotal !== '' ? parseFloat(w.corrigoTotal) : (labor + (parseFloat(w.materialsCost)||0));
   const line = (w.hours || w.invoiceNumber) ? `<div style="margin-top:8px;color:#00cc66;font-size:16px;">Invoice: ${escHtml(w.invoiceNumber||'-')} | Hours: ${escHtml(w.hours||'-')} | Materials: ${hasMat ? fmtMoney(w.materialsCost) : 'none'}${total ? ' | Total: ' + fmtMoney(total) : ''}</div>` : '';
   const pics = sentPhotoSrcs(w); const picHtml = pics.length ? `<button class="big" style="width:100%;margin-top:10px;background:#5e5ce6;color:#fff;" onclick="event.stopPropagation();const im=this.nextElementSibling;const open=im.style.display==='none';if(open&&!im.src)im.src=im.dataset.src;im.style.display=open?'block':'none';">🖼️ Job Image Submitted</button><img data-src="${escHtml(pics[0])}" onclick="event.stopPropagation();openPhotoFull(this.src)" style="display:none;width:100%;max-height:260px;object-fit:cover;border-radius:10px;margin-top:8px;background:#222;cursor:pointer;">` : '';
-  return `<div class="card" data-sent-idx="${i}"><div class="wo-card-header" style="gap:8px;"><strong style="min-width:0;overflow-wrap:anywhere;">${escHtml(w.number||'')}</strong>${total ? '<div class="wo-est">' + fmtMoney(total) + '</div>' : ''}</div>${fmtLoc(w.location) ? '<p>'+fmtLoc(w.location)+'</p>' : ''}${line}${corrigoReceiptButton('corrigo_sent_to_corrigo', i)}${picHtml}<button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="event.stopPropagation();deleteSentWo(${i})">🗑️ Delete</button></div>`;
+  return `<div class="card" data-sent-idx="${i}"><div class="wo-card-header" style="gap:8px;"><strong style="min-width:0;overflow-wrap:anywhere;">${escHtml(w.number||'')}</strong>${total ? '<div class="wo-est">' + fmtMoney(total) + '</div>' : ''}</div>${fmtLoc(w.location) ? '<p>'+fmtLoc(w.location)+'</p>' : ''}${line}${corrigoReceiptButton('corrigo_sent_to_corrigo', i)}${picHtml}${corrigoPhotoBtn(w)}<button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="event.stopPropagation();deleteSentWo(${i})">🗑️ Delete</button></div>`;
 }
 
 function corrigoReceiptButton(store, i){
@@ -2135,7 +2228,7 @@ function paidCard(w, i){
   const line = bits.length ? `<p class="muted">${bits.join(' · ')}</p>` : '';
   const emailBtn = (w.paidEmailContent || w.emailContent) ? `<button class="email-btn" onclick="viewEmail('${w.id}')">📧 View Paid Email</button>` : '';
   const desc = cleanDesc(w.description || w.workDescription || '');
-  return `<div class="card" data-paid-idx="${i}" style="border:2px solid #00cc66;"><div class="wo-card-header"><strong>${escHtml(w.number||'')}</strong>${amtHtml}</div><p style="color:#00cc66;font-size:16px;margin:6px 0;">✅ Paid</p>${w.customer ? '<p>'+escHtml(w.customer)+'</p>' : ''}${fmtLoc(w.location) ? '<p>'+fmtLoc(w.location)+'</p>' : ''}${line}${desc ? '<p>'+desc+'</p>' : ''}${corrigoReceiptButton('corrigo_paid', i)}${emailBtn}<button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="deletePaidWo('${w.id}')">🗑️ Delete</button></div>`;
+  return `<div class="card" data-paid-idx="${i}" style="border:2px solid #00cc66;"><div class="wo-card-header"><strong>${escHtml(w.number||'')}</strong>${amtHtml}</div><p style="color:#00cc66;font-size:16px;margin:6px 0;">✅ Paid</p>${w.customer ? '<p>'+escHtml(w.customer)+'</p>' : ''}${fmtLoc(w.location) ? '<p>'+fmtLoc(w.location)+'</p>' : ''}${line}${desc ? '<p>'+desc+'</p>' : ''}${corrigoReceiptButton('corrigo_paid', i)}${emailBtn}${corrigoPhotoBtn(w)}<button class="wo-delete" style="width:100%;margin-top:10px;background:#ff3b30;color:#fff;" onclick="deletePaidWo('${w.id}')">🗑️ Delete</button></div>`;
 }
 
 
@@ -2709,6 +2802,7 @@ async function loadJobs(){
     try { sweepRenamed(overrides); } catch(swErr) { console.error('sweep', swErr); }
     try { collapseSamePlaceTwins(); } catch(twErr) { console.error('twins', twErr); }
     purgeSentDeleted(); purgeCompletedDeleted();
+    try { fillServerImages(jobs); } catch(imgErr) { console.error('images', imgErr); }
 
     render();
     return { workOrdersOk, actionsOk, overridesOk: lastOverridesFetchOk };
