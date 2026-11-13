@@ -189,7 +189,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v51-202611132054</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v52-202611132221</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <div class="stepwrap"><div class="steplabel">Step 1 ⭐️</div><button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button></div>
   <div class="stepwrap"><div class="steplabel">Step 2 ⭐️</div><button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button></div>
@@ -322,14 +322,14 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v51-202611132054';
+const APP_VERSION = 'v52-202611132221';
 const DECISION_ENDPOINT = 'https://doorbell-relay-production-c59989ff.up.railway.app/decision';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
   const el = document.getElementById('syncStatus');
   if (el) {
     const m = String(msg);
-    const dot = /fail/i.test(m) ? ['#ef4444','0 0 8px #ef4444'] : /Syncing/i.test(m) ? ['#f59e0b','0 0 8px #f59e0b'] : /Synced/i.test(m) ? ['#22c55e','0 0 8px #22c55e'] : ['#9ca3af','none'];
+    const dot = /fail/i.test(m) ? ['#ef4444','0 0 8px #ef4444'] : /Syncing/i.test(m) ? ['#f59e0b','0 0 8px #f59e0b'] : /Synced/i.test(m) ? ['#22c55e','0 0 8px #22c55e'] : (color === '#ff3b30' ? ['#ef4444','0 0 8px #ef4444'] : ['#9ca3af','none']);
     el.style.cssText = 'font-size:17px;font-weight:800;color:#000;margin:6px 0;display:inline-flex;align-items:center;gap:8px;background:#fff;padding:6px 14px;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.25);';
     el.innerHTML = '<span style="flex:0 0 14px;width:14px;height:14px;border-radius:50%;background:' + dot[0] + ';box-shadow:' + dot[1] + ';border:1px solid rgba(0,0,0,.35);"></span><span></span>';
     el.lastChild.textContent = m;
@@ -1168,16 +1168,52 @@ function queueDecision(number, decision){
   setDecisionQueue(q);
   flushDecisionQueue();
 }
+function buildFinalizePayload(wo, isEdit){
+  const num = (v) => String(v == null ? '' : v).trim();
+  const photos = (wo.photos || []).map(p => p && p.url).filter(u => /^https:\/\//.test(u || '')).slice(0, 20);
+  return {
+    type: 'finalize',
+    wo: String(wo.number),
+    ts: new Date().toISOString(),
+    data: {
+      hours: num(wo.hours),
+      rate: num(wo.rate),
+      materialsCost: num(wo.materialsCost),
+      dateStarted: num(wo.dateStarted),
+      dateCompleted: num(wo.dateCompleted),
+      invoiceNumber: num(wo.invoiceNumber).slice(0, 60),
+      workDescription: String(wo.workDescription || '').slice(0, 4000),
+      comment: String(wo.comment || wo.workDescription || '').slice(0, 4000),
+      repairCategory: String(wo.repairCategory || '').slice(0, 200),
+      repairCode: String(wo.repairCode || '').slice(0, 200),
+      edit: !!isEdit,
+      photos: photos
+    }
+  };
+}
+function queueFinalize(wo, isEdit){
+  const q = getDecisionQueue();
+  const item = buildFinalizePayload(wo, isEdit);
+  setDecisionQueue(q.filter(x => !(x.type === 'finalize' && x.wo === item.wo)).concat([item]));
+  flushDecisionQueue();
+}
 function flushDecisionQueue(){
   if (!DECISION_ENDPOINT) return;
+  const same = (x, y) => x.wo === y.wo && x.ts === y.ts && (x.type||'') === (y.type||'') && (x.decision||'') === (y.decision||'');
   getDecisionQueue().forEach(item => {
     fetch(DECISION_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(item)
     }).then(res => {
-      if (!res || !res.ok) return;
-      setDecisionQueue(getDecisionQueue().filter(x => !(x.wo === item.wo && x.decision === item.decision && x.ts === item.ts)));
+      if (!res) return;
+      if (res.status === 400 && item.type === 'finalize') {
+        setDecisionQueue(getDecisionQueue().filter(x => !same(x, item)));
+        setSyncStatus('Finalize not sent to bot (bad data) - check the numbers', '#ff3b30');
+        return;
+      }
+      if (!res.ok) return;
+      setDecisionQueue(getDecisionQueue().filter(x => !same(x, item)));
     }).catch(() => {});
   });
 }
@@ -2097,6 +2133,7 @@ function saveCompleteForm(id){
       submitted.unshift(wo);
     }
     saveData('corrigo_submitted', submitted);
+    try { queueFinalize(wo, fromTab === 'corrigo_submitted'); } catch(e) { console.error('finalize', e); }
 
     // Only remove from the source tab after it is safely in Completed
     if (fromTab && fromTab !== 'corrigo_submitted') {

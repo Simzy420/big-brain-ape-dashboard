@@ -1125,6 +1125,87 @@ test('Almost Due Unaccept returns the job to Inbox and a reload keeps it there',
   await page.close();
 });
 
+test('Finalize submit queues a fake finalize payload and a 400 drops only that item', async () => {
+  const wo = {
+    id: 'fake-fin',
+    number: 'Z9999999-00001',
+    status: 'completed',
+    description: 'Fake hinge',
+    workDescription: 'Fixed the test hinge',
+    comment: '',
+    photos: [
+      { url: 'https://evil.example/a.jpg' },
+      { url: 'https://simzy420.github.io/big-brain-ape-dashboard/wo-photos/a.jpg' },
+      { data: 'data:image/jpeg;base64,abc' }
+    ]
+  };
+  const { page, state } = await openApp({
+    workOrders: [],
+    decisionStatus: 500,
+    seed: { corrigo_completed: [wo] }
+  });
+  await page.evaluate(() => openCompleteForm('fake-fin'));
+  await page.evaluate(() => {
+    document.getElementById('cf_hours').value = '3.5';
+    document.getElementById('cf_rate').value = '65';
+    document.getElementById('cf_materials').value = '42.18';
+    document.getElementById('cf_dateStart').value = '2026-11-16';
+    document.getElementById('cf_dateEnd').value = '2026-11-16';
+    document.getElementById('cf_invoice').value = 'INV-1';
+    document.getElementById('cfSubmitBtn').click();
+  });
+  for (let i = 0; i < 50 && !state.decisionPosts.length; i++) {
+    await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 20)));
+  }
+  const first = JSON.parse(state.decisionPosts[0].body);
+  assert.equal(first.type, 'finalize');
+  assert.equal(first.wo, 'Z9999999-00001');
+  assert.equal(typeof first.ts, 'string');
+  assert.equal(first.data.edit, false);
+  assert.equal(first.data.hours, '3.5');
+  assert.equal(first.data.rate, '65');
+  assert.equal(first.data.materialsCost, '42.18');
+  assert.equal(first.data.dateStarted, '2026-11-16');
+  assert.equal(first.data.dateCompleted, '2026-11-16');
+  assert.equal(first.data.invoiceNumber, 'INV-1');
+  assert.equal(first.data.workDescription, 'Fixed the test hinge');
+  assert.equal(first.data.comment, 'Fixed the test hinge');
+  assert.deepEqual(first.data.photos, [
+    'https://evil.example/a.jpg',
+    'https://simzy420.github.io/big-brain-ape-dashboard/wo-photos/a.jpg'
+  ]);
+  assert.match(state.decisionPosts[0].contentType, /application\/json/i);
+  let queued = await page.evaluate(() => JSON.parse(localStorage.getItem('corrigoDecisionQueue') || '[]'));
+  assert.equal(queued.length, 1);
+  await page.evaluate(() => {
+    editSubmittedForm('fake-fin');
+    document.getElementById('cf_hours').value = '4';
+    saveCompleteForm('fake-fin');
+  });
+  for (let i = 0; i < 50 && state.decisionPosts.length < 2; i++) {
+    await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 20)));
+  }
+  queued = await page.evaluate(() => JSON.parse(localStorage.getItem('corrigoDecisionQueue') || '[]'));
+  assert.equal(queued.length, 1);
+  assert.equal(queued[0].data.edit, true);
+  assert.equal(queued[0].data.hours, '4');
+  assert.equal(queued[0].wo, 'Z9999999-00001');
+  state.decisionStatus = 400;
+  await page.evaluate(() => {
+    const q = getDecisionQueue();
+    q.push({ wo: 'Z9999999-00001', decision: 'accept', ts: '2026-11-13T00:00:00.000Z' });
+    setDecisionQueue(q);
+    flushDecisionQueue();
+  });
+  await page.waitForFunction(() => {
+    const q = JSON.parse(localStorage.getItem('corrigoDecisionQueue') || '[]');
+    return q.length === 1 && q[0].decision === 'accept';
+  }, { timeout: 5000 });
+  const pill = await page.evaluate(() => document.getElementById('syncStatus').innerText);
+  assert.match(pill, /Finalize not sent to bot \(bad data\) - check the numbers/);
+  await page.close();
+});
+
 test('a relay 401 without a saved token is not called a GitHub read failure', async () => {
   const session = await openApp({ workOrders: [plain], allowRelay: true });
   session.state.failRelay = true;
