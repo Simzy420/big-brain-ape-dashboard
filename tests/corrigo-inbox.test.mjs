@@ -843,9 +843,11 @@ test('Almost Due uses the 3-day accept and complete deadlines', async () => {
   assert.equal(byNum['J0000000-00996'], undefined);
   assert.equal(byNum['J0000000-00997'], undefined);
   assert.equal(byNum['J0000000-00998'], undefined);
-  for (const num of ['J5015189-00435', 'J5991021-00465', 'J0000000-00991', 'J0000000-00992']) {
-    assert.equal(view.inboxNums.includes(num), true);
-  }
+  assert.equal(view.inboxNums.includes('J0000000-00992'), false);
+  const inboxMust = ['J5991021-00465', 'J0000000-00991'];
+  if (view.expectedSoon === 'overdue') inboxMust.push('J5015189-00435');
+  else assert.equal(view.inboxNums.includes('J5015189-00435'), false);
+  for (const num of inboxMust) assert.equal(view.inboxNums.includes(num), true);
   assert.equal(view.acceptedNums.includes('J0000000-00993'), true);
   assert.equal(view.acceptedNums.includes('J0000000-00994'), true);
   await page.setViewport({ width: 320, height: 700, isMobile: true, hasTouch: true });
