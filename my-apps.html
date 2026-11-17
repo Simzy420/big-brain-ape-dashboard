@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="My Apps">
+<title>My Apps</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+  background: #0a0a0f;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
+  min-height: 100vh;
+}
+header {
+  text-align: center;
+  padding: 20px 0 10px;
+  position: sticky;
+  top: 0;
+  background: rgba(10,10,15,0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 100;
+}
+header h1 {
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.category { margin-bottom: 24px; }
+.category h2 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #888;
+  margin-bottom: 12px;
+  padding-left: 4px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 12px;
+}
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(145deg, #1a1a2e, #16213e);
+  border-radius: 16px;
+  padding: 18px 8px 14px;
+  aspect-ratio: 1;
+  transition: transform 0.15s, box-shadow 0.15s;
+  border: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+  overflow: hidden;
+}
+.app:active { transform: scale(0.92); box-shadow: 0 0 20px rgba(102,126,234,0.3); }
+.app .icon { font-size: 36px; margin-bottom: 8px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+.app .name { font-size: 11px; font-weight: 600; text-align: center; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.app .badge { position: absolute; top: 6px; right: 6px; font-size: 7px; font-weight: 700; padding: 2px 5px; border-radius: 6px; text-transform: uppercase; }
+.badge.hf { background: #ff9d00; color: #000; }
+.badge.vc { background: #0070f3; color: #fff; }
+.badge.nl { background: #00c7b7; color: #000; }
+.badge.gh { background: #6e40c9; color: #fff; }
+.badge.tg { background: #0088cc; color: #fff; }
+footer { text-align: center; padding: 30px 0 20px; color: #444; font-size: 12px; }
+</style>
+</head>
+<body>
+<header><h1>🦍 My Apps</h1></header>
+
+<div class="category">
+  <h2>⭐ Main Apps</h2>
+  <div class="grid">
+    <a href="https://wan22-templates.vercel.app" target="_blank" class="app"><span class="badge vc">VC</span><span class="icon">👑</span><span class="name">Become the Character</span></a>
+    <a href="https://wan22-phone-studio.vercel.app" target="_blank" class="app"><span class="badge vc">VC</span><span class="icon">🖥️</span><span class="name">Wan Desk</span></a>
+    <a href="https://command-center.vercel.app" target="_blank" class="app"><span class="badge vc">VC</span><span class="icon">🧠</span><span class="name">Command Center</span></a>
+    <a href="https://wan22-templates-alp1.vercel.app" target="_blank" class="app"><span class="badge vc">VC</span><span class="icon">🅰️</span><span class="name">Wan22 Alpha</span></a>
+    <a href="https://simzy420.github.io/wan22-extend-home/" target="_blank" class="app"><span class="badge gh">GH</span><span class="icon">🏠</span><span class="name">Wan22 Home</span></a>
+    <a href="https://simzy420.github.io/big-brain-ape-dashboard/corrigo-app.html" target="_blank" class="app"><span class="badge gh">GH</span><span class="icon">📋</span><span class="name">Corrigo App</span></a>
+  </div>
+</div>
+
+<div class="category">
+  <h2>🎬 Video Gen</h2>
+  <div class="grid">
+    <a href="https://simzy-wan22-extend.hf.space" target="_blank" class="app"><span class="badge hf">HF</span><span class="icon">🎬</span><span class="name">Wan22 Extend</span></a>
+    <a href="https://simzy-wan-2-2-templates.hf.space" target="_blank" class="app"><span class="badge hf">HF</span><span class="icon">🎥</span><span class="name">Wan 2.2 Templates</span></a>
+    <a href="https://simzy-wan-2-2-i2v-14b-custom-lora-wow.hf.space" target="_blank" class="app"><span class="badge hf">HF</span><span class="icon">✨</span><span class="name">LoRA Wow I2V</span></a>
+    <a href="https://simzy-wan222.hf.space" target="_blank" class="app"><span class="badge hf">HF</span><span class="icon">🔥</span><span class="name">Wan222</span></a>
+    <a href="https://simzy-wan22-extend-mine.hf.space" target="_blank" class="app"><span class="badge hf">HF</span><span class="icon">🎬</span><span class="name">Extend Mine</span></a>
+    <a href="https://simzy-wan22-extend-runpod.hf.space" target="_blank" class="app"><span class="badge hf">HF</span><span class="icon">🎬</span><span class="name">Extend RunPod</span></a>
+    <a href="https://simzy-wan22-runpod-10s-extend.hf.space" target="_blank" class="app"><span class="badge hf">HF</span><span class="icon">⏱️</span><span class="name">10s Extend</span></a>
+    <a href="https://simzy-wan555-i2v.hf.space" target="_blank" class="app"><span class="badge hf">HF</span><span class="icon">🎥</span><span class="name">Wan555 I2V</span></a>
+    <a href="https://simzy-become-the-star.hf.space" target="_blank" class="app"><span class="badge hf">HF</span><span class="icon">⭐</span><span class="name">Become the Star</span></a>
+    <a href="https://simzy-campaign-studio.hf.space" target="_blank" class="app"><span class="badge hf">HF</span><span class="icon">📢</span><span class="name">Campaign Studio</span></a>
+  </div>
+</div>
+
+<div class="category">
+  <h2>😎 Face Swap</h2>
+  <div class="grid">
+    <a href="https://simzy-bfs-best-face-swap.hf.space" target="_blank" class="app"><span class="badge hf">HF</span><span class="icon">😎</span><span class="name">Best Face Swap</span></a>
+    <a href="https://simzy-face-swap-runpod.hf.space" target="_blank" class="app"><span class="badge hf">HF</span><span class="icon">😎</span><span class="name">Face Swap RunPod</span></a>
+    <a href="https://simzy-minimax-h3-character-swap.hf.space" target="_blank" class="app"><span class="badge hf">HF</span><span class="icon">🎭</span><span class="name">Minimax Char Swap</span></a>
+    <a href="https://simzy-face-swap-extend-video.hf.space" target="_blank" class="app"><span class="badge hf">HF</span><span class="icon">🎬</span><span class="name">Face Swap Extend</span></a>
+    <a href="https://simzy-bfs-video-studio.hf.space" target="_blank" class="app"><span class="badge hf">HF</span><span class="icon">🎨</span><span class="name">BFS Video Studio</span></a>
+    <a href="https://simzy-swapr-personal.hf.space" target="_blank" class="app"><span class="badge hf">HF</span><span class="icon">🔄</span><span class="name">Swapr Personal</span></a>
+    <a href="https://swapr-mix.vercel.app" target="_blank" class="app"><span class="badge vc">VC</span><span class="icon">🔄</span><span class="name">Swapr Mix</span></a>
+    <a href="https://swapr-casey.netlify.app" target="_blank" class="app"><span class="badge nl">NL</span><span class="icon">🔄</span><span class="name">Swapr Casey</span></a>
+    <a href="https://swapr.netlify.app" target="_blank" class="app"><span class="badge nl">NL</span><span class="icon">🔄</span><span class="name">Swapr</span></a>
+  </div>
+</div>
+
+<div class="category">
+  <h2>🤖 AI Agents</h2>
+  <div class="grid">
+    <a href="https://t.me/DSFrankBot" target="_blank" class="app"><span class="badge tg">TG</span><span class="icon">🤖</span><span class="name">Frank Bot</span></a>
+  </div>
+</div>
+
+<footer>Built by Big Brain Ape 🦍</footer>
+</body>
+</html>
