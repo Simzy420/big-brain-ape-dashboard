@@ -1,0 +1,78 @@
+# Poll Casey's Gmail (via Composio) for Gary → Corrigo work-order forwards,
+# then run scripts/corrigo-email-scan.py so new assignments land in Inbox
+# (work-orders.json status=inbox) for accept/decline on the phone app.
+#
+# Cadence: every 5 minutes (Composio default GMAIL_NEW_GMAIL_MESSAGE is also
+# poll-based unless custom Pub/Sub OAuth is set up). Not true push/instant.
+#
+# Required repo secrets:
+#   COMPOSIO_API_KEY
+#   COMPOSIO_CONNECTED_ACCOUNT_ID  (Casey's ACTIVE Gmail ca_…, e.g. caseylsims@gmail.com)
+# Optional:
+#   COMPOSIO_USER_ID
+#
+# Scanner is idempotent: existing WOs / overrides / renames are not duplicated.
+
+name: Corrigo email inbox sync
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: corrigo-email-inbox-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check secrets
+        env:
+          COMPOSIO_API_KEY: ${{ secrets.COMPOSIO_API_KEY }}
+          COMPOSIO_CONNECTED_ACCOUNT_ID: ${{ secrets.COMPOSIO_CONNECTED_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          missing=0
+          if [ -z "${COMPOSIO_API_KEY}" ]; then
+            echo "::error::Missing secret COMPOSIO_API_KEY"
+            missing=1
+          fi
+          if [ -z "${COMPOSIO_CONNECTED_ACCOUNT_ID}" ]; then
+            echo "::error::Missing secret COMPOSIO_CONNECTED_ACCOUNT_ID (Gmail ca_…)"
+            missing=1
+          fi
+          if [ "$missing" -ne 0 ]; then
+            echo "Add secrets under Repo → Settings → Secrets and variables → Actions,"
+            echo "then re-run this workflow. Gmail must stay ACTIVE in Composio for that API key's project."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          # Scanner may commit+push work-orders.json on --push
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Fetch Gmail + scan into Inbox
+        env:
+          COMPOSIO_API_KEY: ${{ secrets.COMPOSIO_API_KEY }}
+          COMPOSIO_CONNECTED_ACCOUNT_ID: ${{ secrets.COMPOSIO_CONNECTED_ACCOUNT_ID }}
+          COMPOSIO_USER_ID: ${{ secrets.COMPOSIO_USER_ID }}
+          # Prefer main tip before commit so --push rebase is quiet
+          GIT_AUTHOR_NAME: Big Brain Ape
+          GIT_AUTHOR_EMAIL: big.brain.ape.trading.bot@gmail.com
+          GIT_COMMITTER_NAME: Big Brain Ape
+          GIT_COMMITTER_EMAIL: big.brain.ape.trading.bot@gmail.com
+        run: |
+          set -euo pipefail
+          git config user.name "Big Brain Ape"
+          git config user.email "big.brain.ape.trading.bot@gmail.com"
+          python3 scripts/corrigo-inbox-sync.py --push --newer-than 3d --max-results 40
