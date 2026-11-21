@@ -2,15 +2,28 @@
   "address": "0x37a8023762c69f7150d878733fd9f635f1070fc6",
   "network": "mainnet",
   "abstraction": "unifiedAccount",
-  "accountValue": "1158.293767",
-  "withdrawable": "1158.293767",
-  "positions": [],
+  "accountValue": "1155.159526",
+  "withdrawable": "659.697767",
+  "positions": [
+    {
+      "token": "xyz:GOLD",
+      "size": "0.42",
+      "entryPx": "3559.2",
+      "unrealizedPnl": "-0.294",
+      "marginUsed": "495.461759",
+      "leverage": {
+        "type": "isolated",
+        "value": 3,
+        "rawUsd": "-999.108241"
+      }
+    }
+  ],
   "spotBalances": [
     {
       "token": "USDC",
-      "total": "1158.293767",
-      "hold": "0.0",
-      "usdValue": "1158.293767"
+      "total": "1155.159526",
+      "hold": "495.461759",
+      "usdValue": "1155.159526"
     }
   ]
 }
