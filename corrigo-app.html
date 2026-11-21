@@ -2375,6 +2375,13 @@ function showWoReceipt(w){
     : '<p class="muted" style="margin-top:12px;">No picture saved in the app</p>';
   const hasCorrigo = ['corrigoTotal','corrigoStatus','corrigoMaterial','corrigoLabor','corrigoWoNumber','submittedBy'].some(k => w[k] !== undefined && w[k] !== null && w[k] !== '');
   const corrigoHtml = hasCorrigo ? `<h3 style="margin:16px 0 4px;color:#00cc66;">In Corrigo</h3>${row('Corrigo WO #', w.corrigoWoNumber)}${row('Status', w.corrigoStatus)}${row('Labor', fmtMoney(w.corrigoLabor))}${row('Material', w.corrigoMaterial !== undefined && w.corrigoMaterial !== null && w.corrigoMaterial !== '' ? fmtMoney(w.corrigoMaterial) : '')}${row('Total', fmtMoney(w.corrigoTotal))}${row('Submitted by', w.submittedBy)}` : '';
+  const proofSubmittedSrcs = [];
+  if (typeof CORRIGO_PROOF !== 'undefined' && w.number) {
+    const pk = proofKey(w.number);
+    Object.keys(CORRIGO_PROOF).forEach(p => { if (proofKey(p) === pk) (CORRIGO_PROOF[p] || []).forEach(e => { if (e && e.url && e.action === 'invoice_submitted') proofSubmittedSrcs.push(e.url); }); });
+  }
+  const proofHtml = proofSubmittedSrcs.length ? `<p style="color:#aaa;font-size:16px;margin:12px 0 6px;">✅ Proof it was submitted — tap to enlarge:</p><div style="display:flex;flex-wrap:wrap;gap:8px;">` + proofSubmittedSrcs.map(src =>
+      `<img src="${escHtml(src)}" onclick="openPhotoFull(this.src)" loading="lazy" style="width:96px;height:96px;object-fit:cover;border-radius:10px;cursor:pointer;background:#222;">`).join('') + '</div>' : '';
   const desc = w.workDescription || w.comment || '';
   const html = `<div class="card" style="max-width:600px;margin:0 auto;">
     <div class="wo-card-header"><strong>${escHtml(w.number||'')}</strong></div>
@@ -2383,6 +2390,7 @@ function showWoReceipt(w){
     ${desc ? `<p style="color:#aaa;font-size:16px;margin:12px 0 4px;">Work description:</p><p style="white-space:pre-wrap;">${escHtml(desc)}</p>` : ''}
     ${corrigoHtml}
     ${photosHtml}
+    ${proofHtml}
     <button class="big save" style="margin-top:12px;width:100%;" onclick="closeSentDetail()">Close</button>
   </div>`;
   let m = document.getElementById('sentDetailModal');
