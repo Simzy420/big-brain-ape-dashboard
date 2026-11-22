@@ -1,39 +1,58 @@
 {
-  "lastRun": "2026-11-15T13:36:01Z",
-  "regime": "RISK-OFF, intensifying. 10Y at 5.15% (Trading Economics Nov 13, up 30bps on week). DXY at 103.41 — 19-month high, still climbing. Fed at 4.00%, Dec hike odds UP to 88% (from 85%), Williams hawkish. Gold flat at ~$3,890 (13-month low, Sept 2025 levels). NVDA at $162.85 (-2%, Huang resigned Nov 12, regulatory probes expanding). BTC CRASHED to ~$64K (from $73K last run) — fourth capitulation wave, $1B+ liquidations, ETF outflows $1.46B, stablecoin contraction. Brent $95.84. FULL RISK-OFF. Staying in cash. No re-entry triggers fired.",
-  "portfolio": {
-    "cashUSD": 28,
-    "spendableUSD": 28,
-    "positions": [],
-    "note": "Hyperliquid account is null — no perp positions. Wallet holds ~0.85 USDC + 0.015 ETH (~$27) on Base. No HL margin account active. Previous run's $1,158 cash figure was stale/incorrect — actual wallet balance is ~$28."
+  "lastRun": "2026-11-22T13:36:00Z",
+  "accountValueUsd": 1155.75,
+  "spendableUsd": 659.70,
+  "positions": [
+    {
+      "token": "xyz:GOLD",
+      "side": "long",
+      "size": "0.42",
+      "entryPx": "3559.2",
+      "markPx": "3560",
+      "notionalUsd": 1495.20,
+      "marginUsedUsd": 496.05,
+      "leverage": "3x isolated",
+      "unrealizedPnl": 0.546,
+      "thesis": "Inflation hedge + structural dollar debasement. Fed resumed hiking cycle Sept 2026 (3.75-4%). Warsh Fed hawkish. Dec 8-9 FOMC next, another hike expected (Sep dot plot median 4.1% for end-2026). Gold is the cleanest expression of fiat debasement + rate-hike-driven growth scare. Equities in correction (S&P -3.7%, Nasdaq -5.28% on Nov 20). AI bubble deflating, $2.3T wiped from Nasdaq-100. Capital rotating to hard assets. Gold held $3,500 support despite 14% November drawdown — structural floor confirmed.",
+      "pyramidTriggers": {
+        "add": "If GOLD holds above $3,500 and breaks $3,700, add 0.2 more (target $1,500 full size)",
+        "cut": "If GOLD breaks below $3,400, cut to 0.2 size. Below $3,300 exit entirely.",
+        "targetFullSize": "$1,500 notional (50% of capital at 3x = jugular)"
+      }
+    }
+  ],
+  "macroView": {
+    "regime": "RISK-OFF intensifying",
+    "fedPolicy": "Hiking - 3.75-4% after Sept 2026 hike. Dec 8-9 FOMC next. Sep dot plot median 4.1% for end-2026 — one more 25bp hike expected. Warsh Fed hawkish.",
+    "globalM2": "US M2 at all-time high $23.4T. Global M2 $103.9T, growing slowly.",
+    "dxy": "103.84, near 52-week high. Dollar strong on rate hikes. xyz:DXY delisted on HL — cannot hedge directly.",
+    "equities": "S&P 500 -3.7% to 6,910 (correction). Nasdaq -5.28% to 22,617. Nasdaq-100 down ~19% from highs, near bear. 58% of NDX components in bear. $2.3T wiped. AI bubble deflating. Worst week since 2020.",
+    "crypto": "BTC ~$60,600, down 38% from ATH. Below 20/50-day MAs. Sellers in control. Slight bounce over weekend but no edge.",
+    "gold": "~$3,560. Down 14.64% in November but held $3,500 support (low $3,513 on Nov 20, bounced). Structural bull intact. Goldman target $4,650, JPM $6,000 Q4 2026.",
+    "forward18Months": "Fed continues hiking into slowing growth = stagflation risk. Gold benefits from both inflation AND growth scare. Equities vulnerable. Dollar eventually rolls when growth cracks. Dec FOMC is next major catalyst."
   },
-  "closedThisRun": [],
-  "macro": {
-    "fedRate": "4.00% (unchanged from last run)",
-    "fedStance": "HAWKISH and intensifying. Dec FOMC: 88% hike to 4.25-4.50% (UP from 85%), 11% chance of 50bp. Hot CPI 3.7% (Sep, up from 3.4%). PPI showed high energy prices raising factory costs. Markets pricing 64bps of hikes over next 12 months (up from 37bps earlier in November). Fed boxing itself in — higher rates = higher debt service = fiscal strain = long-term debasement fuel. US budget deficit widened more than forecast in October.",
-    "dxy": 103.41,
-    "dxyNote": "DXY at 103.41 (Trading Economics Nov 13). 19-MONTH HIGH. Still climbing — re-entry trigger (DXY roll over) NOT fired. Dollar strength = gold headwind INTENSIFYING.",
-    "treasury10y": "5.15%",
-    "treasury10yNote": "10Y at 5.15% (Trading Economics Nov 13, up 30bps this week). 10Y TIPS at 2.90% (real yields RISING = gold headwind INTENSIFYING). 30Y at 5.47%. Surge driven by hot CPI + hawkish Fed + Nvidia CEO resignation triggering AI credit fears → bond selloff. Re-entry trigger (10Y peak/reverse) NOT fired — yields still racing higher.",
-    "brentOil": "~$95.84",
-    "brentNote": "Brent $95.84 (Trading Economics Nov 13). Trump reversed on Iran ('we've got their Strait, no need for deal'), oil bouncing from 10-week low $91.5 (Nov 10). Re-inflationary = more Fed pressure.",
-    "goldSpot": 3890,
-    "goldNote": "Gold at ~$3,890 (Forbes/Trading Economics Nov 13). Flat from last run — hovering Sept 2025 levels (13-month low). Down ~5.5% this month. $3,780 = next support. $4,000 = key resistance. 30% below Jan 2026 peak of $5,608. JPM targets $6,000-6,300 for 2027. LONG-TERM THESIS INTACT but SHORT-TERM TECHNICALS STILL BROKEN. Re-entry trigger (gold stabilize above $4,000) NOT fired.",
-    "sp500": "7,561",
-    "sp500Note": "S&P 500 at 7,561 (-0.40% Nov 13). Nasdaq -1.22%. Chip selloff: NVDA -2.01%, Broadcom -4.76%, AMD -8.7%. Dip buyers cautious ahead of NVDA earnings next week. VIX at 19.30. Not shorting (Druck rule on equity shorts).",
-    "btc": 64000,
-    "btcNote": "BTC CRASHED to ~$64K (Yahoo Nov 15: $64,119 low, CoinDesk Nov 14: below $63K at one point). DOWN from $73K last run — 11%+ decline in 24 hours. Fourth capitulation wave. $1B+ in liquidations (88% longs). ETF outflows $1.46B. Bitcoin ETFs wiped out ALL 2026 inflows — cumulative net inflow peaked $57.96B Oct 21, now $86.2B in AUM declining. Stablecoin contraction = liquidity draining. 5%+ Treasury yield competes with zero-yield BTC. Prediction markets only 4% chance BTC >$100K by year-end. NOT TOUCHING — no edge in catching falling knife.",
-    "nvidiaNote": "Jensen Huang resigned Nov 12. CFO Colette Kress interim CEO. Regulatory probes expanding. NVDA at $162.85, -14.37% YoY. $430B+ wiped. AI credit fears spilling into bonds. Anthropic IPO adding to market jitters.",
-    "marketAction": "FULL RISK-OFF. All three re-entry triggers from last run: (1) DXY roll over from 19-month high — NOT FIRED (DXY still at 103.41), (2) 10Y yield peaks and reverses — NOT FIRED (still at 5.15%, up 30bps this week), (3) gold stabilizes above $4,000 — NOT FIRED (flat at ~$3,890). BTC crash to $64K confirms risk-off regime intensifying. No asymmetric setup exists. STAYING IN CASH. Capital preservation paramount."
+  "decisions": [
+    "HOLD xyz:GOLD long 0.42 @ $3,559.2. Thesis intact and strengthening — equity meltdown confirms risk-off rotation toward hard assets.",
+    "Did NOT add to gold — pyramid add trigger ($3,700 breakout) not hit. Respecting own rules.",
+    "Skipped DXY short hedge — delisted on HL.",
+    "Skipped SP500 short — too expensive ($2,392 margin needed, only $659 free).",
+    "Skipped BTC long — sellers in control, no edge.",
+    "No trades this cycle. Waiting for Dec 8-9 FOMC or $3,700 gold breakout."
+  ],
+  "freshMindAudit": {
+    "q1_freshMind": "Clean slate today — $1,156 USDC, no positions. Would buy gold as primary inflation/debasement hedge. Gold held $3,500 support through 14% November drawdown — that's the market telling you the floor is real. Would NOT buy BTC (sellers in control) or equities (correction, AI bubble deflating). Current position matches fresh analysis exactly.",
+    "q2_structuralView": "18-month forward unchanged — stagflation setup. Fed hiking into slowing growth. Equities cracking confirms the rotation thesis. Gold is the cleanest expression. Dec FOMC will be pivotal.",
+    "q3_concentration": "One position (gold). Concentrated. Druck-approved. 'Diversification is the most misguided concept everywhere.'",
+    "q4_convictionSizing": "43% of capital in margin = conviction sizing. Thesis intact, position correctly sized for account size.",
+    "q5_shortHedge": "DXY short would be ideal dollar-hedge but delisted on HL. SP500 short too expensive for account size. Gold IS the hedge against dollar/equity complex.",
+    "q6_rationalization": "No legacy anchoring. Fresh-mind confirms gold is the right position at the right size. No sunk cost — position is flat (UPL +$0.55)."
   },
-  "forwardView": "18 months out (May 2028): Fed likely at 4.25-4.50% terminal after Dec hike + 1-2 more in 2027, then pivoting as economy slows under tight policy + fiscal drag + 5%+ yields crushing debt service. 5%+ 10-year = US debt service costs exploding = fiscal crisis accelerating = eventual Fed capitulation. Dollar weakens structurally — DXY heading toward 100 and below once Fed pivots. Gold to $5,000-6,300 (JPM $6,000-6,300, Goldman $4,900, BoA $4,813). BUT: timing is everything. Gold needs yields to peak and DXY to roll over first. Right now both are still moving against gold. Waiting in cash for the turn. BTC could see further downside — $54K target mentioned by analysts. Not bottom-fishing yet.",
-  "decision": "HOLD — Staying in cash. No trades this run. All three re-entry triggers for gold NOT fired: DXY still at 19-month high (103.41), 10Y still at 5.15% (up 30bps on week), gold flat at ~$3,890 (not rebuilding above $4,000). BTC crashed to $64K — confirms risk-off, NOT a buying opportunity yet (fourth capitulation wave, ETF flows negative, stablecoin contraction). Fresh-mind check: would I open ANY position right now with $28? NO — no asymmetric setup exists. Dollar strengthening, real yields rising (2.90%), gold flat at 13-month lows, BTC in capitulation, equities under NVDA chip crisis. Capital preservation first. Will re-enter gold when technicals turn. Monitoring: NVDA earnings next week, Dec 9 FOMC, DXY/yield peak signals. Note: wallet balance is ~$28 (0.85 USDC + 0.015 ETH on Base), not $1,158 as previously tracked. Hyperliquid account is null — no perp positions.",
-  "computeBalance": {
-    "limit": 5.140659441,
-    "remaining": 5.140659441,
-    "totalUsage": 1666.4969029737,
-    "updated": "2026-11-15T13:36:01Z"
-  },
-  "forumPosted": false,
-  "forumNote": "No trades this run — no forum post needed. Holding in cash. DegenClaw API key not configured."
+  "nextRunWatch": [
+    "Gold price — add if breaks $3,700, cut if breaks $3,400",
+    "Fed Dec 8-9 FOMC — another hike or pause?",
+    "Nasdaq-100 — does it close in official bear market (-20%)?",
+    "BTC — watch for capitulation volume spike",
+    "DXY — roll over signal after FOMC?"
+  ],
+  "degenclaw": "Not configured (DGCLAW_API_KEY missing). Forum posting skipped."
 }
