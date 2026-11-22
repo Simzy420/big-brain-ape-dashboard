@@ -788,7 +788,9 @@ function card(w, canAct, tab, dueInfo){
   const decided = decisionFor(w.number);
   const undoHtml = decided && (tab === 'accepted' || tab === 'declined') ? `<button class="undo-btn" onclick="undoDecision('${w.id}')">Undo</button>` : '';
   const photoBtn = corrigoPhotoBtn(w);
-  return `<div class="card${overdueCls}"><div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>${dueHtml}${dateHtml}${fmtLoc(loc) ? '<p>'+fmtLoc(loc)+'</p>' : ''}${desc ? '<p>'+desc+'</p>' : ''}${actionBtns}${extraBtns}${photoBtn}${undoHtml}</div>`;
+  // Guarantee every card has a delete button, whichever tab it renders on
+  const delRow = /deleteWo\(/.test(actionBtns + extraBtns) ? '' : `<div class="btn-row"><button class="wo-delete" onclick="deleteWo('${w.id}')" style="width:100%;margin-top:8px;">🗑️ Delete</button></div>`;
+  return `<div class="card${overdueCls}"><div class="wo-card-header"><strong>${w.number||''}</strong>${estHtml}</div>${dueHtml}${dateHtml}${fmtLoc(loc) ? '<p>'+fmtLoc(loc)+'</p>' : ''}${desc ? '<p>'+desc+'</p>' : ''}${actionBtns}${extraBtns}${photoBtn}${delRow}${undoHtml}</div>`;
 }
 let corrigoPhotoSeq = 0;
 let corrigoPhotoList = [];
@@ -2002,15 +2004,14 @@ function openCompleteForm(id){
       saveCompleteForm(woId);
     });
   }
-  // Pre-fill existing photos
-  if (wo.photos && wo.photos.length > 0) {
-    const previewDiv = document.getElementById('cf_photoPreview');
-    previewDiv.style.display = 'block';
-    previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Existing photos:</p>' + wo.photos.map((p,i) => `<img src="${p.data||p.url}" style="width:100%;border-radius:12px;margin-bottom:8px;">`).join('');
-  }
+  // Pre-fill existing photos into the editable list so each one gets a ✕ button
+  completePhotos = (wo.photos || []).slice();
+  formPhotosFromExisting = true;
+  renderCompletePhotos();
 }
 
 let completePhotos = [];
+let formPhotosFromExisting = false;
 async function uploadPhotoToGitHub(name, dataUrl) {
   const token = localStorage.getItem('github_token');
   if (!token) return null;
@@ -2051,30 +2052,37 @@ function compressImage(file, maxSize, quality, cb) {
 }
 function handleCompletePhoto(input) {
   if (!input.files || input.files.length === 0) return;
-  const previewDiv = document.getElementById('cf_photoPreview');
-  previewDiv.style.display = 'block';
-  let html = '';
   const remaining = Array.from(input.files);
-  let loaded = 0;
   remaining.forEach((file) => {
     compressImage(file, 800, 0.5, async function(compressed) {
       // Upload to GitHub so the automation can always get it
       const url = await uploadPhotoToGitHub(compressed.name, compressed.data);
-      const photo = { name: compressed.name, data: compressed.data, url: url || '' };
-      completePhotos.push(photo);
-      loaded++;
-      const status = url ? '✅ uploaded' : '✅ local only';
-      html += `<div style="margin-bottom:8px;"><img src="${compressed.data}" style="width:100%;border-radius:12px;"><p style="color:#00cc66;font-size:16px;">${status} ${compressed.name}</p></div>`;
-      if (loaded === remaining.length) {
-        const existing = previewDiv.querySelector('p');
-        if (existing && existing.textContent.includes('Existing')) {
-          previewDiv.innerHTML += html;
-        } else {
-          previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Photos selected:</p>' + html;
-        }
-      }
+      completePhotos.push({ name: compressed.name, data: compressed.data, url: url || '' });
+      renderCompletePhotos();
     });
   });
+}
+
+// Draw the photo list for the open form — every photo gets a ✕ delete button.
+function renderCompletePhotos(){
+  const d = document.getElementById('cf_photoPreview');
+  if (!d) return;
+  if (!completePhotos.length) { d.style.display = 'none'; d.innerHTML = ''; return; }
+  d.style.display = 'block';
+  d.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">' +
+    (formPhotosFromExisting ? 'Photos — tap ✕ to delete:' : 'Photos selected:') + '</p>' +
+    completePhotos.map((p, i) =>
+      '<div style="position:relative;margin-bottom:10px;">' +
+        '<img src="' + (p.data || p.url) + '" style="width:100%;border-radius:12px;display:block;">' +
+        '<button type="button" onclick="removeCompletePhoto(' + i + ')" style="position:absolute;top:8px;right:8px;width:42px;height:42px;border:none;border-radius:50%;background:#ff3b30;color:#fff;font-size:22px;line-height:1;box-shadow:0 2px 6px rgba(0,0,0,.5);">✕</button>' +
+        '<p style="color:#00cc66;font-size:16px;margin:4px 0 0;">' + (p.url ? '✅ uploaded' : '✅ on this phone') + ' ' + (p.name || '') + '</p>' +
+      '</div>').join('');
+}
+
+function removeCompletePhoto(i){
+  if (!confirm('Delete this photo?')) return;
+  completePhotos.splice(i, 1);
+  renderCompletePhotos();
 }
 
 function autoSaveComplete(id){
@@ -2134,9 +2142,11 @@ function saveCompleteForm(id){
     if (invEl) wo.invoiceNumber = invEl.value;
     if (matEl) wo.materialsCost = matEl.value;
 
-    if (typeof completePhotos !== 'undefined' && completePhotos.length > 0) {
-      if (!wo.photos) wo.photos = [];
-      wo.photos = wo.photos.concat(completePhotos);
+    // Photos: when the list was loaded from this work order it IS the new list,
+    // so ✕ deletions stick instead of being re-added.
+    if (typeof completePhotos !== 'undefined') {
+      if (formPhotosFromExisting) wo.photos = completePhotos.slice();
+      else if (completePhotos.length > 0) wo.photos = (wo.photos || []).concat(completePhotos);
     }
 
     // Add to Completed (corrigo_submitted) first
@@ -2160,7 +2170,7 @@ function saveCompleteForm(id){
       }
     }
 
-    if (typeof completePhotos !== 'undefined') completePhotos = [];
+    if (typeof completePhotos !== 'undefined') { completePhotos = []; formPhotosFromExisting = false; }
     render();
     show('completedtab');
     sendPickup(true);
@@ -2198,9 +2208,9 @@ function editSubmittedForm(id){
       </div>
     </div>`;
   if (wo.photos && wo.photos.length > 0) {
-    const previewDiv = document.getElementById('cf_photoPreview');
-    previewDiv.style.display = 'block';
-    previewDiv.innerHTML = '<p style="color:#aaa;font-size:16px;margin-bottom:6px;">Existing photos:</p>' + wo.photos.map((p,i) => `<img src="${p.data||p.url}" style="width:100%;border-radius:12px;margin-bottom:8px;">`).join('');
+    completePhotos = wo.photos.slice();
+    formPhotosFromExisting = true;
+    renderCompletePhotos();
   }
 }
 
