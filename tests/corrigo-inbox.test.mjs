@@ -1152,6 +1152,7 @@ test('Finalize submit queues a fake finalize payload and a 400 drops rejected it
     seed: { corrigo_completed: [wo] }
   });
   await page.evaluate(() => openCompleteForm('fake-fin'));
+  assert.equal(await page.evaluate(() => document.getElementById('cf_rate').value), '30');
   await page.evaluate(() => {
     document.getElementById('cf_hours').value = '3.5';
     document.getElementById('cf_rate').value = '65';

@@ -189,7 +189,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v56-202611231721</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v57-202611231725</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <div class="stepwrap"><div class="steplabel">Step 1 ⭐️</div><button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button></div>
   <div class="stepwrap"><div class="steplabel">Step 2 ⭐️</div><button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button></div>
@@ -322,7 +322,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v56-202611231721';
+const APP_VERSION = 'v57-202611231725';
 const DECISION_ENDPOINT = 'https://doorbell-relay-production-c59989ff.up.railway.app/decision';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
@@ -2014,7 +2014,7 @@ function openCompleteForm(id){
       ${wo.disputeResolved ? '<p style="color:#00cc66;font-size:16px;">✅ Dispute resolved</p>' : ''}
       <h2 style="margin:8px 0;font-size:22px;">📋 Invoice Details</h2>
       <input id="cf_hours" type="number" step="0.5" inputmode="decimal" placeholder="Hours worked" style="margin-bottom:10px;" value="${wo.hours||''}" oninput="autoSaveComplete('${id}')">
-      <input id="cf_rate" type="number" step="0.01" inputmode="decimal" placeholder="Hourly Rate ($)" style="margin-bottom:10px;" value="${wo.rate||''}" oninput="autoSaveComplete('${id}')">
+      <input id="cf_rate" type="number" step="0.01" inputmode="decimal" placeholder="Hourly Rate ($)" style="margin-bottom:10px;" value="${wo.rate||'30'}" oninput="autoSaveComplete('${id}')">
       <div class="field-row" style="margin-bottom:10px;">
         <div class="field"><label style="color:#aaa;font-size:16px;">Start Date</label><input id="cf_dateStart" type="date" value="${wo.dateStarted||''}" style="margin-top:4px;" oninput="autoSaveComplete('${id}')"></div>
         <div class="field"><label style="color:#aaa;font-size:16px;">End Date</label><input id="cf_dateEnd" type="date" value="${wo.dateCompleted||''}" style="margin-top:4px;" oninput="autoSaveComplete('${id}')"></div>
