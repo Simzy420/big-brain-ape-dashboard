@@ -189,7 +189,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v57-202611231725</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v58-202611231726</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <div class="stepwrap"><div class="steplabel">Step 1 ⭐️</div><button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button></div>
   <div class="stepwrap"><div class="steplabel">Step 2 ⭐️</div><button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button></div>
@@ -322,7 +322,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v57-202611231725';
+const APP_VERSION = 'v58-202611231726';
 const DECISION_ENDPOINT = 'https://doorbell-relay-production-c59989ff.up.railway.app/decision';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
@@ -2433,7 +2433,7 @@ function showWoReceipt(w){
   const html = `<div class="card" style="max-width:600px;margin:0 auto;">
     <div class="wo-card-header"><strong>${escHtml(w.number||'')}</strong></div>
     <h3 style="margin:8px 0 4px;">What was entered</h3>
-    ${row('Location', w.location)}${row('Date started', shortDate(w.dateStarted))}${row('Date completed', shortDate(w.dateCompleted))}${row('Invoice #', w.invoiceNumber)}${row('Hours', w.hours)}${row('Rate', w.rate ? '$' + w.rate + '/hr' : '')}${row('Labor total', labor ? fmtMoney(labor) : '')}${row('Materials', hasMat ? fmtMoney(w.materialsCost) : 'None entered')}${row('Total', total ? fmtMoney(total) : '')}${row('Repair category', w.repairCategory)}${row('Repair code', w.repairCode)}${row('Sent', fmtMountain(w.sentAt))}
+    ${row('Location', w.location)}${row('Date started', shortDate(w.dateStarted))}${row('Date completed', shortDate(w.dateCompleted))}${row('Invoice #', w.invoiceNumber)}${row('Invoice date', shortDate(w.invoiceDate))}${row('Hours', w.hours)}${row('Rate', w.rate ? '$' + w.rate + '/hr' : '')}${row('Labor total', labor ? fmtMoney(labor) : '')}${row('Materials', hasMat ? fmtMoney(w.materialsCost) : 'None entered')}${row('Total', total ? fmtMoney(total) : '')}${row('Repair category', w.repairCategory)}${row('Repair code', w.repairCode)}${row('Sent', fmtMountain(w.sentAt))}
     ${desc ? `<p style="color:#aaa;font-size:16px;margin:12px 0 4px;">Work description:</p><p style="white-space:pre-wrap;">${escHtml(desc)}</p>` : ''}
     ${corrigoHtml}
     ${photosHtml}
