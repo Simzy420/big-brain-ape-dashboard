@@ -1009,11 +1009,12 @@ test('Accept and Decline confirm before they move a job, and the local decision 
 });
 
 test('queued decisions stay until the relay returns 2xx and are retried on the next flush', async () => {
-  const queued = { wo: 'TEST-NO-SEND', decision: 'decline', ts: '2026-11-12T00:00:00.000Z' };
+  const queued = { wo: 'J5013895-00418', decision: 'decline', ts: new Date().toISOString() };
+  const stale = { wo: 'J5991021-00467', decision: 'accept', ts: '2026-11-12T00:00:00.000Z' };
   const { page, state } = await openApp({
     workOrders: [],
     decisionStatus: 500,
-    seed: { corrigoDecisionQueue: [queued] }
+    seed: { corrigoDecisionQueue: [stale, queued] }
   });
   for (let i = 0; i < 50 && !state.decisionPosts.length; i++) {
     await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 20)));
@@ -1022,6 +1023,10 @@ test('queued decisions stay until the relay returns 2xx and are retried on the n
   const first = JSON.parse(state.decisionPosts[0].body);
   assert.deepEqual(first, queued);
   assert.match(state.decisionPosts[0].contentType, /application\/json/i);
+  assert.equal(state.decisionPosts.some(p => JSON.parse(p.body).wo === 'J5991021-00467'), false);
+  const mid = await page.evaluate(() => JSON.parse(localStorage.getItem('corrigoDecisionQueue') || '[]'));
+  assert.equal(mid.length, 1);
+  assert.equal(mid[0].wo, 'J5013895-00418');
   const before = state.decisionPosts.length;
   state.decisionStatus = 204;
   await page.evaluate(() => flushDecisionQueue());
@@ -1127,7 +1132,7 @@ test('Almost Due Unaccept returns the job to Inbox and a reload keeps it there',
   await page.close();
 });
 
-test('Finalize submit queues a fake finalize payload and a 400 drops only that item', async () => {
+test('Finalize submit queues a fake finalize payload and a 400 drops rejected items', async () => {
   const wo = {
     id: 'fake-fin',
     number: 'Z9999999-00001',
@@ -1195,16 +1200,95 @@ test('Finalize submit queues a fake finalize payload and a 400 drops only that i
   state.decisionStatus = 400;
   await page.evaluate(() => {
     const q = getDecisionQueue();
-    q.push({ wo: 'Z9999999-00001', decision: 'accept', ts: '2026-11-13T00:00:00.000Z' });
+    q.push({ wo: 'Z9999999-00001', decision: 'accept', ts: new Date().toISOString() });
     setDecisionQueue(q);
     flushDecisionQueue();
   });
-  await page.waitForFunction(() => {
-    const q = JSON.parse(localStorage.getItem('corrigoDecisionQueue') || '[]');
-    return q.length === 1 && q[0].decision === 'accept';
-  }, { timeout: 5000 });
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem('corrigoDecisionQueue') || '[]').length === 0, { timeout: 5000 });
   const pill = await page.evaluate(() => document.getElementById('syncStatus').innerText);
   assert.match(pill, /Finalize not sent to bot \(bad data\) - check the numbers/);
+  const stillThere = await page.evaluate(() => ({
+    completed: JSON.parse(localStorage.getItem('corrigo_submitted') || '[]').map(w => w.number),
+    inbox: JSON.parse(localStorage.getItem('corrigo_inbox') || '[]').map(w => w.number)
+  }));
+  assert.equal(stillThere.completed.includes('Z9999999-00001'), true);
+  await page.close();
+});
+
+test('work order numbers are sanitized and stuck queue items that cannot succeed are dropped', async () => {
+  const recent = new Date().toISOString();
+  const { page, state } = await openApp({
+    workOrders: [],
+    decisionStatus: 500,
+    seed: {
+      corrigoDecisionQueue: [
+        null,
+        { wo: 'NOT-A-REAL-WO', decision: 'accept', ts: recent },
+        { wo: 'T1234567-12345,', decision: 'decline', ts: recent },
+        { wo: 'J5015189\u201300435', decision: 'accept', ts: recent }
+      ]
+    }
+  });
+  for (let i = 0; i < 50 && state.decisionPosts.length < 2; i++) {
+    await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 20)));
+  }
+  const bodies = state.decisionPosts.map(p => JSON.parse(p.body));
+  assert.equal(bodies.some(b => b.wo === 'NOT-A-REAL-WO'), false);
+  assert.ok(bodies.some(b => b.wo === 'T1234567-12345' && b.decision === 'decline' && !('type' in b)));
+  assert.ok(bodies.some(b => b.wo === 'J5015189-00435' && b.decision === 'accept'));
+  const queued = await page.evaluate(() => JSON.parse(localStorage.getItem('corrigoDecisionQueue') || '[]').map(x => x.wo));
+  assert.deepEqual(queued.sort(), ['J5015189-00435', 'T1234567-12345']);
+  await page.evaluate(() => {
+    document.getElementById('manualWoNumber').value = 't1234567-12345, ';
+    document.getElementById('manualWoDesc').value = 'Clean rain gutters test';
+    document.getElementById('manualWoLoc').value = 'St Charles Idaho';
+    addManualWo();
+    document.getElementById('manualWoNumber').value = 'I5376025-00135.01.01';
+    addManualWo();
+    document.getElementById('manualWoNumber').value = 'J5991021\u201300467';
+    addManualWo();
+  });
+  const inbox = await page.evaluate(() => JSON.parse(localStorage.getItem('corrigo_inbox') || '[]').map(w => w.number));
+  assert.equal(inbox.includes('T1234567-12345'), true);
+  assert.equal(inbox.includes('I5376025-00135.01.01'), true);
+  assert.equal(inbox.includes('J5991021-00467'), true);
+  assert.equal(inbox.includes('T1234567-12345,'), false);
+  assert.equal(inbox.includes('J5991021\u201300467'), false);
+  await page.evaluate(() => {
+    const q = getDecisionQueue();
+    q.push(null);
+    setDecisionQueue(q);
+    queueFinalize({
+      number: 'J5991021\u201300467',
+      hours: '16',
+      rate: '30',
+      materialsCost: '20',
+      dateStarted: '2026-11-19',
+      dateCompleted: '2026-11-19',
+      invoiceNumber: '1432',
+      workDescription: 'I checked out the leaky faucet and took care of it. Job complete.',
+      photos: [{ name: 'IMG_0904.jpeg', url: 'https://raw.githubusercontent.com/Simzy420/big-brain-ape-dashboard/main/wo-photos/1795219333843-IMG_0904.jpeg' }]
+    }, false);
+  });
+  const postedFinalize = () => state.decisionPosts.map(p => {
+    try { return JSON.parse(p.body); } catch (e) { return null; }
+  }).find(b => b && b.type === 'finalize' && b.wo === 'J5991021-00467');
+  for (let i = 0; i < 100 && !postedFinalize(); i++) {
+    await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 20)));
+  }
+  const fin = postedFinalize();
+  assert.ok(fin, 'finalize POST missing: ' + state.decisionPosts.map(p => p.body).join('\n'));
+  assert.equal(fin.wo, 'J5991021-00467');
+  assert.equal(fin.data.hours, '16');
+  assert.equal(fin.data.invoiceNumber, '1432');
+  assert.deepEqual(fin.data.photos, ['https://raw.githubusercontent.com/Simzy420/big-brain-ape-dashboard/main/wo-photos/1795219333843-IMG_0904.jpeg']);
+  assert.deepEqual(Object.keys(fin).sort(), ['data', 'ts', 'type', 'wo']);
+  state.decisionStatus = 400;
+  await page.evaluate(() => flushDecisionQueue());
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem('corrigoDecisionQueue') || '[]').length === 0, { timeout: 5000 });
+  const afterInbox = await page.evaluate(() => JSON.parse(localStorage.getItem('corrigo_inbox') || '[]').map(w => w.number));
+  assert.equal(afterInbox.includes('J5991021-00467'), true);
+  assert.equal(afterInbox.includes('I5376025-00135.01.01'), true);
   await page.close();
 });
 

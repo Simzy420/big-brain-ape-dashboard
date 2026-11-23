@@ -189,7 +189,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v54-202611231657</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v55-202611231720</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <div class="stepwrap"><div class="steplabel">Step 1 ⭐️</div><button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button></div>
   <div class="stepwrap"><div class="steplabel">Step 2 ⭐️</div><button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button></div>
@@ -322,7 +322,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v54-202611231657';
+const APP_VERSION = 'v55-202611231720';
 const DECISION_ENDPOINT = 'https://doorbell-relay-production-c59989ff.up.railway.app/decision';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
@@ -1179,54 +1179,88 @@ function getDecisionQueue(){
 function setDecisionQueue(q){
   try { localStorage.setItem('corrigoDecisionQueue', JSON.stringify(q)); } catch (e) {}
 }
+// The relay accepts ^[A-Z]\d{7}-\d{5}(\.\d{1,3}){0,3}$ only. A trailing comma or an en dash is a 400.
+const WO_RE = /^[A-Z]\d{7}-\d{5}(?:\.\d{1,3}){0,3}$/;
+const DECISION_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+function sanitizeWo(v){
+  const s = String(v == null ? '' : v)
+    .replace(/[\u2010-\u2015\u2212\uFE58\uFE63\uFF0D]/g, '-')
+    .replace(/\s+/g, '')
+    .replace(/,+/g, '')
+    .toUpperCase();
+  const m = s.match(/[A-Z]\d{7}-\d{5}(?:\.\d{1,3}){0,3}/);
+  return m ? m[0] : s;
+}
 function queueDecision(number, decision){
-  const q = getDecisionQueue();
-  q.push({ wo: String(number), decision: decision, ts: new Date().toISOString() });
-  setDecisionQueue(q);
-  flushDecisionQueue();
+  const next = getDecisionQueue().concat([{ wo: sanitizeWo(number), decision: decision, ts: new Date().toISOString() }]);
+  setDecisionQueue(next);
+  flushDecisionQueue(next);
 }
 function buildFinalizePayload(wo, isEdit){
   const num = (v) => String(v == null ? '' : v).trim();
-  const photos = (wo.photos || []).map(p => p && p.url).filter(u => /^https:\/\//.test(u || '')).slice(0, 20);
+  const src = wo || {};
+  const photos = (Array.isArray(src.photos) ? src.photos : []).map(p => p && p.url).filter(u => /^https:\/\//.test(u || '')).slice(0, 20);
   return {
     type: 'finalize',
-    wo: String(wo.number),
+    wo: sanitizeWo(src.number),
     ts: new Date().toISOString(),
     data: {
-      hours: num(wo.hours),
-      rate: num(wo.rate),
-      materialsCost: num(wo.materialsCost),
-      dateStarted: num(wo.dateStarted),
-      dateCompleted: num(wo.dateCompleted),
-      invoiceNumber: num(wo.invoiceNumber).slice(0, 60),
-      workDescription: String(wo.workDescription || '').slice(0, 4000),
-      comment: String(wo.comment || wo.workDescription || '').slice(0, 4000),
-      repairCategory: String(wo.repairCategory || '').slice(0, 200),
-      repairCode: String(wo.repairCode || '').slice(0, 200),
+      hours: num(src.hours),
+      rate: num(src.rate),
+      materialsCost: num(src.materialsCost),
+      dateStarted: num(src.dateStarted),
+      dateCompleted: num(src.dateCompleted),
+      invoiceNumber: num(src.invoiceNumber).slice(0, 60),
+      workDescription: String(src.workDescription || '').slice(0, 4000),
+      comment: String(src.comment || src.workDescription || '').slice(0, 4000),
+      repairCategory: String(src.repairCategory || '').slice(0, 200),
+      repairCode: String(src.repairCode || '').slice(0, 200),
       edit: !!isEdit,
       photos: photos
     }
   };
 }
 function queueFinalize(wo, isEdit){
-  const q = getDecisionQueue();
   const item = buildFinalizePayload(wo, isEdit);
-  setDecisionQueue(q.filter(x => !(x.type === 'finalize' && x.wo === item.wo)).concat([item]));
-  flushDecisionQueue();
+  const q = getDecisionQueue().filter(x => x && !(x.type === 'finalize' && sanitizeWo(x.wo) === item.wo));
+  const next = q.concat([item]);
+  setDecisionQueue(next);
+  flushDecisionQueue(next);
 }
-function flushDecisionQueue(){
+function prepareDecisionItem(item, now){
+  if (!item || typeof item !== 'object') return null;
+  const wo = sanitizeWo(item.wo);
+  const t = Date.parse(item.ts);
+  if (!WO_RE.test(wo) || !Number.isFinite(t) || now - t > DECISION_MAX_AGE_MS) return null;
+  if (item.type === 'finalize') return Object.assign({}, item, { wo: wo });
+  if (item.decision === 'accept' || item.decision === 'decline') return Object.assign({}, item, { wo: wo });
+  return null;
+}
+function flushDecisionQueue(pending){
   if (!DECISION_ENDPOINT) return;
-  const same = (x, y) => x.wo === y.wo && x.ts === y.ts && (x.type||'') === (y.type||'') && (x.decision||'') === (y.decision||'');
-  getDecisionQueue().forEach(item => {
+  const now = Date.now();
+  const raw = Array.isArray(pending) ? pending : getDecisionQueue();
+  const kept = [];
+  let badFinalize = false;
+  raw.forEach(item => {
+    const next = prepareDecisionItem(item, now);
+    if (next) { kept.push(next); return; }
+    if (item && item.type === 'finalize' && !WO_RE.test(sanitizeWo(item.wo))) badFinalize = true;
+  });
+  setDecisionQueue(kept);
+  if (badFinalize) setSyncStatus('Finalize not sent to bot (bad data) - check the numbers', '#ff3b30');
+  const same = (x, y) => x && sanitizeWo(x.wo) === y.wo && x.ts === y.ts && (x.type||'') === (y.type||'') && (x.decision||'') === (y.decision||'');
+  kept.forEach(item => {
     fetch(DECISION_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(item)
+      body: JSON.stringify(item),
+      keepalive: true
     }).then(res => {
       if (!res) return;
-      if (res.status === 400 && item.type === 'finalize') {
+      if (res.status === 400) {
         setDecisionQueue(getDecisionQueue().filter(x => !same(x, item)));
-        setSyncStatus('Finalize not sent to bot (bad data) - check the numbers', '#ff3b30');
+        if (item.type === 'finalize') setSyncStatus('Finalize not sent to bot (bad data) - check the numbers', '#ff3b30');
         return;
       }
       if (!res.ok) return;
@@ -1371,7 +1405,7 @@ function undoDecision(id){
   const num = String(wo.number || '');
   forgetDecision(num);
   holdInInbox(num);
-  setDecisionQueue(getDecisionQueue().filter(item => String(item.wo) !== num));
+  setDecisionQueue(getDecisionQueue().filter(item => item && sanitizeWo(item.wo) !== sanitizeWo(num)));
   wo.status = 'inbox';
   const inbox = getData('corrigo_inbox').filter(w => w.id !== id && String(w.number) !== num);
   inbox.unshift(wo);
@@ -2215,7 +2249,7 @@ function editSubmittedForm(id){
 }
 
 function addManualWo(){
-  const num = document.getElementById('manualWoNumber').value.trim();
+  const num = sanitizeWo(document.getElementById('manualWoNumber').value);
   const desc = document.getElementById('manualWoDesc').value.trim();
   const loc = document.getElementById('manualWoLoc').value.trim();
   if (!num) { alert('Enter a work order number.'); return; }
