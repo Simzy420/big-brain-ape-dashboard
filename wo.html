@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>Work Order</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #000; color: #fff; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    padding: 18px 16px calc(28px + env(safe-area-inset-bottom));
+    -webkit-text-size-adjust: 100%;
+  }
+  main { max-width: 640px; margin: 0 auto; }
+  h1, h2 { color: #ff9f1a; font-size: 40px; line-height: 1.15; margin: 26px 0 10px; font-weight: 800; }
+  h1 { margin-top: 8px; }
+  .value {
+    display: inline-block;
+    color: #2ee6c7;
+    background: #102e2a;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 34px;
+    font-weight: 800;
+    line-height: 1.25;
+  }
+  .job { display: block; }
+  .nte { color: #e879f9; font-size: 52px; font-weight: 900; margin: 22px 0 8px; }
+  .past { color: #ff453a; font-size: 36px; font-weight: 900; margin: 18px 0 0; }
+  button {
+    display: block;
+    width: 100%;
+    min-height: 110px;
+    margin-top: 18px;
+    border: none;
+    border-radius: 20px;
+    font-size: 46px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 0.5px;
+  }
+  button.accept { background: #1f8f3a; }
+  button.decline { background: #d01010; }
+  button.no { background: #3a3a3c; }
+  button:disabled { opacity: 0.6; }
+  #confirm, #result {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 5;
+    padding: 28px 16px calc(28px + env(safe-area-inset-bottom));
+    display: none;
+  }
+  #confirm h2, #result h2 { font-size: 52px; text-align: center; margin-top: 12vh; }
+  .status {
+    color: #2ee6c7;
+    font-size: 44px;
+    font-weight: 900;
+    line-height: 1.2;
+    margin-top: 28px;
+  }
+  .loading { color: #ff9f1a; font-size: 40px; font-weight: 800; }
+</style>
+</head>
+<body>
+<main id="app"><p class="loading">Loading…</p></main>
+<div id="confirm">
+  <h2>Are you sure?</h2>
+  <button type="button" class="accept" id="yesBtn">Yes</button>
+  <button type="button" class="no" id="noBtn">No</button>
+</div>
+<div id="result"><h2 id="resultText"></h2></div>
+<script>
+const DECISION_ENDPOINT = 'https://doorbell-relay-production-c59989ff.up.railway.app/decision';
+const WO_RE = /^[A-Z]\d{7}-\d{5}(?:\.\d{1,3}){0,3}$/;
+const CLOSED = { completed:1, submitted:1, sent_to_corrigo:1, paid:1, declined:1, resolved:1, disputed:1, accepted:1 };
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function sanitizeWo(v) {
+  const s = String(v == null ? '' : v)
+    .replace(/[\u2010-\u2015\u2212\uFE58\uFE63\uFF0D]/g, '-')
+    .replace(/\s+/g, '')
+    .replace(/,+/g, '')
+    .toUpperCase();
+  const m = s.match(/[A-Z]\d{7}-\d{5}(?:\.\d{1,3}){0,3}/);
+  return m ? m[0] : s;
+}
+function blank(v) { return v == null || v === ''; }
+function titleCity(s) {
+  return String(s || '').toLowerCase().replace(/\b[a-z]/g, function (c) { return c.toUpperCase(); });
+}
+function mountainDate(year, month, day, hour, minute) {
+  let utc = Date.UTC(year, month - 1, day, hour, minute);
+  const dtf = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Boise', hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  for (let i = 0; i < 3; i++) {
+    const map = {};
+    dtf.formatToParts(new Date(utc)).forEach(function (p) { if (p.type !== 'literal') map[p.type] = p.value; });
+    const shown = Date.UTC(+map.year, +map.month - 1, +map.day, +map.hour, +map.minute, +map.second);
+    const diff = Date.UTC(year, month - 1, day, hour, minute, 0) - shown;
+    if (diff === 0) break;
+    utc += diff;
+  }
+  return new Date(utc);
+}
+function parseMountain(raw) {
+  const m = String(raw || '').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+  if (!m) return null;
+  let hour = parseInt(m[4], 10);
+  const ap = m[6].toUpperCase();
+  if (ap === 'AM') { if (hour === 12) hour = 0; }
+  else if (hour !== 12) hour += 12;
+  return mountainDate(+m[3], +m[1], +m[2], hour, +m[5]);
+}
+function emailDate(w, label) {
+  const m = String(w.emailContent || '').match(new RegExp(label + ':[^\\n]*\\n\\s*([0-9]{1,2}/[0-9]{1,2}/[0-9]{4}[^\\n]*)'));
+  return m ? m[1].trim() : '';
+}
+function whenParts(raw) {
+  const d = parseMountain(raw);
+  if (!d) return null;
+  const weekday = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Boise', weekday: 'long' }).format(d);
+  const rest = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Boise', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(d);
+  return { weekday: weekday, rest: rest, date: d };
+}
+function siteName(w) {
+  const parts = String(w.location || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+  let city = parts.length >= 2 ? parts[1] : '';
+  city = city.replace(/\b[A-Z]{2}\b[\s\S]*$/, '').trim();
+  if (!city) city = String(w.property || '').replace(/\s+\d[\s\S]*$/, '').trim();
+  const titled = titleCity(city);
+  if (!titled) return '';
+  return /church$/i.test(titled) ? titled : titled + ' Church';
+}
+function street(w) {
+  const loc = String(w.location || '').trim();
+  return loc.split(',')[0].trim() || loc;
+}
+function jobText(w) {
+  const plain = String(w.emailJobDescription || '').replace(/\s+/g, ' ').trim();
+  const source = plain || (function () {
+    const desc = String(w.description || w.workDescription || '');
+    const m = desc.match(/Description:\s*([\s\S]+)/i);
+    return (m ? m[1] : desc).replace(/\s+/g, ' ').trim();
+  })();
+  return source.replace(/\s*Location:\s*\S.*$/, '').trim();
+}
+function nte(w) {
+  const n = parseFloat(w.estimatedAmount);
+  if (!isNaN(n) && n > 0) return '$' + (Math.round(n) === n ? String(Math.round(n)) : n.toFixed(2));
+  const m = String(w.date || '').match(/\$[\d,]+(?:\.\d{2})?/);
+  return m ? m[0].replace(/\.00$/, '') : '';
+}
+function statusKey(w) {
+  return String(w.status || '').toLowerCase().trim().replace(/[\s-]+/g, '_');
+}
+function statusLine(w) {
+  const s = statusKey(w);
+  if (s === 'accepted' || w.corrigoAccepted === true) return 'Already accepted';
+  if (s === 'declined') return 'Already declined';
+  if (s === 'sent_to_corrigo') return 'Already submitted';
+  if (s === 'paid') return 'Already paid';
+  if (s === 'completed' || s === 'submitted') return 'Already finished';
+  if (s === 'resolved') return 'Already resolved';
+  if (s === 'disputed') return 'On hold';
+  if (CLOSED[s]) return 'Already closed';
+  return '';
+}
+function mergeMatches(list, want) {
+  const hits = list.filter(function (w) { return w && sanitizeWo(w.number) === want; });
+  const out = {};
+  hits.forEach(function (w) {
+    Object.keys(w).forEach(function (k) {
+      if (blank(out[k]) && !blank(w[k])) out[k] = w[k];
+    });
+  });
+  return hits.length ? out : null;
+}
+
+const params = new URLSearchParams(location.search);
+const testMode = params.get('test') === '1';
+const want = sanitizeWo(params.get('wo') || '');
+let current = null;
+let pending = '';
+let sending = false;
+
+function show(id, on) {
+  document.getElementById(id).style.display = on ? 'block' : 'none';
+}
+function render(w) {
+  const acceptRaw = (w.acceptBy && !/DO NOT EXCEED/i.test(String(w.acceptBy))) ? w.acceptBy : emailDate(w, 'Accept/Reject By');
+  const finishRaw = w.completeBy || emailDate(w, 'Complete By');
+  const accept = whenParts(acceptRaw);
+  const finish = whenParts(finishRaw);
+  const closed = statusLine(w);
+  const past = !closed && accept && accept.date.getTime() < Date.now();
+  const blocks = [];
+  blocks.push('<h1>Work Order</h1><div class="value">' + esc(w.number || want) + '</div>');
+  const site = siteName(w);
+  if (site) blocks.push('<h2>' + esc(site) + '</h2>');
+  const addr = street(w);
+  if (addr) blocks.push('<div class="value">' + esc(addr) + '</div>');
+  const job = jobText(w);
+  if (job) blocks.push('<h2>Job:</h2><div class="value job">' + esc(job) + '</div>');
+  if (accept) {
+    blocks.push('<h2>Accept or Decline</h2><div class="value">Before ' + esc(accept.weekday) + '</div><div class="value" style="margin-top:8px;">' + esc(accept.rest) + '</div>');
+  }
+  if (finish) {
+    blocks.push('<h2>The Job Needs to be Finished</h2><div class="value">Before ' + esc(finish.weekday) + '</div><div class="value" style="margin-top:8px;">' + esc(finish.rest) + '</div>');
+  }
+  const money = nte(w);
+  if (money) blocks.push('<p class="nte">NTE: ' + esc(money) + '</p>');
+  if (past) blocks.push('<p class="past">Past deadline</p>');
+  if (closed) blocks.push('<p class="status">' + esc(closed) + '</p>');
+  else {
+    blocks.push('<button type="button" class="accept" id="acceptBtn">ACCEPT</button>');
+    blocks.push('<button type="button" class="decline" id="declineBtn">DECLINE</button>');
+  }
+  document.getElementById('app').innerHTML = blocks.join('');
+  const acceptBtn = document.getElementById('acceptBtn');
+  const declineBtn = document.getElementById('declineBtn');
+  if (acceptBtn) acceptBtn.onclick = function () { ask('accept'); };
+  if (declineBtn) declineBtn.onclick = function () { ask('decline'); };
+}
+function ask(decision) {
+  if (sending) return;
+  pending = decision;
+  document.querySelector('#confirm h2').textContent = 'Are you sure?';
+  show('confirm', true);
+}
+function finishMessage(decision) {
+  show('confirm', false);
+  document.getElementById('resultText').textContent = decision === 'accept' ? '✅ Accepted — thanks Dad!' : '❌ Declined';
+  show('result', true);
+  const a = document.getElementById('acceptBtn');
+  const d = document.getElementById('declineBtn');
+  if (a) a.disabled = true;
+  if (d) d.disabled = true;
+}
+async function sendDecision(decision) {
+  const item = { wo: sanitizeWo(current && current.number), decision: decision, ts: new Date().toISOString() };
+  if (!WO_RE.test(item.wo) || (decision !== 'accept' && decision !== 'decline')) {
+    document.getElementById('yesBtn').disabled = false;
+    return;
+  }
+  if (testMode) { finishMessage(decision); return; }
+  sending = true;
+  document.getElementById('yesBtn').disabled = true;
+  try {
+    const res = await fetch(DECISION_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(item),
+      keepalive: true
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    finishMessage(decision);
+  } catch (e) {
+    sending = false;
+    document.getElementById('yesBtn').disabled = false;
+    document.querySelector('#confirm h2').textContent = 'It did not send. Tap Yes to try again.';
+  }
+}
+document.getElementById('yesBtn').onclick = function () { if (pending) sendDecision(pending); };
+document.getElementById('noBtn').onclick = function () {
+  if (sending) return;
+  pending = '';
+  show('confirm', false);
+};
+
+if (!want) {
+  document.getElementById('app').innerHTML = '<p class="loading">No work order number.</p>';
+} else {
+  fetch('work-orders.json?v=' + Date.now(), { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error('load'); return r.json(); })
+    .then(function (list) {
+      current = mergeMatches(Array.isArray(list) ? list : [], want);
+      if (!current) {
+        document.getElementById('app').innerHTML = '<p class="loading">Work order not found.</p>';
+        return;
+      }
+      current.number = want;
+      render(current);
+    })
+    .catch(function () {
+      document.getElementById('app').innerHTML = '<p class="loading">Could not load the work order.</p>';
+    });
+}
+</script>
+</body>
+</html>
