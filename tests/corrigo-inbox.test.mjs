@@ -1254,7 +1254,6 @@ test('work order numbers are sanitized and stuck queue items that cannot succeed
   assert.equal(inbox.includes('J5991021-00467'), true);
   assert.equal(inbox.includes('T1234567-12345,'), false);
   assert.equal(inbox.includes('J5991021\u201300467'), false);
-  const before = state.decisionPosts.length;
   await page.evaluate(() => {
     const q = getDecisionQueue();
     q.push(null);
@@ -1271,11 +1270,14 @@ test('work order numbers are sanitized and stuck queue items that cannot succeed
       photos: [{ name: 'IMG_0904.jpeg', url: 'https://raw.githubusercontent.com/Simzy420/big-brain-ape-dashboard/main/wo-photos/1795219333843-IMG_0904.jpeg' }]
     }, false);
   });
-  for (let i = 0; i < 50 && state.decisionPosts.length <= before; i++) {
+  const postedFinalize = () => state.decisionPosts.map(p => {
+    try { return JSON.parse(p.body); } catch (e) { return null; }
+  }).find(b => b && b.type === 'finalize' && b.wo === 'J5991021-00467');
+  for (let i = 0; i < 100 && !postedFinalize(); i++) {
     await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 20)));
   }
-  const fin = state.decisionPosts.map(p => JSON.parse(p.body)).find(b => b.type === 'finalize' && b.wo === 'J5991021-00467');
-  assert.ok(fin);
+  const fin = postedFinalize();
+  assert.ok(fin, 'finalize POST missing: ' + state.decisionPosts.map(p => p.body).join('\n'));
   assert.equal(fin.wo, 'J5991021-00467');
   assert.equal(fin.data.hours, '16');
   assert.equal(fin.data.invoiceNumber, '1432');
