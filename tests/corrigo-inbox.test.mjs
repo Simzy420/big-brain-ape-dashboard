@@ -1430,6 +1430,106 @@ test('invoiced work orders leave stale phone lists and show on Submitted', async
   await page.close();
 });
 
+test('Submitted receipt shows job pictures and every proof screenshot', async () => {
+  const withPhotos = {
+    id: 'receipt-photos',
+    number: 'J5064627-00257',
+    status: 'sent_to_corrigo',
+    location: '365 Jefferson Street, AFTON, WY 83110, US',
+    invoiceNumber: '1421',
+    corrigoTotal: 485,
+    corrigoStatus: 'Authorized',
+    photos: [
+      { url: 'https://example.test/job-1.jpg' },
+      { url: 'https://example.test/job-2.jpg' }
+    ],
+    photo: 'https://example.test/job-1.jpg',
+    cruChatScreenshotUrl: 'https://example.test/proof-chat.png',
+    workDescription: 'Roof:Debris Removal:BI-Annual Gutter Inspection & Cleaning'
+  };
+  const faucet = {
+    id: 'receipt-467',
+    number: 'J5991021-00467',
+    status: 'sent_to_corrigo',
+    location: '104 Johnny Miller Dr, AFTON, WY 83110, US',
+    invoiceNumber: '1432',
+    hours: '2',
+    rate: '30',
+    materialsCost: '1',
+    workDescription: 'old phone text',
+    comment: 'old phone text',
+    corrigoTotal: 500,
+    corrigoStatus: 'Completed',
+    dateCompleted: '2026-11-16',
+    cruChatScreenshotUrl: 'https://example.test/1714.png'
+  };
+  const serverFaucet = {
+    number: 'J5991021-00467',
+    status: 'sent_to_corrigo',
+    invoiceNumber: '1432',
+    hours: '16',
+    rate: '30',
+    materialsCost: '20',
+    corrigoLabor: 480,
+    corrigoMaterial: 20,
+    corrigoTotal: 500,
+    corrigoStatus: 'Completed',
+    workDescription: 'I checked out the leaky faucet and took care of it. Job complete.',
+    comment: 'I checked out the leaky faucet and took care of it. Job complete.',
+    repairCategory: 'Equip>Deferred Maintenance',
+    repairCode: 'Interior',
+    dateCompleted: '2026-11-16',
+    cruChatScreenshotUrl: 'https://example.test/1714.png',
+    submittedBy: 'gary sims'
+  };
+  const { page, state } = await openApp({
+    workOrders: [serverFaucet],
+    decisionStatus: 0,
+    proof: {
+      'J5064627-00257': [{ action: 'invoice_submitted', at: '2026-10-26T00:08:00Z', url: 'https://example.test/proof-chat.png' }],
+      'J5991021-00467': [
+        { action: 'invoice_submitted', at: '2026-11-20T17:16:00-07:00', url: 'https://example.test/1716.jpg' },
+        { action: 'invoice_submitted', at: '2026-11-20T17:14:00-07:00', url: 'https://example.test/1714.png' }
+      ]
+    },
+    seed: { corrigo_sent_to_corrigo: [withPhotos, faucet] }
+  });
+  await page.evaluate(() => show('senttocorrigo'));
+  const opened = await page.evaluate(() => {
+    const cards = [...document.querySelectorAll('#sentToCorrigoList .card')];
+    const open = num => {
+      const card = cards.find(c => c.innerText.includes(num));
+      [...card.querySelectorAll('button')].find(b => b.textContent.includes('Corrigo Receipt')).click();
+      const text = document.getElementById('sentDetailModal').innerText;
+      const imgs = [...document.querySelectorAll('#sentDetailModal img')].map(img => img.getAttribute('src'));
+      const job = imgs.filter(src => text.indexOf('Job pictures') >= 0);
+      return { text, imgs };
+    };
+    const first = open('J5064627-00257');
+    document.querySelector('#sentDetailModal img').click();
+    const enlarged = (document.getElementById('photoFullView') || {}).style.display;
+    closeSentDetail();
+    const second = open('J5991021-00467');
+    return { first, enlarged, second };
+  });
+  assert.match(opened.first.text, /What was entered/);
+  assert.match(opened.first.text, /📸 Job pictures/);
+  assert.match(opened.first.text, /✅ Proof it was submitted/);
+  assert.deepEqual(opened.first.imgs, ['https://example.test/job-1.jpg', 'https://example.test/job-2.jpg', 'https://example.test/proof-chat.png']);
+  assert.equal(opened.enlarged, 'flex');
+  assert.match(opened.second.text, /Hours\s+16/);
+  assert.match(opened.second.text, /\$30\/hr/);
+  assert.match(opened.second.text, /\$20\.00/);
+  assert.match(opened.second.text, /\$480\.00/);
+  assert.match(opened.second.text, /I checked out the leaky faucet and took care of it\. Job complete\./);
+  assert.match(opened.second.text, /Equip>Deferred Maintenance/);
+  assert.match(opened.second.text, /Interior/);
+  assert.equal(opened.second.text.includes('Date started'), false);
+  assert.deepEqual(opened.second.imgs.sort(), ['https://example.test/1714.png', 'https://example.test/1716.jpg']);
+  assert.equal(state.decisionPosts.length, 0);
+  await page.close();
+});
+
 test('a relay 401 without a saved token is not called a GitHub read failure', async () => {
   const session = await openApp({ workOrders: [plain], allowRelay: true });
   session.state.failRelay = true;

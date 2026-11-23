@@ -189,7 +189,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v55-202611231720</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v56-202611231721</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <div class="stepwrap"><div class="steplabel">Step 1 ⭐️</div><button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button></div>
   <div class="stepwrap"><div class="steplabel">Step 2 ⭐️</div><button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button></div>
@@ -322,7 +322,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v55-202611231720';
+const APP_VERSION = 'v56-202611231721';
 const DECISION_ENDPOINT = 'https://doorbell-relay-production-c59989ff.up.railway.app/decision';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
@@ -2281,6 +2281,13 @@ function mergeSentWo(phone, server){
     const empty = out[k] === undefined || out[k] === null || out[k] === '' || (Array.isArray(out[k]) && out[k].length === 0);
     if ((overlay && v !== undefined && v !== null && v !== '') || empty) out[k] = v;
   });
+  // A filled repair category means the server receipt is the one that was invoiced.
+  if (server && server.repairCategory) {
+    ['workDescription','comment','repairCategory','repairCode','hours','rate','materialsCost','dateCompleted','invoiceNumber'].forEach(k => {
+      const v = server[k];
+      if (v !== undefined && v !== null && v !== '') out[k] = v;
+    });
+  }
   return out;
 }
 
@@ -2413,24 +2420,20 @@ function showWoReceipt(w){
   const hasMat = w.materialsCost !== undefined && w.materialsCost !== null && w.materialsCost !== '';
   const labor = (parseFloat(w.hours)||0) * (parseFloat(w.rate)||0);
   const total = labor + (parseFloat(w.materialsCost)||0);
-  const photoSrcs = sentPhotoSrcs(w);
-  const photosHtml = photoSrcs.length ? `<p style="color:#aaa;font-size:16px;margin:12px 0 6px;">📸 Picture(s) (${photoSrcs.length}) — tap to enlarge:</p><div style="display:flex;flex-wrap:wrap;gap:8px;">` + photoSrcs.map(src =>
+  const thumbs = srcs => srcs.length ? `<div style="display:flex;flex-wrap:wrap;gap:8px;">` + srcs.map(src =>
       `<img src="${escHtml(src)}" onclick="openPhotoFull(this.src)" loading="lazy" style="width:96px;height:96px;object-fit:cover;border-radius:10px;cursor:pointer;background:#222;">`).join('') + '</div>'
-    : '<p class="muted" style="margin-top:12px;">No picture saved in the app</p>';
+    : '<p class="muted" style="margin:0 0 8px;">None</p>';
+  const photoSrcs = sentPhotoSrcs(w);
+  const photosHtml = `<p style="color:#aaa;font-size:16px;margin:12px 0 6px;">📸 Job pictures${photoSrcs.length ? ' — tap to enlarge' : ''}</p>${thumbs(photoSrcs)}`;
   const hasCorrigo = ['corrigoTotal','corrigoStatus','corrigoMaterial','corrigoLabor','corrigoWoNumber','submittedBy'].some(k => w[k] !== undefined && w[k] !== null && w[k] !== '');
   const corrigoHtml = hasCorrigo ? `<h3 style="margin:16px 0 4px;color:#00cc66;">In Corrigo</h3>${row('Corrigo WO #', w.corrigoWoNumber)}${row('Status', w.corrigoStatus)}${row('Labor', fmtMoney(w.corrigoLabor))}${row('Material', w.corrigoMaterial !== undefined && w.corrigoMaterial !== null && w.corrigoMaterial !== '' ? fmtMoney(w.corrigoMaterial) : '')}${row('Total', fmtMoney(w.corrigoTotal))}${row('Submitted by', w.submittedBy)}` : '';
-  const proofSubmittedSrcs = [];
-  if (typeof CORRIGO_PROOF !== 'undefined' && w.number) {
-    const pk = proofKey(w.number);
-    Object.keys(CORRIGO_PROOF).forEach(p => { if (proofKey(p) === pk) (CORRIGO_PROOF[p] || []).forEach(e => { if (e && e.url && e.action === 'invoice_submitted') proofSubmittedSrcs.push(e.url); }); });
-  }
-  const proofHtml = proofSubmittedSrcs.length ? `<p style="color:#aaa;font-size:16px;margin:12px 0 6px;">✅ Proof it was submitted — tap to enlarge:</p><div style="display:flex;flex-wrap:wrap;gap:8px;">` + proofSubmittedSrcs.map(src =>
-      `<img src="${escHtml(src)}" onclick="openPhotoFull(this.src)" loading="lazy" style="width:96px;height:96px;object-fit:cover;border-radius:10px;cursor:pointer;background:#222;">`).join('') + '</div>' : '';
+  const proofSrcs = (typeof cruFor === 'function' ? cruFor(w.number, w) : []).map(e => e.url);
+  const proofHtml = `<p style="color:#aaa;font-size:16px;margin:12px 0 6px;">✅ Proof it was submitted${proofSrcs.length ? ' — tap to enlarge' : ''}</p>${thumbs(proofSrcs)}`;
   const desc = w.workDescription || w.comment || '';
   const html = `<div class="card" style="max-width:600px;margin:0 auto;">
     <div class="wo-card-header"><strong>${escHtml(w.number||'')}</strong></div>
     <h3 style="margin:8px 0 4px;">What was entered</h3>
-    ${row('Location', w.location)}${row('Date started', shortDate(w.dateStarted))}${row('Date completed', shortDate(w.dateCompleted))}${row('Invoice #', w.invoiceNumber)}${row('Hours', w.hours)}${row('Rate', w.rate ? '$' + w.rate + '/hr' : '')}${row('Labor total', labor ? fmtMoney(labor) : '')}${row('Materials', hasMat ? fmtMoney(w.materialsCost) : 'None entered')}${row('Total', total ? fmtMoney(total) : '')}${row('Sent', fmtMountain(w.sentAt))}
+    ${row('Location', w.location)}${row('Date started', shortDate(w.dateStarted))}${row('Date completed', shortDate(w.dateCompleted))}${row('Invoice #', w.invoiceNumber)}${row('Hours', w.hours)}${row('Rate', w.rate ? '$' + w.rate + '/hr' : '')}${row('Labor total', labor ? fmtMoney(labor) : '')}${row('Materials', hasMat ? fmtMoney(w.materialsCost) : 'None entered')}${row('Total', total ? fmtMoney(total) : '')}${row('Repair category', w.repairCategory)}${row('Repair code', w.repairCode)}${row('Sent', fmtMountain(w.sentAt))}
     ${desc ? `<p style="color:#aaa;font-size:16px;margin:12px 0 4px;">Work description:</p><p style="white-space:pre-wrap;">${escHtml(desc)}</p>` : ''}
     ${corrigoHtml}
     ${photosHtml}
