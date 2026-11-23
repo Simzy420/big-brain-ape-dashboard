@@ -1208,6 +1208,144 @@ test('Finalize submit queues a fake finalize payload and a 400 drops only that i
   await page.close();
 });
 
+test('invoiced work orders leave stale phone lists and show on Submitted', async () => {
+  const en = 'J5991021\u201300467';
+  const staleInbox = wo({
+    id: 'stale-467',
+    number: en,
+    status: 'inbox',
+    acceptBy: '11/15/2026 10:58 AM',
+    completeBy: '12/12/2026 10:58 AM'
+  });
+  const staleFinalize = wo({
+    id: 'stale-435',
+    number: 'J5015189-00435',
+    status: 'completed',
+    acceptBy: '11/13/2026 1:48 PM'
+  });
+  const staleSubmitted = wo({
+    id: 'stale-465',
+    number: 'J5991021-00465',
+    status: 'submitted',
+    hours: '15',
+    rate: '30',
+    materialsCost: '25',
+    workDescription: 'Fixed water leak',
+    comment: 'Fixed water leak',
+    photo: 'data:image/jpeg;base64,abc',
+    images: ['corrigo-images/J5991021-00465-1.jpg']
+  });
+  const server = [
+    {
+      number: 'J5991021-00465',
+      status: 'sent_to_corrigo',
+      corrigoStatus: 'Completed',
+      corrigoTotal: 475,
+      invoiceNumber: '1431',
+      hours: '15',
+      rate: '30',
+      materialsCost: '25',
+      workDescription: 'Fixed water leak',
+      submittedBy: 'gary sims',
+      sentAt: '2026-11-23T16:37:00.000Z',
+      cruChatScreenshotUrl: 'https://example.test/1431.png'
+    },
+    {
+      number: 'J5991021-00467',
+      status: 'sent_to_corrigo',
+      corrigoStatus: 'Completed',
+      corrigoTotal: 500,
+      invoiceNumber: '1432',
+      submittedBy: 'gary sims',
+      sentAt: '2026-11-21T00:14:00.000Z',
+      cruChatScreenshotUrl: 'https://example.test/1432.png'
+    },
+    {
+      number: 'J5015189-00435',
+      status: 'sent_to_corrigo',
+      corrigoStatus: 'Completed',
+      corrigoTotal: 500,
+      invoiceNumber: '1430',
+      submittedBy: 'gary sims',
+      sentAt: '2026-11-20T23:53:00.000Z',
+      cruChatScreenshotUrl: 'https://example.test/1430.png'
+    }
+  ];
+  const { page, state } = await openApp({
+    workOrders: server,
+    decisionStatus: 0,
+    proof: {
+      'J5991021-00465': [{ action: 'invoice_submitted', at: '2026-11-23T09:37:00-07:00', url: 'https://example.test/1431.png', note: 'invoice 1431' }],
+      'J5991021-00467': [{ action: 'invoice_submitted', at: '2026-11-20T17:14:00-07:00', url: 'https://example.test/1432.png', note: 'invoice 1432' }],
+      'J5015189-00435': [{ action: 'invoice_submitted', at: '2026-11-20T16:53:00-07:00', url: 'https://example.test/1430.png', note: 'invoice 1430' }]
+    },
+    seed: {
+      corrigo_inbox: [staleInbox],
+      corrigo_accepted: [Object.assign({}, staleFinalize, { status: 'accepted' })],
+      corrigo_completed: [staleFinalize],
+      corrigo_submitted: [staleSubmitted],
+      corrigoDecisions: { 'J5991021-00465': 'accept', 'J5015189-00435': 'accept' }
+    }
+  });
+  const got = await page.evaluate(() => {
+    const nums = key => JSON.parse(localStorage.getItem(key) || '[]').map(w => w.number);
+    const cards = sel => [...document.querySelectorAll(sel + ' .card strong')].map(el => el.textContent.trim());
+    const kept = JSON.parse(localStorage.getItem('corrigo_sent_to_corrigo') || '[]').find(w => w.number === 'J5991021-00465');
+    return {
+      inbox: nums('corrigo_inbox'),
+      accepted: nums('corrigo_accepted'),
+      completed: nums('corrigo_completed'),
+      submitted: nums('corrigo_submitted'),
+      sent: nums('corrigo_sent_to_corrigo'),
+      inboxCards: cards('#inbox'),
+      acceptedCards: cards('#accepted'),
+      almost: cards('#almostdue'),
+      overdue: cards('#overdue'),
+      finalize: cards('#finalize'),
+      hours: kept && kept.hours,
+      rate: kept && kept.rate,
+      materials: kept && kept.materialsCost,
+      work: kept && kept.workDescription,
+      photo: kept && kept.photo,
+      invoice: kept && kept.invoiceNumber
+    };
+  });
+  assert.deepEqual(got.inbox, []);
+  assert.deepEqual(got.accepted, []);
+  assert.deepEqual(got.completed, []);
+  assert.deepEqual(got.submitted, []);
+  assert.deepEqual(got.sent.sort(), ['J5015189-00435', 'J5991021-00465', 'J5991021-00467']);
+  assert.equal(got.inboxCards.length, 0);
+  assert.equal(got.acceptedCards.length, 0);
+  assert.equal(got.almost.length, 0);
+  assert.equal(got.overdue.length, 0);
+  assert.equal(got.finalize.length, 0);
+  assert.equal(got.hours, '15');
+  assert.equal(got.rate, '30');
+  assert.equal(got.materials, '25');
+  assert.equal(got.work, 'Fixed water leak');
+  assert.equal(got.photo, 'data:image/jpeg;base64,abc');
+  assert.equal(got.invoice, '1431');
+  await page.evaluate(() => show('senttocorrigo'));
+  const proof = await page.evaluate(() => {
+    const cards = [...document.querySelectorAll('#sentToCorrigoList .card')].map(card => ({
+      num: card.querySelector('strong').textContent.trim(),
+      proof: [...card.querySelectorAll('button')].some(b => b.textContent.includes('Proof It Was Submitted'))
+    }));
+    const card = [...document.querySelectorAll('#sentToCorrigoList .card')].find(c => c.innerText.includes('J5991021-00465'));
+    [...card.querySelectorAll('button')].find(b => b.textContent.includes('Proof It Was Submitted')).click();
+    return {
+      cards,
+      src: [...document.querySelectorAll('#proofList img')].map(img => img.getAttribute('src'))
+    };
+  });
+  assert.equal(proof.cards.length, 3);
+  assert.equal(proof.cards.every(c => c.proof), true);
+  assert.deepEqual(proof.src, ['https://example.test/1431.png']);
+  assert.equal(state.decisionPosts.length, 0);
+  await page.close();
+});
+
 test('a relay 401 without a saved token is not called a GitHub read failure', async () => {
   const session = await openApp({ workOrders: [plain], allowRelay: true });
   session.state.failRelay = true;

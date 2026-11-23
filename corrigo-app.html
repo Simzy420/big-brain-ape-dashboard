@@ -189,7 +189,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v53-202611141521</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v54-202611231657</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <div class="stepwrap"><div class="steplabel">Step 1 ⭐️</div><button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button></div>
   <div class="stepwrap"><div class="steplabel">Step 2 ⭐️</div><button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button></div>
@@ -322,7 +322,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v53-202611141521';
+const APP_VERSION = 'v54-202611231657';
 const DECISION_ENDPOINT = 'https://doorbell-relay-production-c59989ff.up.railway.app/decision';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
@@ -2664,33 +2664,24 @@ async function loadJobs(){
           return;
         }
         if (w.status === 'sent_to_corrigo') {
-          // v18: a WO already sent to Corrigo can't also sit in Inbox/Accepted/Declined/Bidding (stale phone copies)
-          inbox = inbox.filter(x => normStrict(x.number) !== normStrict(num));
-          ['corrigo_accepted','corrigo_declined','corrigo_bidding'].forEach(t => { const a = getData(t), k = a.filter(x => normStrict(x.number) !== normStrict(num)); if (k.length !== a.length) saveData(t, k); });
-          // Remove from corrigo_completed (Finalize tab) if it's there
-          let completed = getData('corrigo_completed');
-          const cIdx = completed.findIndex(x => String(x.number) === num);
-          let cRemoved = null, sRemoved = null;
-          if (cIdx >= 0) {
-            cRemoved = completed.splice(cIdx, 1)[0];
-            saveData('corrigo_completed', completed);
-          }
-          // Remove from corrigo_submitted (Completed tab) if it's there
-          let submitted = getData('corrigo_submitted');
-          const sIdx = submitted.findIndex(x => String(x.number) === num);
-          if (sIdx >= 0) {
-            sRemoved = submitted.splice(sIdx, 1)[0];
-            saveData('corrigo_submitted', submitted);
-          }
-          // Add to corrigo_sent_to_corrigo, keeping the phone's own full entry data
+          // v18: a WO already sent to Corrigo can't also sit in Inbox/Accepted/Declined/Bidding/Finalize/Completed (stale phone copies). Match en dashes to hyphens.
+          const sameNum = x => normStrict(x && x.number) === normStrict(num);
+          inbox = inbox.filter(x => !sameNum(x));
+          ['corrigo_accepted','corrigo_declined','corrigo_bidding','corrigo_saved'].forEach(t => { const a = getData(t), k = a.filter(x => !sameNum(x)); if (k.length !== a.length) saveData(t, k); });
+          let phoneWo = null;
+          ['corrigo_completed','corrigo_submitted'].forEach(t => {
+            const arr = getData(t);
+            const keep = [];
+            arr.forEach(x => { if (sameNum(x)) phoneWo = phoneWo ? mergeSentWo(phoneWo, x) : x; else keep.push(x); });
+            if (keep.length !== arr.length) saveData(t, keep);
+          });
           let sent = getData('corrigo_sent_to_corrigo');
-          const phoneWo = (cIdx >= 0 ? cRemoved : null) || (sIdx >= 0 ? sRemoved : null);
-          const exIdx = sent.findIndex(x => String(x.number) === num);
-          if (exIdx < 0) {
-            sent.unshift(mergeSentWo(phoneWo || {}, w));
-          } else {
-            sent[exIdx] = mergeSentWo(sent[exIdx], w);
-          }
+          const exIdx = sent.findIndex(sameNum);
+          const merged = exIdx < 0 ? mergeSentWo(phoneWo || {}, w) : mergeSentWo(sent[exIdx], w);
+          merged.number = String(w.number).replace(/[\u2010-\u2015\u2212]/g, '-');
+          merged.status = 'sent_to_corrigo';
+          if (exIdx < 0) sent.unshift(merged);
+          else sent[exIdx] = merged;
           saveData('corrigo_sent_to_corrigo', sent);
         } else if (w.corrigoAccepted === true && w.status !== 'completed' && w.status !== 'disputed') {
           inbox = inbox.filter(x => String(x.number) !== num);
