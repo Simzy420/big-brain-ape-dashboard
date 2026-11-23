@@ -189,7 +189,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v59-202611231802</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v60-202611231830</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
 <div class="tabs">
   <div class="stepwrap"><div class="steplabel">Step 1 ⭐️</div><button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button></div>
   <div class="stepwrap"><div class="steplabel">Step 2 ⭐️</div><button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button></div>
@@ -322,7 +322,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v59-202611231802';
+const APP_VERSION = 'v60-202611231830';
 const DECISION_ENDPOINT = 'https://doorbell-relay-production-c59989ff.up.railway.app/decision';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
@@ -2720,8 +2720,8 @@ async function loadJobs(){
           if (exIdx < 0) sent.unshift(merged);
           else sent[exIdx] = merged;
           saveData('corrigo_sent_to_corrigo', sent);
-        } else if (w.corrigoAccepted === true && w.status !== 'completed' && w.status !== 'disputed') {
-          inbox = inbox.filter(x => String(x.number) !== num);
+        } else if (w.status === 'accepted' || (w.corrigoAccepted === true && w.status !== 'completed' && w.status !== 'disputed')) {
+          inbox = inbox.filter(x => normStrict(x && x.number) !== normStrict(num));
           placeCorrigoAccepted(w);
         }
       });
@@ -2742,7 +2742,7 @@ async function loadJobs(){
           let completed = getData('corrigo_completed');
           completed.unshift(w);
           saveData('corrigo_completed', completed);
-        } else if (w.corrigoAccepted === true) {
+        } else if (w.status === 'accepted' || w.corrigoAccepted === true) {
           placeCorrigoAccepted(w);
         } else {
           inbox.unshift(w);
@@ -2973,8 +2973,10 @@ function decorateProof(){
     const num = s.textContent.trim(); const list = proofFor(num); if (!list.length) return;
     const e = list[0], acc = e.action === 'accepted';
     const d = document.createElement('div'); d.className = 'proof-box'; d.style.marginTop = '10px';
-    // Keep the accept/decline line. The blue See Corrigo proof button is not shown; proof files stay in corrigo-proof/.
-    d.innerHTML = `<div style="color:${acc?'#00cc66':'#ff3b30'};font-size:15px;">${acc?'Accepted':'Declined'} in Corrigo ✓ ${escHtml(proofTime(e.at))}</div>`;
+    d.innerHTML = acc
+      ? `<button type="button" class="big" style="width:100%;background:#0a84ff;color:#fff;">✅ Proof it was accepted${list.length>1?' ('+list.length+')':''}</button>`
+      : `<div style="color:#ff3b30;font-size:15px;">Declined in Corrigo ✓ ${escHtml(proofTime(e.at))}</div>`;
+    if (acc) d.querySelector('button').onclick = ev => { ev.stopPropagation(); openProof(num); };
     d.onclick = ev => ev.stopPropagation();
     c.appendChild(d);
   });

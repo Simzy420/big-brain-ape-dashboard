@@ -102,8 +102,9 @@ test('the dad page shows the Soda Springs job in plain language', async () => {
   assert.match(text, /Before Sunday/);
   assert.match(text, /Dec 20/);
   assert.match(text, /NTE: \$500/);
-  assert.equal(await page.$('#acceptBtn') !== null, true);
-  assert.equal(await page.$('#declineBtn') !== null, true);
+  assert.match(text, /Already accepted/);
+  assert.equal(await page.$('#acceptBtn'), null);
+  assert.equal(await page.$('#declineBtn'), null);
   const past = Date.now() >= Date.parse('2026-11-24T03:35:00.000Z');
   assert.equal(/Past deadline/.test(text), past);
   assert.equal(posts.length, 0);
@@ -118,7 +119,7 @@ test('an en dash in the link still finds the work order', async () => {
 });
 
 test('test mode confirms Accept without posting', async () => {
-  const { page, posts } = await openPage('?wo=J5013895-00418&test=1');
+  const { page, posts } = await openPage('?wo=Z9999999-00001&test=1');
   await page.click('#acceptBtn');
   const ask = await page.evaluate(() => document.getElementById('confirm').innerText);
   assert.match(ask, /Are you sure\?/);

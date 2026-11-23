@@ -631,12 +631,12 @@ test('Accepted cards use the same four buttons and Corrigo proof is not a button
   });
   const four = ['Decline', '↩ Unaccept', '🗑️ Delete', '📝 Add Work Description', '📧 View Original Email', '📷 Corrigo Photos'];
   assert.equal(layout.accepted.length, 3);
-  layout.accepted.forEach(card => assert.deepEqual(card.buttons, four));
+  layout.accepted.forEach(card => assert.deepEqual(card.buttons, card.num === 'I5376025-00135.01.01' ? four.concat(['✅ Proof it was accepted']) : four));
   assert.deepEqual(layout.acceptedNow, [true, true, true]);
   assert.equal(layout.pageText.includes('See Corrigo proof'), false);
   assert.equal(layout.accepted[0].line, '');
   assert.equal(layout.accepted[1].line, '');
-  assert.match(layout.accepted[2].line, /Accepted in Corrigo ✓ 11\/05\/26/);
+  assert.match(layout.accepted[2].line, /Proof it was accepted/);
   assert.equal(layout.declinedButtons.includes('📧 View Original Email'), false);
   assert.equal(layout.declinedButtons.includes('📸 See Corrigo proof'), false);
   assert.match(layout.declinedLine, /Declined in Corrigo/);
@@ -661,6 +661,11 @@ test('Accepted cards use the same four buttons and Corrigo proof is not a button
   }));
   assert.deepEqual(stored.accepted, ['I5013496-00375.01', 'I5017025-00256.01', 'I5376025-00135.01.01']);
   assert.equal(stored.proofUrl, 'https://example.test/accepted.png');
+  await page.evaluate(() => {
+    const card = [...document.querySelectorAll('#accepted .card')].find(c => c.innerText.includes('I5376025-00135.01.01'));
+    [...card.querySelectorAll('button')].find(b => b.textContent.includes('Proof it was accepted')).click();
+  });
+  assert.equal(await page.evaluate(() => document.querySelector('#proofList img').getAttribute('src')), 'https://example.test/accepted.png');
   await page.close();
 });
 
@@ -1527,6 +1532,34 @@ test('Submitted receipt shows job pictures and every proof screenshot', async ()
   assert.match(opened.second.text, /Interior/);
   assert.equal(opened.second.text.includes('Date started'), false);
   assert.deepEqual(opened.second.imgs.sort(), ['https://example.test/1714.png', 'https://example.test/1716.jpg']);
+  assert.equal(state.decisionPosts.length, 0);
+  await page.close();
+});
+
+test('status accepted in the file leaves Inbox and does not post', async () => {
+  const job = wo({
+    id: 'wo_real_J5013895_00418',
+    number: 'J5013895-00418',
+    status: 'inbox',
+    acceptBy: '11/23/2026 8:35 PM',
+    completeBy: '12/20/2026 8:35 PM'
+  });
+  const server = Object.assign({}, job, {
+    status: 'accepted',
+    corrigoStatus: 'Accepted',
+    acceptedAt: '2026-11-23T17:28:00Z'
+  });
+  const { page, state } = await openApp({
+    workOrders: [server],
+    decisionStatus: 0,
+    seed: { corrigo_inbox: [job] }
+  });
+  const got = await page.evaluate(() => ({
+    inbox: JSON.parse(localStorage.getItem('corrigo_inbox') || '[]').map(w => w.number),
+    accepted: JSON.parse(localStorage.getItem('corrigo_accepted') || '[]').map(w => w.number)
+  }));
+  assert.deepEqual(got.inbox, []);
+  assert.deepEqual(got.accepted, ['J5013895-00418']);
   assert.equal(state.decisionPosts.length, 0);
   await page.close();
 });
