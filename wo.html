@@ -66,6 +66,25 @@
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0.25);
   }
   a.done span { white-space: nowrap; }
+  a.close {
+    position: absolute;
+    top: calc(10px + env(safe-area-inset-top));
+    right: calc(10px + env(safe-area-inset-right));
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 88px;
+    height: 88px;
+    border-radius: 24px;
+    background: #fff;
+    color: #000;
+    font-size: 64px;
+    font-weight: 900;
+    line-height: 1;
+    text-decoration: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.15);
+  }
   #confirm, #result {
     position: fixed;
     inset: 0;
@@ -75,6 +94,7 @@
     display: none;
   }
   #confirm h2, #result h2 { font-size: 52px; text-align: center; margin-top: 12vh; }
+  #result h2 { margin-top: max(12vh, calc(84px + env(safe-area-inset-top))); }
   .status {
     color: #2ee6c7;
     font-size: 44px;
@@ -93,6 +113,7 @@
   <button type="button" class="no" id="noBtn">No</button>
 </div>
 <div id="result">
+  <a id="closeBtn" class="close" href="sms:" aria-label="Done - Back to Texts">X</a>
   <h2 id="resultText"></h2>
   <!-- sms: with no number is Apple's documented "launch the Messages app" link. history.back() and window.close() stay inside Safari, so they cannot return him to the text. -->
   <a id="doneBtn" class="done" href="sms:"><span>Done -</span><span>Back to Texts</span></a>
