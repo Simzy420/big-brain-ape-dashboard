@@ -127,6 +127,7 @@ function whenParts(raw) {
   return { weekday: weekday, rest: rest, date: d };
 }
 function siteName(w) {
+  if (w && w.siteLabel) return String(w.siteLabel);
   const parts = String(w.location || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
   let city = parts.length >= 2 ? parts[1] : '';
   city = city.replace(/\b[A-Z]{2}\b[\s\S]*$/, '').trim();
@@ -168,6 +169,31 @@ function statusLine(w) {
   if (s === 'disputed') return 'On hold';
   if (CLOSED[s]) return 'Already closed';
   return '';
+}
+function boiseToday() {
+  const parts = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Boise', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
+  const get = function (t) { return +parts.find(function (p) { return p.type === t; }).value; };
+  return { year: get('year'), month: get('month'), day: get('day') };
+}
+function addCalendarDays(ymd, days) {
+  const d = new Date(Date.UTC(ymd.year, ymd.month - 1, ymd.day + days));
+  return { year: d.getUTCFullYear(), month: d.getUTCMonth() + 1, day: d.getUTCDate() };
+}
+function atFivePm(ymd) {
+  return ymd.month + '/' + ymd.day + '/' + ymd.year + ' 5:00 PM';
+}
+function sampleTestWo() {
+  const today = boiseToday();
+  return {
+    number: 'T0000001-00001',
+    status: 'inbox',
+    siteLabel: 'Test Church (Live Button Test)',
+    location: '123 Test Main Street',
+    emailJobDescription: 'Test work order — tapping Accept or Decline sends a real test alert to your bot without touching Corrigo.',
+    acceptBy: atFivePm(addCalendarDays(today, 1)),
+    completeBy: atFivePm(addCalendarDays(today, 14)),
+    estimatedAmount: 500
+  };
 }
 function mergeMatches(list, want) {
   const hits = list.filter(function (w) { return w && sanitizeWo(w.number) === want; });
@@ -278,6 +304,7 @@ if (!want) {
     .then(function (r) { if (!r.ok) throw new Error('load'); return r.json(); })
     .then(function (list) {
       current = mergeMatches(Array.isArray(list) ? list : [], want);
+      if (!current && want === 'T0000001-00001') current = sampleTestWo();
       if (!current) {
         document.getElementById('app').innerHTML = '<p class="loading">Work order not found.</p>';
         return;
@@ -286,6 +313,11 @@ if (!want) {
       render(current);
     })
     .catch(function () {
+      if (want === 'T0000001-00001') {
+        current = sampleTestWo();
+        render(current);
+        return;
+      }
       document.getElementById('app').innerHTML = '<p class="loading">Could not load the work order.</p>';
     });
 }
