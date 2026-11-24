@@ -172,6 +172,29 @@ test('the result screen offers a large way back to Texts and does not post', asy
   assert.equal(info.result, '❌ Declined');
   assert.equal(info.text, 'Done - Back to Texts');
   assert.equal(info.href, 'sms:');
+  const close = await page.evaluate(() => {
+    const a = document.getElementById('closeBtn');
+    const heading = document.getElementById('resultText').getBoundingClientRect();
+    const r = a.getBoundingClientRect();
+    const view = document.documentElement.clientWidth;
+    return {
+      href: a.getAttribute('href'),
+      label: a.getAttribute('aria-label'),
+      text: a.textContent,
+      width: r.width,
+      height: r.height,
+      top: r.top,
+      rightGap: view - r.right,
+      overlapsHeading: !(r.bottom <= heading.top + 1 || r.left >= heading.right - 1 || r.right <= heading.left + 1)
+    };
+  });
+  assert.equal(close.href, 'sms:');
+  assert.equal(close.label, 'Done - Back to Texts');
+  assert.equal(close.text, 'X');
+  assert.ok(close.width >= 80 && close.height >= 80, JSON.stringify(close));
+  assert.ok(close.top <= 24, 'top ' + close.top);
+  assert.ok(close.rightGap <= 24, 'right ' + close.rightGap);
+  assert.equal(close.overlapsHeading, false);
   assert.ok(info.fontSize >= 36, 'font ' + info.fontSize);
   assert.ok(info.height >= 110, 'height ' + info.height);
   assert.ok(info.width >= 280, 'width ' + info.width);
@@ -182,18 +205,24 @@ test('the result screen offers a large way back to Texts and does not post', asy
   const narrow = await page.evaluate(() => {
     const a = document.getElementById('doneBtn');
     const r = a.getBoundingClientRect();
+    const x = document.getElementById('closeBtn').getBoundingClientRect();
+    const heading = document.getElementById('resultText').getBoundingClientRect();
     return {
       right: r.right,
       width: document.documentElement.clientWidth,
       height: r.height,
       overflow: a.scrollWidth > a.clientWidth + 1,
-      lines: a.innerText.split('\n').map(function (s) { return s.trim(); }).filter(Boolean)
+      lines: a.innerText.split('\n').map(function (s) { return s.trim(); }).filter(Boolean),
+      closeRight: document.documentElement.clientWidth - x.right,
+      closeClearsHeading: x.bottom <= heading.top + 1
     };
   });
   assert.ok(narrow.right <= narrow.width + 1, 'overflows to ' + narrow.right);
   assert.equal(narrow.overflow, false);
   assert.deepEqual(narrow.lines, ['Done -', 'Back to Texts']);
   assert.ok(narrow.height >= 110);
+  assert.ok(narrow.closeRight <= 24, 'close right ' + narrow.closeRight);
+  assert.equal(narrow.closeClearsHeading, true);
   await page.close();
 });
 
