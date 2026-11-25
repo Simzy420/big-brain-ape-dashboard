@@ -1,11 +1,11 @@
 {
-  "date": "September 20, 2026 06:50 UTC",
+  "date": "November 25, 2026 13:38 UTC",
   "assets": {
     "S&P 500": {
-      "price": 7650.5,
-      "change_pct": 0.17,
-      "support": 7507.77,
-      "resistance": 7771.48,
+      "price": 7201.09,
+      "change_pct": -0.50,
+      "support": 6910,
+      "resistance": 7237,
       "history": [
         7707.98,
         7641.16,
@@ -32,10 +32,10 @@
       ]
     },
     "NASDAQ": {
-      "price": 26522.54,
-      "change_pct": 0.39,
-      "support": 25802.96,
-      "resistance": 26700.68,
+      "price": 22617,
+      "change_pct": -1.99,
+      "support": 22617,
+      "resistance": 23100,
       "history": [
         26331.09,
         26067.17,
@@ -92,41 +92,41 @@
       ]
     },
     "BTC": {
-      "price": 80364.3,
-      "change_pct": -0.84,
-      "support": 74909.4,
-      "resistance": 82282.8
+      "price": 59745.65,
+      "change_pct": -2.35,
+      "support": 58000,
+      "resistance": 61500
     },
     "ETH": {
-      "price": 2573.58,
-      "change_pct": -2.03,
-      "support": 2355.12,
-      "resistance": 2669.0
+      "price": 2200,
+      "change_pct": -3.2,
+      "support": 2100,
+      "resistance": 2350
     },
     "SOL": {
-      "price": 108.4,
-      "change_pct": -2.95,
-      "support": 87.0,
-      "resistance": 114.32
+      "price": 95,
+      "change_pct": -4.1,
+      "support": 87,
+      "resistance": 114
     }
   },
-  "risk_score": 50,
-  "risk_bias": "NEUTRAL",
+  "risk_score": 65,
+  "risk_bias": "RISK-OFF",
   "fear_greed": {
-    "value": 71,
-    "classification": "Greed",
+    "value": 35,
+    "classification": "Fear",
     "history": [
       {
-        "value": 71,
-        "label": "Greed"
+        "value": 35,
+        "label": "Fear"
       },
       {
-        "value": 71,
-        "label": "Greed"
+        "value": 42,
+        "label": "Fear"
       },
       {
-        "value": 56,
-        "label": "Greed"
+        "value": 38,
+        "label": "Fear"
       },
       {
         "value": 50,
@@ -137,72 +137,72 @@
         "label": "Neutral"
       },
       {
-        "value": 69,
-        "label": "Greed"
+        "value": 40,
+        "label": "Fear"
       },
       {
-        "value": 57,
-        "label": "Greed"
+        "value": 35,
+        "label": "Fear"
       }
     ]
   },
-  "sector_tech": "HOT",
+  "sector_tech": "CORRECTING",
   "sector_color": "red",
-  "put_call": "0.85",
-  "options_bias": "NEUTRAL",
+  "put_call": "0.95",
+  "options_bias": "RISK-OFF",
   "whale_flow": "NEUTRAL",
   "metrics": {
     "vix": {
-      "value": "14.8",
+      "value": "22.5",
       "label": "VIX",
-      "color": "green"
+      "color": "red"
     },
     "yield_10y": {
-      "value": "5.00%",
+      "value": "5.01%",
       "label": "10Y YIELD",
-      "color": "blue"
+      "color": "red"
     },
     "dxy": {
-      "value": "100.2",
+      "value": "103.99",
       "label": "DXY",
       "color": "red"
     },
     "oil": {
-      "value": "$96.08",
+      "value": "$68",
       "label": "WTI OIL",
-      "color": "yellow"
+      "color": "blue"
     },
     "gold": {
-      "value": "$4425",
+      "value": "$3,531",
       "label": "GOLD",
-      "color": "yellow"
+      "color": "orange"
     },
     "silver": {
-      "value": "$67.15",
+      "value": "$41",
       "label": "SILVER",
-      "color": "yellow"
+      "color": "orange"
     }
   },
   "signals": [
     {
-      "label": "BULLISH",
-      "text": "VIX low \u2014 market calm",
-      "type": "bullish"
+      "label": "BEARISH",
+      "text": "Fed hiking cycle resumed — Dec 9 FOMC 25bp hike 90-97% priced, Waller pushing 50bp jumbo",
+      "type": "bearish"
+    },
+    {
+      "label": "BEARISH",
+      "text": "DXY at 52-wk high 104.53 — dollar strengthening, not rolling",
+      "type": "bearish"
     },
     {
       "label": "CAUTION",
-      "text": "Greed elevated (71)",
+      "text": "Gold testing $3,500 support again — held twice but pressure building",
       "type": "caution"
     },
     {
-      "label": "CAUTION",
-      "text": "Yields rising \u2014 risk off",
-      "type": "caution"
-    },
-    {
-      "label": "BULLISH",
-      "text": "NVDA up 1.3% \u2014 AI demand momentum",
-      "type": "bullish"
+      "label": "BEARISH",
+      "text": "BTC -39% from ATH, sellers in control, no capitulation volume yet",
+      "type": "bearish"
     }
   ],
   "btc_funding": 0.0001,

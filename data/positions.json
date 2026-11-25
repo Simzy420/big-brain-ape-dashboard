@@ -1,48 +1,48 @@
 {
-  "timestamp": 1791590717,
-  "generatedAt": "2026-10-10 00:06 UTC",
-  "accountValue": 1332.06,
-  "withdrawable": 619.48,
-  "portfolioValue": 1332.06,
-  "totalUnrealizedPnl": 10.87,
-  "totalMarginUsed": 712.58,
-  "availableCash": 619.48,
+  "timestamp": 1795613687,
+  "generatedAt": "2026-11-25 13:38 UTC",
+  "accountValue": 1128.25,
+  "withdrawable": 905.20,
+  "portfolioValue": 1128.25,
+  "totalUnrealizedPnl": -12.10,
+  "totalMarginUsed": 223.04,
+  "availableCash": 905.20,
   "positions": [
     {
       "symbol": "GOLD",
       "rawToken": "xyz:GOLD",
       "side": "LONG",
-      "size": 0.51,
-      "entryPrice": 4169.08,
-      "currentPrice": 4190.45,
-      "unrealizedPnl": 10.87,
-      "pnlPercent": 3.1,
-      "marginUsed": 712.58,
+      "size": 0.20,
+      "entryPrice": 3559.20,
+      "currentPrice": 3531.45,
+      "unrealizedPnl": -12.10,
+      "pnlPercent": -1.7,
+      "marginUsed": 223.04,
       "leverage": 3,
       "marginType": "isolated",
-      "positionValue": 2137.13,
-      "stopLoss": 4000,
+      "positionValue": 706.29,
+      "stopLoss": 3400,
       "tvSymbol": "TVC:GOLD"
     }
   ],
   "pieValueSlices": [
     {
       "label": "GOLD",
-      "value": 2137.13
+      "value": 706.29
     },
     {
       "label": "Cash",
-      "value": 619.48
+      "value": 905.20
     }
   ],
   "pieMarginSlices": [
     {
       "label": "GOLD",
-      "value": 712.58
+      "value": 223.04
     },
     {
       "label": "Available",
-      "value": 619.48
+      "value": 905.20
     }
   ]
 }
