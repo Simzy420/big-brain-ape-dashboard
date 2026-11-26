@@ -1,0 +1,14 @@
+{
+  "name": "sims-wo-push",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "web-push": "3.6.7"
+  }
+}

@@ -6,6 +6,13 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0099ff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Sims Construction">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <title>Sims Construction — Work Orders</title>
 <style>
 body { margin:0; background:#0f0f17; color:#fff; font-family:-apple-system,sans-serif; }
@@ -24,6 +31,7 @@ h1 { margin:0; font-size:24px; }
 .undo-btn { display:inline-block; margin-top:8px; background:transparent; border:1px solid #aaa; color:#fff; border-radius:10px; padding:8px 14px; font-size:16px; font-weight:700; }
 .wrap { padding:12px; }
 .card { background:#1c1c2e; border-radius:16px; padding:16px; margin-bottom:12px; }
+.card.wo-focus { box-shadow: 0 0 0 4px #ff9f0a; }
 button.big { width:100%; border:0; border-radius:12px; padding:16px; font-size:22px; font-weight:800; color:#fff; margin-top:8px; }
 .accept { background:#00cc66; }
 .decline { background:#ff3b30; }
@@ -190,7 +198,22 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v61-202611261521</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button><div id="totalPaid">💰 Total Paid: $0.00</div></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v62-202611260837</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button><div id="totalPaid">💰 Total Paid: $0.00</div></header>
+<div id="notifyBox" class="wrap" style="display:none;padding-bottom:0">
+  <div id="notifyIosHelp" class="card" style="display:none">
+    <p style="font-size:22px;font-weight:800;margin:0 0 8px">Turn on notifications</p>
+    <p style="font-size:18px;line-height:1.4;margin:0 0 8px">On iPhone, alerts only work from the Home Screen icon.</p>
+    <ol style="font-size:18px;line-height:1.45;margin:0;padding-left:22px">
+      <li>Tap the Share button</li>
+      <li>Tap Add to Home Screen</li>
+      <li>Open Sims Construction from the new icon</li>
+      <li>Tap Turn on notifications</li>
+    </ol>
+  </div>
+  <button id="notifyOnBtn" class="big accept" style="display:none" type="button">Turn on notifications</button>
+  <p id="notifyStatus" class="muted" style="display:none;font-size:18px"></p>
+  <button id="notifyTestBtn" class="big save" style="display:none" type="button">Send test notification</button>
+</div>
 <div class="tabs">
   <div class="stepwrap"><div class="steplabel">Step 1 ⭐️</div><button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button></div>
   <div class="stepwrap"><div class="steplabel">Step 2 ⭐️</div><button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button></div>
@@ -323,7 +346,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v61-202611261521';
+const APP_VERSION = 'v62-202611260837';
 const DECISION_ENDPOINT = 'https://doorbell-relay-production-c59989ff.up.railway.app/decision';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
@@ -3090,6 +3113,181 @@ function prefillWorkDesc(wo){
   if (saved && (wo.workDescSaved || !looksScanned(saved))) return saved;
   return PREWRITTEN[k] || wo.prewrittenDescription || templateWorkDesc(wo.description || saved || '');
 }
+</script>
+<script>
+var WO_PUSH_PUBLIC_KEY = 'BOqTANIPOIxi16zc5eNXtyKES8_tGjXNasdy3TIQAOvcc26rGkigCayZNgyg-h4WiEUVfpVVqXtNS17QedszxXU';
+var WO_PUSH_API = 'https://wo-push-production.up.railway.app';
+function woPushB64(s) {
+  var pad = '='.repeat((4 - s.length % 4) % 4);
+  var b64 = (s + pad).replace(/-/g, '+').replace(/_/g, '/');
+  var raw = atob(b64);
+  var out = new Uint8Array(raw.length);
+  for (var i = 0; i < raw.length; i++) out[i] = raw.charCodeAt(i);
+  return out;
+}
+function woPushRoot() {
+  return location.pathname.replace(/[^/]*$/, '');
+}
+function woPushIos() {
+  var ua = navigator.userAgent || '';
+  if (/iPad|iPhone|iPod/.test(ua)) return true;
+  return navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+}
+function woPushStandalone() {
+  return window.navigator.standalone === true || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
+}
+function woPushSet(id, on) {
+  var el = document.getElementById(id);
+  if (el) el.style.display = on ? 'block' : 'none';
+}
+function woPushMsg(text) {
+  var el = document.getElementById('notifyStatus');
+  if (!el) return;
+  el.style.display = text ? 'block' : 'none';
+  el.textContent = text || '';
+}
+function woPushReg() {
+  if (!('serviceWorker' in navigator)) return Promise.resolve(null);
+  var root = woPushRoot();
+  return navigator.serviceWorker.register(root + 'sw.js', { scope: root }).then(function () {
+    return navigator.serviceWorker.ready;
+  }).catch(function () { return null; });
+}
+function woPushExisting() {
+  return woPushReg().then(function (reg) {
+    if (!reg || !reg.pushManager) return null;
+    return reg.pushManager.getSubscription();
+  }).catch(function () { return null; });
+}
+function woPushRefresh() {
+  var ios = woPushIos();
+  var standalone = woPushStandalone();
+  var box = document.getElementById('notifyBox');
+  if (box) box.style.display = 'block';
+  if (ios && !standalone) {
+    woPushSet('notifyIosHelp', true);
+    woPushSet('notifyOnBtn', false);
+    woPushSet('notifyTestBtn', false);
+    woPushMsg('');
+    return;
+  }
+  woPushSet('notifyIosHelp', false);
+  if (!('Notification' in window) || !('PushManager' in window) || !('serviceWorker' in navigator)) {
+    woPushSet('notifyOnBtn', false);
+    woPushSet('notifyTestBtn', false);
+    woPushMsg('This phone needs iOS 16.4 or newer, opened from the Home Screen icon.');
+    return;
+  }
+  woPushExisting().then(function (sub) {
+    if (sub) {
+      woPushSet('notifyOnBtn', false);
+      woPushSet('notifyTestBtn', true);
+      woPushMsg('Notifications are on.');
+    } else {
+      woPushSet('notifyOnBtn', true);
+      woPushSet('notifyTestBtn', false);
+      woPushMsg('');
+    }
+  }).catch(function () {
+    woPushSet('notifyOnBtn', true);
+    woPushSet('notifyTestBtn', false);
+  });
+}
+function woPushTurnOn() {
+  woPushMsg('Asking for permission…');
+  woPushReg().then(function (reg) {
+    if (!reg) {
+      woPushMsg('Could not start notifications. Open the app from the Home Screen icon and try again.');
+      return;
+    }
+    return Notification.requestPermission().then(function (perm) {
+      if (perm !== 'granted') {
+        woPushMsg('Notifications are blocked. On iPhone: Settings, then Notifications, then Sims Construction, then Allow.');
+        return;
+      }
+      return reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: woPushB64(WO_PUSH_PUBLIC_KEY) }).then(function (sub) {
+        return fetch(WO_PUSH_API + '/subscribe', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ subscription: sub.toJSON() })
+        }).then(function (res) {
+          if (!res.ok) throw new Error('save failed');
+          woPushRefresh();
+          woPushMsg('Notifications are on.');
+        });
+      }).catch(function (err) {
+        if (err && err.message === 'save failed') woPushMsg('Permission is on, but this phone could not be saved. Check the internet and tap the button again.');
+        else woPushMsg('This phone did not allow notifications. Open the app from the Home Screen icon and try again.');
+      });
+    });
+  });
+}
+function woPushTest() {
+  woPushMsg('Sending a test…');
+  woPushExisting().then(function (sub) {
+    if (!sub) { woPushMsg('Turn on notifications first.'); return; }
+    return fetch(WO_PUSH_API + '/test', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ endpoint: sub.endpoint })
+    }).then(function (res) {
+      if (!res.ok) throw new Error('test failed');
+      woPushMsg('Test sent. You should hear it in a few seconds.');
+    }).catch(function () {
+      woPushMsg('The test did not send. Check the internet and try again.');
+    });
+  });
+}
+function woPushFocus() {
+  if (window.__woPushFocused) return;
+  var num = '';
+  try { num = new URLSearchParams(location.search).get('wo') || ''; } catch (e) { return; }
+  if (!num) return;
+  var want = String(num).replace(/[\u2010-\u2015\u2212]/g, '-').replace(/\s/g, '').toLowerCase();
+  var tabs = ['almostdue', 'overdue', 'inbox', 'accepted', 'bidding', 'finalize', 'completedtab', 'senttocorrigo', 'paid', 'declined', 'disputed', 'resolved'];
+  for (var i = 0; i < tabs.length; i++) {
+    var root = document.getElementById(tabs[i]);
+    if (!root) continue;
+    var cards = root.querySelectorAll('.card');
+    for (var c = 0; c < cards.length; c++) {
+      var strong = cards[c].querySelector('.wo-card-header strong');
+      if (!strong) continue;
+      var got = strong.textContent.replace(/[\u2010-\u2015\u2212]/g, '-').replace(/\s/g, '').toLowerCase();
+      if (got !== want) continue;
+      window.__woPushFocused = true;
+      try { show(tabs[i]); } catch (e) {}
+      var again = document.getElementById(tabs[i]);
+      if (!again) return;
+      var found = again.querySelectorAll('.card');
+      for (var j = 0; j < found.length; j++) {
+        var label = found[j].querySelector('.wo-card-header strong');
+        if (!label) continue;
+        var text = label.textContent.replace(/[\u2010-\u2015\u2212]/g, '-').replace(/\s/g, '').toLowerCase();
+        if (text !== want) continue;
+        found[j].classList.add('wo-focus');
+        try { found[j].scrollIntoView({ block: 'center' }); } catch (e2) { found[j].scrollIntoView(true); }
+        return;
+      }
+      return;
+    }
+  }
+}
+(function () {
+  var on = document.getElementById('notifyOnBtn');
+  var testBtn = document.getElementById('notifyTestBtn');
+  if (on) on.addEventListener('click', function () { woPushTurnOn(); });
+  if (testBtn) testBtn.addEventListener('click', function () { woPushTest(); });
+  try { woPushRefresh(); } catch (e) {}
+  if (typeof render === 'function') {
+    var prevRender = render;
+    render = function () {
+      var result = prevRender.apply(this, arguments);
+      try { woPushFocus(); } catch (e) {}
+      return result;
+    };
+  }
+  try { woPushFocus(); } catch (e) {}
+})();
 </script>
 </body>
 </html>
