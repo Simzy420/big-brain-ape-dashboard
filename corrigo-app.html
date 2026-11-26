@@ -9,7 +9,8 @@
 <title>Sims Construction — Work Orders</title>
 <style>
 body { margin:0; background:#0f0f17; color:#fff; font-family:-apple-system,sans-serif; }
-header { padding:16px; background:linear-gradient(135deg,#0099ff,#00cc66); position:sticky; top:0; }
+header { padding:16px; background:linear-gradient(135deg,#0099ff,#00cc66); position:sticky; top:0; z-index:20; }
+#totalPaid { margin-top:10px; background:#0f0f17; color:#00cc66; border-radius:12px; padding:12px 14px; font-size:22px; font-weight:800; text-align:center; line-height:1.3; }
 h1 { margin:0; font-size:24px; }
 .tabs { display:flex; gap:8px; overflow:auto; padding:12px; align-items:flex-end; }
 .stepwrap { display:flex; flex-direction:column; align-items:center; flex-shrink:0; }
@@ -189,7 +190,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v60-202611231830</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v61-202611261521</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button><div id="totalPaid">💰 Total Paid: $0.00</div></header>
 <div class="tabs">
   <div class="stepwrap"><div class="steplabel">Step 1 ⭐️</div><button class="tab" onclick="show('inbox')">Inbox <span id="inboxCount">0</span></button></div>
   <div class="stepwrap"><div class="steplabel">Step 2 ⭐️</div><button class="tab" onclick="show('accepted')">Accepted <span id="acceptedCount">0</span></button></div>
@@ -322,7 +323,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v60-202611231830';
+const APP_VERSION = 'v61-202611261521';
 const DECISION_ENDPOINT = 'https://doorbell-relay-production-c59989ff.up.railway.app/decision';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
@@ -627,6 +628,8 @@ function render(){
   const paid = getData('corrigo_paid');
   const paidCountEl = document.getElementById('paidCount');
   if (paidCountEl) paidCountEl.textContent = paid.length;
+  const totalPaidEl = document.getElementById('totalPaid');
+  if (totalPaidEl) totalPaidEl.textContent = '💰 Total Paid: ' + fmtPaidTotal(paid.reduce((sum, w) => sum + (paidAmountOf(w) || 0), 0));
   const paidEl = document.getElementById('paid');
   if (paidEl) paidEl.innerHTML = paid.length > 0
     ? paid.map((w,i) => paidCard(w, i)).join('')
@@ -795,12 +798,9 @@ function card(w, canAct, tab, dueInfo){
 let corrigoPhotoSeq = 0;
 let corrigoPhotoList = [];
 let corrigoPhotoIndex = 0;
-function noCorrigoPhotos(){
-  alert("Corrigo hasn't provided any images for this work order.");
-}
 function corrigoPhotoBtn(w){
   const imgs = Array.isArray(w && w.images) ? w.images.map(s => String(s || '').trim()).filter(Boolean) : [];
-  if (!imgs.length) return '<button type="button" class="email-btn" onclick="noCorrigoPhotos()">📷 Corrigo Photos</button>';
+  if (!imgs.length) return '';
   if (!window.CORRIGO_CARD_IMAGES) window.CORRIGO_CARD_IMAGES = {};
   const key = 'p' + (++corrigoPhotoSeq);
   window.CORRIGO_CARD_IMAGES[key] = imgs;
@@ -2304,6 +2304,18 @@ function keepNonBlank(target, source, skip){
 function escHtml(t){ return String(t == null ? '' : t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 function fmtMoney(v){ const n = parseFloat(v); return isNaN(n) ? '' : '$' + n.toFixed(2); }
+function fmtPaidTotal(n){
+  const v = Math.round((Number(n) || 0) * 100) / 100;
+  const parts = Math.abs(v).toFixed(2).split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return (v < 0 ? '-$' : '$') + parts.join('.');
+}
+function paidAmountOf(w){
+  if (!w) return null;
+  const rawAmt = (w.paidAmount != null && w.paidAmount !== '') ? w.paidAmount : ((w.invoiceAmount != null && w.invoiceAmount !== '') ? w.invoiceAmount : w.corrigoTotal);
+  const amt = parseFloat(rawAmt);
+  return isNaN(amt) ? null : amt;
+}
 
 function fmtMountain(iso){ return iso ? shortDate(iso) : ''; }
 
@@ -2321,9 +2333,8 @@ function corrigoReceiptButton(store, i){
 }
 
 function paidCard(w, i){
-  const rawAmt = (w.paidAmount != null && w.paidAmount !== '') ? w.paidAmount : ((w.invoiceAmount != null && w.invoiceAmount !== '') ? w.invoiceAmount : w.corrigoTotal);
-  const amt = parseFloat(rawAmt);
-  const amtHtml = !isNaN(amt) ? `<div class="wo-est">${fmtMoney(amt)}</div>` : '';
+  const amt = paidAmountOf(w);
+  const amtHtml = amt != null ? `<div class="wo-est">${fmtMoney(amt)}</div>` : '';
   const bits = [];
   if (w.invoiceNumber) bits.push('Invoice ' + escHtml(w.invoiceNumber));
   const when = w.paidDate || w.invoiceDate || '';

@@ -629,7 +629,7 @@ test('Accepted cards use the same four buttons and Corrigo proof is not a button
       steps: [...document.querySelectorAll('.steplabel')].map(el => el.textContent)
     };
   });
-  const four = ['Decline', '↩ Unaccept', '🗑️ Delete', '📝 Add Work Description', '📧 View Original Email', '📷 Corrigo Photos'];
+  const four = ['Decline', '↩ Unaccept', '🗑️ Delete', '📝 Add Work Description', '📧 View Original Email'];
   assert.equal(layout.accepted.length, 3);
   layout.accepted.forEach(card => assert.deepEqual(card.buttons, card.num === 'I5376025-00135.01.01' ? four.concat(['✅ Proof it was accepted']) : four));
   assert.deepEqual(layout.acceptedNow, [true, true, true]);
@@ -1573,4 +1573,141 @@ test('a relay 401 without a saved token is not called a GitHub read failure', as
   assert.equal(/read HTTP 401/.test(pill), false);
   assert.equal(/Saved GitHub token was rejected/.test(pill), false);
   await session.page.close();
+});
+
+test('Corrigo Photos shows only with real images, and Total Paid sums paid cards', async () => {
+  const paidPlain = {
+    id: 'paid-plain',
+    number: 'J5013496-00434',
+    status: 'paid',
+    location: ADDR,
+    customer: 'The Church',
+    description: 'Roof inspection that was paid.',
+    paidAmount: 490,
+    invoiceAmount: 1,
+    corrigoTotal: 2,
+    invoiceNumber: '1426',
+    paidEmailContent: 'This invoice has been paid. Amount $490.00',
+    emailContent: 'Original work order email',
+    images: ['', '   '],
+    photos: [{ name: 'job.jpg', url: 'https://example.test/job.jpg' }]
+  };
+  const paidOther = {
+    id: 'paid-other',
+    number: 'J5110467-00393',
+    status: 'paid',
+    location: OTHER_ADDR,
+    description: 'Second paid job.',
+    invoiceAmount: 1234.5,
+    paidEmailContent: 'Invoice paid',
+    images: ['corrigo-images/J5110467-00393-1.jpg']
+  };
+  const paidBlank = {
+    id: 'paid-blank',
+    number: 'J0000000-00010',
+    status: 'paid',
+    description: 'Paid notice with no dollar amount.',
+    paidEmailContent: 'This invoice has been paid'
+  };
+  const deletedPaid = {
+    id: 'paid-deleted',
+    number: 'J0000000-00011',
+    status: 'paid',
+    paidAmount: 9999,
+    paidEmailContent: 'This invoice has been paid'
+  };
+  const declined = wo({
+    id: 'declined-money',
+    number: 'J0000000-00012',
+    status: 'declined',
+    paidAmount: 800,
+    estimatedAmount: 800
+  });
+  const inbox = wo({
+    id: 'inbox-money',
+    number: 'J0000000-00013',
+    status: 'inbox',
+    estimatedAmount: 500,
+    images: []
+  });
+  const withPhoto = wo({
+    id: 'sent-photo',
+    number: 'J5991021-00465',
+    status: 'sent_to_corrigo',
+    images: ['corrigo-images/J5991021-00465-1.jpg'],
+    corrigoTotal: 475,
+    invoiceNumber: '1431'
+  });
+  const { page } = await openApp({
+    workOrders: [],
+    seed: {
+      corrigo_paid: [paidPlain, paidOther, paidBlank, deletedPaid],
+      corrigo_paid_deleted: { 'J0000000-00011': '2026-11-01T00:00:00.000Z' },
+      corrigo_declined: [declined],
+      corrigo_inbox: [inbox],
+      corrigo_sent_to_corrigo: [withPhoto]
+    }
+  });
+  const view = await page.evaluate(() => {
+    const labels = root => [...root.querySelectorAll('button')].map(b => b.textContent.replace(/\s+/g, ' ').trim());
+    const paidCards = [...document.querySelectorAll('#paid .card')].map(card => ({
+      num: (card.querySelector('strong') || {}).textContent || '',
+      buttons: labels(card),
+      paid: card.innerText.includes('✅ Paid')
+    }));
+    show('senttocorrigo');
+    const sent = [...document.querySelectorAll('#sentToCorrigoList .card')].map(card => ({
+      num: (card.querySelector('strong') || {}).textContent || '',
+      buttons: labels(card)
+    }));
+    show('inbox');
+    const inboxCard = [...document.querySelectorAll('#inbox .card')].find(c => c.innerText.includes('J0000000-00013'));
+    show('declined');
+    const declinedCard = document.querySelector('#declined .card');
+    return {
+      total: document.getElementById('totalPaid').textContent,
+      paidCards,
+      sent,
+      inboxButtons: labels(inboxCard),
+      declinedButtons: labels(declinedCard),
+      top: document.getElementById('totalPaid').getBoundingClientRect().top
+    };
+  });
+  assert.equal(view.total, '💰 Total Paid: $1,724.50');
+  assert.equal(view.top >= 0, true);
+  const plain = view.paidCards.find(c => c.num === 'J5013496-00434');
+  const other = view.paidCards.find(c => c.num === 'J5110467-00393');
+  assert.equal(plain.paid, true);
+  assert.equal(plain.buttons.some(b => b.includes('Corrigo Photos')), false);
+  assert.equal(plain.buttons.some(b => b.includes('Corrigo Receipt')), true);
+  assert.equal(plain.buttons.some(b => b.includes('View Paid Email')), true);
+  assert.equal(plain.buttons.some(b => b.includes('Delete')), true);
+  assert.equal(other.buttons.some(b => b === '📷 Corrigo Photos (1)'), true);
+  assert.equal(view.paidCards.some(c => c.num === 'J0000000-00011'), false);
+  assert.equal(view.inboxButtons.some(b => b.includes('Corrigo Photos')), false);
+  assert.equal(view.declinedButtons.some(b => b.includes('Corrigo Photos')), false);
+  const sentPhoto = view.sent.find(c => c.num === 'J5991021-00465');
+  assert.equal(sentPhoto.buttons.some(b => b === '📷 Corrigo Photos (1)'), true);
+  assert.equal(sentPhoto.buttons.some(b => b.includes('Corrigo Receipt')), true);
+  assert.equal(sentPhoto.buttons.some(b => b.includes('Delete')), true);
+
+  const after = await page.evaluate(() => {
+    moveWoToPaid({
+      id: 'newly-paid',
+      number: 'J0000000-00014',
+      status: 'paid',
+      paidAmount: 100.25,
+      paidEmailSubject: 'Invoice has been paid',
+      paidEmailContent: 'This invoice has been paid'
+    });
+    render();
+    return {
+      total: document.getElementById('totalPaid').textContent,
+      numbers: [...document.querySelectorAll('#paid .card strong')].map(el => el.textContent.trim())
+    };
+  });
+  assert.equal(after.total, '💰 Total Paid: $1,824.75');
+  assert.equal(after.numbers.includes('J0000000-00014'), true);
+  assert.equal(after.numbers.includes('J0000000-00013'), false);
+  await page.close();
 });
