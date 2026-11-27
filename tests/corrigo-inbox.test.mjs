@@ -392,7 +392,7 @@ test('Reload reports a failed work-order fetch and a real success', async () => 
   await session.page.close();
 });
 
-test('a phone delete is not reported as synced and stays on the phone', async () => {
+test('a phone delete stays on the phone and no longer blocks the sync light', async () => {
   const accepted = Object.assign({}, plain, { status: 'accepted' });
   const session = await openApp({
     workOrders: [plain],
@@ -409,15 +409,43 @@ test('a phone delete is not reported as synced and stays on the phone', async ()
     deleted: JSON.parse(localStorage.getItem('corrigo_sent_deleted') || '{}'),
     accepted: JSON.parse(localStorage.getItem('corrigo_accepted') || '[]').map(w => w.number)
   }));
-  assert.equal(session.state.relayBodies.length, 0);
+  // v63: the relay cannot store deletes, so they stay on the phone and everything else is still sent
+  assert.ok(session.state.relayBodies.length >= 1);
+  const sent = session.state.relayBodies[session.state.relayBodies.length - 1].actions;
+  assert.equal(sent.some(a => /_delete$/.test(a.action)), false);
+  assert.equal(sent.some(a => a.action === 'accept' && a.number === plain.number), true);
   assert.equal(got.deleted['J5013259-00415'] != null, true);
   assert.deepEqual(got.accepted, [plain.number]);
-  assert.match(got.toast, /could not send its changes/);
-  assert.equal(got.toast.includes('Synced from server'), false);
-  assert.match(got.pill, /List reloaded/);
+  assert.match(got.toast, /Synced from server/);
+  assert.match(got.pill, /Synced to bot/);
+  assert.equal(/fail/i.test(got.pill), false);
+  await session.page.close();
+});
+
+test('a Completed delete the bot still needs keeps the light red while the rest is sent', async () => {
+  const waiting = Object.assign({}, plain, { id: 'waiting-invoice', number: 'J5013259-00499', status: 'submitted', hours: '2', invoiceNumber: '1500' });
+  const accepted = Object.assign({}, plain, { status: 'accepted' });
+  const session = await openApp({
+    workOrders: [plain, waiting],
+    allowRelay: true,
+    seed: {
+      corrigo_accepted: [accepted],
+      corrigo_completed_deleted: { 'J5013259-00499': '2026-11-20T21:17:21.194Z' }
+    }
+  });
+  await session.page.evaluate(() => forceReload());
+  const got = await session.page.evaluate(() => ({
+    pill: document.getElementById('syncStatus').innerText,
+    deleted: JSON.parse(localStorage.getItem('corrigo_completed_deleted') || '{}')
+  }));
+  assert.ok(session.state.relayBodies.length >= 1);
+  const sent = session.state.relayBodies[session.state.relayBodies.length - 1].actions;
+  assert.equal(sent.some(a => /_delete$/.test(a.action)), false);
+  assert.equal(sent.some(a => a.action === 'accept' && a.number === plain.number), true);
+  assert.equal(got.deleted['J5013259-00499'] != null, true);
   assert.match(got.pill, /Sync failed/);
-  assert.match(got.pill, /still on this phone/);
-  assert.equal(/Synced to bot/.test(got.pill), false);
+  assert.match(got.pill, /J5013259-00499/);
+  assert.match(got.pill, /not sent to the bot/);
   await session.page.close();
 });
 
@@ -507,7 +535,7 @@ test('a rejected saved GitHub token is reported and the phone falls back without
   await session.page.close();
 });
 
-test('a rejected token does not send or drop a phone delete', async () => {
+test('a rejected token sends the rest without the phone delete and keeps the delete', async () => {
   const session = await openApp({
     workOrders: [],
     allowRelay: true,
@@ -525,13 +553,14 @@ test('a rejected token does not send or drop a phone delete', async () => {
     deleted: JSON.parse(localStorage.getItem('corrigo_sent_deleted') || '{}')
   }));
   assert.equal(got.token, 'rejected-test-token');
-  assert.equal(session.state.relayBodies.length, 0);
+  assert.ok(session.state.relayBodies.length >= 1);
+  assert.equal(JSON.stringify(session.state.relayBodies).includes('PHONE-LOCAL-DELETE'), false);
+  assert.equal(JSON.stringify(session.state.relayBodies).includes('rejected-test-token'), false);
   assert.equal(session.state.githubWrites.length, 0);
   assert.equal(got.deleted['PHONE-LOCAL-DELETE'], '2026-11-08T20:00:00.000Z');
   assert.match(got.pill, /Saved GitHub token was rejected/);
-  assert.match(got.pill, /still on this phone/);
-  assert.match(got.pill, /Nothing was sent/);
-  assert.match(got.toast, /could not send its changes/);
+  assert.match(got.pill, /Sent without that token/);
+  assert.match(got.toast, /Sent without the saved GitHub token/);
   await session.page.close();
 });
 
@@ -1575,7 +1604,7 @@ test('a relay 401 without a saved token is not called a GitHub read failure', as
   await session.page.close();
 });
 
-test('Corrigo Photos shows only with real images, and Total Paid sums paid cards', async () => {
+test('Corrigo Photos shows only on Disputed cards with real images, and Total Paid sums paid cards', async () => {
   const paidPlain = {
     id: 'paid-plain',
     number: 'J5013496-00434',
@@ -1682,12 +1711,13 @@ test('Corrigo Photos shows only with real images, and Total Paid sums paid cards
   assert.equal(plain.buttons.some(b => b.includes('Corrigo Receipt')), true);
   assert.equal(plain.buttons.some(b => b.includes('View Paid Email')), true);
   assert.equal(plain.buttons.some(b => b.includes('Delete')), true);
-  assert.equal(other.buttons.some(b => b === '📷 Corrigo Photos (1)'), true);
+  // v63: Corrigo Photos is a Disputed-only button
+  assert.equal(other.buttons.some(b => b.includes('Corrigo Photos')), false);
   assert.equal(view.paidCards.some(c => c.num === 'J0000000-00011'), false);
   assert.equal(view.inboxButtons.some(b => b.includes('Corrigo Photos')), false);
   assert.equal(view.declinedButtons.some(b => b.includes('Corrigo Photos')), false);
   const sentPhoto = view.sent.find(c => c.num === 'J5991021-00465');
-  assert.equal(sentPhoto.buttons.some(b => b === '📷 Corrigo Photos (1)'), true);
+  assert.equal(sentPhoto.buttons.some(b => b.includes('Corrigo Photos')), false);
   assert.equal(sentPhoto.buttons.some(b => b.includes('Corrigo Receipt')), true);
   assert.equal(sentPhoto.buttons.some(b => b.includes('Delete')), true);
 
@@ -1709,5 +1739,11 @@ test('Corrigo Photos shows only with real images, and Total Paid sums paid cards
   assert.equal(after.total, '💰 Total Paid: $1,824.75');
   assert.equal(after.numbers.includes('J0000000-00014'), true);
   assert.equal(after.numbers.includes('J0000000-00013'), false);
+  const disputed = await page.evaluate(() => {
+    saveData('corrigo_disputed', [{ id: 'disp-photo', number: 'J0000000-00015', status: 'disputed', images: ['corrigo-images/J0000000-00015-1.jpg'] }]);
+    render();
+    return [...document.querySelectorAll('#disputed .card button')].map(b => b.textContent.replace(/\s+/g, ' ').trim());
+  });
+  assert.equal(disputed.some(b => b === '📷 Corrigo Photos (1)'), true);
   await page.close();
 });

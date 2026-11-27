@@ -198,7 +198,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v62-202611260837</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button><div id="totalPaid">💰 Total Paid: $0.00</div></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v63-202611262000</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button><div id="totalPaid">💰 Total Paid: $0.00</div></header>
 <div id="notifyBox" class="wrap" style="display:none;padding-bottom:0">
   <div id="notifyIosHelp" class="card" style="display:none">
     <p style="font-size:22px;font-weight:800;margin:0 0 8px">Turn on notifications</p>
@@ -346,7 +346,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v62-202611260837';
+const APP_VERSION = 'v63-202611262000';
 const DECISION_ENDPOINT = 'https://doorbell-relay-production-c59989ff.up.railway.app/decision';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
@@ -374,13 +374,36 @@ function nowTime(){ return new Date().toLocaleTimeString([], {hour:'numeric', mi
 })();
 let currentPhoto = null;
 let lineItemCount = 0;
-function getData(k){ try { return JSON.parse(localStorage.getItem(k)||'[]'); } catch(e){ return []; } }
+// v63: in-memory copy of a list/map whose full save failed. When the phone's storage is full (it is shared with
+// every other page on simzy420.github.io), a failed save used to leave the tab empty, so badges showed 0
+// and other phones' entries were re-sent as this phone's own. The copy keeps this session correct;
+// the server fills it again on every load. A save that fully lands clears the copy, so storage stays the source.
+const MEM_STORE = {};
+function memRaw(k){ return Object.prototype.hasOwnProperty.call(MEM_STORE, k) ? MEM_STORE[k] : localStorage.getItem(k); }
+function getData(k){
+  let v;
+  try { v = JSON.parse(memRaw(k) || '[]'); } catch(e){ return []; }
+  // Old app versions could leave a non-list or empty slots here; that used to stop render() and zero every badge
+  if (!Array.isArray(v)) return [];
+  return v.filter(w => w && typeof w === 'object' && !Array.isArray(w));
+}
 function saveData(k,v){
+  try { MEM_STORE[k] = JSON.stringify(v); } catch(e) {}
   try {
-    localStorage.setItem(k, JSON.stringify(v));
+    localStorage.setItem(k, MEM_STORE[k] !== undefined ? MEM_STORE[k] : JSON.stringify(v));
+    delete MEM_STORE[k];
     return true;
   } catch(e) {
     if (e.name === 'QuotaExceededError' || (e.message && e.message.includes('quota'))) {
+      // First drop only what the server sends again on every load (Paid/Submitted/Resolved email HTML and pictures that have a URL)
+      if (Array.isArray(v) && SERVER_REFILLED_KEYS.indexOf(k) >= 0) {
+        try { localStorage.setItem(k, JSON.stringify(slimServerCopy(v))); return true; } catch(e1) {}
+      }
+      SERVER_REFILLED_KEYS.forEach(key => {
+        if (key === k) return;
+        try { const arr = JSON.parse(localStorage.getItem(key)||'[]'); if (Array.isArray(arr)) localStorage.setItem(key, JSON.stringify(slimServerCopy(arr))); } catch(ignore) {}
+      });
+      try { localStorage.setItem(k, MEM_STORE[k] || JSON.stringify(v)); delete MEM_STORE[k]; return true; } catch(e1b) {}
       // Strip photos from this save and retry
       if (Array.isArray(v)) {
         const slim = v.map(w => {
@@ -391,7 +414,7 @@ function saveData(k,v){
         try { localStorage.setItem(k, JSON.stringify(slim)); return true; } catch(e2) {}
       }
       // Last resort: clear old photos from other keys
-      ['corrigo_completed','corrigo_submitted','corrigo_inbox','corrigo_accepted','corrigo_paid'].forEach(key => {
+      ['corrigo_inbox','corrigo_accepted','corrigo_paid','corrigo_sent_to_corrigo','corrigo_resolved'].forEach(key => {
         try {
           const arr = JSON.parse(localStorage.getItem(key)||'[]');
           const slim = arr.map(w => {
@@ -402,7 +425,7 @@ function saveData(k,v){
           localStorage.setItem(key, JSON.stringify(slim));
         } catch(ignore) {}
       });
-      try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch(e3) {
+      try { localStorage.setItem(k, JSON.stringify(v)); delete MEM_STORE[k]; return true; } catch(e3) {
         console.warn('Still could not save after cleanup:', e3);
         return false;
       }
@@ -410,6 +433,16 @@ function saveData(k,v){
       throw e;
     }
   }
+}
+const SERVER_REFILLED_KEYS = ['corrigo_paid','corrigo_sent_to_corrigo','corrigo_resolved'];
+function slimServerCopy(arr){
+  return arr.map(w => {
+    if (!w || typeof w !== 'object') return w;
+    const c = Object.assign({}, w);
+    delete c.emailHtml;
+    if (Array.isArray(c.photos)) c.photos = c.photos.map(ph => (ph && ph.url) ? { name: ph.name || '', url: ph.url } : ph);
+    return c;
+  });
 }
 async function forceReload(){
   // DO NOT wipe localStorage — only re-fetch from GitHub and sync
@@ -595,15 +628,16 @@ function show(name){
 function render(){
   try { applyLocalDecisions(); } catch (e) { console.error(e); }
   try { applyInboxHolds(); } catch (e) { console.error(e); }
-  purgeSentDeleted(); purgeCompletedDeleted(); purgePaidDeleted();
-  repairPrestonRoofWorkDesc();
+  try { purgeSentDeleted(); purgeCompletedDeleted(); purgePaidDeleted(); } catch (e) { console.error(e); }
+  try { repairPrestonRoofWorkDesc(); } catch (e) { console.error(e); }
   const inbox = getData('corrigo_inbox');
   const accepted = getData('corrigo_accepted');
   const declined = getData('corrigo_declined');
   const bidding = getData('corrigo_bidding');
   const now = new Date();
-  const overdueList = overdueItems(now);
-  const almostDueList = almostDueItems(now);
+  let overdueList = [], almostDueList = [];
+  try { overdueList = overdueItems(now); } catch (e) { console.error(e); }
+  try { almostDueList = almostDueItems(now); } catch (e) { console.error(e); }
   const almostDueNums = {};
   almostDueList.forEach(item => { almostDueNums[String(item.w.number || item.w.id || '')] = true; });
   const inboxVisible = inbox.filter(w => !almostDueNums[String(w.number || w.id || '')]);
@@ -714,6 +748,12 @@ function render(){
   const tokenRejected = /Saved GitHub token was rejected/i.test(localStorage.getItem('corrigo_last_sync_status') || '');
   document.getElementById('status').textContent = token ? (tokenRejected ? 'Token saved on this phone. GitHub rejected it. Paste a new one to replace it.' : 'Token saved on this phone.') : 'No token saved yet.';
 }
+function safeCardFn(fn){
+  return function(w){
+    try { return fn.apply(this, arguments); }
+    catch (e) { console.error('card', e); return '<div class="card"><div class="wo-card-header"><strong>' + escHtml((w && w.number) || '') + '</strong></div></div>'; }
+  };
+}
 function emailField(w, label){
   const m = (w.emailContent||'').match(new RegExp(label + ':[^\\n]*\\n\\s*([0-9]{1,2}/[0-9]{1,2}/[0-9]{4}[^\\n]*)'));
   return m ? m[1].trim() : '';
@@ -821,7 +861,9 @@ function card(w, canAct, tab, dueInfo){
 let corrigoPhotoSeq = 0;
 let corrigoPhotoList = [];
 let corrigoPhotoIndex = 0;
-function corrigoPhotoBtn(w){
+// v63: the Corrigo Photos button shows only on Disputed cards (the pictures stay on the server)
+function corrigoPhotoBtn(w){ return ''; }
+function corrigoPhotoBtnDisputed(w){
   const imgs = Array.isArray(w && w.images) ? w.images.map(s => String(s || '').trim()).filter(Boolean) : [];
   if (!imgs.length) return '';
   if (!window.CORRIGO_CARD_IMAGES) window.CORRIGO_CARD_IMAGES = {};
@@ -930,7 +972,7 @@ function disputedCard(w){
     ${disputeEmailBtn}
     ${finalizeBtn}
     ${resolveBtn}
-    ${corrigoPhotoBtn(w)}
+    ${corrigoPhotoBtnDisputed(w)}
     ${deleteBtn}
   </div>`;
 }
@@ -1576,8 +1618,8 @@ function setDeviceName(){
 }
 function actKey(a){ return String(a.number) + '|' + a.action; }
 function actSig(a){ const c = Object.assign({}, a); ['deviceId','deviceName','updatedAt','workDescriptionFrom'].forEach(k => delete c[k]); return JSON.stringify(c, Object.keys(c).sort()); }
-function getMap(k){ try { return JSON.parse(localStorage.getItem(k) || '{}'); } catch(e){ return {}; } }
-function setMap(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
+function getMap(k){ try { const m = JSON.parse(memRaw(k) || '{}'); return (m && typeof m === 'object' && !Array.isArray(m)) ? m : {}; } catch(e){ return {}; } }
+function setMap(k, v){ try { MEM_STORE[k] = JSON.stringify(v); } catch(e) {} try { localStorage.setItem(k, MEM_STORE[k]); delete MEM_STORE[k]; } catch(e) {} }
 function rawLocalActions(){
   const actions = [];
   getData('corrigo_accepted').filter(w => !w.fromOverride).forEach(w => actions.push({number:w.number, action:'accept', location:w.location||'', description:w.description||''}));
@@ -1672,6 +1714,36 @@ const RELAY_APP_KEY = 'csr-e76ca03362f3597203e4f90b'; // light abuse guard only;
 // The relay replaces this phone's saved actions with the posted list, and it rejects a delete.
 // Sending the other actions without the delete would erase that delete, so send nothing and keep it here.
 function relayHeldDeletes(list){ return (list || []).filter(a => a && /_delete$/.test(String(a.action))); }
+// v63: what the relay accepts (see corrigo-sync-relay/api/sync.js). Anything else made it answer 400, and a phone
+// with one old delete on it never synced again, so its light stayed red forever.
+let LAST_SERVER_JOBS = null, LAST_SERVER_ACTIONS = null;
+const RELAY_ACTIONS = { accept:1, decline:1, bid:1, update:1, dispute:1, resolve:1 };
+function relaySendable(a){
+  if (!a || typeof a !== 'object' || !RELAY_ACTIONS[a.action] || typeof a.updatedAt !== 'string') return false;
+  if (typeof a.number === 'number') return true;
+  return typeof a.number === 'string' && a.number.trim() !== '';
+}
+// Sent/Paid deletes only tidy this phone's list (the bot ignores them). A Completed delete matters only while
+// the server still has that job waiting to be invoiced and no other phone has sent the same delete.
+function deletesTheBotNeeds(held){
+  return held.filter(a => {
+    if (a.action !== 'completed_delete') return false;
+    const k = normWo(a.number);
+    if ((LAST_SERVER_ACTIONS || []).some(b => b && b.action === 'completed_delete' && normWo(b.number) === k)) return false;
+    if (!Array.isArray(LAST_SERVER_JOBS)) return false;
+    return LAST_SERVER_JOBS.some(w => w && normWo(w.number) === k && !isPaidNotice(w) && (w.status === 'completed' || w.status === 'submitted'));
+  });
+}
+function relayBody(deviceId, deviceName, list){
+  let actions = list.slice(0, 500);
+  let body = JSON.stringify({ deviceId, deviceName, actions });
+  // The relay takes at most 4 MB; drop inline picture data first (pictures with a URL are kept)
+  if (body.length > 3500000) {
+    actions = actions.map(a => Array.isArray(a.photos) ? Object.assign({}, a, { photos: a.photos.map(p => p && p.url ? { name: p.name || '', url: p.url } : { name: (p && p.name) || '', url: '' }) }) : a);
+    body = JSON.stringify({ deviceId, deviceName, actions });
+  }
+  return body;
+}
 // Phones with no GitHub token sync through the relay, which does the same merge server-side
 async function sendViaRelay(silent, tokenNote){
   setSyncStatus('Syncing to bot…', '#ff9500');
@@ -1679,15 +1751,18 @@ async function sendViaRelay(silent, tokenNote){
   try {
     const myName = getDeviceName();
     const mine = buildLocalActions();
+    // v63: send everything the relay can store; deletes stay on this phone (they always did) instead of blocking every sync
     const held = relayHeldDeletes(mine);
-    if (held.length) {
-      setSyncStatus('Sync failed: ' + note + held.length + ' delete' + (held.length === 1 ? '' : 's') + ' still on this phone. Nothing was sent.', '#ff3b30');
-      if (!silent) alert('Saved on the phone. A delete could not be sent, so nothing was sent.');
-      return;
-    }
+    const needed = deletesTheBotNeeds(held);
+    const sendable = mine.filter(relaySendable);
     const res = await fetch(RELAY_URL, { method:'POST', headers:{ 'Content-Type':'application/json', 'X-App-Key':RELAY_APP_KEY },
-      body: JSON.stringify({ deviceId:getDeviceId(), deviceName:myName, actions:mine }) });
+      body: relayBody(getDeviceId(), myName, sendable) });
     if (res.ok) {
+      if (needed.length) {
+        setSyncStatus('Sync failed: ' + note + 'delete of ' + needed.map(a => a.number).join(', ') + ' not sent to the bot. Tell Casey.', '#ff3b30');
+        if (!silent) alert('Sent for Corrigo pickup, but the delete of ' + needed.map(a => a.number).join(', ') + ' could not be sent. Tell Casey so it is not invoiced.');
+        return;
+      }
       if (tokenNote) setSyncStatus(tokenNote + '. Sent without that token ✓ ' + nowTime() + ' from ' + (myName || 'this phone'), '#f59e0b');
       else setSyncStatus('Synced to bot ✓ ' + nowTime() + ' from ' + (myName || 'this phone'), '#00cc66');
       if (!silent) alert(tokenNote ? 'Sent for Corrigo pickup without the saved GitHub token. That token was rejected.' : 'Sent for Corrigo pickup.');
@@ -2535,7 +2610,7 @@ function sweepRenamed(ovs){
   let inbox = getData('corrigo_inbox'); const keepIn = [];
   inbox.forEach(w => {
     if (isRemovedByOverride(ovs, w)) return;
-    const o = ovs.filter(o => o.forceTab && o.forceTab !== 'inbox' && OV_TABS[o.forceTab] && ovMatches(o, w)).pop();
+    const o = ovs.filter(o => o.forceTab && o.forceTab !== 'inbox' && OV_TABS[o.forceTab] && ovMatches(o, w) && !overrideIsBehindServer(o)).pop();
     if (!o) { keepIn.push(w); return; }
     const target = OV_TABS[o.forceTab], arr = getData(target);
     if (!arr.some(x => normStrict(x.number) === normStrict(w.number))) {
@@ -2545,6 +2620,21 @@ function sweepRenamed(ovs){
     }
   });
   if (keepIn.length !== inbox.length) saveData('corrigo_inbox', keepIn);
+}
+// v63: the stage the server (work-orders.json) has each job in, so a stale override never pulls a paid job back to Submitted
+let SERVER_STAGE = {};
+const STAGE_RANK = { inbox:0, bidding:0, saved:0, declined:1, accepted:1, completed:2, finalize:2, submitted:3, sent_to_corrigo:4, disputed:4, resolved:4, paid:5 };
+function serverStageOf(w){ if (isPaidNotice(w)) return 'paid'; return String((w && w.status) || '').toLowerCase().trim().replace(/[\s-]+/g, '_'); }
+function rememberServerStages(jobs){
+  const m = {};
+  (jobs || []).forEach(w => { if (!w || w.number == null) return; const k = normWo(w.number), st = serverStageOf(w);
+    if (!(k in m) || (STAGE_RANK[st] || 0) > (STAGE_RANK[m[k]] || 0)) m[k] = st; });
+  SERVER_STAGE = m;
+}
+function overrideIsBehindServer(o){
+  const st = SERVER_STAGE[normWo(o.number)] || (o.renameTo ? SERVER_STAGE[normWo(o.renameTo)] : undefined);
+  if (!st || !(st in STAGE_RANK) || !(o.forceTab in STAGE_RANK)) return false;
+  return STAGE_RANK[st] > STAGE_RANK[o.forceTab];
 }
 function isRemovedByOverride(ovs, w){ return ovs.some(o => o.removed && ovMatches(o, w)); }
 function applyOverrides(ovs){
@@ -2571,6 +2661,8 @@ function applyOverrides(ovs){
     } else if (o.forceTab && OV_TABS[o.forceTab]) {
       // v28: an old accepted/declined override never pulls a WO back out of Completed/Sent/Resolved
       if ((o.forceTab === 'accepted' || o.forceTab === 'declined') && ['corrigo_submitted','corrigo_sent_to_corrigo','corrigo_resolved','corrigo_paid'].some(t => getData(t).some(w => ovMatches(o, w)))) { done[key] = o.overrideAt; return; }
+      // v63: the server already has this job at a later stage (e.g. Paid), so this old move is out of date
+      if (overrideIsBehindServer(o)) { done[key] = o.overrideAt; return; }
       const target = OV_TABS[o.forceTab]; let found = null;
       OV_ALL.forEach(t => { const arr = getData(t); const keep = [];
         arr.forEach(w => { if (ovMatches(o, w)) { found = found ? mergeSentWo(found, w) : w; } else keep.push(w); });
@@ -2708,7 +2800,8 @@ async function loadJobs(){
     if (Array.isArray(jobs)) {
       // v18: carry renamed records under their new number (instead of dropping them) so their real status still syncs
       const seenNew = {};
-      jobs = jobs.map(w => { if (w.status !== 'sent_to_corrigo') return w; const o = overrides.filter(o => o.renameTo && normStrict(o.number) === normStrict(w.number) && (o.onlyIfInvoice === undefined || String(w.invoiceNumber||'') === String(o.onlyIfInvoice))).pop();
+      // v63: a paid notice is carried under the renamed number too, so a phone holding the renamed card still moves it to Paid
+      jobs = jobs.map(w => { if (w.status !== 'sent_to_corrigo' && !isPaidNotice(w)) return w; const o = overrides.filter(o => o.renameTo && normStrict(o.number) === normStrict(w.number) && (o.onlyIfInvoice === undefined || String(w.invoiceNumber||'') === String(o.onlyIfInvoice))).pop();
         return o ? Object.assign({}, w, {number: o.renameTo}) : w; })
         .filter(w => !isRemovedByOverride(overrides, w) && !renamedAway(overrides, w))
         .filter(w => { const k = normStrict(w.number); if (!(k in seenNew)) { seenNew[k] = w; return true; }
@@ -2722,6 +2815,7 @@ async function loadJobs(){
     }
     let inbox = getData('corrigo_inbox');
     let disputed = getData('corrigo_disputed');
+    if (Array.isArray(jobs)) { try { rememberServerStages(jobs); LAST_SERVER_JOBS = jobs; } catch(e) { console.error(e); } }
 
     if (Array.isArray(jobs)) {
       // Sync status changes from GitHub: if a WO's status changed, move it to the right tab
@@ -2793,6 +2887,7 @@ async function loadJobs(){
         actionsOk = true;
         const actData = await actRes.json();
         const actions = actData.pendingActions || [];
+        LAST_SERVER_ACTIONS = Array.isArray(actions) ? actions : [];
         let changed = false;
         const myDev = getDeviceId();
         const impSigs = getMap('corrigo_imported_sigs');
@@ -3272,6 +3367,7 @@ function woPushFocus() {
     }
   }
 }
+try { card = safeCardFn(card); disputedCard = safeCardFn(disputedCard); resolvedCard = safeCardFn(resolvedCard); sentCard = safeCardFn(sentCard); paidCard = safeCardFn(paidCard); } catch (e) {}
 (function () {
   var on = document.getElementById('notifyOnBtn');
   var testBtn = document.getElementById('notifyTestBtn');
