@@ -15,6 +15,13 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
+      - name: Sync version file to APP_VERSION
+        run: |
+          set -euo pipefail
+          V="$(grep -oP "const APP_VERSION = '\K[^']+" corrigo-app.html)"
+          test -n "$V"
+          printf '{"version":"%s"}' "$V" > corrigo-version.json
+          echo "version file -> $V"
       - name: Install Chrome
         run: npx --no-install @puppeteer/browsers install chrome --path "$RUNNER_TEMP/chrome"
       - name: Run Corrigo inbox tests
