@@ -198,7 +198,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </style>
 </head>
 <body>
-<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v63-202611262000</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button><div id="totalPaid">💰 Total Paid: $0.00</div></header>
+<header><h1>Sims Construction</h1><p>Work orders <span id="appVersion" style="font-size:20px;font-weight:700;opacity:1;">v64-202611262250</span></p><p id="syncStatus" style="font-size:14px;margin:4px 0;color:#aaa;">Sync: starting…</p><button class="big accept" style="margin-top:8px;font-size:18px;padding:10px 20px;" onclick="forceReload()">🔄 Reload Work Orders</button><div id="totalPaid">💰 Total Paid: $0.00</div></header>
 <div id="notifyBox" class="wrap" style="display:none;padding-bottom:0">
   <div id="notifyIosHelp" class="card" style="display:none">
     <p style="font-size:22px;font-weight:800;margin:0 0 8px">Turn on notifications</p>
@@ -346,7 +346,7 @@ input { width:100%; box-sizing:border-box; font-size:20px; padding:14px; border-
 </div>
 
 <script>
-const APP_VERSION = 'v63-202611262000';
+const APP_VERSION = 'v64-202611262250'; // v64: Corrigo invoice screenshots on the receipt
 const DECISION_ENDPOINT = 'https://doorbell-relay-production-c59989ff.up.railway.app/decision';
 function setSyncStatus(msg, color){
   try { localStorage.setItem('corrigo_last_sync_status', msg); } catch(e) {}
@@ -2538,6 +2538,8 @@ function showWoReceipt(w){
   const corrigoHtml = hasCorrigo ? `<h3 style="margin:16px 0 4px;color:#00cc66;">In Corrigo</h3>${row('Corrigo WO #', w.corrigoWoNumber)}${row('Status', w.corrigoStatus)}${row('Labor', fmtMoney(w.corrigoLabor))}${row('Material', w.corrigoMaterial !== undefined && w.corrigoMaterial !== null && w.corrigoMaterial !== '' ? fmtMoney(w.corrigoMaterial) : '')}${row('Total', fmtMoney(w.corrigoTotal))}${row('Submitted by', w.submittedBy)}` : '';
   const proofSrcs = (typeof cruFor === 'function' ? cruFor(w.number, w) : []).map(e => e.url);
   const proofHtml = `<p style="color:#aaa;font-size:16px;margin:12px 0 6px;">✅ Proof it was submitted${proofSrcs.length ? ' — tap to enlarge' : ''}</p>${thumbs(proofSrcs)}`;
+  const receiptSrcs = (Array.isArray(w.corrigoReceiptScreenshots) ? w.corrigoReceiptScreenshots : []).map(s => String(s || '').trim()).filter(Boolean);
+  const invoiceShotHtml = receiptSrcs.length ? `<p style="color:#aaa;font-size:16px;margin:12px 0 6px;">🧾 Corrigo invoice screenshots — tap to enlarge</p>${thumbs(receiptSrcs)}` : '';
   const desc = w.workDescription || w.comment || '';
   const html = `<div class="card" style="max-width:600px;margin:0 auto;">
     <div class="wo-card-header"><strong>${escHtml(w.number||'')}</strong></div>
@@ -2545,6 +2547,7 @@ function showWoReceipt(w){
     ${row('Location', w.location)}${row('Date started', shortDate(w.dateStarted))}${row('Date completed', shortDate(w.dateCompleted))}${row('Invoice #', w.invoiceNumber)}${row('Invoice date', shortDate(w.invoiceDate))}${row('Hours', w.hours)}${row('Rate', w.rate ? '$' + w.rate + '/hr' : '')}${row('Labor total', labor ? fmtMoney(labor) : '')}${row('Materials', hasMat ? fmtMoney(w.materialsCost) : 'None entered')}${row('Total', total ? fmtMoney(total) : '')}${row('Repair category', w.repairCategory)}${row('Repair code', w.repairCode)}${row('Sent', fmtMountain(w.sentAt))}
     ${desc ? `<p style="color:#aaa;font-size:16px;margin:12px 0 4px;">Work description:</p><p style="white-space:pre-wrap;">${escHtml(desc)}</p>` : ''}
     ${corrigoHtml}
+    ${invoiceShotHtml}
     ${photosHtml}
     ${proofHtml}
     <button class="big save" style="margin-top:12px;width:100%;" onclick="closeSentDetail()">Close</button>
